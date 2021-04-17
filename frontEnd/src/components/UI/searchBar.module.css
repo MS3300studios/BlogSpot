@@ -1,0 +1,54 @@
+.centerContainer{
+    display: flex;
+    justify-content: center;
+}
+.smallContainer{
+    position: relative;
+}
+.Input{
+    background-color: #c5fff9;
+    border-radius: 20px;
+    margin: 40px;
+    width: 195px;
+    margin-right: 10px;
+    border: none;
+    transition: 0.2s all linear;
+    padding: 10px;
+    padding-right: 10px;
+}
+.Input:focus{
+    width: 400px;
+}
+.Input::placeholder{
+    text-align: center;
+}
+.Input:focus::placeholder{
+    text-align: left;
+}
+
+.Select{
+    background-color: #c5fff9;
+    border-radius: 20px;
+    margin: 40px;
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 100px;
+    border: none;
+    transition: 0.2s all linear;
+    padding: 10px;
+    padding-right: 10px;
+}
+.searchIcon{
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: 47px;
+    right: 23px;
+}
+.buttonConfinement{
+    width: 100px;
+    height: 37px;
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+}

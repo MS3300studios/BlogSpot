@@ -1,0 +1,30 @@
+.postContainer{
+    margin: 20px 100px 20px 100px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.Card{
+    padding: 8px;
+    text-decoration: none;
+    border-radius: 4px;
+    background-color: #82ca66;
+    width: 320px;
+    height: 300px;
+    margin: 5px;
+    transition: 0.3s;
+    text-overflow: hidden;
+    position: relative;
+}
+
+.Card:hover{
+    box-shadow: 10px 10px 29px -1px rgba(0,0,0,0.55);
+}
+
+.Card img{
+    width: 90px;
+    height: 90px;
+    margin-top: 110px;
+    margin-left: 115px;
+}
+

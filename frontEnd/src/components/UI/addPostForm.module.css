@@ -1,0 +1,42 @@
+.addPostFormContainer{
+    z-index: 200;
+    position: fixed;
+    top: 30px;
+    height: 850px;
+    width: 980px;
+    background-color: #82ca66;
+    border-radius: 5px;
+    padding: 20px;
+    position: relative;
+}
+
+.addPostFormContainer img{
+    width: 15px;
+    height: 15px;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+}
+
+.Input{
+    border: none;
+    border-bottom: 3px solid rgb(53, 51, 167);
+    font-size: large;
+    margin-bottom: 10px;
+}
+
+.Textarea{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-bottom: 3px solid rgb(53, 51, 167);
+    font-size: large;
+    font-family: inherit;
+    font-weight: 490;
+}
+
+.btnsContainer{
+    margin-top: 15px;
+    width: 980px;
+    display: flex;
+    justify-content: space-evenly;
+}

@@ -1,0 +1,72 @@
+.userPhoto{
+    width: 60px;
+    height: 60px;
+    margin-left: 25px;
+    transition: 0.2s;
+    border-radius: 50%;
+}
+
+.userPhoto:hover{
+    transform: scale(1.2);
+}
+
+.dropdown{
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-top: 10px;
+    margin-right: 100px;
+}
+
+.dropdownContent{
+    width: 120px;
+    visibility: hidden;
+    border: none;
+    background-color: white;
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 5px;
+    margin-right: 10px;
+    height: 1px;
+    transition: all 0.2s linear;
+}
+
+.dropdownContent hr {
+    margin: 0 -10px 0 -10px;
+}
+
+.dropdownContent p{
+    margin: 0;
+    margin-left: -10px;
+    width: 100%;
+    padding: 10px;
+    transition: all 0.2s linear;
+    opacity: 0;
+}
+
+.dropdownContent p:hover{
+    background-color: gray;
+    color: white;
+}
+
+.dropdownUsername{
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.dropdown:hover .dropdownContent{
+    visibility: visible;
+    height: 170px;
+    position: absolute;
+    z-index: 80;
+}
+
+.dropdown:hover .dropdownContent p{
+    opacity: 1;
+}
+
+
+
+

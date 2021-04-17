@@ -1,0 +1,83 @@
+.Button{
+    background-color: #01b1b1;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 7px 10px 7px 10px;
+    font-size: 15px;
+}
+
+.Button:hover{
+    animation: tilt 1.4s;
+    cursor: pointer;
+}
+
+.Button:disabled{
+    background-color: gray;
+    cursor: not-allowed;
+}
+
+.Button:disabled:hover{
+    animation: none;
+}
+
+@keyframes tilt{
+    0%{
+        transform: rotate(-4deg);
+        background: #01b1b1;
+    }
+    50%{
+        transform: rotate(4deg);
+        background:  #007979;
+    }
+    100%{    
+        transform: rotate(-4deg);
+        background: #01b1b1;
+    }
+}
+
+.Cancel{
+    background-color: #b83a3a;
+}
+
+.Cancel:hover{
+    animation: tiltCan 1.4s;
+}
+
+@keyframes tiltCan{
+    0%{
+        transform: rotate(-4deg);
+        background: #b83a3a;
+    }
+    50%{
+        transform: rotate(4deg);
+        background:  #571313;
+    }
+    100%{    
+        transform: rotate(-4deg);
+        background: #b83a3a;
+    }
+}
+
+.Continue{
+    background-color: #44a020;
+}
+
+.Continue:hover{
+    animation: tiltCon 1.4s;
+}
+
+@keyframes tiltCon{
+    0%{
+        transform: rotate(-4deg);
+        background: #44a020;
+    }
+    50%{
+        transform: rotate(4deg);
+        background:  #184108;
+    }
+    100%{    
+        transform: rotate(-4deg);
+        background: #44a020;
+    }
+}

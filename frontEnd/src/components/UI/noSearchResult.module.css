@@ -1,0 +1,14 @@
+.container{
+    display: flex;
+    justify-content: center;
+    margin: 30px;
+}
+.text{
+    font-size: 100px;
+    color: white;
+    margin: 20px;
+}
+.BlogSpotBot{
+    width: 550px;
+    height: 450px;
+}

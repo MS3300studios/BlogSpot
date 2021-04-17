@@ -1,0 +1,177 @@
+.LoginContainer{
+    background-color: #82ca66;
+    width: 500px;
+    height: 550px;
+    /* display: flex;
+    vertical-align: middle;
+    justify-content: center; */
+    margin: 0 auto;
+    margin-top: 10%;
+    position: relative;
+    transition: 0.3s ease-in all;
+}
+
+.LoginContainer:hover{
+  box-shadow: 10px 10px 29px -1px rgba(0,0,0,0.55);
+}
+
+.Form{
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  position: inherit;
+}
+
+.Form h1{
+  position: absolute;
+  top: 0px;
+  left: 195px;
+}
+
+.Form label{
+  margin: 10px;
+  color: teal;
+  font-weight: 600;
+  font-size: 30px;
+}
+
+.Form .labelEmail{
+  position: absolute;
+  top: 110px;
+  left: 30px;
+}
+
+.Form .labelPassword{
+  position: absolute;
+  top: 190px;
+  left: 30px;
+}
+
+.Form input{
+  margin: 10px;
+  padding: 5px;
+  border: thick;
+  transition: all 0.3s ease-in;
+  min-width: 250px;
+  min-height: 35px;
+}
+
+.Form input:focus{
+  -webkit-box-shadow: -2px -1px 20px 13px rgba(255,255,255,0.6); 
+  box-shadow: -2px -1px 20px 13px rgba(255,255,255,0.6);
+}
+
+.Form .inputEmail{
+  position: absolute;
+  top: 111px;
+  left: 185px;
+}
+
+.Form .inputPassword{
+  position: absolute;
+  top: 190px;
+  left: 185px;
+}
+
+.Form .inputKeepLoggedIn:focus{
+  box-shadow: none;
+}
+
+.buttonContainer{
+  position: absolute;
+  top: 365px;
+  left: 210px;
+}
+
+.labelNoAccount{
+  position: absolute;
+  top: 428px;
+  left: 43px;
+  color: teal;
+  font-weight: 500;
+  font-size: 25px;
+}
+
+.registerLink{
+  position: absolute;
+  top: 470px;
+  left: 43px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 20px;
+  border-bottom: solid 2px;
+  border-bottom-color: #006def;
+  color: #006def;
+}
+
+.keepLoggedinP{
+  position: absolute;
+  top: 268px;
+  left: 43px;
+  color: teal;
+  font-weight: 500;
+  font-size: 15px;
+}
+
+/* code taken from W3 schools website */
+.switch {
+  position: absolute;
+  top: 247px;
+  left: 170px;
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}

@@ -1,0 +1,216 @@
+body{
+    background-color: seagreen !important;
+}
+.cardContainer_gate{
+    border: none;
+    border-left: solid 3px black;
+    margin-top: 150px;
+    margin-left: 120px;
+    width: 1500px;
+    height: 700px;
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    grid-template-columns: repeat(auto-fill,minmax(420px, 0fr));
+}
+.gateWelcomeH1{
+    position: absolute;
+    top: 150px;
+    left: 1000px;
+    font-size: 40px;
+}
+.flexCenter{
+    display: flex;
+    justify-content: center;
+}
+.card{
+    text-decoration: none;
+    color: black;
+    background-color: #82ca66;
+    border-radius: 4px;
+    background-color: .82ca66 !important;
+    width: 280px;
+    height: 350px;
+    animation: in 1s;
+    margin: 5px;
+    padding: 50px;
+}
+.card h1{
+    font-size: 50px;
+    /* font-family: Arial, Helvetica, sans-serif; */
+}
+.card button{
+    margin-top: 105px;
+    font-size: 25px;
+}
+
+.contentWrapper{
+    height: 70px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.imgsContainer{
+    position: relative;
+    margin-top: 140px;
+    margin-left: 50px;
+    width: 1050px;
+    height: 650px;
+    /* animation: 0.7s ease-out 0s 1 slideInFromBelow; */
+}
+.manLeft{
+    top: 190px;
+    left: 5px;
+    position: absolute;
+    width: 270px;
+    height: 450px;
+    animation: slideInFromBelow1 2.5s ease-out 0s 1;
+}
+.manRight{
+    top: 100px;
+    left: 420px;
+    position: absolute;
+    width: 286px;
+    height: 450px;
+    animation: slideInFromBelow2 1.5s ease-out 0s 1;
+}
+.speechLeft{
+    width: 190px;
+    height: 125px;
+    position: absolute;
+    top: 190px;
+    left: 195px;
+    animation: tiltSpeech 1s ease-in 2s 1;
+    opacity: 0;
+    animation-fill-mode: forwards;
+}
+.speechRight{
+    width: 295px;
+    height: 190px;
+    position: absolute;
+    top: 5px;
+    left: 210px;
+    animation: tiltSpeech 1s ease-in 1s 1;
+    opacity: 0;
+    animation-fill-mode: forwards;
+}
+.BlogSpotLogo{
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    top: 42px;
+    left: 270px;
+    animation: tiltLogo 1.5s ease-out 2.5s 1;
+    opacity: 0;
+    animation-fill-mode: forwards;
+}
+
+@keyframes slideInFromBelow1{
+    0% {
+    transform: translateY(25%);
+    }
+    100% {
+    transform: translateY(0);
+    }
+}
+@keyframes slideInFromBelow2{
+    0% {
+    transform: translateY(35%);
+    }
+    100% {
+    transform: translateY(0);
+    }
+}
+@keyframes tiltSpeech{
+    0%{
+        opacity: 0;
+        transform: rotate(0deg);
+    }
+    50%{
+        opacity: 0.5;
+        transform: rotate(10deg);
+    }
+    75%{    
+        opacity: 0.75;
+        transform: rotate(-10deg);
+    }
+    100%{
+        opacity: 1;
+        transform: rotate(0deg);
+    }
+}
+@keyframes tiltLogo{
+    0%{
+        opacity: 0;
+        transform: rotate(0deg);
+    }
+    50%{
+        opacity: 0.5;
+        transform: rotate(360deg);
+    }
+    /* 75%{    
+        opacity: 0.75;
+        transform: rotate(-180deg);
+    } */
+    100%{
+        opacity: 1;
+        transform: rotate(0deg);
+    }
+}
+/* ========================== */
+button{
+    background-color: .01b1b1;
+    color: white !important;
+    border: none;
+    border-radius: 4px !important;
+    padding: 3px 5px 3px 5px;
+}
+button:hover{
+    animation: tilt 2s;
+}
+@keyframes tilt{
+    0%{
+        transform: rotate(0deg);
+        background: .01b1b1;
+    }
+    50%{
+        transform: rotate(4deg);
+        background:  .007979;
+    }
+    75%{    
+        transform: rotate(-4deg);
+        background: .017575;
+    }
+    100%{
+        transform: rotate(0deg);
+        background: .01b1b1;
+    }
+}
+
+.card .buttons{
+    margin-top: 10px;
+}
+.card:hover{
+    animation: out 1s;
+    box-shadow: 10px 10px 29px -1px rgba(0,0,0,0.55);
+}
+@keyframes out{
+    from {box-shadow: none;}
+    to {box-shadow: 10px 10px 29px -1px rgba(0,0,0,0.55);}
+}
+@keyframes in{
+    from {box-shadow: 10px 10px 29px -1px rgba(0,0,0,0.55);}
+    to {box-shadow: none;}
+}
+
+.roboto{
+    font-family: 'Roboto', sans-serif;
+}
+
+@media screen and (max-width: 1572px){
+    .gateWelcomeH1{
+        display: none;
+    }
+    .cardContainer_gate{
+        border: none;
+    }
+}

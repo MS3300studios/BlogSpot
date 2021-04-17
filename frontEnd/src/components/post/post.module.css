@@ -1,0 +1,48 @@
+.Card{
+    padding: 8px;
+    text-decoration: none;
+    border-radius: 4px;
+    background-color: #82ca66;
+    width: 320px;
+    height: 300px;
+    margin: 5px;
+    transition: 0.3s;
+    text-overflow: hidden;
+    position: relative;
+    color: black;
+}
+
+.Card:hover{
+    box-shadow: 10px 10px 29px -1px rgba(0,0,0,0.55);
+}
+
+.Card h1 {
+    margin: 0px;
+    font-size: 30px;
+}
+
+.Card h2 {
+    font-size: 20px;
+}
+
+.contentWrapper{
+    height: 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.contentWrapperSmaller{
+    max-height: 45px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.btnWrapper{
+    position: absolute;
+    top: 250px;
+    right: 4px;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
