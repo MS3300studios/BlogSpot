@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import classes from './login.module.css';
-// import connect from react-redux -> get the option to save data in store (not get data from store)
+import * as actionTypes from '../../../store/actions';
+import {connect} from 'react-redux'
 import Button from '../../../components/UI/button';
 
 class Login extends Component {
@@ -13,7 +14,10 @@ class Login extends Component {
             password: null,
             readyForSubmission: false
         }
+
         this.loginHandler.bind(this);
+        this.onChangeHandler.bind(this);
+        this.flash.bind(this);
     }
 
     onChangeHandler = (e, type) => {
@@ -29,7 +33,7 @@ class Login extends Component {
         }
         if(this.state.email!=="" && this.state.password!==""){
             this.setState({readyForSubmission: true});
-        }
+         }
         else{
             this.setState({readyForSubmission: false});
         }
@@ -41,8 +45,32 @@ class Login extends Component {
             password: this.state.password
         }
         axios.post('http://localhost:3001/users/register', loginData)
-            // .then() -> store the token on redux (it will be used to make requests later in the app)
+            .then(res => {
+                if(res.status===200){
+                    console.log(res);
+                    this.props.redux_store_token(res.token);
+                }
+                else{
+                    // this.flash("An error ocurred, try again")
+                }
+            })
 
+    }
+
+    flash = (message) => {
+        this.setState({flashMessage: message});
+        
+        setTimeout(()=>{
+            this.setState({flashNotClosed: false});
+        }, 2000)
+
+        setTimeout(()=>{
+            this.setState({flashMessage: ""});
+        }, 3000);
+    
+        setTimeout(()=>{
+            this.setState({flashNotClosed: true});
+        }, 3000);
     }
 
     render() { 
@@ -70,4 +98,11 @@ class Login extends Component {
     }
 }
  
-export default Login;
+
+const mapDispatchToProps = dispatch => {
+    return {
+        redux_store_token: (token) => dispatch({type: actionTypes.STORE_TOKEN, data: token}),
+    }
+}
+
+export default connect(null, mapDispatchToProps)(Login);

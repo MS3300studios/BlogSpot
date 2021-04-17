@@ -3,9 +3,9 @@ const db = require("../db");
 const schema = new db.Schema({
     name: {type: String, require: true},
     surname: {type: String, require: true},
-    email: {type: String, require: true},
+    email: {type: String, require: true, unique: true},
     password: {type: String, require: true},
-    nickname: {type: String, require: true},
+    nickname: {type: String, require: true, unique: true},
     
   },
   {

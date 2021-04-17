@@ -2,11 +2,11 @@ POST http://localhost:3001/users/register
 Content-Type: application/json
 
 {
-    "name": "Mukesh",
-    "surname": "Kuppa",
-    "email": "mukeshkuppa@test.com",
-    "password": "mukeshkuppa",
-    "nickname": "BestScammerEUW"
+    "name": "test",
+    "surname": "test",
+    "email": "3testtest@test.com",
+    "password": "testpass",
+    "nickname": "2testtest"
 }
 
 ###

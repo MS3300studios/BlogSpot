@@ -1,12 +1,13 @@
 import * as actionTypes from './actions';
-import axios from '../axios-setup';
+import axios from 'axios';
 
 const initialState = {
     posts: [],
-    id: ""
+    id: "",
+    token: ""
 };
 
-axios.get('./posts.json')
+axios.get('/blogs')
 .then(res => {
     for(let key in res.data) {
         initialState.posts.push({
@@ -38,9 +39,14 @@ const reducer = ( state = initialState, action ) => {
                 ...state,
                 posts: state.posts.filter(post => post.id !== action.id)
             };
+        case actionTypes.STORE_TOKEN:
+            return {
+                ...state,
+                token: action.token
+            };
         case actionTypes.REFRESH_POSTS:
             let newPosts = [];
-            axios.get('./posts.json')
+            axios.get('/blogs')
                 .then(res => {
                     for(let key in res.data) {
                         newPosts.push({

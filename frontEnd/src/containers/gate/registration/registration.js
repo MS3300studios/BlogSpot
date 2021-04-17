@@ -94,27 +94,26 @@ class Registration extends Component {
             }
             axios.post('http://localhost:3001/users/register', userData)
                     .then((res)=>{
-                        console.log(res.status)
-                        if(res.data==="both"){
-                            this.setState({readyForSubmission: false});
-                            this.flash("email and nickname already taken");
+                        console.log(res.data);
+                        if(Object.keys(res.data).includes("error")){
+                            let taken = Object.keys(res.data.error.keyValue)[0]
+                            if(taken==="email"){
+                                this.setState({readyForSubmission: false});
+                                this.flash("email already taken");
+                            }
+                            else if(taken==="nickname"){
+                                this.setState({readyForSubmission: false});
+                                this.flash("nickname already taken");
+                            }
                         }
-                        else if(res.data==="email"){
-                            this.setState({readyForSubmission: false});
-                            this.flash("email already taken");
-                        }
-                        else if(res.data==="nickname"){
-                            this.setState({readyForSubmission: false});
-                            this.flash("nickname already taken");
-                        }
-                        else if(res.status === 201){
-                            console.log('res status 201 in React, user registered with success')
+                        if(res.status === 201){
                             //redirect to login page
-                            console.log('i will redirect the user to login page now')
                             this.setState({redirectToLogin: true});
+                            console.log('im setting state');
                         }
                     }).catch( error => {
-                        if(error.response.status === 413){
+                        console.log(error)
+                        if(error.status === 413){
                             this.setState({readyForSubmission: false});
                             this.flash("Image size too big, maximum image size is 10mb");
                         }
@@ -152,6 +151,7 @@ class Registration extends Component {
             flash = <Flash close>{this.state.flashMessage}</Flash>
         }
 
+        console.log(this.state.redirectToLogin);
 
         return (
            <React.Fragment>
@@ -180,7 +180,7 @@ class Registration extends Component {
                 </form>
                 <label className={classes.labelLogin}>Don't have an account yet?</label>
                 <Link to="/login" className={classes.loginLink}>Log in here</Link>
-                {this.state.redirectToLogin ? <Redirect to="/login"/> : null}
+                {this.state.redirectToLogin ? <Redirect to="/login" /> : null}
             </div> 
             {flash}
            </React.Fragment>

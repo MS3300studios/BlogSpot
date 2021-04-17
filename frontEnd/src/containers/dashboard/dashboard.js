@@ -13,7 +13,7 @@ import Flash from '../../components/UI/flash';
 import Button from '../../components/UI/button'; //for debug only
 import SearchBar from '../../components/UI/searchBar';
 import NoSearchResult from '../../components/UI/noSearchResult';
-import axios from '../../axios-setup';
+import axios from 'axios';
 
 class Dashboard extends Component {
     constructor(props){
@@ -104,9 +104,9 @@ class Dashboard extends Component {
     getPosts = () => {
         axios({
             method: 'get',
-            url: 'http://localhost:3001/blogs/new',
+            url: 'http://localhost:3001/blogs',
             params: {},
-            headers: {'Authorization': 'token'}
+            headers: {'Authorization': this.props.token}
           })
             .then(res => {
                 this.setState({loading: false});
@@ -201,7 +201,7 @@ class Dashboard extends Component {
         if(this.state.newPostForm.title.length > 0 && this.state.newPostForm.content.length > 0){
             this.setState({addingPost: false});
 
-            let path = '/posts.json';
+            let path = '/blogs';
             let copy = {...this.state.newPostForm};
             let date = formattedCurrentDate(true);
             let content = {...copy, dateStarted: date, latestEdit: date};
@@ -348,6 +348,7 @@ class Dashboard extends Component {
 const mapStateToProps = state => {
     return {
         posts: state.posts,
+        token: state.token
     };
 }
 

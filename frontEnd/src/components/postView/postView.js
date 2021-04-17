@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import axios from '../../axios-setup';
+import axios from 'axios';
 
 import * as actionTypes from '../../store/actions';
 import classes from './postView.module.css';
