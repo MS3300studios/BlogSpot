@@ -94,7 +94,6 @@ class Registration extends Component {
             }
             axios.post('http://localhost:3001/users/register', userData)
                     .then((res)=>{
-                        console.log(res.data);
                         if(Object.keys(res.data).includes("error")){
                             let taken = Object.keys(res.data.error.keyValue)[0]
                             if(taken==="email"){
@@ -107,12 +106,10 @@ class Registration extends Component {
                             }
                         }
                         if(res.status === 201){
-                            //redirect to login page
                             this.setState({redirectToLogin: true});
-                            console.log('im setting state');
                         }
                     }).catch( error => {
-                        console.log(error)
+                        console.log(error);
                         if(error.status === 413){
                             this.setState({readyForSubmission: false});
                             this.flash("Image size too big, maximum image size is 10mb");
@@ -150,9 +147,7 @@ class Registration extends Component {
         else if(this.state.flashMessage && this.state.flashNotClosed === false){
             flash = <Flash close>{this.state.flashMessage}</Flash>
         }
-
-        console.log(this.state.redirectToLogin);
-
+        
         return (
            <React.Fragment>
             <div className={classes.RegistrationContainer}>

@@ -7,8 +7,8 @@ const cors = require('cors');
 const User = require('../models/user');
 
 router.use(cors());
-router.use(express.json({limit: '10mb'}))
-router.use(express.urlencoded({limit: '10mb', extended: true}))
+router.use(express.json({limit: '10mb'}));
+router.use(express.urlencoded({limit: '10mb', extended: true}));
 
 
 router.post('/users/register', (req, res) => {
@@ -48,7 +48,7 @@ router.delete('/users/delete/:userId', (req, res) => {
             console.log(err);
             res.status(500).json({
                 error: err
-            })
+            });
         });
 });
 
@@ -87,7 +87,7 @@ router.post('/users/login', (req, res) => {
             console.log(err);
             res.status(500).json({
                 error: err
-            })
+            });
         });
 });
 

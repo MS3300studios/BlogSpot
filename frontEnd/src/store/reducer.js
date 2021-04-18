@@ -8,7 +8,7 @@ const initialState = {
 };
 
 
-if(this.state.token!== " ")
+if(initialState.token!== " ")
 axios.get('/blogs')
 .then(res => {
     for(let key in res.data) {
@@ -20,7 +20,7 @@ axios.get('/blogs')
 });
 
 
-console.log("initial state posts after axios.get\n",initialState.posts);
+// console.log("initial state posts after axios.get\n",initialState.posts);
 
 
 const reducer = ( state = initialState, action ) => {

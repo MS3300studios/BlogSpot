@@ -39,13 +39,15 @@ class Login extends Component {
         }
     }
 
-    loginHandler = () => {
+    loginHandler = (e) => {
+        e.prevendDefault();
         const loginData = {
             email: this.state.email,
             password: this.state.password
         }
         axios.post('http://localhost:3001/users/login', loginData)
             .then(res => {
+                console.log(res)
                 if(res.status===200){
                     console.log(res);
                     this.props.redux_store_token(res.token);
@@ -89,7 +91,7 @@ class Login extends Component {
                         <span className={[classes.slider,classes.round].join(" ")}></span>
                     </label>
                     <div className={classes.buttonContainer}>
-                        <Button disabled={!this.state.readyForSubmission} clicked={this.loginHandler}>Log In</Button>
+                        <Button disabled={!this.state.readyForSubmission} clicked={(e) => this.loginHandler(e)}>Log In</Button>
                     </div>
                 </form>
                 <label className={classes.labelNoAccount}>Don't have an account yet?</label>
