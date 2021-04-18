@@ -5,6 +5,7 @@ import classes from './login.module.css';
 import * as actionTypes from '../../../store/actions';
 import {connect} from 'react-redux'
 import Button from '../../../components/UI/button';
+import Flash from '../../../components/UI/flash';
 
 class Login extends Component {
     constructor(props){
@@ -12,13 +13,22 @@ class Login extends Component {
         this.state = {
             email: null,
             password: null,
-            readyForSubmission: false
+            readyForSubmission: false,
+            keepLoggedIn: false,
+            flashMessage: "",
+            flashNotClosed: true
         }
 
         this.loginHandler.bind(this);
         this.onChangeHandler.bind(this);
+        this.keepLoggedHandler.bind(this);
         this.flash.bind(this);
     }
+
+    keepLoggedHandler = () => {
+        let keepLoggedIn = !this.state.keepLoggedIn;
+        this.setState({keepLoggedIn: keepLoggedIn});
+    } 
 
     onChangeHandler = (e, type) => {
         switch (type) {
@@ -40,27 +50,36 @@ class Login extends Component {
     }
 
     loginHandler = (e) => {
-        e.prevendDefault();
+        e.preventDefault();
         const loginData = {
             email: this.state.email,
             password: this.state.password
         }
+
         axios.post('http://localhost:3001/users/login', loginData)
             .then(res => {
-                console.log(res)
                 if(res.status===200){
-                    console.log(res);
-                    this.props.redux_store_token(res.token);
-                    console.log('token stored?')
+                    this.props.redux_store_token(res.data.token); //saving to redux store 
+                    if(this.state.keepLoggedIn){
+                        localStorage.setItem('token', res.data.token);
+                    }
+                    else{
+                        sessionStorage.setItem('token', res.data.token);
+                    }
                 }
                 else{
-                    this.flash("An error ocurred, try again")
+                    this.flash("An error ocurred, try again");
                 }
             })
+            .catch(error => {
+                console.log(error);
+                this.flash("wrong email or password");
+            });
 
     }
 
     flash = (message) => {
+        console.log(message)
         this.setState({flashMessage: message});
         
         setTimeout(()=>{
@@ -76,10 +95,18 @@ class Login extends Component {
         }, 3000);
     }
 
-    render() { 
+    render() {
+
+        let flash = null;
+        if(this.state.flashMessage && this.state.flashNotClosed){
+            flash = <Flash>{this.state.flashMessage}</Flash>
+        }
+        else if(this.state.flashMessage && this.state.flashNotClosed === false){
+            flash = <Flash close>{this.state.flashMessage}</Flash>
+        }
         return (
             <div className={classes.LoginContainer}>
-                <form className={classes.Form}>
+                <div className={classes.Form}>
                     <h1>Log in</h1>
                     <label className={classes.labelEmail}>email:</label>
                     <input onChange={(e) => {this.onChangeHandler(e, "email")}} type="email" placeholder="enter your email" className={classes.inputEmail} />
@@ -87,13 +114,14 @@ class Login extends Component {
                     <input onChange={(e) => {this.onChangeHandler(e, "password")}} type="password" placeholder="enter your password" className={classes.inputPassword} />
                     <p className={classes.keepLoggedinP}>Keep me logged in</p>
                     <label className={classes.switch}>
-                        <input type="checkbox" />
+                        <input type="checkbox" onChange={this.keepLoggedHandler} />
                         <span className={[classes.slider,classes.round].join(" ")}></span>
                     </label>
                     <div className={classes.buttonContainer}>
-                        <Button disabled={!this.state.readyForSubmission} clicked={(e) => this.loginHandler(e)}>Log In</Button>
+                        <Button disabled={!this.state.readyForSubmission} clicked={this.loginHandler}>Log In</Button>
                     </div>
-                </form>
+                {flash}
+                </div>
                 <label className={classes.labelNoAccount}>Don't have an account yet?</label>
                 <Link to="/register" className={classes.registerLink}>Register here</Link>
             </div>
