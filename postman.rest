@@ -22,12 +22,12 @@ Content-Type: application/json
 ###
 
 POST http://localhost:3001/blogs/new
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5pY2tzdHJ1c3NAdGVzdC5jb20iLCJ1c2VySWQiOiI2MDc5ZmYzZDQwNDJhOTE2NmMzZjNlMTciLCJpYXQiOjE2MTg2MDgwNDIsImV4cCI6MTYxODYxMTY0Mn0.4kI_ONgwyS3yvMhDoWjU0ybJr4i7xP0Hd1-pYluxS4A
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAdGVzdC5wbCIsInVzZXJJZCI6IjYwN2JmMGJiNDBkNTgwNjIwMDQ5ZmM1MCIsImlhdCI6MTYxODc1MjczMCwiZXhwIjoxNjE4NzU2MzMwfQ.KyAdAeZAxur6RsGN6WBgoeV95HBC-hpwDE88ZJIzsbE
 Content-Type: application/json
 
 {
-    "title": "second post",
-    "content": "second post content lorem ipsum dolor sit amet"
+    "title": "renatka",
+    "content": "I can see this!"
 }
 
 ###

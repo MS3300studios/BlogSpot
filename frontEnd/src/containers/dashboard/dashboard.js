@@ -102,23 +102,35 @@ class Dashboard extends Component {
     }
 
     getPosts = () => {
+        let token;
+        let local = localStorage.getItem('token');
+        let session = sessionStorage.getItem('token');
+        if(local !== null){
+            token = local;
+        }
+        else if(session !== null){
+            token = session;
+        }
         axios({
             method: 'get',
             url: 'http://localhost:3001/blogs',
             params: {},
-            headers: {'Authorization': this.props.token}
+            headers: {'Authorization': token}
           })
             .then(res => {
                 this.setState({loading: false});
                 const posts = [];
-                for(let key in res.data) {
+                for(let key in res.data.blogs) {
                     posts.push({
-                        ...res.data[key],
+                        ...res.data.blogs[key],
                         id: key
                     });
                 }
                 this.setState({posts: posts});
-            })     
+            })
+            .catch(error => {
+                console.log(error)
+            })   
 
         //why doesn't this work?
         // let posts = this.props.posts.map((post,index)=>{
