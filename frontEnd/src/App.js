@@ -18,10 +18,23 @@ class App extends Component {
   }
 
   componentDidMount(){
-    //check token or sth else if the user is logged in
-    // this.setState({isLoggedIn: true});
-    //if not logged in:
-
+    let session = sessionStorage.getItem('token');
+    let local = localStorage.getItem('token');
+    if(session!==null||local!==null){
+      this.setState({isLoggedIn: true}); //user gets access to dashboard and posts views
+    }
+    //check every 5 minutes if the token is still present
+    // setInterval(()=>{
+    //   console.log('checking if token still exists')
+    //   let session = sessionStorage.getItem('token');
+    //   let local = localStorage.getItem('token');
+    //   if(session!==null||local!==null){
+    //     this.setState({isLoggedIn: true}); //user gets access to dashboard and posts views
+    //   }
+    //   else{
+    //     this.setState({isLoggedIn: false});
+    //   }
+    // },2000);
   }
 
   render() {

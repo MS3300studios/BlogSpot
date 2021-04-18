@@ -66,6 +66,7 @@ class Login extends Component {
                     else{
                         sessionStorage.setItem('token', res.data.token);
                     }
+                    window.location.reload();
                 }
                 else{
                     this.flash("An error ocurred, try again");
