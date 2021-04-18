@@ -8,7 +8,7 @@ const User = require('../models/user');
 
 router.use(cors());
 router.use(express.json({limit: '10mb'}))
-router.use(express.urlencoded({limit: '10mb'}))
+router.use(express.urlencoded({limit: '10mb', extended: true}))
 
 
 router.post('/users/register', (req, res) => {

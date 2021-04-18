@@ -4,9 +4,11 @@ import axios from 'axios';
 const initialState = {
     posts: [],
     id: "",
-    token: ""
+    token: " "
 };
 
+
+if(this.state.token!== " ")
 axios.get('/blogs')
 .then(res => {
     for(let key in res.data) {
@@ -17,7 +19,9 @@ axios.get('/blogs')
     }
 });
 
+
 console.log("initial state posts after axios.get\n",initialState.posts);
+
 
 const reducer = ( state = initialState, action ) => {
     switch ( action.type ) {

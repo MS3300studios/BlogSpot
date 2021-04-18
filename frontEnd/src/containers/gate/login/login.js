@@ -44,14 +44,15 @@ class Login extends Component {
             email: this.state.email,
             password: this.state.password
         }
-        axios.post('http://localhost:3001/users/register', loginData)
+        axios.post('http://localhost:3001/users/login', loginData)
             .then(res => {
                 if(res.status===200){
                     console.log(res);
                     this.props.redux_store_token(res.token);
+                    console.log('token stored?')
                 }
                 else{
-                    // this.flash("An error ocurred, try again")
+                    this.flash("An error ocurred, try again")
                 }
             })
 
@@ -79,16 +80,16 @@ class Login extends Component {
                 <form className={classes.Form}>
                     <h1>Log in</h1>
                     <label className={classes.labelEmail}>email:</label>
-                    <input type="email" placeholder="enter your email" className={classes.inputEmail} />
+                    <input onChange={(e) => {this.onChangeHandler(e, "email")}} type="email" placeholder="enter your email" className={classes.inputEmail} />
                     <label className={classes.labelPassword}>Password:</label>
-                    <input type="password" placeholder="enter your password" className={classes.inputPassword} />
+                    <input onChange={(e) => {this.onChangeHandler(e, "password")}} type="password" placeholder="enter your password" className={classes.inputPassword} />
                     <p className={classes.keepLoggedinP}>Keep me logged in</p>
                     <label className={classes.switch}>
                         <input type="checkbox" />
                         <span className={[classes.slider,classes.round].join(" ")}></span>
                     </label>
                     <div className={classes.buttonContainer}>
-                        <Button disabled={this.state.readyForSubmission} clicked={this.loginHandler}>Log In</Button>
+                        <Button disabled={!this.state.readyForSubmission} clicked={this.loginHandler}>Log In</Button>
                     </div>
                 </form>
                 <label className={classes.labelNoAccount}>Don't have an account yet?</label>
