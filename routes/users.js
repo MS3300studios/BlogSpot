@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const secret = require('../secret.json');
 const cors = require('cors');
 const User = require('../models/user');
+const auth = require('../middleware/authorization');
 
 router.use(cors());
 router.use(express.json({limit: '10mb'}));
@@ -57,7 +58,7 @@ router.post('/users/login', (req, res) => {
         .exec()
         .then(users => {
             if(users.length < 1){
-                return res.sendStatus(401);
+                return res.sendStatus(401); //didn't find any users
             }
             bcrypt.compare(req.body.password, users[0].password, (err, isEqual) => {
                 if(err) return res.sendStatus(401);
@@ -72,10 +73,13 @@ router.post('/users/login', (req, res) => {
                             expiresIn: "1h"
                         }
                     );
+                    
+                    let userData = JSON.stringify(users[0]);
 
                     return res.status(200).json({
                         message: 'Authorization successful',
-                        token: token
+                        token: token,
+                        userData: userData
                     });
                     
                 }
@@ -90,6 +94,21 @@ router.post('/users/login', (req, res) => {
             });
         });
 });
+
+router.post('/users/getUser/:userId', auth, (req, res) => {
+    User.findById(req.params.userId)
+        .exec()
+        .then(user => {
+            console.log(user)
+            res.json({
+                user: user
+            });
+        })
+        .catch(error => {
+            console.log('get user error: ', error);
+            res.sendStatus(500);
+        })
+})
 
 
 module.exports = router;

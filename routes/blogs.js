@@ -33,9 +33,35 @@ router.get('/blogs', auth, (req, res) => {
         })
         .catch(err => {
             return res.status(500).json({
+                message: 'user not found',
                 error: err
             })
         });
 });
+
+router.get('/blogs/delete/:blogId', auth, (req, res) => {
+    Blog.deleteOne(req.params.blogId)
+        .exec()
+        .then((response => {
+            res.sendStatus(200);
+        }))
+        .catch(err => {
+            console.log("deleting error: ", err);
+            res.sendStatus(500);
+        })
+})
+
+router.get('/blogs/edit/:blogId', auth, (req, res) => {
+    Blog.findByIdAndUpdate(req.params.blogId)
+    .exec()
+        .then((response => {
+            console.log(response);
+            res.sendStatus(200);
+        }))
+        .catch(err => {
+            console.log("deleting error: ", err);
+            res.sendStatus(500);
+        })
+})
 
 module.exports = router;

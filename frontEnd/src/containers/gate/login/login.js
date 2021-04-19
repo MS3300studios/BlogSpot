@@ -49,7 +49,7 @@ class Login extends Component {
         }
     }
 
-    loginHandler = (e) => {
+    loginHandler = (e) => {     
         e.preventDefault();
         const loginData = {
             email: this.state.email,
@@ -62,9 +62,11 @@ class Login extends Component {
                     this.props.redux_store_token(res.data.token); //saving to redux store 
                     if(this.state.keepLoggedIn){
                         localStorage.setItem('token', res.data.token);
+                        localStorage.setItem('userData', res.data.userData);
                     }
                     else{
                         sessionStorage.setItem('token', res.data.token);
+                        sessionStorage.setItem('userData', res.data.userData);
                     }
                     window.location.reload();
                 }

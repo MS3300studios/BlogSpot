@@ -36,7 +36,9 @@ class Dashboard extends Component {
             editId: null,
             filterIn: "none",
             filterBy: "none",
-            posts: []
+            posts: [],
+            currentUser: {},
+            token: ""
         }
 
         
@@ -52,10 +54,26 @@ class Dashboard extends Component {
         this.contentChangedHandler.bind(this);
         this.filterPosts.bind(this);
         this.filterSearchHandler.bind(this);
+        this.getToken.bind(this);
     }
 
     componentDidMount(){
+        //this order has to be maintained
+        this.getToken();
         this.getPosts();
+    }
+
+    getToken = () => {
+        let token;
+        let local = localStorage.getItem('token');
+        let session = sessionStorage.getItem('token');
+        if(local !== null){
+            token = local;
+        }
+        else if(session !== null){
+            token = session;
+        }
+        this.setState({token: token});
     }
 
     filterSearchHandler = (searchIn, content) => {
@@ -89,16 +107,17 @@ class Dashboard extends Component {
     }
 
     deletePost = (id) => {
-        axios.delete(`./posts/${id}.json`)
-        .then((res)=>{
-            if(res.status===200){
-                this.flash("Post deleted successfully!");
-                this.getPosts();
-            }
-            else{
-                this.flash("Network error, try again.");
-            }
-        })
+        console.log('id to be deleted: ', id)
+        // axios.delete(`./posts/${id}.json`)
+        // .then((res)=>{
+        //     if(res.status===200){
+        //         this.flash("Post deleted successfully!");
+        //         this.getPosts();
+        //     }
+        //     else{
+        //         this.flash("Network error, try again.");
+        //     }
+        // })
     }
 
     getPosts = () => {
@@ -110,17 +129,18 @@ class Dashboard extends Component {
         }
         else if(session !== null){
             token = session;
-        }
+        } 
         axios({
             method: 'get',
             url: 'http://localhost:3001/blogs',
             params: {},
             headers: {'Authorization': token}
           })
-            .then(res => {
+            .then(async (res) => {
                 this.setState({loading: false});
                 const posts = [];
                 for(let key in res.data.blogs) {
+
                     posts.push({
                         ...res.data.blogs[key],
                         id: key
@@ -130,18 +150,7 @@ class Dashboard extends Component {
             })
             .catch(error => {
                 console.log(error)
-            })   
-
-        //why doesn't this work?
-        // let posts = this.props.posts.map((post,index)=>{
-        //     return(
-        //         {
-        //             ...post,
-        //             key: index
-        //         }
-        //     )
-        // })      
-        // this.setState({posts: posts, loading: false}); 
+            })  
     }
 
     showPostForm = () => {
@@ -244,22 +253,39 @@ class Dashboard extends Component {
     filterPosts = (filterIn, filterBy) => {
         let posts = null;
         let postsRdy = null;
+
+        let userData;
+        let local = localStorage.getItem('userData');
+        let session = sessionStorage.getItem('userData');
+        if(local !== null){
+            userData = JSON.parse(local);
+        }
+        else if(session !== null){
+            userData = JSON.parse(session);
+        } 
+        
         //default filter: no filter applied
         if(filterIn==="none" || filterBy==="none"){
-            postsRdy = this.state.posts.map((post, index)=>(
-                <Post 
-                    title={post.title}
-                    author={post.author}
-                    content={post.content}
-                    id={post.id}
-                    key={index}
-                    delete={this.deletePost}
-                    edit={this.editPost}
-                />
-            ));
+            postsRdy = this.state.posts.map((post, index)=>{
+                console.log(post)
+                return ( 
+                    <Post 
+                        title={post.title}
+                        author={userData.nickname}
+                        content={post.content}
+                        id={post.id}
+                        key={index}
+                        delete={this.deletePost}
+                        edit={this.editPost}
+                    />
+                )
+            }
+            );
         }
         else{
-            posts = this.state.posts.map((post, index)=>(
+            posts = this.state.posts.map((post, index)=>{
+                console.log(post)
+                return (
                     <Post
                         titleClickedHandler={this.props.addReduxId} 
                         title={post.title}
@@ -270,7 +296,7 @@ class Dashboard extends Component {
                         delete={this.deletePost}
                         edit={this.editPost}
                     />        
-                )
+                )}
             );
             if(filterIn==="title"){
                 //eslint-disable-next-line
