@@ -17,6 +17,17 @@ import axios from 'axios';
 
 class Dashboard extends Component {
     constructor(props){
+
+        let token;
+        let local = localStorage.getItem('token');
+        let session = sessionStorage.getItem('token');
+        if(local !== null){
+            token = local;
+        }
+        else if(session !== null){
+            token = session;
+        }
+
         super(props);
         this.state = {
             loading: true,
@@ -38,7 +49,7 @@ class Dashboard extends Component {
             filterBy: "none",
             posts: [],
             currentUser: {},
-            token: ""
+            token: token
         }
 
         
@@ -54,26 +65,10 @@ class Dashboard extends Component {
         this.contentChangedHandler.bind(this);
         this.filterPosts.bind(this);
         this.filterSearchHandler.bind(this);
-        this.getToken.bind(this);
     }
 
     componentDidMount(){
-        //this order has to be maintained
-        this.getToken();
         this.getPosts();
-    }
-
-    getToken = () => {
-        let token;
-        let local = localStorage.getItem('token');
-        let session = sessionStorage.getItem('token');
-        if(local !== null){
-            token = local;
-        }
-        else if(session !== null){
-            token = session;
-        }
-        this.setState({token: token});
     }
 
     filterSearchHandler = (searchIn, content) => {
@@ -81,7 +76,6 @@ class Dashboard extends Component {
     }
 
     findPostById = (id) => {
-        //returns a length=1 array
         // eslint-disable-next-line
         let post = this.state.posts.filter((post)=>{
             if(post.id === id) return post;
@@ -121,36 +115,27 @@ class Dashboard extends Component {
     }
 
     getPosts = () => {
-        let token;
-        let local = localStorage.getItem('token');
-        let session = sessionStorage.getItem('token');
-        if(local !== null){
-            token = local;
-        }
-        else if(session !== null){
-            token = session;
-        } 
         axios({
             method: 'get',
             url: 'http://localhost:3001/blogs',
             params: {},
-            headers: {'Authorization': token}
-          })
-            .then(async (res) => {
-                this.setState({loading: false});
-                const posts = [];
-                for(let key in res.data.blogs) {
+            headers: {'Authorization': this.state.token}
+        })
+        .then(async (res) => {
+            this.setState({loading: false});
+            const posts = [];
+            for(let key in res.data.blogs) {
 
-                    posts.push({
-                        ...res.data.blogs[key],
-                        id: key
-                    });
-                }
-                this.setState({posts: posts});
-            })
-            .catch(error => {
-                console.log(error)
-            })  
+                posts.push({
+                    ...res.data.blogs[key],
+                    id: key
+                });
+            }
+            this.setState({posts: posts});
+        })
+        .catch(error => {
+            console.log(error)
+        })  
     }
 
     showPostForm = () => {
@@ -267,7 +252,6 @@ class Dashboard extends Component {
         //default filter: no filter applied
         if(filterIn==="none" || filterBy==="none"){
             postsRdy = this.state.posts.map((post, index)=>{
-                console.log(post)
                 return ( 
                     <Post 
                         title={post.title}

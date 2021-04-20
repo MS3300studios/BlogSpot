@@ -1,9 +1,13 @@
-import React from 'react';
+import React, {useState} from 'react';
+
+import logout from '../../logout';
 
 import classes from './userphoto.module.css';
 import photo from '../../assets/userPhoto/image.jfif'
 
-const userPhoto = (props) => {
+const UserPhoto = (props) => {
+    const [logOut, setlogOut] = useState(false);
+
     return ( 
         <div className={classes.dropdown}>
             <img alt="user" src={photo} className={classes.userPhoto}/>
@@ -12,10 +16,11 @@ const userPhoto = (props) => {
                 <hr />
                 <p>My Profile</p>
                 <p>Settings</p>
-                <p>Log Out</p>
+                <p onClick={() => setlogOut(true)}>Log Out</p>
+                {logOut ? logout() : null}
             </div>
         </div>
     );
 }
  
-export default userPhoto;
+export default UserPhoto;
