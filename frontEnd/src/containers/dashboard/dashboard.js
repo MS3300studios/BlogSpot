@@ -84,7 +84,8 @@ class Dashboard extends Component {
             author: post[0].author,
             content: post[0].content,
             title: post[0].title,
-            id: post[0].id
+            id: post[0].id,
+            dbId: post[0]._id
         }
         return postRdy;
     }
@@ -101,17 +102,23 @@ class Dashboard extends Component {
     }
 
     deletePost = (id) => {
-        console.log('id to be deleted: ', id)
-        // axios.delete(`./posts/${id}.json`)
-        // .then((res)=>{
-        //     if(res.status===200){
-        //         this.flash("Post deleted successfully!");
-        //         this.getPosts();
-        //     }
-        //     else{
-        //         this.flash("Network error, try again.");
-        //     }
-        // })
+        let post = this.findPostById(id);
+        let dbId = post.dbId;
+        axios({
+            method: 'get',
+            url: `http://localhost:3001/blogs/delete/${dbId}`,
+            headers: {'Authorization': this.state.token},
+        })
+        .then((res)=>{
+            if(res.status===200){
+                this.flash("Post deleted successfully!");
+                this.getPosts();
+                return;
+            }
+        })
+        .catch(error => {
+            this.flash(`${error}`);
+        })
     }
 
     getPosts = () => {
@@ -219,9 +226,7 @@ class Dashboard extends Component {
                 data: content
             })
             .then((res)=>{
-                console.log('this is the res', res)
                 if(res.status===201){
-                    console.log('res status 200')
                     this.flash(`Post ${flashMsg} successfully!`);
                     let clearPost = {...this.state.newPostForm};
                     clearPost.title = "";

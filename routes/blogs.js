@@ -41,7 +41,7 @@ router.get('/blogs', auth, (req, res) => {
 });
 
 router.get('/blogs/delete/:blogId', auth, (req, res) => {
-    Blog.deleteOne(req.params.blogId)
+    Blog.deleteOne({_id: req.params.blogId})
         .exec()
         .then((response => {
             res.sendStatus(200);
