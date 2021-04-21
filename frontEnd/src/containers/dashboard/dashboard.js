@@ -207,25 +207,31 @@ class Dashboard extends Component {
         if(this.state.newPostForm.title.length > 0 && this.state.newPostForm.content.length > 0){
             this.setState({addingPost: false});
 
-            let path = '/blogs';
             let copy = {...this.state.newPostForm};
             let date = formattedCurrentDate(true);
             let content = {...copy, dateStarted: date, latestEdit: date};
             let flashMsg = "sent";
 
-            axios.post(path, content)
+            axios({
+                method: 'post',
+                url: 'http://localhost:3001/blogs/new',
+                headers: {'Authorization': this.state.token},
+                data: content
+            })
             .then((res)=>{
-                if(res.status===200){
+                console.log('this is the res', res)
+                if(res.status===201){
+                    console.log('res status 200')
                     this.flash(`Post ${flashMsg} successfully!`);
                     let clearPost = {...this.state.newPostForm};
                     clearPost.title = "";
                     clearPost.content = "";
                     this.setState({newPostForm: clearPost});
                     this.getPosts();
-                    this.props.redux_refresh_posts();
+                    // this.props.redux_refresh_posts();
                 }
                 else{
-                    this.flash("Network error, try again.")
+                    this.flash("Network error, try again later.")
                 }
             })
         }

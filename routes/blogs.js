@@ -7,6 +7,7 @@ const auth = require('../middleware/authorization');
 router.use(express.json());
 
 router.post('/blogs/new', auth, (req, res) => {
+    console.log('I got a new blog!')
     const blog = new Blog({
         title: req.body.title,
         content: req.body.content,
