@@ -278,7 +278,7 @@ class Dashboard extends Component {
                     <Post
                         titleClickedHandler={this.props.addReduxId} 
                         title={post.title}
-                        author={post.author}
+                        author={userData.nickname}
                         content={post.content}
                         id={post._id}
                         key={index}
