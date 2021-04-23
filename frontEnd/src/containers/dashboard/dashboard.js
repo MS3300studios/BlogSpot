@@ -10,7 +10,6 @@ import addPostImage from '../../assets/gfx/add.png';
 import AddPostForm from '../../components/UI/addPostForm';
 import Backdrop from '../../components/UI/backdrop';
 import Flash from '../../components/UI/flash';
-import Button from '../../components/UI/button'; //for debug only
 import SearchBar from '../../components/UI/searchBar';
 import NoSearchResult from '../../components/UI/noSearchResult';
 import axios from 'axios';
@@ -369,7 +368,6 @@ class Dashboard extends Component {
                     clicked={this.filterSearchHandler}
                     resetFilter={()=>{this.setState({filterIn: "none", filterBy: "none"})}}
                 />
-                <Button clicked={()=>console.log(formattedCurrentDate(true))}>LOG</Button>
                 {posts}
                 {addPostActive}
                 {flash}                    

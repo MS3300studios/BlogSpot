@@ -47,6 +47,7 @@
 .dropdownContent p:hover{
     background-color: gray;
     color: white;
+    cursor: pointer;
 }
 
 .dropdownUsername{
