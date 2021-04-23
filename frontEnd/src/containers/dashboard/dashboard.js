@@ -7,7 +7,7 @@ import formattedCurrentDate from '../../formattedCurrentDate';
 import Spinner from '../../components/UI/spinner';
 import Post from '../../components/post/post';
 import addPostImage from '../../assets/gfx/add.png';
-import AddPostForm from '../../components/UI/addPostForm';
+import PostForm from '../../components/UI/PostForm';
 import Backdrop from '../../components/UI/backdrop';
 import Flash from '../../components/UI/flash';
 import SearchBar from '../../components/UI/searchBar';
@@ -77,8 +77,8 @@ class Dashboard extends Component {
     findPostById = (id) => {
         // eslint-disable-next-line
         let post = this.state.posts.filter((post)=>{
-            if(post.id === id) return post;
-        })
+            if(post._id === id) return post;
+        });
         let postRdy = {
             author: post[0].author,
             content: post[0].content,
@@ -88,7 +88,7 @@ class Dashboard extends Component {
         }
         return postRdy;
     }
-    //closely tied to editpost
+    //fill the post form 
     fillPostForm = (data) => {
         this.setState({editPostContent: data.content, editPostTitle: data.title});
     }   
@@ -96,6 +96,7 @@ class Dashboard extends Component {
     editPost = (id) => {
         let postToEdit = this.findPostById(id);
         this.fillPostForm(postToEdit);
+        //ask for true post ID -> check what is the id argument in this function
         this.setState({editing: true, editId: id});
         this.showPostForm();
     }
@@ -140,7 +141,7 @@ class Dashboard extends Component {
             this.setState({posts: posts});
         })
         .catch(error => {
-            console.log(error)
+            console.log(error);
         })  
     }
 
@@ -183,30 +184,24 @@ class Dashboard extends Component {
         }
     }
     
-    sendEditedPost = (event) => {
-        event.preventDefault();
-        let copy = {...this.state.newPostForm};
-        let id = this.state.editId;
-        let path = `/posts/${id}.json`; 
-        let content = {...copy}; 
-        let flashMsg = "edited";
-
-        axios.put(path, content)
-        .then((res)=>{
-            if(res.status===200){
-                this.setState({addingPost: false});
-                this.flash(`Post ${flashMsg} successfully!`);
-                
-                let clearPost = {...this.state.newPostForm};
-                clearPost.title = "";
-                clearPost.content = "";
-                this.setState({newPostForm: clearPost, editPostTitle: clearPost.title, editPostContent: clearPost.content, editing: false});
-                this.getPosts();
+    //is called in then block after axios sends edit data to server inside PostForm
+    //this is a state cleanup function
+    sendEditedPost = () => {
+        this.setState({addingPost: false});
+        this.flash("Post edited successfully!");        
+        let clearPost = {...this.state.newPostForm};
+        clearPost.title = "";
+        clearPost.content = "";
+        this.setState(
+            {
+                newPostForm: clearPost, 
+                editPostTitle: clearPost.title, 
+                editPostContent: clearPost.content, 
+                editing: false
             }
-            else if(res.status!==200){
-                this.flash("Network error, try again.")
-            }
-        })
+        );
+        this.getPosts();
+          
     }
 
     addPost = (event) => {
@@ -267,7 +262,7 @@ class Dashboard extends Component {
                         title={post.title}
                         author={userData.nickname}
                         content={post.content}
-                        id={post.id}
+                        id={post._id}
                         key={index}
                         delete={this.deletePost}
                         edit={this.editPost}
@@ -285,7 +280,7 @@ class Dashboard extends Component {
                         title={post.title}
                         author={post.author}
                         content={post.content}
-                        id={post.id}
+                        id={post._id}
                         key={index}
                         delete={this.deletePost}
                         edit={this.editPost}
@@ -325,7 +320,7 @@ class Dashboard extends Component {
             addPostActive = (
                 <React.Fragment>
                     <Backdrop show>
-                        <AddPostForm 
+                        <PostForm 
                             closeBackdrop={this.closeBackdrop} 
                             addPost={this.addPost} 
                             titleChanged={this.titleChangedHandler} 
@@ -333,6 +328,7 @@ class Dashboard extends Component {
                             editing={this.state.editing}
                             editPostContent={this.state.editPostContent}
                             editPostTitle={this.state.editPostTitle}
+                            editId={this.state.editId}
                             editFunction={this.sendEditedPost}
                         />
                     </Backdrop>

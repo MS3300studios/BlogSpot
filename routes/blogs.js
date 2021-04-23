@@ -7,7 +7,6 @@ const auth = require('../middleware/authorization');
 router.use(express.json());
 
 router.post('/blogs/new', auth, (req, res) => {
-    console.log('I got a new blog!')
     const blog = new Blog({
         title: req.body.title,
         content: req.body.content,
@@ -52,8 +51,9 @@ router.get('/blogs/delete/:blogId', auth, (req, res) => {
         })
 })
 
-router.get('/blogs/edit/:blogId', auth, (req, res) => {
-    Blog.findByIdAndUpdate(req.params.blogId)
+router.post('/blogs/edit/:blogId', auth, (req, res) => {
+    console.log(req.body)
+    Blog.findByIdAndUpdate(req.params.blogId, {title: req.body.title, content: req.body.content})
     .exec()
         .then((response => {
             console.log(response);
