@@ -34,11 +34,8 @@ class Dashboard extends Component {
             flashMessage: "",
             flashNotClosed: true,
             newPostForm: {
-                author: "Alice Cummings",
                 title: "",
-                content: "",
-                dateStarted: null,
-                latestEdit: null
+                content: ""
             },
             editPostTitle: null,
             editPostContent: null,
