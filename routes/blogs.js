@@ -39,6 +39,23 @@ router.get('/blogs', auth, (req, res) => {
         });
 });
 
+router.get('/blogs/one/:blogId', auth, (req, res) => {
+    Blog.findById({_id: req.params.blogId})
+        .exec()
+        .then(blog => {
+            return res.status(200).json({
+                blog: blog
+            })
+        })
+        .catch(err => {
+            console.log(err)
+            return res.status(404).json({
+                message: 'blog not found',
+                error: err
+            })
+        });
+});
+
 router.get('/blogs/delete/:blogId', auth, (req, res) => {
     Blog.deleteOne({_id: req.params.blogId})
         .exec()

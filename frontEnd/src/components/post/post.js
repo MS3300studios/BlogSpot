@@ -7,7 +7,7 @@ import Button from '../UI/button';
 const post = (props) => (
     <div className={classes.Card}>
         <div className={classes.contentWrapperSmaller}>
-        <Link to={"/post?id="+props.id} style={{textDecoration: "none", color: "black"}}>
+        <Link to={"/post/?id="+props.id} style={{textDecoration: "none", color: "black"}}>
             <h1>{props.title}</h1>
         </Link> 
         </div>

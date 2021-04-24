@@ -44,8 +44,10 @@ class App extends Component {
       content = (
         <React.Fragment>
           <Menu />
-          <Route path="/" render={()=><Dashboard />} />
-          <Route path="/post" component={PostView} />
+          <Switch>
+            <Route path="/post/" component={PostView} />
+            <Route path="/" render={()=><Dashboard />} />
+          </Switch>
         </React.Fragment>
       );
       gate = null;
