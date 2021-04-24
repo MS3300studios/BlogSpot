@@ -13,14 +13,28 @@ import Button from '../UI/button';
 class PostView extends Component {
     constructor(props){
         super(props);
+        
+        //getting Id from search param
         let queryParams = new URLSearchParams(this.props.location.search);
         let postId = queryParams.get('id'); 
+
+        //getting user nickname
+        let userData;
+        let local = localStorage.getItem('userData');
+        let session = sessionStorage.getItem('userData');
+        if(local !== null){
+            userData = JSON.parse(local);
+        }
+        else if(session !== null){
+            userData = JSON.parse(session);
+        }
 
         this.state = {
             postId: postId,
             post: {},
             redirect: false,
-            loading: true
+            loading: true,
+            userData: userData
         }
 
         this.deletePost.bind(this);
@@ -50,7 +64,7 @@ class PostView extends Component {
             this.setState({loading: false});
             console.log(res.data.blog.title)
             const post = {
-                author: res.data.blog.author,
+                author: this.state.userData.nickname,
                 title: res.data.blog.title,
                 content: res.data.blog.content,
                 createdAt: res.data.blog.createdAt,
