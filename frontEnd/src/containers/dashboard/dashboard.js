@@ -101,8 +101,9 @@ class Dashboard extends Component {
     deletePost = (id) => {
         let post = this.findPostById(id);
         let dbId = post.dbId;
+        console.log(dbId);
         axios({
-            method: 'get',
+            method: 'delete',
             url: `http://localhost:3001/blogs/delete/${dbId}`,
             headers: {'Authorization': this.state.token},
         })
