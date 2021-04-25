@@ -40,3 +40,6 @@
     display: flex;
     justify-content: space-evenly;
 }
+.imageX:hover{
+    cursor: pointer;
+}

@@ -349,7 +349,7 @@ class Dashboard extends Component {
             <div className={classes.postContainer}>
                 {this.filterPosts(this.state.filterIn, this.state.filterBy)}
                 <div className={classes.Card} onClick={this.showPostForm}>
-                    <img alt="add a post" src={addPostImage} />
+                    <img alt="add a post" src={addPostImage} className={classes.addPostDiv}/>
                 </div>
             </div> 
         )

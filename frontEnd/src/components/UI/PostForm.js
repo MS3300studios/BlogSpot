@@ -6,7 +6,7 @@ import imageX from '../../assets/gfx/x.png';
 import classes from './PostForm.module.css';
 import Button from './button';
 
-const AddPostForm = (props) => {
+const PostForm = (props) => {
     let editingTitle;
     let editingContent;
     if(props.editing){
@@ -55,7 +55,7 @@ const AddPostForm = (props) => {
     if(props.editing){
         return ( 
             <div className={classes.addPostFormContainer}>
-                <img alt="exit adding post" src={imageX} title="close" onClick={props.closeBackdrop}/>
+                <img alt="exit adding post" src={imageX} title="close" onClick={props.closeBackdrop} className={classes.imageX}/>
                 <form>
                     <input 
                         type="text" 
@@ -84,7 +84,7 @@ const AddPostForm = (props) => {
     else{
         return ( 
             <div className={classes.addPostFormContainer}>
-                <img alt="exit adding post" src={imageX} title="close" onClick={props.closeBackdrop}/>
+                <img alt="exit adding post" src={imageX} title="close" onClick={props.closeBackdrop} className={classes.imageX}/>
                 <form>
                     <input type="text" placeholder="your title here!" className={classes.Input} onChange={props.titleChanged}/>
                     <br/>
@@ -100,4 +100,4 @@ const AddPostForm = (props) => {
     }
 }
  
-export default AddPostForm;
+export default PostForm;

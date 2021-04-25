@@ -43,14 +43,12 @@ class PostView extends Component {
 
     deletePost = (id) => {
         this.setState({deletePending: true});
-        console.log(id)
         axios({
             method: 'delete',
             url: `http://localhost:3001/blogs/delete/${id}`,
             headers: {'Authorization': this.state.token},
         }).then((res) => {
             if(res.status===200){
-                console.log('deletion should be successful')
                 this.setState({redirect: true, deletePending: false});
                 // this.props.redux_remove_post(id);
             }
