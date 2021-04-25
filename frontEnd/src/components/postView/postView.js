@@ -8,6 +8,8 @@ import * as actionTypes from '../../store/actions';
 import Spinner from '../../components/UI/spinner';
 import classes from './postView.module.css';
 import Button from '../UI/button';
+import PostForm from '../UI/PostForm';
+import Backdrop from '../UI/backdrop';
 
 
 class PostView extends Component {
@@ -35,30 +37,13 @@ class PostView extends Component {
             redirect: false,
             loading: true,
             userData: userData,
-            deletePending: false
+            deletePending: false,
+            showPostForm: false
         }
 
         this.deletePost.bind(this);
-    }
-
-    deletePost = (id) => {
-        this.setState({deletePending: true});
-        axios({
-            method: 'delete',
-            url: `http://localhost:3001/blogs/delete/${id}`,
-            headers: {'Authorization': this.state.token},
-        }).then((res) => {
-            if(res.status===200){
-                this.setState({redirect: true, deletePending: false});
-                // this.props.redux_remove_post(id);
-            }
-            else{
-                console.error('deleting error');
-            }
-        })
-        .catch(error => {
-            console.log(error);
-        });
+        this.displayPostForm.bind(this);
+        this.cleanUpEditSucc.bind(this);
     }
 
     componentDidMount(){
@@ -82,6 +67,37 @@ class PostView extends Component {
         }) 
     }
 
+    displayPostForm = () => {
+        this.setState({showPostForm: true});
+    }
+    
+    cleanUpEditSucc = () => {
+        this.setState({showPostForm: false});
+        window.location.reload();
+    }
+
+    deletePost = (id) => {
+        this.setState({deletePending: true});
+        axios({
+            method: 'delete',
+            url: `http://localhost:3001/blogs/delete/${id}`,
+            headers: {'Authorization': this.state.token},
+        }).then((res) => {
+            if(res.status===200){
+                this.setState({redirect: true, deletePending: false});
+                // this.props.redux_remove_post(id);
+            }
+            else{
+                console.error('deleting error');
+            }
+        })
+        .catch(error => {
+            console.log(error);
+        });
+    }
+
+    
+
     render() { 
         let smallSpinner = this.state.deletePending ? <Spinner small darkgreen /> : null;
 
@@ -99,7 +115,7 @@ class PostView extends Component {
                                     <p>started at: {this.state.post.createdAt}</p>
                                     <p>latest edit: {this.state.post.updatedAt}</p>
                                     <div className={classes.btnsContainer}>
-                                        <Button disabled>Edit</Button>
+                                        <Button clicked={this.displayPostForm}>Edit</Button>
                                         <Button clicked={()=>this.deletePost(this.state.postId)}>Delete</Button>
                                         <div className={classes.smallSpinnerLocation}>
                                             {smallSpinner}
@@ -120,9 +136,29 @@ class PostView extends Component {
             )
         }
         
+        let formForBlogs = null;
+        if(this.state.showPostForm){
+            formForBlogs = (
+                <React.Fragment>
+                    <Backdrop show>
+                        <PostForm 
+                            closeBackdrop={()=>this.setState({showPostForm: false})} 
+                            editing
+                            editPostTitle={this.state.post.title}
+                            editPostContent={this.state.post.content}
+                            editId={this.state.postId}
+                            editFunction={this.cleanUpEditSucc}
+                        />
+                    </Backdrop>
+                </React.Fragment>
+            );
+        }
+
+
         return (
             <div className={classes.MainContainer}>
                 {info}
+                {formForBlogs}
                 {this.state.redirect ? <Redirect to="/" /> : null}
             </div>
         );
@@ -143,3 +179,9 @@ const mapDispatchToProps = dispatch => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(PostView));
+
+
+
+
+// titleChanged={this.titleChangedHandler} 
+// contentChanged={this.contentChangedHandler}

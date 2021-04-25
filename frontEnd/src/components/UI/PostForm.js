@@ -42,10 +42,8 @@ const PostForm = (props) => {
         })
         .then((res)=>{
             if(res.status===200){
-                console.log('inside post form: edit successful');
                 props.editFunction();
             }
-            return;
         })
         .catch(error => {
             console.log('inside posts form: \n', error);
