@@ -34,13 +34,15 @@ class PostView extends Component {
             post: {},
             redirect: false,
             loading: true,
-            userData: userData
+            userData: userData,
+            deletePending: false
         }
 
         this.deletePost.bind(this);
     }
 
     deletePost = (id) => {
+        this.setState({deletePending: true});
         console.log(id)
         axios({
             method: 'delete',
@@ -49,7 +51,7 @@ class PostView extends Component {
         }).then((res) => {
             if(res.status===200){
                 console.log('deletion should be successful')
-                this.setState({redirect: true});
+                this.setState({redirect: true, deletePending: false});
                 // this.props.redux_remove_post(id);
             }
             else{
@@ -83,6 +85,8 @@ class PostView extends Component {
     }
 
     render() { 
+        let smallSpinner = this.state.deletePending ? <Spinner small darkgreen /> : null;
+
         let info;
         if(this.state.loading){
             info = <Spinner />
@@ -99,6 +103,9 @@ class PostView extends Component {
                                     <div className={classes.btnsContainer}>
                                         <Button disabled>Edit</Button>
                                         <Button clicked={()=>this.deletePost(this.state.postId)}>Delete</Button>
+                                        <div className={classes.smallSpinnerLocation}>
+                                            {smallSpinner}
+                                        </div>
                                     </div>
                                 </div>
                                 <div className={classes.blogFace}>

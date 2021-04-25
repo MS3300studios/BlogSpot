@@ -39,3 +39,16 @@
     transform: rotate(360deg);
   }
 }
+
+
+.small {
+  margin: 4px auto;
+  font-size: 2px;
+}
+
+.darkgreen{
+  border-top: 1.1em solid rgba(46,139,87, 0.2);
+  border-right: 1.1em solid rgba(46,139,87, 0.2);
+  border-bottom: 1.1em solid rgba(46,139,87, 0.2);
+  border-left: 1.1em solid #2e8b57;
+}
