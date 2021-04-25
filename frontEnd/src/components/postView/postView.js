@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 import * as actionTypes from '../../store/actions';
@@ -41,17 +41,24 @@ class PostView extends Component {
     }
 
     deletePost = (id) => {
-        axios.delete(`http://localhost:3000/blogs/delete/${id}`)
-        .then((res)=>{
+        console.log(id)
+        axios({
+            method: 'delete',
+            url: `http://localhost:3001/blogs/delete/${id}`,
+            headers: {'Authorization': this.state.token},
+        }).then((res) => {
             if(res.status===200){
                 console.log('deletion should be successful')
                 this.setState({redirect: true});
-                this.props.redux_remove_post(id);
+                // this.props.redux_remove_post(id);
             }
             else{
                 console.error('deleting error');
             }
         })
+        .catch(error => {
+            console.log(error);
+        });
     }
 
     componentDidMount(){

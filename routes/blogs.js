@@ -56,7 +56,7 @@ router.get('/blogs/one/:blogId', auth, (req, res) => {
         });
 });
 
-router.get('/blogs/delete/:blogId', auth, (req, res) => {
+router.delete('/blogs/delete/:blogId', auth, (req, res) => {
     console.log(req.params.blogId)
     Blog.deleteOne({_id: req.params.blogId})
         .exec()
