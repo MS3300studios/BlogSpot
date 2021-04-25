@@ -41,15 +41,14 @@ class PostView extends Component {
     }
 
     deletePost = (id) => {
-        axios.delete(`./posts/${id}.json`)
+        axios.delete(`http://localhost:3000/blogs/delete/${id}`)
         .then((res)=>{
             if(res.status===200){
-                // this.flash("Post deleted successfully!");
+                console.log('deletion should be successful')
                 this.setState({redirect: true});
                 this.props.redux_remove_post(id);
             }
             else{
-                // this.flash("Network error, try again.");
                 console.error('deleting error');
             }
         })
@@ -62,7 +61,6 @@ class PostView extends Component {
             headers: {'Authorization': this.state.token},
         }).then((res) => {
             this.setState({loading: false});
-            console.log(res.data.blog.title)
             const post = {
                 author: this.state.userData.nickname,
                 title: res.data.blog.title,
