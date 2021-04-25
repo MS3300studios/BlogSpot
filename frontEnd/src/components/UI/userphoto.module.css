@@ -59,7 +59,7 @@
 
 .dropdown:hover .dropdownContent{
     visibility: visible;
-    height: 170px;
+    height: 155px;
     position: absolute;
     z-index: 80;
 }
