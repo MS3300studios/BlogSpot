@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 
 import * as actionTypes from '../../store/actions';
-import Spinner from '../../components/UI/spinner';
+import Spinner from '../UI/spinner';
 import classes from './postView.module.css';
 import Button from '../UI/button';
 import PostForm from '../UI/PostForm';
@@ -47,6 +47,7 @@ class PostView extends Component {
     }
 
     componentDidMount(){
+        console.log(this.state.userData)
         axios({
             method: 'get',
             url: `http://localhost:3001/blogs/one/${this.state.postId}`,
