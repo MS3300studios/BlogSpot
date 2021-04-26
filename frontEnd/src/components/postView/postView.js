@@ -10,7 +10,7 @@ import classes from './postView.module.css';
 import Button from '../UI/button';
 import PostForm from '../UI/PostForm';
 import Backdrop from '../UI/backdrop';
-
+import formattedCurrentDate from '../../formattedCurrentDate';
 
 class PostView extends Component {
     constructor(props){
@@ -112,8 +112,8 @@ class PostView extends Component {
                                 <div className={classes.blogFace}>
                                     <p className={classes.postTitle}>{this.state.post.title}</p>
                                     <p className={classes.postAuthor}>@{this.state.post.author}</p>
-                                    <p>started at: {this.state.post.createdAt}</p>
-                                    <p>latest edit: {this.state.post.updatedAt}</p>
+                                    <p>started at: {formattedCurrentDate(this.state.post.createdAt)}</p>
+                                    <p>latest edit: {formattedCurrentDate(this.state.post.updatedAt)}</p>
                                     <div className={classes.btnsContainer}>
                                         <Button clicked={this.displayPostForm}>Edit</Button>
                                         <Button clicked={()=>this.deletePost(this.state.postId)}>Delete</Button>
