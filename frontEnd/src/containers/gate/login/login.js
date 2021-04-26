@@ -62,11 +62,17 @@ class Login extends Component {
                     this.props.redux_store_token(res.data.token); //saving to redux store 
                     if(this.state.keepLoggedIn){
                         localStorage.setItem('token', res.data.token);
-                        localStorage.setItem('userData', res.data.userData);
+                        let userData = JSON.parse(res.data.userData);
+                        userData.password = "";
+                        let userDataJSON = JSON.stringify(userData)  
+                        localStorage.setItem('userData', userDataJSON);
                     }
                     else{
                         sessionStorage.setItem('token', res.data.token);
-                        sessionStorage.setItem('userData', res.data.userData);
+                        let userData = JSON.parse(res.data.userData);
+                        userData.password = "";
+                        let userDataJSON = JSON.stringify(userData)                    
+                        sessionStorage.setItem('userData', userDataJSON);
                     }
                     window.location.reload();
                 }
