@@ -50,6 +50,14 @@
     cursor: pointer;
 }
 
+.dropdownContent p:hover .myProfileLink{
+    color: white;
+}
+
+.dropdownContent .myProfileLink:hover{
+    color: white;
+}
+
 .dropdownUsername{
     font-size: 16px;
     font-weight: bold;
@@ -68,6 +76,7 @@
     opacity: 1;
 }
 
-
-
-
+.myProfileLink {
+    text-decoration: none;
+    color: black;
+}
