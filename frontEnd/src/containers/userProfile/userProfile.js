@@ -16,50 +16,62 @@ class UserProfile extends Component {
         }
 
         //obtaining user id for later requests
-        let queryParams = new URLSearchParams(this.props.location.search);
-        let userId = queryParams.get('id'); 
-
-        let userLoggedInViewing = false;
-        if(userId === currentUserData._id){
-            userLoggedInViewing = true
+        console.log(props.location);
+        if(props.location.pathname === "/myProfile"){
+            let queryParams = new URLSearchParams(props.location.search);
+            let userId = queryParams.get('id'); 
+    
+            let userLoggedInViewing = false;
+            if(userId === currentUserData._id){
+                userLoggedInViewing = true
+            }
         }
+        
 
         super(props);
         this.state = { 
-            userData: {},
-            userId: userId,
-            userLoggedInViewing: userLoggedInViewing
+            userData: currentUserData,
         }
 
+
+        // userId: userId,
+        //     userLoggedInViewing: userLoggedInViewing
     }
     render() { 
-        let view;
-        if(this.state.userLoggedInViewing){
-            view = (
-                <React.Fragment>
-                <div className={classes.MainContainer}>
-                    <h1>
-                        this is your user profile!
-                    </h1>
-                    <h6>your id: {}</h6>
-                </div>
-            </React.Fragment>
-            )
-        }
-        else{
-            view = (
-                <React.Fragment>
-                    <div className={classes.MainContainer}>
-                        <h1>
-                            this is some other user profile!
-                        </h1>
-                        <h6>users id: {}</h6>
-                    </div>
-                </React.Fragment>
-            )
-        }
+        // let view;
+        // if(this.state.userLoggedInViewing){
+        //     view = (
+        //         <React.Fragment>
+        //         <div className={classes.MainContainer}>
+        //             <h1>
+        //                 this is your user profile!
+        //             </h1>
+        //             <h6>your id: {}</h6>
+        //         </div>
+        //     </React.Fragment>
+        //     )
+        // }
+        // else{
+        //     view = (
+        //         <React.Fragment>
+        //             <div className={classes.MainContainer}>
+        //                 <h1>
+        //                     this is some other user profile!
+        //                 </h1>
+        //                 <h6>users id: {}</h6>
+        //             </div>
+        //         </React.Fragment>
+        //     )
+        // }
         return ( 
-            {view}
+            <React.Fragment>
+                 <div className={classes.MainContainer}>
+                     <h1>
+                         this is your user profile!
+                     </h1>
+                     <h6>your id: {}</h6>
+                 </div>
+             </React.Fragment>
         );
     }
 }

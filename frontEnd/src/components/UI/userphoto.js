@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 
+import { Link } from 'react-router-dom';
 import logout from '../../logout';
 
 import classes from './userphoto.module.css';
@@ -32,7 +33,7 @@ const UserPhoto = (props) => {
             <div className={classes.dropdownContent}>
                 <h1 className={classes.dropdownUsername}>{nickname}</h1>
                 <hr />
-                <p>My Profile</p>
+                <p><Link to="/myProfile">My Profile</Link></p>
                 <p>Settings</p>
                 <p onClick={() => setlogOut(true)}>Log Out</p>
                 {logOut ? logout() : null}

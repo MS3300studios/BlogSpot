@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
-import io from 'socket.io-client';
+// import io from 'socket.io-client';
 
 import './App.css';
 
 import Menu from './components/menu/menu';
+import UserProfile from './containers/userProfile/userProfile';
 import Dashboard from './containers/dashboard/dashboard';
 import PostView from './components/postView/postView';
 import Gate from './containers/gate/gate';
@@ -41,6 +42,7 @@ class App extends Component {
           <Menu />
           <Switch>
             <Route path="/post/" component={PostView} />
+            <Route path="/myProfile" component={UserProfile} />
             <Route path="/" render={()=><Dashboard />} />
           </Switch>
         </React.Fragment>
