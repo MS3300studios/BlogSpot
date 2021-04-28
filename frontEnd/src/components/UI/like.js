@@ -1,17 +1,24 @@
+import { useState } from 'react';
 import classes from './like.module.css';
 import { AiOutlineLike, AiOutlineDislike, AiFillLike, AiFillDislike } from 'react-icons/ai';
 
 const Like = (props) => {
-    let content = <AiOutlineLike size={props.size} color={props.color}/>;
-    if(props.dislike){
-        content = <AiOutlineDislike size={props.size} color={props.color}/>;
+    const [fill, setfill] = useState(props.fill);
+    let content;
+    
+    if(props.dislike && fill){
+        content = <AiFillDislike size={props.size} color={props.color} onClick={() => setfill(!fill) }/>;
     }
-    if(props.fill){
-        content = <AiFillLike size={props.size} color={props.color}/>;
+    else if(props.dislike){
+        content = <AiOutlineDislike size={props.size} color={props.color} onClick={() => setfill(!fill) }/>;
     }
-    else if(props.fill && props.dislike){
-        content = <AiFillDislike size={props.size} color={props.color}/>;
+    else if(fill){
+        content = <AiFillLike size={props.size} color={props.color} onClick={() => setfill(!fill) }/>;
     }
+    else{
+        content = <AiOutlineLike size={props.size} color={props.color} onClick={() => setfill(!fill) }/>;
+    }
+    
     return (
         <div className={classes.likeContainer}>
             {content}

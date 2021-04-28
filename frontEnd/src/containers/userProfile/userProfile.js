@@ -71,7 +71,7 @@ class UserProfile extends Component {
                         this is your user profile!
                     </h1>
                     <h6>your id: {}</h6>
-                    <Like dislike fill size="2em" color="red"/>
+                    <Like dislike fill size="3em" color="blue"/>
                  </div>
              </React.Fragment>
         );
