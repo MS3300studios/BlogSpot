@@ -4,6 +4,10 @@ import axios from 'axios';
 import classes from './userProfile.module.css';
 import photoFiller from '../../assets/userPhoto/image.jfif';
 // import Like from '../../components/UI/like';
+import { FaUserFriends } from 'react-icons/fa';
+import { AiFillPlusCircle, AiOutlinePlusCircle } from 'react-icons/ai';
+import { BiPhotoAlbum, BiPaperPlane } from 'react-icons/bi';
+
 
 class UserProfile extends Component {
     constructor(props){
@@ -91,15 +95,15 @@ class UserProfile extends Component {
                         </div>
                         <div className={classes.rightPartInfoContainer}>
                             <div className={classes.numberInfoContainer}>
-                                <p>Friends: 154</p>
-                                <p>Followers: 12</p>
-                                <p>Blogs: 420</p>
-                                <p>Photos: 55</p>
+                                <p><FaUserFriends size="1em" color="#0a42a4" /> Friends: 154</p>
+                                <p><AiFillPlusCircle size="1em" color="#0a42a4" /> Followers: 12</p>
+                                <p><BiPaperPlane size="1em" color="#0a42a4" />Blogs: 420</p>
+                                <p><BiPhotoAlbum size="1em" color="#0a42a4" /> Photos: 55</p>
                             </div>
                             <div className={classes.socialButtonsContainer}>
-                                <button>Follow</button>
-                                <button>Add to friends</button>
-                                <button>Send Message</button>
+                                <button className={classes.follow}>Follow</button>
+                                <button className={classes.addFriend}>Add to friends</button>
+                                <button className={classes.sendMessage}>Send Message</button>
                             </div>
                         </div>
                     </div>                    
