@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import classes from './userProfile.module.css';
+import Like from '../../components/UI/like';
 
 class UserProfile extends Component {
     constructor(props){
@@ -65,11 +66,12 @@ class UserProfile extends Component {
         // }
         return ( 
             <React.Fragment>
-                 <div className={classes.MainContainer}>
-                     <h1>
-                         this is your user profile!
-                     </h1>
-                     <h6>your id: {}</h6>
+                <div className={classes.MainContainer}>
+                    <h1>
+                        this is your user profile!
+                    </h1>
+                    <h6>your id: {}</h6>
+                    <Like dislike fill size="2em" color="red"/>
                  </div>
              </React.Fragment>
         );
@@ -77,3 +79,6 @@ class UserProfile extends Component {
 }
  
 export default UserProfile;
+
+
+// style={{height: '10em', width: '10em'}}
