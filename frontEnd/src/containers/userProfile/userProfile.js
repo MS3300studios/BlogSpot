@@ -79,12 +79,27 @@ class UserProfile extends Component {
             <React.Fragment>
                 <div className={classes.flexContainer}>
                     <div className={classes.mainContainer}>
-                        <img src={photoFiller} alt="user" className={classes.userPhoto}/>
+                        <div className={classes.imgContainer}>
+                            <img src={photoFiller} alt="user" className={classes.userPhoto}/>
+                        </div>
                         <div className={classes.textInfoContainer}>
-                            <h1>@Jenny928</h1>
-                            <h2>Jenny Nguyen</h2>
+                            <h1 className={classes.textNameH1}>Jenny Nguyen</h1>
+                            <h2 className={classes.textNameH2}>@Jenny928</h2>
                             <div className={classes.bio}>
-                                <p>Lorem ipsum dolor sit amet consectetur adipiscing elit class eget, laoreet arcu volutpat proin ligula etiam sapien nec auctor, donec est morbi taciti nibh felis gravida dui. Varius morbi dui augue imperdiet torquent, cursus ad placerat eget ultrices, cubilia orci ornare mi. Quisque vivamus tempor fringilla nisi pellentesque quis potenti sed, netus praesent pulvinar tincidunt interdum vehicula penatibus, lacus sollicitudin tempus taciti inceptos fermentum purus. Risus montes eros dignissim etiam sodales velit non natoque, facilisi potenti vivamus consequat auctor mus dui.</p>
+                                <p>Lorem ipsum dolor sit amet consectetur adipiscing elit class eget, laoreet arcu volutpat proin ligula etiam sapien nec auctor, donec est morbi taciti nibh felis gravida dui. Varius morbi dui augue imperdiet torquent, cursus ad placerat eget ultrices, cubilia orci ornare mi. Quisque vivamus tempor fringilla nisi pellentesque quis potenti sed. Sit amet consectetur adipiscing elit.</p>
+                            </div>
+                        </div>
+                        <div className={classes.rightPartInfoContainer}>
+                            <div className={classes.numberInfoContainer}>
+                                <p>Friends: 154</p>
+                                <p>Followers: 12</p>
+                                <p>Blogs: 420</p>
+                                <p>Photos: 55</p>
+                            </div>
+                            <div className={classes.socialButtonsContainer}>
+                                <button>Follow</button>
+                                <button>Add to friends</button>
+                                <button>Send Message</button>
                             </div>
                         </div>
                     </div>                    
