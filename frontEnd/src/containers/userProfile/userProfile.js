@@ -1,69 +1,77 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 
 import classes from './userProfile.module.css';
 import Like from '../../components/UI/like';
 
 class UserProfile extends Component {
     constructor(props){
-        //used to determine relation between logged in user and the user whoose profile is viewed
-        let currentUserData;
-        let local = localStorage.getItem('userData');
-        let session = sessionStorage.getItem('userData');
+        super(props);
+
+        //getting token
+        let token;
+        let local = localStorage.getItem('token');
+        let session = sessionStorage.getItem('token');
         if(local !== null){
-            currentUserData = JSON.parse(local);
+            token = local;
         }
         else if(session !== null){
-            currentUserData = JSON.parse(session);
+            token = session;
         }
 
-        //obtaining user id for later requests
-        console.log(props.location);
-        if(props.location.pathname === "/myProfile"){
-            let queryParams = new URLSearchParams(props.location.search);
-            let userId = queryParams.get('id'); 
-    
-            let userLoggedInViewing = false;
-            if(userId === currentUserData._id){
-                userLoggedInViewing = true
+
+        let userData = {};
+        let userId;
+        let userLogged = false;
+
+        if(props.location.name === "/myProfile"){
+            let local = localStorage.getItem('userData');
+            let session = sessionStorage.getItem('userData');
+            if(local !== null){
+                userData = JSON.parse(local);
             }
+            else if(session !== null){
+                userData = JSON.parse(session);
+            }
+            userId = userData._id;
+            userLogged = true;
         }
-        
+        else{
+            let queryParams = new URLSearchParams(props.location.search);
+            userId = queryParams.get('id'); 
+        }        
 
-        super(props);
         this.state = { 
-            userData: currentUserData,
+            token: token,
+            userId: userId,
+            userData: userData,
+            userLogged: userLogged
         }
 
-
-        // userId: userId,
-        //     userLoggedInViewing: userLoggedInViewing
     }
+
+    componentDidMount () {
+        axios({
+            method: 'post',
+            url: `http://localhost:3001/users/getUser/${this.state.postId}`,
+            headers: {'Authorization': this.state.token},
+        }).then((res) => {
+            console.log(res)
+            const user = {
+                nickname: res.data.user.nickname,
+                name: res.data.user.name,
+                surname: res.data.user.surname,
+                email: res.data.user.email,
+                createdAt: res.data.user.createdAt
+            };
+            this.setState({userData: user});
+        })
+        .catch(error => {
+            console.log(error);
+        })
+    }
+
     render() { 
-        // let view;
-        // if(this.state.userLoggedInViewing){
-        //     view = (
-        //         <React.Fragment>
-        //         <div className={classes.MainContainer}>
-        //             <h1>
-        //                 this is your user profile!
-        //             </h1>
-        //             <h6>your id: {}</h6>
-        //         </div>
-        //     </React.Fragment>
-        //     )
-        // }
-        // else{
-        //     view = (
-        //         <React.Fragment>
-        //             <div className={classes.MainContainer}>
-        //                 <h1>
-        //                     this is some other user profile!
-        //                 </h1>
-        //                 <h6>users id: {}</h6>
-        //             </div>
-        //         </React.Fragment>
-        //     )
-        // }
         return ( 
             <React.Fragment>
                 <div className={classes.MainContainer}>
@@ -71,7 +79,8 @@ class UserProfile extends Component {
                         this is your user profile!
                     </h1>
                     <h6>your id: {}</h6>
-                    <Like dislike fill size="3em" color="blue"/>
+                    <Like size="2em" color="blue"/>
+                    <Like dislike size="2em" color="blue"/>
                  </div>
              </React.Fragment>
         );
