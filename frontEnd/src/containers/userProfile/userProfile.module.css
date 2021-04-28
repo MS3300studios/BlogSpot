@@ -1,3 +1,38 @@
-.MainContainer{
-    background-color: aqua;
+.flexContainer{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.mainContainer{
+    background-color: #82ca66;
+    width: 70%;
+    margin-top: 40px;
+    padding: 25px;
+    border-radius: 4px;
+    position: relative;
+}
+.userPhoto{
+    width: 340px;
+    height: 390px;
+    border-radius: 4px;
+    transition: 0.8s all ease-in-out;
+}
+
+.userPhoto:hover{
+    -webkit-box-shadow: -2px -1px 20px 13px rgba(255,255,255,0.6); 
+    box-shadow: -2px -1px 20px 13px rgba(255,255,255,0.6);
+    cursor: pointer;
+}
+
+.textInfoContainer{
+    position: absolute;
+    top: 25px;
+    left: 400px;
+}
+
+.bio{
+    background-color: beige;
+    border-radius: 4px;
+    width: 270px;
+    height: 250px;
 }
