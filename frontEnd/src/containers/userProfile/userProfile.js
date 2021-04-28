@@ -51,24 +51,26 @@ class UserProfile extends Component {
     }
 
     componentDidMount () {
-        axios({
-            method: 'post',
-            url: `http://localhost:3001/users/getUser/${this.state.postId}`,
-            headers: {'Authorization': this.state.token},
-        }).then((res) => {
-            console.log(res)
-            const user = {
-                nickname: res.data.user.nickname,
-                name: res.data.user.name,
-                surname: res.data.user.surname,
-                email: res.data.user.email,
-                createdAt: res.data.user.createdAt
-            };
-            this.setState({userData: user});
-        })
-        .catch(error => {
-            console.log(error);
-        })
+        if(!this.state.userLogged){
+            axios({
+                method: 'post',
+                url: `http://localhost:3001/users/getUser/${this.state.postId}`,
+                headers: {'Authorization': this.state.token},
+            }).then((res) => {
+                console.log(res)
+                const user = {
+                    nickname: res.data.user.nickname,
+                    name: res.data.user.name,
+                    surname: res.data.user.surname,
+                    email: res.data.user.email,
+                    createdAt: res.data.user.createdAt
+                };
+                this.setState({userData: user});
+            })
+            .catch(error => {
+                console.log(error);
+            })
+        }
     }
 
     render() { 
