@@ -16,7 +16,7 @@ const Menu = () => {
                     <IoChatbubbles size="2em" color="#0a42a4"/>  
                 </div>
                 <div className={classes.dropdown}>
-                    <div className={classes.center}><IoNotifications size="2em" color="#0a42a4"/></div> 
+                    <div className={classes.center}><IoNotifications size="2em" color="#0a42a4"/><div className={classes.notificationNumber}>6</div></div> 
                     <div className={classes.dropdownContent}>
                         <p>notification</p>
                         <hr />
