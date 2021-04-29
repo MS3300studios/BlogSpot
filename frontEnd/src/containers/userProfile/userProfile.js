@@ -120,6 +120,14 @@ class UserProfile extends Component {
                         </div>
                     </div>                    
                  </div>
+                 <div className={classes.flexContainer}>
+                    <div className={classes.userProfileMenu}>
+                        <p>Blogs</p>
+                        <p>Photos</p>
+                        <p>Friends</p>
+                        <p>Badges</p>
+                    </div>
+                 </div>
              </React.Fragment>
         );
     }

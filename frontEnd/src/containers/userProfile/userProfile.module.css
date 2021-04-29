@@ -1,3 +1,4 @@
+/* FIRST SECTION (2nd: line 126) */
 .flexContainer{
     width: 100%;
     display: flex;
@@ -119,4 +120,24 @@
 }
 .sendMessage{
     background-color: darkorchid !important;
+}
+
+
+/* SECOND SECTION */
+.userProfileMenu{
+    width: 60%;
+    background-color: #82ca66;
+    padding: 10px 25px 10px 25px;
+    height: 50px;
+    border: 1px solid black;
+    display: flex;
+    justify-content: space-around;
+}
+.userProfileMenu p{
+    width: 100px;
+    border: black 1px solid;
+}
+
+.userProfileMenu p:hover{
+    
 }
