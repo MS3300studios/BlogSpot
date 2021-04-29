@@ -53,10 +53,11 @@
 .otherIcons{
     position: absolute;
     top: 0px;
-    right: 50px;
-    width: 170px;
-    height: 60px;
+    right: 30px;
+    width: 200px;
     /* border: 1px solid black; */
+    height: 60px;
     display: flex;
     justify-content: space-evenly;
+    z-index: 1000;
 }
