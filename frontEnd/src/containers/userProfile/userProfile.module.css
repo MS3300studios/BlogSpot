@@ -74,13 +74,26 @@
 }
 .numberInfoContainer{
     margin-top: -20px;
+    margin-bottom: 50px;
+    margin-left: -35px;
 }
 .numberInfoContainer p{
     font-size: 25px;
     margin-bottom: 10px;
 }
+
+.socialNumbersPanel{
+    width: 240px;
+    height: 40px;
+    display: flex;
+    justify-content: space-between;
+    margin: 10px;
+    margin-right: 40px;
+}
+
 .socialButtonsContainer{
     width: 100px;
+    margin-left: 25px;
 }
 .socialButtonsContainer button{
     width: 150px;

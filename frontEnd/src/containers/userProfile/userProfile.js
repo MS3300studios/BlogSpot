@@ -94,11 +94,23 @@ class UserProfile extends Component {
                             </div>
                         </div>
                         <div className={classes.rightPartInfoContainer}>
-                            <div className={classes.numberInfoContainer}>
-                                <p><FaUserFriends size="1em" color="#0a42a4" /> Friends: 154</p>
-                                <p><AiFillPlusCircle size="1em" color="#0a42a4" /> Followers: 12</p>
-                                <p><BiPaperPlane size="1em" color="#0a42a4" />Blogs: 420</p>
-                                <p><BiPhotoAlbum size="1em" color="#0a42a4" /> Photos: 55</p>
+                            <div className={classes.numberInfoContainer}>                                
+                                <div className={classes.socialNumbersPanel}>
+                                    <p><FaUserFriends size="1em" color="#0a42a4"/>  Friends: </p>
+                                    <p>154</p>
+                                </div>                                                                
+                                <div className={classes.socialNumbersPanel}>
+                                    <p><AiFillPlusCircle size="1em" color="#0a42a4" />  Followers: </p>
+                                    <p>12</p>
+                                </div>                                
+                                <div className={classes.socialNumbersPanel}>
+                                    <p><BiPaperPlane size="1em" color="#0a42a4" />  Blogs: </p>
+                                    <p>420</p>
+                                </div>                                
+                                <div className={classes.socialNumbersPanel}>
+                                    <p><BiPhotoAlbum size="1em" color="#0a42a4" />  Photos: </p>
+                                    <p>55</p>
+                                </div>                                
                             </div>
                             <div className={classes.socialButtonsContainer}>
                                 <button className={classes.follow}>Follow</button>
