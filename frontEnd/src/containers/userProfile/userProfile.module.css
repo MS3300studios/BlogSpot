@@ -127,18 +127,53 @@
 /* SECOND SECTION */
 .userProfileMenu{
     width: 60%;
+    height: 30px;
     background-color: #82ca66;
     padding: 10px 25px 10px 25px;
-    height: 50px;
-    border: 1px solid black;
+    border-bottom: 3px solid black;
     display: flex;
     justify-content: space-around;
 }
-.userProfileMenu p{
-    width: 100px;
-    border: black 1px solid;
+
+.userProfileMenuItem{
+    font-size: 20px;
+    height: 55px;
+    z-index: 20;
+    margin-top: -15px;
+    width: 150px;
+    background-color: #82ca66;
+    display: flex;
+    justify-content: center;
+    vertical-align: middle;
+    position: relative;
+    transition: background-color 0.6s ease-in;
 }
 
-.userProfileMenu p:hover{
-    
+.userProfileMenuItem p{
+    margin: 0;
+    padding-top: 10px;
+    font-size: 25px;
+}
+
+.border{
+    position: absolute;
+    border-bottom: black 3px solid;
+    border: none;
+    width: 160px;
+    height: 52px;
+}
+
+.active{
+    border: black 3px solid;
+    border-bottom: #82ca66 3px solid;
+}
+.test{
+    width: 61%;
+    height: 300px;
+    padding: 12px;
+    background-color: #82ca66;
+}
+.center{
+    display: flex;
+    justify-content: center;
 }

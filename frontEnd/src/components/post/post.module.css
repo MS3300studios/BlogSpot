@@ -10,7 +10,6 @@
     text-overflow: hidden;
     position: relative;
     color: black;
-    z-index: -1;
 }
 
 .Card:hover{

@@ -50,9 +50,14 @@ class UserProfile extends Component {
             token: token,
             userId: userId,
             userData: userData,
-            userLogged: userLogged
+            userLogged: userLogged,
+            currentSelectedMenu: 'Blogs',
+            blogsClass: [classes.border, classes.active],
+            photosClass: [classes.border],
+            friendsClass: [classes.border],
+            badgesClass: [classes.border],
         }
-
+        this.handleMenuSelect.bind();
     }
 
     componentDidMount () {
@@ -75,6 +80,48 @@ class UserProfile extends Component {
             .catch(error => {
                 console.log(error);
             })
+        }
+    }
+
+    handleMenuSelect(selectedOption){
+        let array;
+        switch (selectedOption) {
+            case 'Blogs': 
+            {
+                console.log('blogs')
+                array = this.state.blogsClass;
+                array.push(classes.active);
+                this.setState({blogsClass: array, photosClass: [classes.border], friendsClass: [classes.border], badgesClass: [classes.border]});
+                console.log(this.state.blogsClass)
+                break;
+            }                
+            
+            case 'Photos':{
+                console.log('photos')
+                array = this.state.photosClass;
+                array.push(classes.active);
+                this.setState({blogsClass: [classes.border], photosClass: array, friendsClass: [classes.border], badgesClass: [classes.border]});
+                break;
+            }
+            
+            case 'Friends': {
+                console.log('friends')
+                array = this.state.friendsClass;
+                array.push(classes.active);
+                this.setState({blogsClass: [classes.border], photosClass: [classes.border], friendsClass: array, badgesClass: [classes.border]});
+                break;
+            }                
+
+            case 'Badges': {
+                console.log('badges')
+                array = this.state.badgesClass;
+                array.push(classes.active);
+                this.setState({blogsClass: [classes.border], photosClass: [classes.border], friendsClass: [classes.border], badgesClass: array});
+                break;
+            }
+                            
+            default:
+                console.log('default')
         }
     }
 
@@ -122,11 +169,26 @@ class UserProfile extends Component {
                  </div>
                  <div className={classes.flexContainer}>
                     <div className={classes.userProfileMenu}>
-                        <p>Blogs</p>
-                        <p>Photos</p>
-                        <p>Friends</p>
-                        <p>Badges</p>
+                        <div className={classes.userProfileMenuItem} onClick={() => this.handleMenuSelect('Blogs')}>
+                            <div className={this.state.blogsClass.join(" ")}></div>
+                            <p>Blogs</p>
+                        </div>
+                        <div className={classes.userProfileMenuItem} onClick={() => this.handleMenuSelect('Photos')}>
+                            <div className={this.state.photosClass.join(" ")}></div>
+                            <p>Photos</p>
+                        </div>
+                        <div className={classes.userProfileMenuItem} onClick={() => this.handleMenuSelect('Friends')}>
+                            <div className={this.state.friendsClass.join(" ")}></div>
+                            <p>Friends</p>
+                        </div>
+                        <div className={classes.userProfileMenuItem} onClick={() => this.handleMenuSelect('Badges')}>
+                            <div className={this.state.badgesClass.join(" ")}></div>
+                            <p>Badges</p>
+                        </div>
                     </div>
+                 </div>
+                 <div className={classes.center}>
+                    <div className={classes.test}></div>
                  </div>
              </React.Fragment>
         );
