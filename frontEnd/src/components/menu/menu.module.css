@@ -4,6 +4,7 @@
     background-color: #53c253;
     display: flex;
     justify-content: flex-end;
+    z-index: 1000;
 }
 .iconContainer{
     width: 500px;
@@ -24,6 +25,7 @@
     border-radius: 10px;
     margin-top: 23px;
     transition: 0.8s max-height ease;
+    z-index: 1000;
 }
 .dropdownContent p{
     margin: 10px 0 10px 0;
