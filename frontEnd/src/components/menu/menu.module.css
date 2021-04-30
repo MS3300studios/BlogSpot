@@ -26,6 +26,7 @@
     margin-top: 23px;
     transition: 0.8s max-height ease;
     z-index: 1000;
+    position: relative;
 }
 .dropdownContent p{
     margin: 10px 0 10px 0;
