@@ -88,16 +88,13 @@ class UserProfile extends Component {
         switch (selectedOption) {
             case 'Blogs': 
             {
-                console.log('blogs')
                 array = this.state.blogsClass;
                 array.push(classes.active);
                 this.setState({blogsClass: array, photosClass: [classes.border], friendsClass: [classes.border], badgesClass: [classes.border]});
-                console.log(this.state.blogsClass)
                 break;
             }                
             
             case 'Photos':{
-                console.log('photos')
                 array = this.state.photosClass;
                 array.push(classes.active);
                 this.setState({blogsClass: [classes.border], photosClass: array, friendsClass: [classes.border], badgesClass: [classes.border]});
@@ -105,7 +102,6 @@ class UserProfile extends Component {
             }
             
             case 'Friends': {
-                console.log('friends')
                 array = this.state.friendsClass;
                 array.push(classes.active);
                 this.setState({blogsClass: [classes.border], photosClass: [classes.border], friendsClass: array, badgesClass: [classes.border]});
@@ -113,7 +109,6 @@ class UserProfile extends Component {
             }                
 
             case 'Badges': {
-                console.log('badges')
                 array = this.state.badgesClass;
                 array.push(classes.active);
                 this.setState({blogsClass: [classes.border], photosClass: [classes.border], friendsClass: [classes.border], badgesClass: array});
