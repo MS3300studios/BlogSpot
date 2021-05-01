@@ -1,0 +1,14 @@
+.center{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.smallBlogContainer{
+    width: 90%;
+    height: 300px;
+    background-color: #53c25385;
+    border-radius: 4px;
+    padding: 20px;
+    margin: 10px;
+}

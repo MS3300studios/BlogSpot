@@ -17,7 +17,6 @@ class BlogsTab extends Component {
         // this.getData.bind(this);
     }
 
-    //get user Blogs and userData from userId from AJAX call 
     componentDidMount () {
         axios({
             method: 'get',
@@ -42,12 +41,18 @@ class BlogsTab extends Component {
 
 
     render() { 
-        return (
-            <div>
-                {this.state.blogs.map((el, index)=>(
-                    <div key={index}>{el.title}</div>
-                ))}
+        let blogs = this.state.blogs.map((el, index)=>(
+            <div className={classes.center}>
+                <div key={index} className={classes.smallBlogContainer}>
+                    {el.title}
+                </div>
             </div>
+        ));
+
+        return (
+            <React.Fragment>
+                {blogs}
+            </React.Fragment>
         );
     }
 }
