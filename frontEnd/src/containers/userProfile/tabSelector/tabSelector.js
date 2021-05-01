@@ -5,10 +5,13 @@ import classes from './tabSelector.module.css';
 import BlogsTab from '../tabs/Blogs';
 
 const TabSelector = (props) => {
-
+    let display;
+    if(props.selectedOption === "Blogs"){
+        display = <BlogsTab />
+    }
     return (
         <div className={classes.mainContainer}>
-            <BlogsTab data={props.selectedOption} />
+            {display}
         </div>
     );
 }
