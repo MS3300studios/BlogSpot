@@ -13,7 +13,7 @@ class BlogsTab extends Component {
         this.state = {
             token: token,
             blogs: [],
-            limit: 20
+            limit: 2
         }
         // this.getData.bind(this);
     }
@@ -28,11 +28,9 @@ class BlogsTab extends Component {
         .then((res)=>{
             if(res.status===200){
                 let blogs = [];
-                console.log(res.data.blogs)
-                for(let i=res.data.blogs.length-1; i > 0; i--){
-                    console.log(res.data.blogs[i])
-                    blogs.push(res.data.blogs[i]);
-                }
+                res.data.blogs.forEach(element => {
+                    blogs.push(element);
+                });
                 this.setState({blogs: blogs})
                 return;
             }
