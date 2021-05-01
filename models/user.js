@@ -6,7 +6,7 @@ const schema = new db.Schema({
     email: {type: String, require: true, unique: true},
     password: {type: String, require: true},
     nickname: {type: String, require: true, unique: true},
-    
+    bio: {type: String, require: false, unique: false}
   },
   {
     timestamps: true
