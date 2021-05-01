@@ -75,7 +75,6 @@ router.post('/users/login', (req, res) => {
                     );
                     
                     let userData = JSON.stringify(users[0]);
-
                     return res.status(200).json({
                         message: 'Authorization successful',
                         token: token,
