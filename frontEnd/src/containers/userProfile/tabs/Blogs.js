@@ -13,23 +13,26 @@ class BlogsTab extends Component {
         this.state = {
             token: token,
             blogs: [],
+            limit: 20
         }
         // this.getData.bind(this);
     }
 
     componentDidMount () {
         axios({
-            method: 'get',
-            url: `http://localhost:3001/blogs`,
+            method: 'post',
+            url: `http://localhost:3001/blogs/limited`,
             headers: {'Authorization': this.state.token},
-            data: {}
+            data: {limit: this.state.limit}
         })
         .then((res)=>{
             if(res.status===200){
                 let blogs = [];
-                res.data.blogs.forEach(element => {
-                    blogs.push(element);
-                });
+                console.log(res.data.blogs)
+                for(let i=res.data.blogs.length-1; i > 0; i--){
+                    console.log(res.data.blogs[i])
+                    blogs.push(res.data.blogs[i]);
+                }
                 this.setState({blogs: blogs})
                 return;
             }
@@ -44,7 +47,8 @@ class BlogsTab extends Component {
         let blogs = this.state.blogs.map((el, index)=>(
             <div className={classes.center}>
                 <div key={index} className={classes.smallBlogContainer}>
-                    {el.title}
+                    <h1>{el.title}</h1>
+                    <h2>{el.createdAt}</h2>
                 </div>
             </div>
         ));

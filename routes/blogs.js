@@ -39,6 +39,24 @@ router.get('/blogs', auth, (req, res) => {
         });
 });
 
+router.post('/blogs/limited', auth, (req, res) => {
+    console.log(req.body)
+    let limit = req.body.limit;
+    Blog.find({author: req.userData.userId}).sort({ createdAt: 1 }).limit(limit)
+        .exec()
+        .then(blogs => {
+            return res.status(200).json({
+                blogs: blogs
+            })
+        })
+        .catch(err => {
+            return res.status(500).json({
+                message: 'user not found',
+                error: err
+            })
+        });
+})
+
 router.get('/blogs/one/:blogId', auth, (req, res) => {
     Blog.findById({_id: req.params.blogId})
         .exec()
