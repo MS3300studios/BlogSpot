@@ -2,6 +2,7 @@ import React from 'react';
 import {useState} from 'react';
 import axios from 'axios';
 
+import getToken from '../../getToken';
 import imageX from '../../assets/gfx/x.png';
 import classes from './PostForm.module.css';
 import Button from './button';
@@ -14,15 +15,7 @@ const PostForm = (props) => {
         editingContent = props.editPostContent;
     }
 
-    let token;
-    let local = localStorage.getItem('token');
-    let session = sessionStorage.getItem('token');
-    if(local !== null){
-        token = local;
-    }
-    else if(session !== null){
-        token = session;
-    }
+    let token = getToken();
 
     const [title, setTitle] = useState(editingTitle);
     const [content, setContent] = useState(editingContent);

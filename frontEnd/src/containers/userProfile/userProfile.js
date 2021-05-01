@@ -14,7 +14,7 @@ import { BiPhotoAlbum, BiPaperPlane } from 'react-icons/bi';
 class UserProfile extends Component {
     constructor(props){
         super(props);
-        
+
         let token = getToken();
 
         let userData = {};
@@ -55,7 +55,7 @@ class UserProfile extends Component {
     componentDidMount () {
         if(this.state.userLogged === false){
             axios({
-                method: 'post',
+                method: 'get',
                 url: `http://localhost:3001/users/getUser/${this.state.postId}`,
                 headers: {'Authorization': this.state.token},
             }).then((res) => {

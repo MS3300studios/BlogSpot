@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actionTypes from '../../store/actions';
+
 import classes from './dashboard.module.css';
 
+import getToken from '../../getToken';
 import formattedCurrentDate from '../../formattedCurrentDate';
 import Spinner from '../../components/UI/spinner';
 import Post from '../../components/post/post';
@@ -17,15 +19,7 @@ import axios from 'axios';
 class Dashboard extends Component {
     constructor(props){
 
-        let token;
-        let local = localStorage.getItem('token');
-        let session = sessionStorage.getItem('token');
-        if(local !== null){
-            token = local;
-        }
-        else if(session !== null){
-            token = session;
-        }
+        let token = getToken();
 
         super(props);
         this.state = {

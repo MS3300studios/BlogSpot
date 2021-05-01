@@ -2,11 +2,13 @@ import React from 'react';
 
 import classes from './tabSelector.module.css';
 
+import BlogsTab from '../tabs/Blogs';
+
 const TabSelector = (props) => {
 
     return (
         <div className={classes.mainContainer}>
-            <h1>{props.selectedOption}</h1>
+            <BlogsTab data={props.selectedOption} />
         </div>
     );
 }

@@ -96,7 +96,7 @@ router.post('/users/login', (req, res) => {
 });
 
 
-router.post('/users/getUser/:userId', auth, (req, res) => {
+router.get('/users/getUser/:userId', auth, (req, res) => {
     User.findById(req.params.userId)
         .exec()
         .then(user => {
