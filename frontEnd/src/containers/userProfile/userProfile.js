@@ -3,6 +3,8 @@ import axios from 'axios';
 
 import classes from './userProfile.module.css';
 import photoFiller from '../../assets/userPhoto/image.jfif';
+import TabSelector from './tabSelector/tabSelector';
+import getToken from '../../getToken';
 // import Like from '../../components/UI/like';
 import { FaUserFriends } from 'react-icons/fa';
 import { AiFillPlusCircle, AiOutlinePlusCircle } from 'react-icons/ai';
@@ -12,18 +14,8 @@ import { BiPhotoAlbum, BiPaperPlane } from 'react-icons/bi';
 class UserProfile extends Component {
     constructor(props){
         super(props);
-
-        //getting token
-        let token;
-        let local = localStorage.getItem('token');
-        let session = sessionStorage.getItem('token');
-        if(local !== null){
-            token = local;
-        }
-        else if(session !== null){
-            token = session;
-        }
-
+        
+        let token = getToken();
 
         let userData = {};
         let userId;
@@ -90,28 +82,51 @@ class UserProfile extends Component {
             {
                 array = this.state.blogsClass;
                 array.push(classes.active);
-                this.setState({blogsClass: array, photosClass: [classes.border], friendsClass: [classes.border], badgesClass: [classes.border]});
+                this.setState({
+                    blogsClass: array, 
+                    photosClass: [classes.border], 
+                    friendsClass: [classes.border], 
+                    badgesClass: [classes.border],
+                    currentSelectedMenu: 'Blogs'
+                });
                 break;
             }                
             
             case 'Photos':{
                 array = this.state.photosClass;
                 array.push(classes.active);
-                this.setState({blogsClass: [classes.border], photosClass: array, friendsClass: [classes.border], badgesClass: [classes.border]});
+                this.setState({
+                    blogsClass: [classes.border], 
+                    photosClass: array, 
+                    friendsClass: [classes.border], 
+                    badgesClass: [classes.border],
+                    currentSelectedMenu: 'Photos'
+                });
                 break;
             }
             
             case 'Friends': {
                 array = this.state.friendsClass;
                 array.push(classes.active);
-                this.setState({blogsClass: [classes.border], photosClass: [classes.border], friendsClass: array, badgesClass: [classes.border]});
+                this.setState({
+                    blogsClass: [classes.border], 
+                    photosClass: [classes.border], 
+                    friendsClass: array, 
+                    badgesClass: [classes.border],
+                    currentSelectedMenu: 'Friends'
+                });
                 break;
             }                
 
             case 'Badges': {
                 array = this.state.badgesClass;
                 array.push(classes.active);
-                this.setState({blogsClass: [classes.border], photosClass: [classes.border], friendsClass: [classes.border], badgesClass: array});
+                this.setState({
+                    blogsClass: [classes.border], 
+                    photosClass: [classes.border], 
+                    friendsClass: [classes.border], badgesClass: array,
+                    currentSelectedMenu: 'Badges'
+                });
                 break;
             }
                             
@@ -183,7 +198,7 @@ class UserProfile extends Component {
                     </div>
                  </div>
                  <div className={classes.center}>
-                    <div className={classes.test}></div>
+                    <TabSelector selectedOption={this.state.currentSelectedMenu} />
                  </div>
              </React.Fragment>
         );

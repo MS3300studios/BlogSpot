@@ -167,12 +167,6 @@
     border: black 3px solid;
     border-bottom: #82ca66 3px solid;
 }
-.test{
-    width: 61%;
-    height: 300px;
-    padding: 12px;
-    background-color: #82ca66;
-}
 .center{
     display: flex;
     justify-content: center;
