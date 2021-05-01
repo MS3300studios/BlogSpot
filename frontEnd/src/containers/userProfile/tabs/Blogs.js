@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
+import Button from '../../../components/UI/button';
 import getToken from '../../../getToken';
 import classes from './Blogs.module.css';
 
@@ -15,10 +16,15 @@ class BlogsTab extends Component {
             blogs: [],
             limit: 2
         }
-        // this.getData.bind(this);
+        this.getPosts.bind(this);
+        this.getMorePosts.bind(this);
     }
 
     componentDidMount () {
+        this.getPosts();
+    } 
+
+    getPosts = () => {
         axios({
             method: 'post',
             url: `http://localhost:3001/blogs/limited`,
@@ -38,12 +44,22 @@ class BlogsTab extends Component {
         .catch(error => {
             console.log(error);
         })
-    } 
-
+    }
+    
+    getMorePosts = async () => {
+        //sets limit to +2
+        await this.setState((prevState)=> {
+            return {
+                ...prevState,
+                limit: prevState.limit + 2
+            }
+        });
+        this.getPosts(); //populates the state array with more blogs 
+    }
 
     render() { 
         let blogs = this.state.blogs.map((el, index)=>(
-            <div className={classes.center}>
+            <div className={classes.center} key={index}>
                 <div key={index} className={classes.smallBlogContainer}>
                     <h1>{el.title}</h1>
                     <h2>{el.createdAt}</h2>
@@ -54,6 +70,9 @@ class BlogsTab extends Component {
         return (
             <React.Fragment>
                 {blogs}
+                <div className={[classes.center, classes.loadmorebtn].join(" ")}>
+                    <Button clicked={this.getMorePosts}>load 2 more</Button>
+                </div>
             </React.Fragment>
         );
     }
