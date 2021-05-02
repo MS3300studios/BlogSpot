@@ -4,6 +4,9 @@ import classes from './comments.module.css';
 import Button from '../../../../components/UI/button';
 import AddCommentForm from '../../../../components/UI/AddCommentForm';
 
+import { FaCommentAlt } from 'react-icons/fa';
+import { AiFillLike, AiFillDislike } from 'react-icons/ai'
+
 class Comments extends Component {
     constructor(props){
         super(props);
@@ -56,9 +59,27 @@ class Comments extends Component {
                     <div className={classes.commentContainer} key={index}>
                         <div className={classes.topBar}>    
                             <p className={classes.commentAuthor}>@{comment.authorNick}</p>
+
+                            <div className={classes.numberInfoContainer}>
+                                <div className={classes.numberInfoInnerContainer}>
+                                    <div className={[classes.iconDataContainer, classes.likeIconPContainer].join(" ")}>
+                                        <AiFillLike size="1em" color="#0a42a4" className={classes.icon}/>
+                                        <p className={classes.likeP}>5</p>
+                                    </div>
+                                    <div className={classes.iconDataContainer}>
+                                        <AiFillDislike size="1em" color="#0a42a4" className={classes.icon}/>
+                                        <p className={classes.dislikeP}>0</p>
+                                    </div>
+                                    <div className={classes.iconDataContainer}>
+                                        <FaCommentAlt size="1em" color="#0a42a4" className={classes.icon}/>
+                                        <p>10</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
                             <p>{comment.createdAt}</p>
                         </div>
-                        <p>{comment.content}</p>
+                        <p className={classes.commentContent}>{comment.content}</p>
                     </div>
                 </React.Fragment>                
             )

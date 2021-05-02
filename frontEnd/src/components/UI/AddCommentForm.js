@@ -28,25 +28,28 @@ const AddCommentForm = () => {
         }, 3000);
     }
 
-    let sendComment = (content) => {
-        axios({
-            method: 'post',
-            url: `http://localhost:3001/comments/new`,
-            headers: {'Authorization': token},
-            data: {
-                content: content
-            }
-        })
-        .then((res)=>{
-            if(res.status===200){
-                flash("you posted a comment!");
-                return;
-            }
-        })
-        .catch(error => {
-            flash(error);
-            console.log(error);
-        })
+    let sendComment = (e, content) => {
+        e.preventDefault();
+        flash("ok");
+        setcontent("");
+        // axios({
+        //     method: 'post',
+        //     url: `http://localhost:3001/comments/new`,
+        //     headers: {'Authorization': token},
+        //     data: {
+        //         content: content
+        //     }
+        // })
+        // .then((res)=>{
+        //     if(res.status===200){
+        //         flash("you posted a comment!");
+        //         return;
+        //     }
+        // })
+        // .catch(error => {
+        //     flash(error);
+        //     console.log(error);
+        // })
     }   
 
     let flashView = null;
@@ -57,13 +60,14 @@ const AddCommentForm = () => {
         flashView = <Flash close>{flashMessage}</Flash>
     }
 
+
     return (
         <React.Fragment>
             <div className={classes.mainContainer}>
                 <form>
                     <input placeholder="write your comment here" onClick={(event)=>setcontent(event.target.value)}/>
                 </form>
-                <div onClick={() => sendComment(content)} className={classes.sendIcon}>
+                <div onClick={(e) => sendComment(e, content)} className={classes.sendIcon}>
                     <FiSend size="2em"/>
                 </div>
             </div>
