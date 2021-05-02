@@ -6,6 +6,7 @@
 
 .smallBlogContainer{
     width: 90%;
+    color: #04255f;
     background-color: #53c25385;
     border-radius: 4px;
     padding: 10px 20px 5px 20px;
@@ -33,13 +34,14 @@
 }
 
 .h1Container{
-    width: 50%;
+    width: 80%;
 }
 .h1Container h1{
+    color: #04255f;
     float: left;
 }
 .numberInfoContainer{
-    width: 50%;
+    width: 20%;
     position: relative;
 }
 .numberInfoInnerContainer{
