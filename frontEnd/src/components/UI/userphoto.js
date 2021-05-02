@@ -33,7 +33,7 @@ const UserPhoto = (props) => {
             <div className={classes.dropdownContent}>
                 <h1 className={classes.dropdownUsername}>{nickname}</h1>
                 <hr />
-                <p><Link to="/myProfile" className={classes.myProfileLink}>My Profile</Link></p>
+                <Link to="/myProfile" className={classes.myProfileLink}><p>My Profile</p></Link>
                 <p>Settings</p>
                 <p onClick={() => setlogOut(true)}>Log Out</p>
                 {logOut ? logout() : null}
