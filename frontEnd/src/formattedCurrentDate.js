@@ -40,7 +40,6 @@
 
 
 const formattedCurrentDate = (date) => {
-    console.log(date)
     if(date === undefined){
         return;
     }

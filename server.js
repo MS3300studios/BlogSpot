@@ -6,6 +6,7 @@ const PORT = 3001;
 
 app.use(require('./routes/users'));
 app.use(require('./routes/blogs'));
+app.use(require('./routes/comments'));
 
 const server = app.listen(PORT, ()=>{
     console.log(chalk.green("------------------------------"));

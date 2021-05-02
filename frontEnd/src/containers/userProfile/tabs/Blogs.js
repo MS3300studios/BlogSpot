@@ -7,6 +7,7 @@ import formattedCurrentDate from '../../../formattedCurrentDate';
 import Button from '../../../components/UI/button';
 import getToken from '../../../getToken';
 import classes from './Blogs.module.css';
+import Comments from './comments/comments';
 
 class BlogsTab extends Component {
     constructor(props){
@@ -17,10 +18,13 @@ class BlogsTab extends Component {
         this.state = {
             token: token,
             blogs: [],
-            limit: 2
+            limit: 2,
+            showcomments: false,
+            showComMessage: "show comments"
         }
         this.getPosts.bind(this);
         this.getMorePosts.bind(this);
+        this.toggleShowComments.bind(this);
     }
 
     componentDidMount () {
@@ -60,23 +64,41 @@ class BlogsTab extends Component {
         this.getPosts(); //populates the state array with more blogs 
     }
 
+    toggleShowComments = () => {
+        this.setState(prevState => {
+                let msg = "";
+                if(prevState.showComMessage === "show comments"){
+                    msg = "hide comments"
+                }
+                else {
+                    msg = "show comments"
+                }
+                return (
+                    {...prevState, showcomments: !prevState.showcomments, showComMessage: msg}
+                )
+            }
+        )
+    }
+
     render() { 
         let blogs = this.state.blogs.map((el, index)=>(
             <div className={classes.center} key={index}>
                 <div key={index} className={classes.smallBlogContainer}>
                     <div className={classes.upperSegment}>
+
                         <div className={classes.h1Container}>
                             <h1>{el.title}</h1>
                         </div>
+
                         <div className={classes.numberInfoContainer}>
                             <div className={classes.numberInfoInnerContainer}>
-                                <div className={[classes.iconDataContainer, classes.closer].join(" ")}>
+                                <div className={[classes.iconDataContainer, classes.likeIconPContainer].join(" ")}>
                                     <AiFillLike size="1em" color="#0a42a4" className={classes.icon}/>
-                                    <p>5</p>
+                                    <p className={classes.likeP}>5</p>
                                 </div>
-                                <div className={[classes.iconDataContainer, classes.closer].join(" ")}>
+                                <div className={classes.iconDataContainer}>
                                     <AiFillDislike size="1em" color="#0a42a4" className={classes.icon}/>
-                                    <p>0</p>
+                                    <p className={classes.dislikeP}>0</p>
                                 </div>
                                 <div className={classes.iconDataContainer}>
                                     <FaCommentAlt size="1em" color="#0a42a4" className={classes.icon}/>
@@ -84,8 +106,22 @@ class BlogsTab extends Component {
                                 </div>
                             </div>
                         </div>
+
                     </div>
-                    <p>{formattedCurrentDate(el.createdAt)}</p>
+
+
+                    <p className={classes.date}>{formattedCurrentDate(el.createdAt)}</p>
+
+                    <div className={classes.content}>
+                        <p>
+                            {el.content}
+                        </p>
+                    </div>
+                    <p
+                        className={classes.showcomments}
+                        onClick={this.toggleShowComments}
+                    >{this.state.showComMessage}</p>
+                    {this.state.showcomments ? <Comments blogId={el._id} /> : null}
                 </div>
             </div>
         ));
