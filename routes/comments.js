@@ -8,7 +8,6 @@ router.use(express.json());
 
 router.post('/comments/new', auth, (req, res) => {
     const comment = new comment({
-        title: req.body.title,
         content: req.body.content,
         author: req.userData.userId
     });
