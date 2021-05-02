@@ -8,6 +8,7 @@ import AddCommentForm from '../../../../components/UI/AddCommentForm';
 import { FaCommentAlt } from 'react-icons/fa';
 import { AiFillLike, AiFillDislike } from 'react-icons/ai'
 import getToken from '../../../../getToken';
+import formattedCurrentDate from '../../../../formattedCurrentDate';
 
 
 class Comments extends Component {
@@ -24,6 +25,7 @@ class Comments extends Component {
 
         this.loadmorehandler.bind(this);
         this.getComments.bind(this);
+        this.loadCommentAuthorsData.bind(this);
     }
 
     componentDidMount(){
@@ -31,7 +33,6 @@ class Comments extends Component {
     }
 
     getComments = (newLimit) => {
-        console.log("getting more comments!");
         let limit = this.state.limit;
         if(newLimit){
             this.setState({limit: newLimit});
@@ -53,13 +54,37 @@ class Comments extends Component {
                 res.data.comments.forEach(element => {
                     comments.push(element);
                 });
-                this.setState({comments: comments});
+                // this.setState({comments: comments});
+                this.loadCommentAuthorsData(comments);
                 return;
             }
         })
         .catch(error => {
             console.log(error);
         })
+    }
+
+    loadCommentAuthorsData = (comments) => {
+        let fullDataComments = [];
+        comments.forEach(async (comment)=>{
+            let id = comment.author;
+            await axios({
+                method: 'get',
+                url: `http://localhost:3001/users/getUser/${id}`,
+                headers: {'Authorization': this.state.token}
+            })
+            .then((res)=>{
+                if(res.status === 200){
+                    comment.authorNickname = res.data.user.nickname;                
+                    fullDataComments.push(comment);
+                    return;
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            })
+        })
+        this.setState({comments: fullDataComments})
     }
 
     loadmorehandler = () => {
@@ -77,7 +102,7 @@ class Comments extends Component {
                 <React.Fragment key={index}>
                     <div className={classes.commentContainer} key={index}>
                         <div className={classes.topBar}>    
-                            <p className={classes.commentAuthor}>@{comment.authorNick}</p>
+                            <p className={classes.commentAuthor}>@{comment.authorNickname}</p>
 
                             <div className={classes.numberInfoContainer}>
                                 <div className={classes.numberInfoInnerContainer}>
@@ -96,7 +121,7 @@ class Comments extends Component {
                                 </div>
                             </div>
 
-                            <p>{comment.createdAt}</p>
+                            <p>{formattedCurrentDate(comment.createdAt)}</p>
                         </div>
                         <p className={classes.commentContent}>{comment.content}</p>
                     </div>
