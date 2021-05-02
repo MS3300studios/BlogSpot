@@ -121,6 +121,7 @@ class BlogsTab extends Component {
                         className={classes.showcomments}
                         onClick={this.toggleShowComments}
                     >{this.state.showComMessage}</p>
+                    <hr />
                     {this.state.showcomments ? <Comments blogId={el._id} /> : null}
                 </div>
             </div>

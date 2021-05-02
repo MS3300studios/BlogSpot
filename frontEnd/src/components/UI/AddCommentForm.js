@@ -29,24 +29,24 @@ const AddCommentForm = () => {
     }
 
     let sendComment = (content) => {
-        flash("you posted a comment!")
-        // axios({
-        //     method: 'post',
-        //     url: `http://localhost:3001/comments/new`,
-        //     headers: {'Authorization': token},
-        //     data: {
-        //         content: content
-        //     }
-        // })
-        // .then((res)=>{
-        //     if(res.status===200){
-                
-        //         return;
-        //     }
-        // })
-        // .catch(error => {
-        //     console.log(error);
-        // })
+        axios({
+            method: 'post',
+            url: `http://localhost:3001/comments/new`,
+            headers: {'Authorization': token},
+            data: {
+                content: content
+            }
+        })
+        .then((res)=>{
+            if(res.status===200){
+                flash("you posted a comment!");
+                return;
+            }
+        })
+        .catch(error => {
+            flash(error);
+            console.log(error);
+        })
     }   
 
     let flashView = null;
@@ -63,8 +63,8 @@ const AddCommentForm = () => {
                 <form>
                     <input placeholder="write your comment here" onClick={(event)=>setcontent(event.target.value)}/>
                 </form>
-                <div className={classes.send} onClick={() => sendComment(content)}>
-                    <FiSend />
+                <div onClick={() => sendComment(content)} className={classes.sendIcon}>
+                    <FiSend size="2em"/>
                 </div>
             </div>
             {flashView}

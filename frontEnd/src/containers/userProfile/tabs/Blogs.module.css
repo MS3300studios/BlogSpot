@@ -97,3 +97,10 @@
     color: yellow;
     text-decoration: yellow underline;
 }
+
+.smallBlogContainer hr{
+    width: 100%;
+    background-color: black;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
