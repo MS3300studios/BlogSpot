@@ -3,7 +3,7 @@ import axios from 'axios';
 import classes from './AddCommentForm.module.css';
 import getToken from '../../getToken';
 import Flash from './flash';
-import { FiSend } from 'react-icons/fi' 
+import { RiSendPlaneFill, RiSendPlaneLine } from 'react-icons/ri' 
 
 class AddCommentForm extends Component {
     constructor(props){
@@ -25,7 +25,8 @@ class AddCommentForm extends Component {
             userData: userData,
             content: "",
             flashMessage: "",
-            flashNotClosed: true
+            flashNotClosed: true,
+            sendPressed: false
         }
 
         this.flash.bind(this);
@@ -96,8 +97,12 @@ class AddCommentForm extends Component {
                 <form>
                     <input value={this.state.content} placeholder="write your comment here" onChange={(event)=>this.setState({content: event.target.value})}/>
                 </form>
-                <div onClick={(e) => this.sendComment(e, this.state.content)} className={classes.sendIcon}>
-                    <FiSend size="2em"/>
+                <div 
+                    onMouseDown={()=>{this.setState({sendPressed: true})}} 
+                    onMouseUp={()=>{this.setState({sendPressed: false})}} 
+                    onClick={(e) => this.sendComment(e, this.state.content)} 
+                    className={classes.sendIcon}>
+                    {this.state.sendPressed ? <RiSendPlaneLine size="2em"/> : <RiSendPlaneFill size="2em" />}
                 </div>
             </div>
                 {flashView}
