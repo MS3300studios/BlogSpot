@@ -7,7 +7,7 @@ import formattedCurrentDate from '../../../formattedCurrentDate';
 import Button from '../../../components/UI/button';
 import getToken from '../../../getToken';
 import classes from './Blogs.module.css';
-import Comments from './comments/comments';
+import ShowComments from './comments/showComments';
 
 class BlogsTab extends Component {
     constructor(props){
@@ -117,12 +117,7 @@ class BlogsTab extends Component {
                             {el.content}
                         </p>
                     </div>
-                    <p
-                        className={classes.showcomments}
-                        onClick={this.toggleShowComments}
-                    >{this.state.showComMessage}</p>
-                    <hr />
-                    {this.state.showcomments ? <Comments blogId={el._id} /> : null}
+                    <ShowComments blogId={el._id}/>
                 </div>
             </div>
         ));

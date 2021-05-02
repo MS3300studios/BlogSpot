@@ -29,17 +29,19 @@ class Comments extends Component {
     }
 
     componentDidMount(){
+        console.log('componentDidMount\n');
         this.getComments();
     }
 
-    getComments = (newLimit) => {
+    getComments = async (newLimit) => {
+        console.log('getting comments \n');
         let limit = this.state.limit;
         if(newLimit){
             this.setState({limit: newLimit});
             limit = newLimit;
         }
 
-        axios({
+        await axios({
             method: 'post',
             url: `http://localhost:3001/comments/limited`,
             headers: {'Authorization': this.state.token},
@@ -55,6 +57,7 @@ class Comments extends Component {
                     comments.push(element);
                 });
                 // this.setState({comments: comments});
+                console.log('comments before loading userData: \n', comments);
                 this.loadCommentAuthorsData(comments);
                 return;
             }
@@ -65,6 +68,7 @@ class Comments extends Component {
     }
 
     loadCommentAuthorsData = (comments) => {
+        console.log('inside loading userData for comments \n')
         let fullDataComments = [];
         comments.forEach(async (comment)=>{
             let id = comment.author;
@@ -75,6 +79,7 @@ class Comments extends Component {
             })
             .then((res)=>{
                 if(res.status === 200){
+                    console.log('res status was 200!')
                     comment.authorNickname = res.data.user.nickname;                
                     fullDataComments.push(comment);
                     return;
@@ -84,7 +89,9 @@ class Comments extends Component {
                 console.log(error);
             })
         })
+        console.log('setting state after axios asked for user data for comments')
         this.setState({comments: fullDataComments})
+        console.log('state is set now?')
     }
 
     loadmorehandler = () => {

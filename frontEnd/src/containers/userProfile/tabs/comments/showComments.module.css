@@ -1,0 +1,14 @@
+.showcomments{
+    margin-top: 30px;
+    margin-bottom: 2px;
+    cursor: pointer;
+    text-decoration: none;
+    color: black;
+    font-size: 14px;
+    transition: 0.4s all ease;
+    width: 110px;
+}
+.showcomments:hover{
+    color: yellow;
+    text-decoration: yellow underline;
+}

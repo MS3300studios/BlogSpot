@@ -7,7 +7,6 @@ const auth = require('../middleware/authorization');
 router.use(express.json());
 
 router.post('/comments/new', auth, (req, res) => {
-    console.log(req.body)
     if(req.body.content === ""){
         res.sendStatus(500)
     }
