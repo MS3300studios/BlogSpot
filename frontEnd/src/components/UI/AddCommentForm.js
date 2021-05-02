@@ -51,7 +51,7 @@ class AddCommentForm extends Component {
     }
 
     sendComment = (e, content) => {
-        // window.location.reload();
+        console.log(content)
         e.preventDefault();
         if(content === ""){
             this.flash("you cannot send an empty comment");
@@ -94,17 +94,19 @@ class AddCommentForm extends Component {
         return (
             <React.Fragment>
                 <div className={classes.mainContainer}>
-                <form>
-                    <input value={this.state.content} placeholder="write your comment here" onChange={(event)=>this.setState({content: event.target.value})}/>
-                </form>
-                <div 
-                    onMouseDown={()=>{this.setState({sendPressed: true})}} 
-                    onMouseUp={()=>{this.setState({sendPressed: false})}} 
-                    onClick={(e) => this.sendComment(e, this.state.content)} 
-                    className={classes.sendIcon}>
-                    {this.state.sendPressed ? <RiSendPlaneLine size="2em"/> : <RiSendPlaneFill size="2em" />}
+                    <form>
+                        <input value={this.state.content} placeholder="write your comment here" onChange={(event)=>this.setState({content: event.target.value})}/>
+                    </form>
+                    <div 
+                        onMouseDown={(e)=>{
+                            this.setState({sendPressed: true})
+                            this.sendComment(e, this.state.content)
+                        }}
+                        onMouseUp={()=>{this.setState({sendPressed: false})}} 
+                        className={classes.sendIcon}>
+                        {this.state.sendPressed ? <RiSendPlaneLine size="2em"/> : <RiSendPlaneFill size="2em" />}
+                    </div>
                 </div>
-            </div>
                 {flashView}
             </React.Fragment>
         );

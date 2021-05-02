@@ -6,8 +6,8 @@ import classes from './showComments.module.css';
 
 
 const ShowComments = (props) => {
-    const [show, setshow] = useState(false)
-    const [message, setmessage] = useState("show comments")
+    const [show, setshow] = useState(false);
+    const [message, setmessage] = useState("show comments");
 
     return ( 
         <React.Fragment>
