@@ -9,9 +9,60 @@
     height: 300px;
     background-color: #53c25385;
     border-radius: 4px;
-    padding: 20px;
+    padding: 10px 20px 10px 20px;
     margin: 10px;
+    transition: 0.5s box-shadow ease-out;
 }
+.smallBlogContainer h1{
+    margin: 0px;
+    padding: 0px;
+
+}
+.smallBlogContainer:hover{
+    box-shadow: 10px 10px 29px -1px rgba(0,0,0,0.55);
+}
+
 .loadmorebtn{
     margin-top: 10px;
 }
+
+.upperSegment{
+    width: 100%;
+    height: 70px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.h1Container{
+    width: 50%;
+}
+.h1Container h1{
+    float: left;
+}
+.numberInfoContainer{
+    width: 50%;
+    position: relative;
+}
+.numberInfoInnerContainer{
+    width: 150px;
+    position: absolute;
+    top: 0px;
+    right: 30px;
+    display: flex;
+    justify-content: space-around;
+}
+.iconDataContainer{
+    width: 40px;
+    position: relative;
+    display: flex;
+    justify-content: space-around;
+}
+.iconDataContainer p{
+    margin-top: 0px;
+}
+.icon{
+    margin-top: 5px;
+}
+.closer{
+    margin-left: 10px;
+} 

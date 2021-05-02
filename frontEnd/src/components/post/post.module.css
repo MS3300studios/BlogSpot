@@ -6,7 +6,7 @@
     width: 320px;
     height: 300px;
     margin: 5px;
-    transition: 0.3s;
+    transition: 0.5s ease-out;
     text-overflow: hidden;
     position: relative;
     color: black;

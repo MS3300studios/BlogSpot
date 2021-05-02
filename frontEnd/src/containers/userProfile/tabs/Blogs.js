@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
+import { FaCommentAlt } from 'react-icons/fa';
+import { AiFillLike, AiFillDislike } from 'react-icons/ai'
+import formattedCurrentDate from '../../../formattedCurrentDate';
 import Button from '../../../components/UI/button';
 import getToken from '../../../getToken';
 import classes from './Blogs.module.css';
@@ -61,8 +64,28 @@ class BlogsTab extends Component {
         let blogs = this.state.blogs.map((el, index)=>(
             <div className={classes.center} key={index}>
                 <div key={index} className={classes.smallBlogContainer}>
-                    <h1>{el.title}</h1>
-                    <h2>{el.createdAt}</h2>
+                    <div className={classes.upperSegment}>
+                        <div className={classes.h1Container}>
+                            <h1>{el.title}</h1>
+                        </div>
+                        <div className={classes.numberInfoContainer}>
+                            <div className={classes.numberInfoInnerContainer}>
+                                <div className={[classes.iconDataContainer, classes.closer].join(" ")}>
+                                    <AiFillLike size="1em" color="#0a42a4" className={classes.icon}/>
+                                    <p>5</p>
+                                </div>
+                                <div className={[classes.iconDataContainer, classes.closer].join(" ")}>
+                                    <AiFillDislike size="1em" color="#0a42a4" className={classes.icon}/>
+                                    <p>0</p>
+                                </div>
+                                <div className={classes.iconDataContainer}>
+                                    <FaCommentAlt size="1em" color="#0a42a4" className={classes.icon}/>
+                                    <p>10</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p>{formattedCurrentDate(el.createdAt)}</p>
                 </div>
             </div>
         ));

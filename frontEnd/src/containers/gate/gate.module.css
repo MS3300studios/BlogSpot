@@ -15,7 +15,6 @@ body{
 }
 .gateWelcomeH1{
     position: absolute;
-    top: 150px;
     left: 1000px;
     font-size: 40px;
 }
@@ -28,12 +27,13 @@ body{
     color: black;
     background-color: #82ca66;
     border-radius: 4px;
-    background-color: .82ca66 !important;
+    background-color: #82ca66 !important;
     width: 280px;
     height: 350px;
     animation: in 1s;
     margin: 5px;
     padding: 50px;
+    z-index: 20;
 }
 .card h1{
     font-size: 50px;
@@ -206,11 +206,33 @@ button:hover{
     font-family: 'Roboto', sans-serif;
 }
 
-@media screen and (max-width: 1572px){
+@media screen and (max-width: 1603px){
     .gateWelcomeH1{
         display: none;
     }
     .cardContainer_gate{
         border: none;
+    }
+}
+
+@media screen and (max-width: 576px){
+    .gateWelcomeH1{
+        display: none;
+    }
+    .cardContainer_gate{
+        border: none;
+        margin-left: 0px;
+    }
+    .card{
+        width: 180px;
+        height: 380px;
+        margin: 5px;
+        padding: 30px;
+        margin-top: 20px;
+        margin-left: 70px;
+    }
+    
+    .card button{
+        margin-top: 15px;
     }
 }
