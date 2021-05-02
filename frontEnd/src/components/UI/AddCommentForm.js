@@ -1,79 +1,109 @@
-import React, { useState } from 'react';
+import React, { Component } from 'react';
 import axios from 'axios';
+import classes from './AddCommentForm.module.css';
 import getToken from '../../getToken';
 import Flash from './flash';
 import { FiSend } from 'react-icons/fi' 
-import classes from './AddCommentForm.module.css';
 
-const AddCommentForm = () => {
-    let token = getToken();
-    const [content, setcontent] = useState();
-    const [ready, setready] = useState();
-    const [flashMessage, setflashMessage] = useState("");
-    const [flashNotClosed, setflashNotClosed] = useState(true);
+class AddCommentForm extends Component {
+    constructor(props){
+        super(props);
+        let token = getToken();
 
-    let flash = (message) => {
-        setflashMessage(message);
+        let userData;
+            let local = localStorage.getItem('userData');
+            let session = sessionStorage.getItem('userData');
+            if(local !== null){
+                userData = JSON.parse(local);
+            }
+            else if(session !== null){
+                userData = JSON.parse(session);
+            }
+        
+        this.state = {
+            token: token,
+            userData: userData,
+            content: "",
+            flashMessage: "",
+            flashNotClosed: true
+        }
+
+        this.flash.bind(this);
+        this.sendComment.bind(this);
+
+    }
+    
+    flash = (message) => {
+        this.setState({flashMessage: message});
 
         setTimeout(()=>{
-            setflashNotClosed(false);
+            this.setState({flashNotClosed: false})
         }, 2000)
 
         setTimeout(()=>{
-            setflashMessage("");
+            this.setState({flashMessage: ""});
         }, 3000);
     
         setTimeout(()=>{
-            setflashNotClosed(true);
+            this.setState({flashNotClosed: true})
         }, 3000);
     }
 
-    let sendComment = (e, content) => {
+    sendComment = (e, content) => {
+        // window.location.reload();
         e.preventDefault();
-        flash("ok");
-        setcontent("");
-        // axios({
-        //     method: 'post',
-        //     url: `http://localhost:3001/comments/new`,
-        //     headers: {'Authorization': token},
-        //     data: {
-        //         content: content
-        //     }
-        // })
-        // .then((res)=>{
-        //     if(res.status===200){
-        //         flash("you posted a comment!");
-        //         return;
-        //     }
-        // })
-        // .catch(error => {
-        //     flash(error);
-        //     console.log(error);
-        // })
+        if(content === ""){
+            this.flash("you cannot send an empty comment");
+            return;
+        }
+
+        axios({
+            method: 'post',
+            url: `http://localhost:3001/comments/new`,
+            headers: {'Authorization': this.state.token},
+            data: {
+                content: content,
+                author: this.state.userData._id,
+                blogId: this.props.blogId
+            }
+        })
+        .then((res)=>{
+            console.log(res)
+            if(res.status===201){
+                this.flash("you posted a comment!");
+                this.setState({content: ""});
+                this.props.afterSend();
+            }
+        })
+        .catch(error => {
+            this.flash(error);
+            console.log(error);
+        })
+
     }   
 
-    let flashView = null;
-    if(flashMessage && flashNotClosed){
-        flashView = <Flash>{flashMessage}</Flash>
-    }
-    else if(flashMessage && flashNotClosed === false){
-        flashView = <Flash close>{flashMessage}</Flash>
-    }
-
-
-    return (
-        <React.Fragment>
-            <div className={classes.mainContainer}>
+    render() { 
+        let flashView = null;
+        if(this.state.flashMessage && this.state.flashNotClosed){
+            flashView = <Flash>{this.state.flashMessage}</Flash>
+        }
+        else if(this.state.flashMessage && this.state.flashNotClosed === false){
+            flashView = <Flash close>{this.state.flashMessage}</Flash>
+        }
+        return (
+            <React.Fragment>
+                <div className={classes.mainContainer}>
                 <form>
-                    <input placeholder="write your comment here" onClick={(event)=>setcontent(event.target.value)}/>
+                    <input value={this.state.content} placeholder="write your comment here" onChange={(event)=>this.setState({content: event.target.value})}/>
                 </form>
-                <div onClick={(e) => sendComment(e, content)} className={classes.sendIcon}>
+                <div onClick={(e) => this.sendComment(e, this.state.content)} className={classes.sendIcon}>
                     <FiSend size="2em"/>
                 </div>
             </div>
-            {flashView}
-        </React.Fragment>
-    );
+                {flashView}
+            </React.Fragment>
+        );
+    }
 }
  
 export default AddCommentForm;

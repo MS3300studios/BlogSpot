@@ -1,15 +1,20 @@
 const express = require('express');
 const router = express();
 
-const comment = require('../models/comment');
+const Comment = require('../models/comment');
 const auth = require('../middleware/authorization');
 
 router.use(express.json());
 
 router.post('/comments/new', auth, (req, res) => {
-    const comment = new comment({
+    console.log(req.body)
+    if(req.body.content === ""){
+        res.sendStatus(500)
+    }
+    const comment = new Comment({
         content: req.body.content,
-        author: req.userData.userId
+        author: req.userData.userId,
+        blogId: req.body.blogId
     });
 
     comment.save()
@@ -23,7 +28,7 @@ router.post('/comments/new', auth, (req, res) => {
 });
 
 router.get('/comments', auth, (req, res) => {
-    comment.find({author: req.userData.userId})
+    Comment.find({author: req.userData.userId})
         .exec()
         .then(comments => {
             return res.status(200).json({
@@ -39,9 +44,9 @@ router.get('/comments', auth, (req, res) => {
 });
 
 router.post('/comments/limited', auth, (req, res) => {
-    console.log(req.body)
     let limit = req.body.limit;
-    comment.find({author: req.userData.userId}).sort({ createdAt: -1 }).limit(limit)
+    let blogId = req.body.blogId;
+    Comment.find({blogId: blogId}).sort({ createdAt: -1 }).limit(limit)
         .exec()
         .then(comments => {
             return res.status(200).json({
@@ -50,14 +55,14 @@ router.post('/comments/limited', auth, (req, res) => {
         })
         .catch(err => {
             return res.status(500).json({
-                message: 'user not found',
+                message: 'comments not found',
                 error: err
             })
         });
 })
 
 router.get('/comments/one/:commentId', auth, (req, res) => {
-    comment.findById({_id: req.params.commentId})
+    Comment.findById({_id: req.params.commentId})
         .exec()
         .then(comment => {
             return res.status(200).json({
@@ -75,7 +80,7 @@ router.get('/comments/one/:commentId', auth, (req, res) => {
 
 router.delete('/comments/delete/:commentId', auth, (req, res) => {
     console.log(req.params.commentId)
-    comment.deleteOne({_id: req.params.commentId})
+    Comment.deleteOne({_id: req.params.commentId})
         .exec()
         .then((response => {
             console.log('deleted?')
@@ -90,7 +95,7 @@ router.delete('/comments/delete/:commentId', auth, (req, res) => {
 
 router.post('/comments/edit/:commentId', auth, (req, res) => {
     console.log(req.body)
-    comment.findByIdAndUpdate(req.params.commentId, {title: req.body.title, content: req.body.content})
+    Comment.findByIdAndUpdate(req.params.commentId, {title: req.body.title, content: req.body.content})
     .exec()
         .then((response => {
             console.log(response);
