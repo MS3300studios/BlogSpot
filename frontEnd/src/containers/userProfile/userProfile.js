@@ -15,15 +15,16 @@ class UserProfile extends Component {
     constructor(props){
         super(props);
 
+        //getting token
         let token = getToken();
 
+        //getting userId from params
+        let queryParams = new URLSearchParams(this.props.location.search);
+        let userId = queryParams.get('id'); 
+        console.log(userId)
+        //getting currently logged user data
         let userData = {};
-        let userId;
-        let userLogged = false;
-
-        if(props.location.pathname === "/myProfile"){
-            userLogged = true;
-            let local = localStorage.getItem('userData');
+        let local = localStorage.getItem('userData');
             let session = sessionStorage.getItem('userData');
             if(local !== null){
                 userData = JSON.parse(local);
@@ -31,12 +32,12 @@ class UserProfile extends Component {
             else if(session !== null){
                 userData = JSON.parse(session);
             }
-            userId = userData._id;
+        
+        //determining wether the profile of the user is the user currently logged
+        let userLogged = false;
+        if(userId === userData._id){
+            userLogged = true;
         }
-        else{
-            let queryParams = new URLSearchParams(props.location.search);
-            userId = queryParams.get('id'); 
-        }        
 
         this.state = { 
             token: token,
@@ -56,7 +57,7 @@ class UserProfile extends Component {
         if(this.state.userLogged === false){
             axios({
                 method: 'get',
-                url: `http://localhost:3001/users/getUser/${this.state.postId}`,
+                url: `http://localhost:3001/users/getUser/${this.state.userId}`,
                 headers: {'Authorization': this.state.token},
             }).then((res) => {
                 console.log(res)
@@ -198,7 +199,7 @@ class UserProfile extends Component {
                     </div>
                  </div>
                  <div className={classes.center}>
-                    <TabSelector selectedOption={this.state.currentSelectedMenu} />
+                    <TabSelector selectedOption={this.state.currentSelectedMenu} userId={this.props.location.search}/>
                  </div>
              </React.Fragment>
         );

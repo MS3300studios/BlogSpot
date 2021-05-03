@@ -15,8 +15,11 @@ class BlogsTab extends Component {
         super(props);
 
         let token = getToken()
+        let queryParams = new URLSearchParams(this.props.userId);
+        let userId = queryParams.get('id'); 
 
         this.state = {
+            userId: userId,
             token: token,
             blogs: [],
             limit: 2,
@@ -37,7 +40,7 @@ class BlogsTab extends Component {
             method: 'post',
             url: `http://localhost:3001/blogs/limited`,
             headers: {'Authorization': this.state.token},
-            data: {limit: this.state.limit}
+            data: {limit: this.state.limit, authorId: this.state.userId}
         })
         .then((res)=>{
             if(res.status===200){

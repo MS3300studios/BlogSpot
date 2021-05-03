@@ -7,7 +7,7 @@ import BlogsTab from '../tabs/Blogs';
 const TabSelector = (props) => {
     let display;
     if(props.selectedOption === "Blogs"){
-        display = <BlogsTab />
+        display = <BlogsTab userId={props.userId} />
     }
     return (
         <div className={classes.mainContainer}>

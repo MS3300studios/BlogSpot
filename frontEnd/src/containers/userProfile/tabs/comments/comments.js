@@ -79,7 +79,7 @@ class Comments extends Component {
                 <React.Fragment key={index}>
                     <div className={classes.commentContainer} key={index}>
                         <div className={classes.topBar}>    
-                            <p className={classes.commentAuthor}><Link to={"/user/profile/"+comment.author}>@{comment.authorNick}</Link></p>
+                            <p className={classes.commentAuthor}><Link to={"/user/profile/?id="+comment.author} onClick={() => window.location.reload()}>@{comment.authorNick}</Link></p>
 
                             <div className={classes.numberInfoContainer}>
                                 <div className={classes.numberInfoInnerContainer}>

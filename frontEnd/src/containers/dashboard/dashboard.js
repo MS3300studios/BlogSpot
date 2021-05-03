@@ -115,7 +115,7 @@ class Dashboard extends Component {
     getPosts = () => {
         axios({
             method: 'get',
-            url: 'http://localhost:3001/blogs',
+            url: 'http://localhost:3001/myBlogs',
             params: {},
             headers: {'Authorization': this.state.token}
         })
