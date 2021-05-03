@@ -65,6 +65,7 @@ class AddCommentForm extends Component {
             data: {
                 content: content,
                 author: this.state.userData._id,
+                authorNick: this.state.userData.nickname,
                 blogId: this.props.blogId
             }
         })

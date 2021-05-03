@@ -13,6 +13,7 @@ router.post('/comments/new', auth, (req, res) => {
     const comment = new Comment({
         content: req.body.content,
         author: req.userData.userId,
+        authorNick: req.body.authorNick,
         blogId: req.body.blogId
     });
 
