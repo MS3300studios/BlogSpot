@@ -21,10 +21,12 @@ const UserPhoto = (props) => {
 
     const [logOut, setlogOut] = useState(false);
     const [nickname, setNickname] = useState();
+    const [userId, setuserId] = useState();
 
     useEffect(() => {
         getUserData();
         setNickname(userData.nickname);
+        setuserId(userData._id);
     });
 
     return ( 
@@ -33,7 +35,7 @@ const UserPhoto = (props) => {
             <div className={classes.dropdownContent}>
                 <h1 className={classes.dropdownUsername}>{nickname}</h1>
                 <hr />
-                <Link to="/myProfile" className={classes.myProfileLink}><p>My Profile</p></Link>
+                <Link to={"/user/profile/"+userId} className={classes.myProfileLink}><p>My Profile</p></Link>
                 <p>Settings</p>
                 <p onClick={() => setlogOut(true)}>Log Out</p>
                 {logOut ? logout() : null}

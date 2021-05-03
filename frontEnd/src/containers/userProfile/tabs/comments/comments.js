@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 import classes from './comments.module.css';
 import Button from '../../../../components/UI/button';
@@ -78,7 +79,7 @@ class Comments extends Component {
                 <React.Fragment key={index}>
                     <div className={classes.commentContainer} key={index}>
                         <div className={classes.topBar}>    
-                            <p className={classes.commentAuthor}>@{comment.authorNick}</p>
+                            <p className={classes.commentAuthor}><Link to={"/user/profile/"+comment.author}>@{comment.authorNick}</Link></p>
 
                             <div className={classes.numberInfoContainer}>
                                 <div className={classes.numberInfoInnerContainer}>

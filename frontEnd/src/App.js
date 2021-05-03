@@ -42,7 +42,8 @@ class App extends Component {
           <Menu />
           <Switch>
             <Route path="/post/" component={PostView} />
-            <Route path="/myProfile" component={UserProfile} />
+            {/* <Route path="/myProfile" component={UserProfile} /> */}
+            <Route path="/user/profile/" component={UserProfile} />
             <Route path="/" render={()=><Dashboard />} />
           </Switch>
         </React.Fragment>

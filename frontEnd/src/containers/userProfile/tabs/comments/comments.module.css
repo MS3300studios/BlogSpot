@@ -16,6 +16,10 @@
 .commentAuthor{
     font-weight: 500;
 }
+.commentAuthor a{
+    color: inherit;
+    text-decoration: none;
+}
 
 .commentContent{
     margin-top: -10px;
