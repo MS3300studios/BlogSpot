@@ -1,22 +1,24 @@
 .mainContainer{
     position: relative;
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
 } 
 
 .mainContainer form{
-    width: 40%;
     margin-left: 5px;
+    width: 100%;
 } 
 
 .mainContainer input{
     border: none;
     border-radius: 50px;
-    width: 300px;
+    width: 96%;
     height: 20px;
     padding: 8px;
 } 
 
 .sendIcon{
-    position: absolute;
-    left: 325px;
-    top: 2px;
+    margin-top: 2px;
+    margin-right: 20px;
 }

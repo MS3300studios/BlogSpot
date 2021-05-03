@@ -44,6 +44,7 @@
 .h1Container h1 a{
     text-decoration: none;
     color: inherit;
+    transition: 0.3s all ease-in;
 }
 
 .numberInfoContainer{
