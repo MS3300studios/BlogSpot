@@ -29,19 +29,17 @@ class Comments extends Component {
     }
 
     componentDidMount(){
-        // console.log('componentDidMount\n');
         this.getComments();
     }
 
-    getComments = async (newLimit) => {
-        console.log('getting comments \n');
+    getComments = (newLimit) => {
         let limit = this.state.limit;
         if(newLimit){
             this.setState({limit: newLimit});
             limit = newLimit;
         }
 
-        await axios({
+        axios({
             method: 'post',
             url: `http://localhost:3001/comments/limited`,
             headers: {'Authorization': this.state.token},
@@ -56,8 +54,6 @@ class Comments extends Component {
                 res.data.comments.forEach(element => {
                     comments.push(element);
                 });
-                // this.setState({comments: comments});
-                //console.log('comments before loading userData: \n', comments);
                 this.loadCommentAuthorsData(comments);
                 return;
             }
@@ -67,11 +63,12 @@ class Comments extends Component {
         })
     }
 
-    loadCommentAuthorsData = (comments) => {
-        //console.log('inside loading userData for comments \n')
-        let fullDataComments = [];
-        comments.forEach(async (comment)=>{
+    loadCommentAuthorsData = async (comments) => {
+        // let fullDataComments = [];
+        // console.log(comments)
+        let fullDataComments = comments.map(async (comment) => {
             let id = comment.author;
+            let rdyComment;
             await axios({
                 method: 'get',
                 url: `http://localhost:3001/users/getUser/${id}`,
@@ -79,19 +76,38 @@ class Comments extends Component {
             })
             .then((res)=>{
                 if(res.status === 200){
-                    //console.log('res status was 200!')
-                    comment.authorNickname = res.data.user.nickname;                
-                    fullDataComments.push(comment);
-                    return;
-                }
+                    comment.authorNickname = res.data.user.nickname;              
+                    // fullDataComments.push(comment);
+                    rdyComment = comment;
+                } 
             })
             .catch(error => {
                 console.log(error);
             })
+
+            return rdyComment;
         })
-        //console.log('setting state after axios asked for user data for comments')
+        console.log(fullDataComments[0]);
+
+        // await comments.forEach( (comment, index)=>{
+        //     let id = comment.author;
+        //     axios({
+        //         method: 'get',
+        //         url: `http://localhost:3001/users/getUser/${id}`,
+        //         headers: {'Authorization': this.state.token}
+        //     })
+        //     .then((res)=>{
+        //         if(res.status === 200){
+        //             comment.authorNickname = res.data.user.nickname;              
+        //             fullDataComments.push(comment);
+        //         }
+        //     })
+        //     .catch(error => {
+        //         console.log(error);
+        //     })
+        // })
+        
         this.setState({comments: fullDataComments})
-        //console.log('state is set now?')
     }
 
     loadmorehandler = () => {
@@ -104,37 +120,39 @@ class Comments extends Component {
     }
 
     render() { 
-        let comments = this.state.comments.map((comment, index) => {
-            return ( 
-                <React.Fragment key={index}>
-                    <div className={classes.commentContainer} key={index}>
-                        <div className={classes.topBar}>    
-                            <p className={classes.commentAuthor}>@{comment.authorNickname}</p>
+        console.log(this.state.comments)
+        let comments = null;
+        // let comments = this.state.comments.map((comment, index) => { 
+        //     return ( 
+        //         <React.Fragment key={index}>
+        //             <div className={classes.commentContainer} key={index}>
+        //                 <div className={classes.topBar}>    
+        //                     <p className={classes.commentAuthor}>@{comment.authorNickname}</p>
 
-                            <div className={classes.numberInfoContainer}>
-                                <div className={classes.numberInfoInnerContainer}>
-                                    <div className={[classes.iconDataContainer, classes.likeIconPContainer].join(" ")}>
-                                        <AiFillLike size="1em" color="#0a42a4" className={classes.icon}/>
-                                        <p className={classes.likeP}>5</p>
-                                    </div>
-                                    <div className={classes.iconDataContainer}>
-                                        <AiFillDislike size="1em" color="#0a42a4" className={classes.icon}/>
-                                        <p className={classes.dislikeP}>0</p>
-                                    </div>
-                                    <div className={classes.iconDataContainer}>
-                                        <FaCommentAlt size="1em" color="#0a42a4" className={classes.icon}/>
-                                        <p>10</p>
-                                    </div>
-                                </div>
-                            </div>
+        //                     <div className={classes.numberInfoContainer}>
+        //                         <div className={classes.numberInfoInnerContainer}>
+        //                             <div className={[classes.iconDataContainer, classes.likeIconPContainer].join(" ")}>
+        //                                 <AiFillLike size="1em" color="#0a42a4" className={classes.icon}/>
+        //                                 <p className={classes.likeP}>5</p>
+        //                             </div>
+        //                             <div className={classes.iconDataContainer}>
+        //                                 <AiFillDislike size="1em" color="#0a42a4" className={classes.icon}/>
+        //                                 <p className={classes.dislikeP}>0</p>
+        //                             </div>
+        //                             <div className={classes.iconDataContainer}>
+        //                                 <FaCommentAlt size="1em" color="#0a42a4" className={classes.icon}/>
+        //                                 <p>10</p>
+        //                             </div>
+        //                         </div>
+        //                     </div>
 
-                            <p>{formattedCurrentDate(comment.createdAt)}</p>
-                        </div>
-                        <p className={classes.commentContent}>{comment.content}</p>
-                    </div>
-                </React.Fragment>                
-            )
-        })
+        //                     <p>{formattedCurrentDate(comment.createdAt)}</p>
+        //                 </div>
+        //                 <p className={classes.commentContent}>{comment.content}</p>
+        //             </div>
+        //         </React.Fragment>                
+        //     )
+        // })
 
 
         return (

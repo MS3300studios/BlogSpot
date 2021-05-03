@@ -41,6 +41,11 @@
     color: #04255f;
     float: left;
 }
+.h1Container h1 a{
+    text-decoration: none;
+    color: inherit;
+}
+
 .numberInfoContainer{
     width: 20%;
     position: relative;

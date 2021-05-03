@@ -8,6 +8,7 @@ import Button from '../../../components/UI/button';
 import getToken from '../../../getToken';
 import classes from './Blogs.module.css';
 import ShowComments from './comments/showComments';
+import { Link } from 'react-router-dom';
 
 class BlogsTab extends Component {
     constructor(props){
@@ -87,7 +88,7 @@ class BlogsTab extends Component {
                     <div className={classes.upperSegment}>
 
                         <div className={classes.h1Container}>
-                            <h1>{el.title}</h1>
+                            <h1><Link to={"/post/?id="+el._id}>{el.title}</Link></h1>
                         </div>
 
                         <div className={classes.numberInfoContainer}>
