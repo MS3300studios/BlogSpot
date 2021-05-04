@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
 import classes from './comments.module.css';
 import Button from '../../../../components/UI/button';
@@ -18,6 +18,7 @@ class Comments extends Component {
         let token = getToken();
 
         this.state = {
+            test: '',
             token: token,
             limit: 2,
             blogId: props.blogId,
@@ -79,7 +80,7 @@ class Comments extends Component {
                 <React.Fragment key={index}>
                     <div className={classes.commentContainer} key={index}>
                         <div className={classes.topBar}>    
-                            <p className={classes.commentAuthor}><Link to={"/user/profile/?id="+comment.author} onClick={() => window.location.reload()}>@{comment.authorNick}</Link></p>
+                            <p className={classes.commentAuthor}><Link to={"/user/profile/?id="+comment.author}>@{comment.authorNick}</Link></p>
 
                             <div className={classes.numberInfoContainer}>
                                 <div className={classes.numberInfoInnerContainer}>
@@ -117,4 +118,4 @@ class Comments extends Component {
     }
 }
  
-export default Comments;
+export default withRouter(Comments);

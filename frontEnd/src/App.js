@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, withRouter, Router } from 'react-router-dom';
 import { connect } from 'react-redux';
 // import io from 'socket.io-client';
 
@@ -40,11 +40,11 @@ class App extends Component {
       content = (
         <React.Fragment>
           <Menu />
-          <Switch>
-            <Route path="/post/" component={PostView} />
-            <Route path="/user/profile/" component={UserProfile} />
-            <Route path="/" render={()=><Dashboard />} />
-          </Switch>
+            <Switch>
+              <Route path="/post/" component={PostView} />
+              <Route path="/user/profile/" component={UserProfile} />
+              <Route path="/" render={()=><Dashboard />} />
+            </Switch>
         </React.Fragment>
       );
       gate = null;
