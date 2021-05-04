@@ -66,6 +66,7 @@ class UserProfile extends Component {
                     name: res.data.user.name,
                     surname: res.data.user.surname,
                     email: res.data.user.email,
+                    bio: res.data.user.bio,
                     createdAt: res.data.user.createdAt
                 };
                 this.setState({userData: user});
@@ -145,10 +146,10 @@ class UserProfile extends Component {
                             <img src={photoFiller} alt="user" className={classes.userPhoto}/>
                         </div>
                         <div className={classes.textInfoContainer}>
-                            <h1 className={classes.textNameH1}>Jenny Nguyen</h1>
-                            <h2 className={classes.textNameH2}>@Jenny928</h2>
+                            <h1 className={classes.textNameH1}>{this.state.userData.name}</h1>
+                            <h2 className={classes.textNameH2}>@{this.state.userData.nickname}</h2>
                             <div className={classes.bio}>
-                                <p>Lorem ipsum dolor sit amet consectetur adipiscing elit class eget, laoreet arcu volutpat proin ligula etiam sapien nec auctor, donec est morbi taciti nibh felis gravida dui. Varius morbi dui augue imperdiet torquent, cursus ad placerat eget ultrices, cubilia orci ornare mi. Quisque vivamus tempor fringilla nisi pellentesque quis potenti sed. Sit amet consectetur adipiscing elit.</p>
+                                <p>{this.state.userData.bio}</p>
                             </div>
                         </div>
                         <div className={classes.rightPartInfoContainer}>
