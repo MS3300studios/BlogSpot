@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import axios from 'axios'; 
-import convertBase64 from '../../../convertFileToBase64';
 
 import Flash from '../../../components/UI/flash';
 import classes from './registration.module.css';
@@ -59,13 +58,35 @@ class Registration extends Component {
         }
     }
     
-    photosubmit = async (e) => {
-        const photo64 = await convertBase64(e.target.files[0]);
-        this.setState({
-            photoPreview: URL.createObjectURL(e.target.files[0]),
-            photo: photo64
-        });
+    // photosubmit = async (e) => {
+    //     const photo64 = await convertBase64(e.target.files[0]);
+    //     this.setState({
+    //         photoPreview: URL.createObjectURL(e.target.files[0]),
+    //         photo: photo64
+    //     });
 
+    // }
+
+    photosubmit = (e) => {
+        var reader = new FileReader();
+        var data;
+
+        if(e.target.files.length>0){
+            reader.readAsDataURL(e.target.files[0]);
+            let execute = new Promise(function(resolve, reject) {
+                reader.onloadend = function() {
+                    data = reader.result;
+                    resolve(data);
+                }
+            });
+        
+            execute.then((b64string)=>{
+                this.setState({
+                    photoPreview: URL.createObjectURL(e.target.files[0]),
+                    photo: b64string
+                });
+            })
+        }
     }
 
     submitUser = (e) => {
@@ -76,22 +97,16 @@ class Registration extends Component {
             let email = this.state.email;
             let password = this.state.password;
             let nickname = this.state.nickname;
-            // let photo = this.state.photo;
-            // let userData = {
-            //     name: name,
-            //     surname: surname,
-            //     email: email,
-            //     password: password,
-            //     nickname: nickname,
-            //     photo: photo
-            // }
+            let photo = this.state.photo;
             let userData = {
                 name: name,
                 surname: surname,
                 email: email,
                 password: password,
                 nickname: nickname,
+                photo: photo
             }
+            
             axios.post('http://localhost:3001/users/register', userData)
                     .then((res)=>{
                         if(Object.keys(res.data).includes("error")){
@@ -173,7 +188,7 @@ class Registration extends Component {
                         <Button clicked={this.submitUser} disabled={!this.state.readyForSubmission}>Register</Button>
                     </div>
                 </form>
-                <label className={classes.labelLogin}>Don't have an account yet?</label>
+                <label className={classes.labelLogin}>Alredy have an account?</label>
                 <Link to="/login" className={classes.loginLink}>Log in here</Link>
                 {this.state.redirectToLogin ? <Redirect to="/login" /> : null}
             </div> 
