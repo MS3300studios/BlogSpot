@@ -4,21 +4,14 @@ import classes from './AddCommentForm.module.css';
 import getToken from '../../getToken';
 import Flash from './flash';
 import { RiSendPlaneFill, RiSendPlaneLine } from 'react-icons/ri' 
+import getUserData from '../../getUserData';
 
 class AddCommentForm extends Component {
     constructor(props){
         super(props);
         let token = getToken();
 
-        let userData;
-            let local = localStorage.getItem('userData');
-            let session = sessionStorage.getItem('userData');
-            if(local !== null){
-                userData = JSON.parse(local);
-            }
-            else if(session !== null){
-                userData = JSON.parse(session);
-            }
+        let userData = getUserData();
         
         this.state = {
             token: token,

@@ -11,6 +11,7 @@ import Button from '../UI/button';
 import PostForm from '../UI/PostForm';
 import Backdrop from '../UI/backdrop';
 import formattedCurrentDate from '../../formattedCurrentDate';
+import getUserData from '../../getUserData';
 
 class PostView extends Component {
     constructor(props){
@@ -21,15 +22,7 @@ class PostView extends Component {
         let postId = queryParams.get('id'); 
 
         //getting user nickname
-        let userData;
-        let local = localStorage.getItem('userData');
-        let session = sessionStorage.getItem('userData');
-        if(local !== null){
-            userData = JSON.parse(local);
-        }
-        else if(session !== null){
-            userData = JSON.parse(session);
-        }
+        let userData = getUserData();
 
         this.state = {
             postId: postId,

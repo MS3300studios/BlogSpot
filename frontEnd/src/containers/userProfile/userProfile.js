@@ -9,7 +9,7 @@ import getToken from '../../getToken';
 import { FaUserFriends } from 'react-icons/fa';
 import { AiFillPlusCircle, AiOutlinePlusCircle } from 'react-icons/ai';
 import { BiPhotoAlbum, BiPaperPlane } from 'react-icons/bi';
-
+import getUserData from '../../getUserData';
 
 class UserProfile extends Component {
     constructor(props){
@@ -22,15 +22,7 @@ class UserProfile extends Component {
         let queryParams = new URLSearchParams(this.props.location.search);
         let userId = queryParams.get('id'); 
         //getting currently logged user data
-        let userData = {};
-        let local = localStorage.getItem('userData');
-            let session = sessionStorage.getItem('userData');
-            if(local !== null){
-                userData = JSON.parse(local);
-            }
-            else if(session !== null){
-                userData = JSON.parse(session);
-            }
+        let userData = getUserData();
         
         //determining wether the profile of the user is the user currently logged
         let userLogged = false;

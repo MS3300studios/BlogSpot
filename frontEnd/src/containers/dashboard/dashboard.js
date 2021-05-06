@@ -15,6 +15,7 @@ import Flash from '../../components/UI/flash';
 import SearchBar from '../../components/UI/searchBar';
 import NoSearchResult from '../../components/UI/noSearchResult';
 import axios from 'axios';
+import getUserData from '../../getUserData';
 
 class Dashboard extends Component {
     constructor(props){
@@ -235,15 +236,7 @@ class Dashboard extends Component {
         let posts = null;
         let postsRdy = null;
 
-        let userData;
-        let local = localStorage.getItem('userData');
-        let session = sessionStorage.getItem('userData');
-        if(local !== null){
-            userData = JSON.parse(local);
-        }
-        else if(session !== null){
-            userData = JSON.parse(session);
-        } 
+        let userData = getUserData();
         
         //default filter: no filter applied
         if(filterIn==="none" || filterBy==="none"){
