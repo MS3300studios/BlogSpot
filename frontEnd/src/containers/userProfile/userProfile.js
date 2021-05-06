@@ -69,7 +69,7 @@ class UserProfile extends Component {
         let getData = new Promise((resolve, reject) => {
             axios({
                 method: 'get',
-                url: `http://localhost:3001/users/getUserPhoto/${this.state.userData._id}`,
+                url: `http://localhost:3001/users/getUserPhoto/${this.state.userId}`,
                 headers: {'Authorization': this.state.token},
             }).then((res) => {
                 resolve(res.data.photo);
