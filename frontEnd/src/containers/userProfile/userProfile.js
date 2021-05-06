@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import axios from 'axios';
 
 import classes from './userProfile.module.css';
-import photoFiller from '../../assets/userPhoto/image.jfif';
 import TabSelector from './tabSelector/tabSelector';
 import getToken from '../../getToken';
 // import Like from '../../components/UI/like';
@@ -31,6 +30,7 @@ class UserProfile extends Component {
         }
 
         this.state = { 
+            userPhoto: null,
             token: token,
             userId: userId,
             userData: userData,
@@ -66,6 +66,22 @@ class UserProfile extends Component {
                 console.log(error);
             })
         }
+        let getData = new Promise((resolve, reject) => {
+            axios({
+                method: 'get',
+                url: `http://localhost:3001/users/getUserPhoto/${this.state.userData._id}`,
+                headers: {'Authorization': this.state.token},
+            }).then((res) => {
+                resolve(res.data.photo);
+            })
+            .catch(error => {
+                reject(error);
+            })
+        })
+
+        getData.then((photo)=>{
+            this.setState({userPhoto: photo});
+        })
     }
 
     handleMenuSelect(selectedOption){
@@ -134,7 +150,7 @@ class UserProfile extends Component {
                 <div className={classes.flexContainer}>
                     <div className={classes.mainContainer}>
                         <div className={classes.imgContainer}>
-                            <img src={photoFiller} alt="user" className={classes.userPhoto}/>
+                            <img src={this.state.userPhoto} alt="user" className={classes.userPhoto}/>
                         </div>
                         <div className={classes.textInfoContainer}>
                             <h1 className={classes.textNameH1}>{this.state.userData.name}</h1>
