@@ -21,7 +21,7 @@ class Registration extends Component {
             readyForSubmission: false,
             flashMessage: "",
             flashNotClosed: true,
-            redirectToLogin: false
+            redirectToLogin: false,
         }
         
         this.photosubmit.bind(this);
@@ -57,20 +57,11 @@ class Registration extends Component {
             this.setState({readyForSubmission: false});
         }
     }
-    
-    // photosubmit = async (e) => {
-    //     const photo64 = await convertBase64(e.target.files[0]);
-    //     this.setState({
-    //         photoPreview: URL.createObjectURL(e.target.files[0]),
-    //         photo: photo64
-    //     });
-
-    // }
 
     photosubmit = (e) => {
         var reader = new FileReader();
         var data;
-
+        console.log(e.target.files)
         if(e.target.files.length>0){
             reader.readAsDataURL(e.target.files[0]);
             let execute = new Promise(function(resolve, reject) {
@@ -92,19 +83,13 @@ class Registration extends Component {
     submitUser = (e) => {
         e.preventDefault();
         if(this.state.name && this.state.surname && this.state.email && this.state.password && this.state.nickname){
-            let name = this.state.name;
-            let surname = this.state.surname;
-            let email = this.state.email;
-            let password = this.state.password;
-            let nickname = this.state.nickname;
-            let photo = this.state.photo;
             let userData = {
-                name: name,
-                surname: surname,
-                email: email,
-                password: password,
-                nickname: nickname,
-                photo: photo
+                name: this.state.name,
+                surname: this.state.surname,
+                email: this.state.email,
+                password: this.state.password,
+                nickname: this.state.nickname,
+                photoString: this.state.photo
             }
             
             axios.post('http://localhost:3001/users/register', userData)

@@ -21,7 +21,6 @@ class UserProfile extends Component {
         //getting userId from params
         let queryParams = new URLSearchParams(this.props.location.search);
         let userId = queryParams.get('id'); 
-        console.log(userId)
         //getting currently logged user data
         let userData = {};
         let local = localStorage.getItem('userData');

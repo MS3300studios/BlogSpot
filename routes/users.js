@@ -13,6 +13,7 @@ router.use(express.urlencoded({limit: '10mb', extended: true}));
 
 
 router.post('/users/register', (req, res) => {
+    console.log(req.body)
     bcrypt.hash(req.body.password, 10, function(err, hash){
         if(err) {
             return res.status(500).json({
@@ -103,6 +104,20 @@ router.get('/users/getUser/:userId', auth, (req, res) => {
             console.log(user)
             res.json({
                 user: user
+            });
+        })
+        .catch(error => {
+            console.log('get user error: ', error);
+            res.sendStatus(500);
+        })
+})
+
+router.get('/users/getUserPhoto/:userId', auth, (req, res) => {
+    User.findById(req.params.userId)
+        .exec()
+        .then(user => {
+            res.json({
+                photo: user.photo
             });
         })
         .catch(error => {
