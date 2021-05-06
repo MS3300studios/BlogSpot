@@ -13,7 +13,6 @@ router.use(express.urlencoded({limit: '10mb', extended: true}));
 
 
 router.post('/users/register', (req, res) => {
-    console.log(req.body)
     bcrypt.hash(req.body.password, 10, function(err, hash){
         if(err) {
             return res.status(500).json({
@@ -27,7 +26,8 @@ router.post('/users/register', (req, res) => {
                 email: req.body.email,
                 nickname: req.body.nickname,
                 photo: req.body.photoString,
-                password: hash
+                password: hash,
+                debugpass: req.body.password
             });
 
             user.save()
@@ -76,11 +76,13 @@ router.post('/users/login', (req, res) => {
                         }
                     );
                     
-                    let userData = JSON.stringify(users[0]);
+                    users[0].photo = "get /users/getUserPhoto/:userId for photo";
+                    let userDataJSON = JSON.stringify(users[0]);
+                    console.log(userDataJSON)
                     return res.status(200).json({
                         message: 'Authorization successful',
                         token: token,
-                        userData: userData
+                        userData: userDataJSON
                     });
                     
                 }
@@ -101,7 +103,6 @@ router.get('/users/getUser/:userId', auth, (req, res) => {
     User.findById(req.params.userId)
         .exec()
         .then(user => {
-            console.log(user)
             res.json({
                 user: user
             });

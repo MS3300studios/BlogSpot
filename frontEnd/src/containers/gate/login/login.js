@@ -55,7 +55,7 @@ class Login extends Component {
             email: this.state.email,
             password: this.state.password
         }
-
+        console.log(loginData);
         axios.post('http://localhost:3001/users/login', loginData)
             .then(res => {
                 if(res.status===200){
@@ -88,7 +88,6 @@ class Login extends Component {
     }
 
     flash = (message) => {
-        console.log(message)
         this.setState({flashMessage: message});
         
         setTimeout(()=>{
