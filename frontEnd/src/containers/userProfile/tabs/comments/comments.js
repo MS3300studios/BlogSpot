@@ -5,9 +5,10 @@ import { Link, withRouter } from 'react-router-dom';
 import classes from './comments.module.css';
 import Button from '../../../../components/UI/button';
 import AddCommentForm from '../../../../components/UI/AddCommentForm';
+import LikesCommentsNumbers from '../../../../components/UI/likesCommentsNumbers';
 
-import { FaCommentAlt } from 'react-icons/fa';
-import { AiFillLike, AiFillDislike } from 'react-icons/ai'
+// import { FaCommentAlt } from 'react-icons/fa';
+// import { AiFillLike, AiFillDislike } from 'react-icons/ai'
 import getToken from '../../../../getToken';
 import formattedCurrentDate from '../../../../formattedCurrentDate';
 
@@ -74,32 +75,13 @@ class Comments extends Component {
     }
 
     render() { 
-        console.log(this.state.comments)
         let comments = this.state.comments.map((comment, index) => { 
             return ( 
                 <React.Fragment key={index}>
                     <div className={classes.commentContainer} key={index}>
                         <div className={classes.topBar}>    
                             <p className={classes.commentAuthor}><a href={"/user/profile/?id="+comment.author}>@{comment.authorNick}</a></p>
-
-                            {/* convert this into component, make axios call for comment number, give blogId */}
-                            <div className={classes.numberInfoContainer}>
-                                <div className={classes.numberInfoInnerContainer}>
-                                    <div className={[classes.iconDataContainer, classes.likeIconPContainer].join(" ")}>
-                                        <AiFillLike size="1em" color="#0a42a4" className={classes.icon}/>
-                                        <p className={classes.likeP}>5</p>
-                                    </div>
-                                    <div className={classes.iconDataContainer}>
-                                        <AiFillDislike size="1em" color="#0a42a4" className={classes.icon}/>
-                                        <p className={classes.dislikeP}>0</p>
-                                    </div>
-                                    <div className={classes.iconDataContainer}>
-                                        <FaCommentAlt size="1em" color="#0a42a4" className={classes.icon}/>
-                                        <p>10</p>
-                                    </div>
-                                </div>
-                            </div>
-
+                            <LikesCommentsNumbers blogId={this.state.blogId}/>
                             <p>{formattedCurrentDate(comment.createdAt)}</p>
                         </div>
                         <p className={classes.commentContent}>{comment.content}</p>
