@@ -23,26 +23,38 @@ class LikesCommentsNumbers extends Component {
     }
 
     componentDidMount() {
-        axios({
-            method: 'post',
-            url: `http://localhost:3001/comments/getNumber`,
-            headers: {'Authorization': this.state.token},
-            data: {
-                blogId: this.props.blogId
-            }
-        })
-        .then((res)=>{
-            if(res.status===200){
-                this.setState({numberOfComments: res.count});
-                return;
-            }
-        })
-        .catch(error => {
-            console.log(error);
-        })
+        if(this.props.comments){
+            axios({
+                method: 'post',
+                url: "http://localhost:3001/comments/getNumber",
+                headers: {'Authorization': this.state.token},
+                data: {
+                    blogId: this.props.blogId
+                }
+            })
+            .then((res)=>{
+                if(res.status===200){
+                    this.setState({numberOfComments: res.data.count});
+                    return;
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            })
+        }
+        //get likes
     }
 
     render() { 
+        let commentIcon = null;
+        if(this.props.comments){
+            commentIcon = (
+                <div className={classes.iconDataContainer}>
+                        <FaCommentAlt size="1em" color="#0a42a4" className={classes.icon}/>
+                        <p>{this.state.numberOfComments}</p>
+                    </div>
+            )
+        }
         return (
             <div className={classes.numberInfoContainer}>
                 <div className={classes.numberInfoInnerContainer}>
@@ -54,10 +66,7 @@ class LikesCommentsNumbers extends Component {
                         <AiFillDislike size="1em" color="#0a42a4" className={classes.icon}/>
                         <p className={classes.dislikeP}>0</p>
                     </div>
-                    <div className={classes.iconDataContainer}>
-                        <FaCommentAlt size="1em" color="#0a42a4" className={classes.icon}/>
-                        <p>{this.state.numberOfComments}</p>
-                    </div>
+                    {commentIcon}
                 </div>
             </div>
         );
