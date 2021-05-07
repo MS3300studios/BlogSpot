@@ -6,7 +6,6 @@
     width: 136px;
     position: absolute;
     top: 15px;
-    right: -134px;
     display: flex;
     justify-content: space-around;
 }
@@ -37,4 +36,10 @@
 }
 .commentsContainer button{
     margin-top: 20px;
+}
+
+
+/* to be used only when comments are disabled */
+.movetoleft{
+    margin-left: -50px;
 }
