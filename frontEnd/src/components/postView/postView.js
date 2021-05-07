@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-// import { Link } from 'react-router-dom';
 import axios from 'axios';
 
+import Comments from '../../containers/userProfile/tabs/comments/comments';
 import * as actionTypes from '../../store/actions';
 import Spinner from '../UI/spinner';
 import classes from './postView.module.css';
@@ -116,11 +116,8 @@ class PostView extends Component {
                                         </div>
                                     </div>
                                 </div>
-                                <div className={classes.blogFace}>
-                                    <p>comment comment comment</p>
-                                    <p>comment comment comment</p>
-                                    <p>comment comment comment</p>
-                                    <p>comment comment comment</p>
+                                <div className={[classes.blogFace, classes.commentsContainer].join(" ")}>
+                                    <Comments blogId={this.state.postId} />
                                 </div>
                             </div>
                             <div className={classes.cardBig} >

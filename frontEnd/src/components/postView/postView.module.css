@@ -28,6 +28,11 @@
     padding-top: 0px;
 }
 
+.commentsContainer{
+    padding-top: 20px;
+    margin-top: 20px;
+}
+
 .btnsContainer{
     margin-top: 40px;
     width: 100%;
@@ -58,3 +63,4 @@
 .smallSpinnerLocation{
     margin-left: -65px;
 }
+
