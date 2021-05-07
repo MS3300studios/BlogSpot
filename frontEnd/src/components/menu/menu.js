@@ -5,8 +5,12 @@ import { IoNotifications, IoChatbubbles } from 'react-icons/io5';
 import classes from './menu.module.css';
 import Logo from '../UI/logo';
 import UserPhoto from '../UI/userphoto';
+import getUserData from '../../getUserData';
+
+let data = getUserData();
 
 const Menu = () => {
+    console.log(data._id)
     return ( 
         <nav className={classes.Menu}>
             <Logo />
@@ -32,7 +36,7 @@ const Menu = () => {
                     </div>                    
                 </div>          
             </div>
-            <UserPhoto/>
+            <UserPhoto userId={data._id} dropdown/>
         </nav>
     );
 }

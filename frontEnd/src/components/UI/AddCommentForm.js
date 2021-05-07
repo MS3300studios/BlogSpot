@@ -5,6 +5,7 @@ import getToken from '../../getToken';
 import Flash from './flash';
 import { RiSendPlaneFill, RiSendPlaneLine } from 'react-icons/ri' 
 import getUserData from '../../getUserData';
+import UserPhoto from '../UI/userphoto';
 
 class AddCommentForm extends Component {
     constructor(props){
@@ -88,6 +89,7 @@ class AddCommentForm extends Component {
         return (
             <React.Fragment>
                 <div className={classes.mainContainer}>
+                    <UserPhoto userId={this.state.userData._id} />
                     <form>
                         <input value={this.state.content} placeholder="write your comment here" onChange={(event)=>this.setState({content: event.target.value})}/>
                     </form>

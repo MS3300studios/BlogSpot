@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 
 import axios from 'axios';
 import logout from '../../logout';
-import { Link } from 'react-router-dom';
 import classes from './userphoto.module.css';
 import getToken from '../../getToken';
 import getUserData from '../../getUserData';
@@ -13,13 +12,18 @@ class UserPhoto extends Component {
 
         let token = getToken();
         let userData = getUserData();
+        
+        let userId = userData._id; //load user profile photo by default
+        if(props.userId){
+            userId = props.userId;
+        }
 
         this.state = {
             token: token,
             userData: userData,
             logOut: false,
             nickname: userData.nickname,
-            userId: userData.nickname,
+            userId: userId,
             photo: null
         }
     }
@@ -28,7 +32,7 @@ class UserPhoto extends Component {
         let getData = new Promise((resolve, reject) => {
             axios({
                 method: 'get',
-                url: `http://localhost:3001/users/getUserPhoto/${this.state.userData._id}`,
+                url: `http://localhost:3001/users/getUserPhoto/${this.state.userId}`,
                 headers: {'Authorization': this.state.token},
             }).then((res) => {
                 resolve(res.data.photo);
@@ -44,17 +48,25 @@ class UserPhoto extends Component {
     }
 
     render() { 
+
+        let dropdown = null;
+        if(this.props.dropdown){
+            dropdown = (
+                <div className={classes.dropdownContent}>
+                    <h1 className={classes.dropdownUsername}>{this.state.nickname}</h1>
+                    <hr />
+                    <a href={"/user/profile/?id="+this.state.userData._id} className={classes.myProfileLink}><p>My Profile</p></a>
+                    <p>Settings</p>
+                    <p onClick={() => this.setState({logOut: true})}>Log Out</p>
+                    {this.state.logOut ? logout() : null}
+                </div>
+            );
+        }
+
         return (
             <div className={classes.dropdown}>
             <img alt="user" src={this.state.photo} className={classes.userPhoto}/>
-            <div className={classes.dropdownContent}>
-                <h1 className={classes.dropdownUsername}>{this.state.nickname}</h1>
-                <hr />
-                <a href={"/user/profile/?id="+this.state.userData._id} className={classes.myProfileLink}><p>My Profile</p></a>
-                <p>Settings</p>
-                <p onClick={() => this.setState({logOut: true})}>Log Out</p>
-                {this.state.logOut ? logout() : null}
-            </div>
+            {dropdown}
         </div>
         );
     }
