@@ -32,27 +32,11 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:3001/blogs/new
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJlbmF0YWRhbmluc2t5QHRlc3QuY29tIiwidXNlcklkIjoiNjA3YTAxMTUwODdhNmI2MWY4ZDYxYjdiIiwiaWF0IjoxNjE4NjA4NDE4LCJleHAiOjE2MTg2MTIwMTh9.EEhiDTmPb71tVyBAGJmCptaTq6hUMiGspz3lAP0K0rI
+POST http://localhost:3001/comments/getNumber
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImphbmVTQGhvdG1haWwucnUiLCJ1c2VySWQiOiI2MDkzZjE1MzJmYTI5MDNjOTQwZjc5MmQiLCJpYXQiOjE2MjAzMzY1NDQsImV4cCI6MTYyMDM0MDE0NH0.GPaZCzR_pBpR_sLcOgXVdPv0npUruiTgwhJ6BfISdVA
 Content-Type: application/json
 
 {
-    "title": "second post from Renata",
-    "content": "sRenata renata renata"
+    "blogId": "6093f1b82fa2903c940f792e",
 }
 
-
-###
-
-GET http://localhost:3001/blogs
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im11a2VzaGt1cHBhQHRlc3QuY29tIiwidXNlcklkIjoiNjA3YTA3NWQwNmU0NDA2MzBjNTE2MWRmIiwiaWF0IjoxNjE4NjEwMDI1LCJleHAiOjE2MTg2MTM2MjV9.u8G0VFZuItSnMqYLj9_05bEikWPzrom75Da5BSWAfyA
-
-###
-POST http://localhost:3001/blogs/new 
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im11a2VzaGt1cHBhQHRlc3QuY29tIiwidXNlcklkIjoiNjA3YTA3NWQwNmU0NDA2MzBjNTE2MWRmIiwiaWF0IjoxNjE4NjEwMDI1LCJleHAiOjE2MTg2MTM2MjV9.u8G0VFZuItSnMqYLj9_05bEikWPzrom75Da5BSWAfyA
-Content-Type: application/json
-
-{
-    "title": "MUKESH post 3",
-    "content": "bullshit scammer content 3"
-}

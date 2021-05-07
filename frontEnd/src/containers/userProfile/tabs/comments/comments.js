@@ -82,6 +82,7 @@ class Comments extends Component {
                         <div className={classes.topBar}>    
                             <p className={classes.commentAuthor}><a href={"/user/profile/?id="+comment.author}>@{comment.authorNick}</a></p>
 
+                            {/* convert this into component, make axios call for comment number, give blogId */}
                             <div className={classes.numberInfoContainer}>
                                 <div className={classes.numberInfoInnerContainer}>
                                     <div className={[classes.iconDataContainer, classes.likeIconPContainer].join(" ")}>

@@ -40,8 +40,20 @@ router.get('/comments', auth, (req, res) => {
                 message: 'user not found',
                 error: err
             })
+        })
+})
+
+router.post('/comments/getNumber', auth, (req, res) => {
+    Comment.countDocuments({blogId: req.body.blogId})
+    .then((count) => {
+        return res.status(200).json({
+            count: count
         });
-});
+    })
+    .catch(error => {
+        console.error(error)
+    })
+})
 
 router.post('/comments/limited', auth, (req, res) => {
     let limit = req.body.limit;
@@ -51,13 +63,13 @@ router.post('/comments/limited', auth, (req, res) => {
         .then(comments => {
             return res.status(200).json({
                 comments: comments
-            })
+            });
         })
         .catch(err => {
             return res.status(500).json({
                 message: 'comments not found',
                 error: err
-            })
+            });
         });
 })
 
@@ -67,7 +79,7 @@ router.get('/comments/one/:commentId', auth, (req, res) => {
         .then(comment => {
             return res.status(200).json({
                 comment: comment
-            })
+            });
         })
         .catch(err => {
             console.log(err)
@@ -105,6 +117,12 @@ router.post('/comments/edit/:commentId', auth, (req, res) => {
             console.log("deleting error: ", err);
             res.sendStatus(500);
         })
+})
+
+
+
+router.get('/comments/getNumber', function (req, res) {
+    console.log('hello')
 })
 
 module.exports = router;
