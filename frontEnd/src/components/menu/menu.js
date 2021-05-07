@@ -22,6 +22,7 @@ const Menu = () => {
             <div className={classes.iconContainer}>
                 <div className={classes.otherIcons}>
                     <div
+                        className={classes.friendsIcon}
                         onMouseDown={()=>{
                             setpeoplePressed(true);
                             setredirect(true);
