@@ -6,6 +6,8 @@ import TabSelector from './tabSelector/tabSelector';
 import getToken from '../../getToken';
 // import Like from '../../components/UI/like';
 import { FaUserFriends } from 'react-icons/fa';
+import { BsPencil } from 'react-icons/bs';
+import { GoPencil } from 'react-icons/go';
 import { AiFillPlusCircle, AiOutlinePlusCircle } from 'react-icons/ai';
 import { BiPhotoAlbum, BiPaperPlane } from 'react-icons/bi';
 import getUserData from '../../getUserData';
@@ -40,6 +42,8 @@ class UserProfile extends Component {
             photosClass: [classes.border],
             friendsClass: [classes.border],
             badgesClass: [classes.border],
+            editPressed: false,
+            editing: false
         }
         this.handleMenuSelect.bind();
     }
@@ -145,6 +149,22 @@ class UserProfile extends Component {
     }
 
     render() { 
+
+        let editIcon = (
+            <div className={classes.editIconContainer}>
+                <div 
+                    className={classes.editIcon}
+                    onMouseDown={(e)=>{
+                        this.setState({editPressed: true, editing: true})
+                        // this.sendEditedBio(e, this.state.content)
+                    }}
+                    onMouseUp={()=>{this.setState({editPressed: false})}} 
+                >
+                    {this.state.editPressed ? <GoPencil size="1.5em" color="#0a42a4" /> : <BsPencil size="1.5em" color="#0a42a4" /> } 
+                </div>
+            </div>
+        )
+
         return ( 
             <React.Fragment>
                 <div className={classes.flexContainer}>
@@ -157,6 +177,7 @@ class UserProfile extends Component {
                             <h2 className={classes.textNameH2}>@{this.state.userData.nickname}</h2>
                             <div className={classes.bio}>
                                 <p>{this.state.userData.bio}</p>
+                                {editIcon}
                             </div>
                         </div>
                         <div className={classes.rightPartInfoContainer}>

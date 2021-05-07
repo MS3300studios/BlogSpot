@@ -48,6 +48,16 @@
     margin: 0;
     padding: 0;
 }
+
+.editIconContainer{
+    position: absolute;
+    top: 87%;
+    width: 95%;
+}
+.editIcon{
+    margin-left: 95%;
+}
+
 .textNameH1{
     color: #04255f;
     margin-bottom: 5px;
