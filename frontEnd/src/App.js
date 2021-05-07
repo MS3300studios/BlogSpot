@@ -76,10 +76,10 @@ class App extends Component {
           axios({
               method: 'post',
               url: `http://localhost:3001/blogLike/upvote`,
-              headers: {},
+              headers: {'Authorization': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1vbmljYS5oYXJyaXNvbkBnbWFpbC5jb20iLCJ1c2VySWQiOiI2MDk1Mjc1ZTYxMzdhMTUyZjhiZDVhODciLCJpYXQiOjE2MjA0MDk2MzIsImV4cCI6MTYyMDQxMzIzMn0.zlAkqH4OF54ojOheDalXNYXhmgxNUIkI3_iyB1kMjKc"},
               data: {
                 authorId: "6095275e6137a152f8bd5a87", //6095275e6137a152f8bd5a87 -> harrison
-                blogId: "609528346137a152f8bd5a8a" //6095279a6137a152f8bd5a88
+                blogId: "6095279a6137a152f8bd5a88" //6095279a6137a152f8bd5a88 -> this is my first post
               }
           })
           .then((res)=>{

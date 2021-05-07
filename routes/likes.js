@@ -65,14 +65,15 @@ router.post('/blogLike/upvote', auth, (req, res) => {
 
                     //adding new like
                     const blogLike = new BlogLike({
-                        authorId: req.body.authorId,
+                        authorId: req.userData.userId,
                         blogId: req.body.blogId
                     });
                 
                     blogLike.save()
                         .then(response => {
-                            res.sendStatus(201);
+                            // res.sendStatus(201);
                             console.log('created the like')
+                            return;
                         })
                         .catch(err => {
                             console.log(err);
@@ -83,8 +84,8 @@ router.post('/blogLike/upvote', auth, (req, res) => {
                     BlogDislike.findByIdAndDelete(blogDislike._id)
                     .exec()
                     .then((deletedDislike => {
-                        console.log('deleted the dislike');
-                        res.sendStatus(200);
+                        console.log('deleted the dislike and created the like');
+                        res.sendStatus(201);
                     }))
                     .catch(err => {
                         console.log("deleting error: ", err);
@@ -94,7 +95,7 @@ router.post('/blogLike/upvote', auth, (req, res) => {
                 else if(blogDislike === null){
                     //adding new like
                     const blogLike = new BlogLike({
-                        authorId: req.body.authorId,
+                        authorId: req.userData.userId,
                         blogId: req.body.blogId
                     });
                 
@@ -150,7 +151,8 @@ router.post('/blogLike/downvote', auth, (req, res) => {
                     .exec()
                     .then((deletedLike => {
                         console.log('deleted the like');
-                        res.sendStatus(200);
+                        // res.sendStatus(200);
+                        return;
                     }))
                     .catch(err => {
                         console.log("deleting error: ", err);
@@ -158,14 +160,14 @@ router.post('/blogLike/downvote', auth, (req, res) => {
                     })
 
                     const blogDislike = new BlogDislike({
-                        authorId: req.body.authorId,
+                        authorId: req.userData.userId,
                         blogId: req.body.blogId
                     });
                 
                     blogDislike.save()
                         .then(response => {
+                            console.log('created the dislike and deleted the like')
                             res.sendStatus(201);
-                            console.log('created the dislike')
                         })
                         .catch(err => {
                             console.log(err);
@@ -195,7 +197,7 @@ router.post('/blogLike/downvote', auth, (req, res) => {
                 else if(blogDislike === null){
                     //adding new dislike
                     const blogDislike = new BlogDislike({
-                        authorId: req.body.authorId,
+                        authorId: req.userData.userId,
                         blogId: req.body.blogId
                     });
                 
@@ -218,7 +220,7 @@ router.post('/blogLike/downvote', auth, (req, res) => {
 
 router.post('/commentLike/upvote', auth, (req, res) => {
     let checkIfLikedAlready = new Promise((resolve, reject) => {
-        CommentLike.findOne({authorId: req.userData.userId, commentId: req.body.commentId})
+        CommentLike.findOne({authorId: req.body.authorId, commentId: req.body.commentId})
         .then(commentLike => { 
             resolve(commentLike)
         })
