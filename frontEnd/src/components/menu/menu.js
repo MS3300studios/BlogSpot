@@ -10,7 +10,6 @@ import getUserData from '../../getUserData';
 let data = getUserData();
 
 const Menu = () => {
-    console.log(data._id)
     return ( 
         <nav className={classes.Menu}>
             <Logo />

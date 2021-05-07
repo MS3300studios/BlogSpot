@@ -48,6 +48,10 @@ class UserPhoto extends Component {
     }
 
     render() { 
+        let userPhotoClasses = classes.userPhoto;
+        if(this.props.small){
+            userPhotoClasses = classes.smallUserPhoto;
+        }
 
         let dropdown = null;
         if(this.props.dropdown){
@@ -65,9 +69,9 @@ class UserPhoto extends Component {
 
         return (
             <div className={classes.dropdown}>
-            <img alt="user" src={this.state.photo} className={classes.userPhoto}/>
-            {dropdown}
-        </div>
+                <img alt="user" src={this.state.photo} className={userPhotoClasses}/>
+                {dropdown}
+            </div>
         );
     }
 }

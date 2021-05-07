@@ -6,7 +6,19 @@
     border-radius: 50%;
 }
 
+.smallUserPhoto{
+    width: 45px;
+    height: 45px;
+    margin: 10px;
+    transition: 0.2s;
+    border-radius: 50%;
+}
+
 .userPhoto:hover{
+    transform: scale(1.2);
+}
+
+.smallUserPhoto:hover{
     transform: scale(1.2);
 }
 

@@ -6,9 +6,8 @@ import classes from './comments.module.css';
 import Button from '../../../../components/UI/button';
 import AddCommentForm from '../../../../components/UI/AddCommentForm';
 import LikesCommentsNumbers from '../../../../components/UI/likesCommentsNumbers';
+import UserPhoto from '../../../../components/UI/userphoto';
 
-// import { FaCommentAlt } from 'react-icons/fa';
-// import { AiFillLike, AiFillDislike } from 'react-icons/ai'
 import getToken from '../../../../getToken';
 import formattedCurrentDate from '../../../../formattedCurrentDate';
 
@@ -75,7 +74,10 @@ class Comments extends Component {
             return ( 
                 <React.Fragment key={index}>
                     <div className={classes.commentContainer} key={index}>
-                        <div className={classes.topBar}>    
+                        <div className={classes.topBar}>   
+                            <div className={classes.userPhotoDiv}>
+                                <a href={"/user/profile/?id="+comment.author}><UserPhoto userId={comment.author} small /></a>
+                            </div>
                             <p className={classes.commentAuthor}><a href={"/user/profile/?id="+comment.author}>@{comment.authorNick}</a></p>
                             <LikesCommentsNumbers blogId={this.state.blogId}/>
                             <p>{formattedCurrentDate(comment.createdAt)}</p>
@@ -85,8 +87,6 @@ class Comments extends Component {
                 </React.Fragment>                
             )
         })
-
-        console.log(this.state.limit)
 
         return (
             <div className={classes.commentsContainer}>

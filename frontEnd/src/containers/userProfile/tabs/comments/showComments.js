@@ -29,7 +29,7 @@ const ShowComments = (props) => {
             >{message}</p>
             <hr />
             {
-                show ? <Comments blogId={props.blogId} /> : null
+                show ? <Comments blogId={props.blogId}/> : null
             }
         </React.Fragment>
     );
