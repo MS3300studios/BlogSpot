@@ -86,13 +86,17 @@ class AddCommentForm extends Component {
         else if(this.state.flashMessage && this.state.flashNotClosed === false){
             flashView = <Flash close>{this.state.flashMessage}</Flash>
         }
+        let smallClass = classes.mainForm;
+        if(this.props.small){
+            smallClass = [classes.mainForm, classes.smallForm].join(" ");
+        }
         return (
             <React.Fragment>
                 <div className={classes.mainContainer}>
                     <div className={classes.userPhotoDiv}>
                         <UserPhoto userId={this.state.userData._id} />
                     </div>
-                    <form>
+                    <form className={smallClass}>
                         <input value={this.state.content} placeholder="write your comment here" onChange={(event)=>this.setState({content: event.target.value})}/>
                     </form>
                     <div 

@@ -71,10 +71,10 @@ class Comments extends Component {
 
     render() { 
         let authorClassArr = classes.commentAuthor;
-        let smallStylesForLikes = false;
+        let setSmall = false;
         if(this.props.small) {
             authorClassArr=[classes.smallAuthorClass, classes.commentAuthor].join(" ");
-            smallStylesForLikes = true;
+            setSmall = true;
         }
         let comments = this.state.comments.map((comment, index) => { 
             return ( 
@@ -89,7 +89,7 @@ class Comments extends Component {
                             <p className={authorClassArr}>
                                 <a href={"/user/profile/?id="+comment.author}>@{comment.authorNick}</a>
                             </p>
-                            <LikesCommentsNumbers blogId={this.state.blogId} small={smallStylesForLikes}/>
+                            <LikesCommentsNumbers blogId={this.state.blogId} small={setSmall}/>
                             <p>{formattedCurrentDate(comment.createdAt)}</p>
                         </div>
                         <p className={classes.commentContent}>{comment.content}</p>
@@ -100,7 +100,7 @@ class Comments extends Component {
 
         return (
             <div className={classes.commentsContainer}>
-                <AddCommentForm blogId={this.state.blogId} afterSend={this.getComments}/>
+                <AddCommentForm blogId={this.state.blogId} afterSend={this.getComments} small={setSmall}/>
                 {comments}
                 <Button clicked={this.loadmorehandler}>Load more comments</Button>
             </div>

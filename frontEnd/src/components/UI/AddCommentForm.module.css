@@ -5,10 +5,14 @@
     width: 100%;
 } 
 
-.mainContainer form{
+.mainForm{
     margin-left: 5px;
     width: 100%;
 } 
+
+.smallForm{
+    margin-left: -60px;
+}
 
 .mainContainer input{
     border: none;

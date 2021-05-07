@@ -40,7 +40,6 @@ class PostView extends Component {
     }
 
     componentDidMount(){
-        console.log(this.state.userData)
         axios({
             method: 'get',
             url: `http://localhost:3001/blogs/one/${this.state.postId}`,
