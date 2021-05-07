@@ -66,12 +66,8 @@ class Comments extends Component {
     }
 
     loadmorehandler = () => {
-        this.setState((prevState) => {
-            return {
-                ...prevState,
-                limit: prevState.limit+2
-            }
-        })
+        let newLimit = this.state.limit+2;
+        this.getComments(newLimit);
     }
 
     render() { 
@@ -90,6 +86,7 @@ class Comments extends Component {
             )
         })
 
+        console.log(this.state.limit)
 
         return (
             <div className={classes.commentsContainer}>
