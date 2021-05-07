@@ -1,6 +1,9 @@
 import React from 'react';
+import { useState } from 'react';
+import { Redirect } from 'react-router-dom';
 
-import { FaUserFriends } from 'react-icons/fa';
+import { BsPeople, BsPeopleFill } from 'react-icons/bs';
+
 import { IoNotifications, IoChatbubbles } from 'react-icons/io5';
 import classes from './menu.module.css';
 import Logo from '../UI/logo';
@@ -10,12 +13,26 @@ import getUserData from '../../getUserData';
 let data = getUserData();
 
 const Menu = () => {
+    const [peoplePressed, setpeoplePressed] = useState(false);
+    const [redirect, setredirect] = useState(false);
+
     return ( 
         <nav className={classes.Menu}>
             <Logo />
             <div className={classes.iconContainer}>
                 <div className={classes.otherIcons}>
-                    <FaUserFriends size="2em" color="#0a42a4"/>
+                    <div
+                        onMouseDown={()=>{
+                            setpeoplePressed(true);
+                            setredirect(true);
+                        }}
+                        onMouseUp={()=>{
+                            setpeoplePressed(false);
+                            setredirect(false);
+                        }} 
+                    >                            
+                        {peoplePressed ? <BsPeople size="2em" color="#0a42a4"/> : <BsPeopleFill size="2em" color="#0a42a4"/>}
+                    </div>
                     <IoChatbubbles size="2em" color="#0a42a4"/>  
                 </div>
                 <div className={classes.dropdown}>
@@ -36,6 +53,7 @@ const Menu = () => {
                 </div>          
             </div>
             <UserPhoto userId={data._id} dropdown/>
+            {redirect ? <Redirect to="/user/friends/" /> : null}
         </nav>
     );
 }
