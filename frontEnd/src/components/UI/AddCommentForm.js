@@ -89,7 +89,9 @@ class AddCommentForm extends Component {
         return (
             <React.Fragment>
                 <div className={classes.mainContainer}>
-                    <UserPhoto userId={this.state.userData._id} />
+                    <div className={classes.userPhotoDiv}>
+                        <UserPhoto userId={this.state.userData._id} />
+                    </div>
                     <form>
                         <input value={this.state.content} placeholder="write your comment here" onChange={(event)=>this.setState({content: event.target.value})}/>
                     </form>
