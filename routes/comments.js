@@ -120,10 +120,4 @@ router.post('/comments/edit/:commentId', auth, (req, res) => {
         })
 })
 
-
-
-router.get('/comments/getNumber', function (req, res) {
-    console.log('hello')
-})
-
 module.exports = router;
