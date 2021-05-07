@@ -76,7 +76,9 @@ class Comments extends Component {
                     <div className={classes.commentContainer} key={index}>
                         <div className={classes.topBar}>   
                             <div className={classes.userPhotoDiv}>
-                                <a href={"/user/profile/?id="+comment.author}><UserPhoto userId={comment.author} small /></a>
+                                <a href={"/user/profile/?id="+comment.author}>
+                                    <UserPhoto userId={comment.author} small />
+                                </a>
                             </div>
                             <p className={classes.commentAuthor}><a href={"/user/profile/?id="+comment.author}>@{comment.authorNick}</a></p>
                             <LikesCommentsNumbers blogId={this.state.blogId}/>

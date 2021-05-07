@@ -11,6 +11,7 @@ import { GoPencil } from 'react-icons/go';
 import { AiFillPlusCircle, AiOutlinePlusCircle } from 'react-icons/ai';
 import { BiPhotoAlbum, BiPaperPlane } from 'react-icons/bi';
 import getUserData from '../../getUserData';
+import Spinner from '../../components/UI/spinner';
 
 class UserProfile extends Component {
     constructor(props){
@@ -165,12 +166,17 @@ class UserProfile extends Component {
             </div>
         )
 
+        let userImg = <Spinner darkgreen />
+        if(this.state.userPhoto){
+            userImg = <img src={this.state.userPhoto} alt="user" className={classes.userPhoto}/>
+        }
+
         return ( 
             <React.Fragment>
                 <div className={classes.flexContainer}>
                     <div className={classes.mainContainer}>
                         <div className={classes.imgContainer}>
-                            <img src={this.state.userPhoto} alt="user" className={classes.userPhoto}/>
+                            {userImg}
                         </div>
                         <div className={classes.textInfoContainer}>
                             <h1 className={classes.textNameH1}>{this.state.userData.name}</h1>
