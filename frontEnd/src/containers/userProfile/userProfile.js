@@ -179,7 +179,7 @@ class UserProfile extends Component {
                             {userImg}
                         </div>
                         <div className={classes.textInfoContainer}>
-                            <h1 className={classes.textNameH1}>{this.state.userData.name}</h1>
+                            <h1 className={classes.textNameH1}>{this.state.userData.name+" "+this.state.userData.surname}</h1>
                             <h2 className={classes.textNameH2}>@{this.state.userData.nickname}</h2>
                             <div className={classes.bio}>
                                 <p>{this.state.userData.bio}</p>

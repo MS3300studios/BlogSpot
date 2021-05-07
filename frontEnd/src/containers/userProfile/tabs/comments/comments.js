@@ -70,6 +70,12 @@ class Comments extends Component {
     }
 
     render() { 
+        let authorClassArr = classes.commentAuthor;
+        let smallStylesForLikes = false;
+        if(this.props.small) {
+            authorClassArr=[classes.smallAuthorClass, classes.commentAuthor].join(" ");
+            smallStylesForLikes = true;
+        }
         let comments = this.state.comments.map((comment, index) => { 
             return ( 
                 <React.Fragment key={index}>
@@ -80,8 +86,10 @@ class Comments extends Component {
                                     <UserPhoto userId={comment.author} small />
                                 </a>
                             </div>
-                            <p className={classes.commentAuthor}><a href={"/user/profile/?id="+comment.author}>@{comment.authorNick}</a></p>
-                            <LikesCommentsNumbers blogId={this.state.blogId}/>
+                            <p className={authorClassArr}>
+                                <a href={"/user/profile/?id="+comment.author}>@{comment.authorNick}</a>
+                            </p>
+                            <LikesCommentsNumbers blogId={this.state.blogId} small={smallStylesForLikes}/>
                             <p>{formattedCurrentDate(comment.createdAt)}</p>
                         </div>
                         <p className={classes.commentContent}>{comment.content}</p>

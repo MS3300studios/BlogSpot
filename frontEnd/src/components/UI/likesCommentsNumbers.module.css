@@ -43,3 +43,8 @@
 .movetoleft{
     margin-left: -50px;
 }
+
+/* only for small comments */
+.small{
+    left: 64px;
+}

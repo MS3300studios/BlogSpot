@@ -59,9 +59,14 @@ class LikesCommentsNumbers extends Component {
         if(!this.props.comments){
             dislikeclasses = [classes.iconDataContainer, classes.movetoleft].join(" ")
         }
+
+        let innerContainer = classes.numberInfoInnerContainer;
+        if(this.props.small){
+            innerContainer = [classes.numberInfoInnerContainer, classes.small].join(" ");
+        }
         return (
             <div className={classes.numberInfoContainer}>
-                <div className={classes.numberInfoInnerContainer}>
+                <div className={innerContainer}>
                     <div className={[classes.iconDataContainer, classes.likeIconPContainer].join(" ")}>
                         <AiFillLike size="1em" color="#0a42a4" className={classes.icon}/>
                         <p className={classes.likeP}>5</p>
