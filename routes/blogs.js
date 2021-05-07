@@ -6,22 +6,6 @@ const auth = require('../middleware/authorization');
 
 router.use(express.json());
 
-// router.get('/blogs', auth, (req, res) => {
-//     Blog.find({author: req.userData.userId})
-//         .exec()
-//         .then(blogs => {
-//             return res.status(200).json({
-//                 blogs: blogs
-//             })
-//         })
-//         .catch(err => {
-//             return res.status(500).json({
-//                 message: 'user not found',
-//                 error: err
-//             })
-//         });
-// });
-
 router.post('/blogs', auth, (req, res) => {
     Blog.find({author: req.body.authorId})
         .exec()
@@ -38,22 +22,7 @@ router.post('/blogs', auth, (req, res) => {
         });
 });
 
-// router.post('/blogs/limited', auth, (req, res) => {
-//     let limit = req.body.limit;
-//     Blog.find({author: req.userData.userId}).sort({ createdAt: -1 }).limit(limit)
-//         .exec()
-//         .then(blogs => {
-//             return res.status(200).json({
-//                 blogs: blogs
-//             })
-//         })
-//         .catch(err => {
-//             return res.status(500).json({
-//                 message: 'user not found',
-//                 error: err
-//             })
-//         });
-// })
+
 
 router.post('/blogs/limited', auth, (req, res) => {
     let limit = req.body.limit;

@@ -14,6 +14,7 @@ import Gate from './containers/gate/gate';
 import Login from './containers/gate/login/login';
 import Registration from './containers/gate/registration/registration';
 import URLnotFound from './components/URLnotfound/404';
+import axios from 'axios';
 
 class App extends Component {
   constructor(props){
@@ -71,6 +72,23 @@ class App extends Component {
           {gate}
           <Route component={URLnotFound} />
         </Switch>
+        <button onClick={()=>{
+          axios({
+              method: 'post',
+              url: `http://localhost:3001/blogLike/upvote`,
+              headers: {},
+              data: {
+                authorId: "6095275e6137a152f8bd5a87", //6095275e6137a152f8bd5a87 -> harrison
+                blogId: "609528346137a152f8bd5a8a" //6095279a6137a152f8bd5a88
+              }
+          })
+          .then((res)=>{
+              console.log(res);
+          })
+          .catch(error => {
+              console.log("erororor:",error);
+          })
+        }}>like</button>
       </React.Fragment>
     );
   }
