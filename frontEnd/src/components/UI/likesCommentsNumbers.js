@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 
 import { FaCommentAlt } from 'react-icons/fa';
-import { AiFillLike, AiFillDislike } from 'react-icons/ai'
+import Like from '../UI/like';
 
 import classes from './likesCommentsNumbers.module.css';
 import getToken from '../../getToken';
@@ -15,10 +15,9 @@ class LikesCommentsNumbers extends Component {
         let token = getToken();
 
         this.state = {
+            objectId: props.objectId,
+            userId: props.userId,
             token: token,
-            numberOfComments: null,
-            numberOfLikes: null,
-            numberOfDisikes: null
         }
     }
 
@@ -29,7 +28,7 @@ class LikesCommentsNumbers extends Component {
                 url: "http://localhost:3001/comments/getNumber",
                 headers: {'Authorization': this.state.token},
                 data: {
-                    blogId: this.props.blogId
+                    blogId: this.state.objectId
                 }
             })
             .then((res)=>{
@@ -42,7 +41,6 @@ class LikesCommentsNumbers extends Component {
                 console.log(error);
             })
         }
-        //get likes
     }
 
     render() { 
@@ -64,16 +62,15 @@ class LikesCommentsNumbers extends Component {
         if(this.props.small){
             innerContainer = [classes.numberInfoInnerContainer, classes.small].join(" ");
         }
+
         return (
             <div className={classes.numberInfoContainer}>
                 <div className={innerContainer}>
                     <div className={[classes.iconDataContainer, classes.likeIconPContainer].join(" ")}>
-                        <AiFillLike size="1em" color="#0a42a4" className={classes.icon}/>
-                        <p className={classes.likeP}>5</p>
+                        <Like objectIsBlog token={this.state.token} authorId={this.state.userId} objectId={this.state.objectId} size="1.5em" color="#0a42a4" className={classes.icon}/>
                     </div>
                     <div className={dislikeclasses}>
-                        <AiFillDislike size="1em" color="#0a42a4" className={classes.icon}/>
-                        <p className={classes.dislikeP}>0</p>
+                        <Like objectIsBlog token={this.state.token} authorId={this.state.userId} objectId={this.state.objectId} size="1.5em" color="#0a42a4" className={classes.icon} dislike/>
                     </div>
                     {commentIcon}
                 </div>

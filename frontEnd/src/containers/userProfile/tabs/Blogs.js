@@ -92,7 +92,7 @@ class BlogsTab extends Component {
                         <div className={classes.h1Container}>
                             <h1><Link to={"/post/?id="+el._id}>{el.title}</Link></h1>
                         </div>
-                        <LikesCommentsNumbers blogId={el._id} comments/>
+                        <LikesCommentsNumbers objectId={el._id} userId={this.state.userId} comments/>
                     </div>
 
 

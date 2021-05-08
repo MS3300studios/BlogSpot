@@ -423,4 +423,57 @@ router.post('/commentLike/downvote', auth, (req, res) => {
     })
 })
 
+
+// handling count request for Blog likes:
+router.post("/blogLike/count", auth, (req, res) =>{
+    BlogLike.countDocuments({blogId: req.body.blogId})
+    .then((count) => {
+        return res.status(200).json({
+            count: count
+        });
+    })
+    .catch(error => {
+        console.error(error)
+    })
+})
+
+// handling count request for Blog dislikes:
+router.post("/blogDislike/count", auth, (req, res) =>{
+    BlogDislike.countDocuments({blogId: req.body.blogId})
+    .then((count) => {
+        return res.status(200).json({
+            count: count
+        });
+    })
+    .catch(error => {
+        console.error(error)
+    })
+})
+
+// handling count request for Comment likes:
+router.post("/commentLike/count", auth, (req, res) =>{
+    CommentLike.countDocuments({commentId: req.body.commentId})
+    .then((count) => {
+        return res.status(200).json({
+            count: count
+        });
+    })
+    .catch(error => {
+        console.error(error)
+    })
+})
+
+// handling count request for Comment dislikes:
+router.post("/commentDislike/count", auth, (req, res) =>{
+    CommentDislike.countDocuments({commentId: req.body.commentId})
+    .then((count) => {
+        return res.status(200).json({
+            count: count
+        });
+    })
+    .catch(error => {
+        console.error(error)
+    })
+})
+
 module.exports = router;

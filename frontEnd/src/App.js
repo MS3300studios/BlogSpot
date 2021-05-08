@@ -75,11 +75,11 @@ class App extends Component {
         <button onClick={()=>{
           axios({
               method: 'post',
-              url: `http://localhost:3001/blogLike/upvote`,
+              url: `http://localhost:3001/blogLike/downvote`,
               headers: {'Authorization': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1vbmljYS5oYXJyaXNvbkBnbWFpbC5jb20iLCJ1c2VySWQiOiI2MDk1Mjc1ZTYxMzdhMTUyZjhiZDVhODciLCJpYXQiOjE2MjA0MDk2MzIsImV4cCI6MTYyMDQxMzIzMn0.zlAkqH4OF54ojOheDalXNYXhmgxNUIkI3_iyB1kMjKc"},
               data: {
                 authorId: "6095275e6137a152f8bd5a87", //6095275e6137a152f8bd5a87 -> harrison
-                blogId: "6095279a6137a152f8bd5a88" //6095279a6137a152f8bd5a88 -> this is my first post
+                blogId: "6095a80236f0f333f8e9dbd7" //6095279a6137a152f8bd5a88 -> this is my first post
               }
           })
           .then((res)=>{

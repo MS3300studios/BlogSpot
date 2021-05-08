@@ -44,7 +44,6 @@ router.get('/comments', auth, (req, res) => {
 })
 
 router.post('/comments/getNumber', auth, (req, res) => {
-    console.log(req.body.blogId)
     Comment.countDocuments({blogId: req.body.blogId})
     .then((count) => {
         return res.status(200).json({
