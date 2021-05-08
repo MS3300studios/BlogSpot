@@ -57,33 +57,55 @@ class Like extends Component {
     }
 
     sendAction = () => {
-        let url = "http://localhost:3001/blogLike/upvote";
-        if(this.props.dislike) url = "http://localhost:3001/blogDislike/count";
-        let data = { commentId: this.state.objectId }
-        if(this.props.objectIsBlog) data = { blogId: this.state.objectId }
-
-        axios({
-            method: 'post',
-            url: url,
-            headers: {'Authorization': this.state.token},
-            data: data
-        })
-        .then((res)=>{
-            if(res.status===200){
-                this.setState((prevState)=>
-                    (
-                        {
+        if(this.props.objectIsBlog){
+            let url = "http://localhost:3001/blogLike/upvote";
+            if(this.props.dislike) url = "http://localhost:3001/blogLike/downvote";    
+            axios({
+                method: 'post',
+                url: url,
+                headers: {'Authorization': this.state.token},
+                data: { blogId: this.state.objectId }
+            })
+            .then((res)=>{
+                if(res.status===200){
+                    this.setState((prevState) => {
+                        return ({
                             ...prevState,
-                            number: res.data.count,
-                            fill: !prevState.fill
-                        }
-                    )
-                );
-            }
-        })
-        .catch(error => {
-            console.log(error);
-        })
+                            fill: !prevState.fill,
+                            number: res.data.count
+                        })
+                    })
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            })
+        }
+        else{
+            let url = "http://localhost:3001/commentLike/upvote";
+            if(this.props.dislike) url = "http://localhost:3001/commentLike/downvote";
+    
+            axios({
+                method: 'post',
+                url: url,
+                headers: {'Authorization': this.state.token},
+                data: { commentId: this.state.objectId }
+            })
+            .then((res)=>{
+                if(res.status===200){
+                    this.setState((prevState) => {
+                        return ({
+                            ...prevState,
+                            fill: !prevState.fill,
+                            number: res.data.count
+                        })
+                    })
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            })
+        }
     }
 
     render() { 
