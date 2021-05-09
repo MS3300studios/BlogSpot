@@ -27,6 +27,19 @@ const SearchBar = (props) => {
         props.clicked(option, string);
     }
     
+
+    let select = (
+        <select className={classes.Select} value={optionSelected} onChange={(e)=>selectOptionHandler(e.target.value)}>
+            {
+                props.selectValues.map((value) => {
+                    return (
+                        <option>{value}</option>
+                    )
+                })
+            }
+        </select>
+    )
+
     return (
         <div className={classes.centerContainer}>
             <div className={classes.smallContainer}>
@@ -45,10 +58,7 @@ const SearchBar = (props) => {
                     onClick={()=>sendSearch(optionSelected, searchString)}
                 />
             </div>
-            <select className={classes.Select} value={optionSelected} onChange={(e)=>selectOptionHandler(e.target.value)}>
-                <option>title</option>
-                <option>content</option>
-            </select>
+            {select}
             <div className={classes.buttonConfinement}><Button clicked={resetState}>reset filter</Button></div>
         </div>
     );

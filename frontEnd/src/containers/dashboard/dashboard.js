@@ -345,6 +345,7 @@ class Dashboard extends Component {
                     placeholder="search posts in..."
                     clicked={this.filterSearchHandler}
                     resetFilter={()=>{this.setState({filterIn: "none", filterBy: "none"})}}
+                    selectValues={["title", "content"]}
                 />
                 {posts}
                 {addPostActive}

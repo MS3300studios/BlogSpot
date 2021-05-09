@@ -44,7 +44,6 @@ class FriendsList extends Component {
                     <SearchBar 
                         placeholder="search friends by..."
                         clicked={()=>{console.log('you clicked the search icon')}}
-                        searchFriends
                         selectValues={["nickname", "name", "surname", "id"]}
                     />
                 </div>
