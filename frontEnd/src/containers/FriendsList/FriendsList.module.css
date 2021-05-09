@@ -12,16 +12,12 @@
     color: black;
 }
 
-.center{
-    width: 100%;
-    display: flex;
-    justify-content: center;
-}
-
 .wrapper{
-    margin: 30px;
+    margin: 10px;
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
+    border: black 1px solid;
 }
 
 .face img{
@@ -29,4 +25,18 @@
     height: 280px;
     width: 280px;
     margin: 20px;
+    transition: 0.5s all ease;
+}
+.face img:hover{
+    transform: scale(1.2);
+}
+
+.viewOptions{
+
+}
+.viewOptionsH3{
+
+}
+.Select{
+
 }
