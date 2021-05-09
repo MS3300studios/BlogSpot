@@ -18,6 +18,7 @@ class LikesCommentsNumbers extends Component {
             objectId: props.objectId,
             userId: props.userId,
             token: token,
+            numberOfComments: 0
         }
     }
 
@@ -67,10 +68,25 @@ class LikesCommentsNumbers extends Component {
             <div className={classes.numberInfoContainer}>
                 <div className={innerContainer}>
                     <div className={[classes.iconDataContainer, classes.likeIconPContainer].join(" ")}>
-                        <Like objectIsBlog token={this.state.token} authorId={this.state.userId} objectId={this.state.objectId} size="1.5em" color="#0a42a4" className={classes.icon}/>
+                        <Like 
+                        objectIsBlog 
+                        token={this.state.token} 
+                        authorId={this.state.userId} 
+                        objectId={this.state.objectId} 
+                        size="1.5em" 
+                        color="#0a42a4" 
+                        className={classes.icon}/>
                     </div>
                     <div className={dislikeclasses}>
-                        <Like objectIsBlog token={this.state.token} authorId={this.state.userId} objectId={this.state.objectId} size="1.5em" color="#0a42a4" className={classes.icon} dislike/>
+                        <Like 
+                            objectIsBlog 
+                            token={this.state.token} 
+                            authorId={this.state.userId} 
+                            objectId={this.state.objectId} 
+                            dislike 
+                            size="1.5em" 
+                            color="#0a42a4" 
+                            className={classes.icon}/>
                     </div>
                     {commentIcon}
                 </div>

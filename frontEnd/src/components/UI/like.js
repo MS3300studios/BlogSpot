@@ -14,9 +14,14 @@ class Like extends Component {
             token: props.token
         }
         this.sendAction.bind(this);
+        this.getData.bind(this);
     }
 
     componentDidMount(){
+        this.getData();
+    }
+
+    getData = () => {
         if(this.props.objectIsBlog){
             let url = "http://localhost:3001/blogLike/count";
             if(this.props.dislike) url = "http://localhost:3001/blogDislike/count";    
@@ -55,6 +60,7 @@ class Like extends Component {
             })
         }
     }
+
 
     sendAction = () => {
         if(this.props.objectIsBlog){
