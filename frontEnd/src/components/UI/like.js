@@ -6,9 +6,9 @@ import axios from 'axios';
 class Like extends Component {
     constructor(props){
         super(props);
-        console.log(props);
         this.state = {
-            fill: props.fill,
+            LikeFill: false,
+            DislikeFill: false,
             number: 0,
             objectId: props.objectId,
             authorId: props.authorId,
@@ -16,10 +16,12 @@ class Like extends Component {
         }
         this.sendAction.bind(this);
         this.getData.bind(this);
+        this.handleFill.bind(this);
     }
 
     componentDidMount(){
         this.getData();
+        this.handleFill();
     }
 
     getData = () => {
@@ -62,6 +64,35 @@ class Like extends Component {
         }
     }
 
+    handleFill = () => {
+        let data = {commentId: this.props.objectId, type: "comment"}
+        if(this.props.objectIsBlog){
+            data = {blogId: this.props.objectId, type: "blog"}
+        }
+
+        axios({
+            method: 'post',
+            url: `http://localhost:3001/checkIfLikedAlready`,
+            headers: {'Authorization': this.state.token},
+            data: data
+        })
+        .then((res)=>{
+            if(res.status===200){
+                if(res.data.response === "like"){
+                    this.setState({LikeFill: true, DislikeFill: false});
+                }
+                else if(res.data.response === "dislike"){
+                    this.setState({LikeFill: false, DislikeFill: true});
+                }
+                else if(res.data.response === "none"){
+                    this.setState({LikeFill: false, DislikeFill: false});
+                }
+            }
+        })
+        .catch(error => {
+            console.log(error);
+        })
+    }
 
     sendAction = () => {
         if(this.props.objectIsBlog){
@@ -119,16 +150,16 @@ class Like extends Component {
 
         let content;
     
-        if(this.props.dislike && this.state.fill){
+        if(this.props.dislike && this.state.DislikeFill){
             content = <AiFillDislike size={this.props.size} color={this.props.color} onClick={this.sendAction}/>;
         }
-        else if(this.props.dislike){
+        else if(this.props.dislike && !this.state.DislikeFill){
             content = <AiOutlineDislike size={this.props.size} color={this.props.color} onClick={this.sendAction}/>;
         }
-        else if(this.state.fill){
+        else if(this.state.LikeFill){
             content = <AiFillLike size={this.props.size} color={this.props.color} onClick={this.sendAction}/>;
         }
-        else{
+        else if(!this.state.LikeFill){
             content = <AiOutlineLike size={this.props.size} color={this.props.color} onClick={this.sendAction}/>;
         }
 

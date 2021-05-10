@@ -14,17 +14,12 @@ class LikesCommentsNumbers extends Component {
 
         let token = getToken();
 
-        // let fillData = this.handleFill(true, token);
-
         this.state = {
             objectId: props.objectId,
             userId: props.userId,
             token: token,
             numberOfComments: 0,
-            LikeFill: false,
-            DislikeFill: false,
         }
-        this.handleFill.bind(this);
     }
 
     componentDidMount() {
@@ -47,60 +42,7 @@ class LikesCommentsNumbers extends Component {
                 console.log(error);
             })
         }
-        this.handleFill();
     }
-
-    handleFill = (constr, t) => {
-        let data = {commentId: this.props.objectId, type: "comment"}
-        if(this.props.objectIsBlog){
-            data = {blogId: this.props.objectId, type: "blog"}
-        }
-        let token = t;
-        if(!constr){
-            token = this.state.token
-        }
-        axios({
-            method: 'post',
-            url: `http://localhost:3001/checkIfLikedAlready`,
-            headers: {'Authorization': token},
-            data: data
-        })
-        .then((res)=>{
-            if(res.status===200){
-                if(res.data.response === "like"){
-                    if(constr){
-                        return {LikeFill: true, DislikeFill: false}
-                    }
-                    this.setState({LikeFill: true, DislikeFill: false});
-                }
-                else if(res.data.response === "dislike"){
-                    if(constr){
-                        return {LikeFill: true, DislikeFill: false}
-                    }
-                    this.setState({LikeFill: false, DislikeFill: true});
-                }
-                else if(res.data.response === "none"){
-                    if(constr){
-                        return {LikeFill: true, DislikeFill: false}
-                    }
-                    this.setState({LikeFill: false, DislikeFill: false});
-                }
-                return;
-            }
-        })
-        .catch(error => {
-            console.log(error);
-        })
-    }
-
-    FillPropFunction = (typeClicked, val) => {
-        if(typeClicked === undefined){
-            this.setState({LikeFill: val, DislikeFill: !val});
-        }
-        else if(typeClicked === true){
-            this.setState({LikeFill: !val, DislikeFill: val});
-        }
-    }   
 
     render() { 
         let commentIcon = null;
