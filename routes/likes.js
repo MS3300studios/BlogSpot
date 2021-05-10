@@ -476,4 +476,87 @@ router.post("/commentDislike/count", auth, (req, res) =>{
     })
 })
 
+router.post('/checkIfLikedAlready',auth, (req, res) => {
+    let checkIfLikedAlreadyComment = new Promise((resolve, reject) => {
+        CommentLike.findOne({authorId: req.userData.userId, commentId: req.body.commentId})
+        .then(commentLike => {
+            resolve(commentLike)
+        })
+        .catch(err => {
+            reject(err);
+        });
+    })
+
+    let checkIfDislikedAlreadyComment = new Promise((resolve, reject) => {
+        CommentDislike.findOne({authorId: req.userData.userId, commentId: req.body.commentId})
+        .then(commentLike => {
+            resolve(commentLike)
+        })
+        .catch(err => {
+            reject(err);
+        });
+    })
+    let checkIfLikedAlreadyBlog = new Promise((resolve, reject) => {
+        BlogLike.findOne({authorId: req.userData.userId, blogId: req.body.blogId})
+        .then(blogLike => {
+            resolve(blogLike)
+        })
+        .catch(err => {
+            reject(err);
+        });
+    })
+
+    let checkIfDislikedAlreadyBlog = new Promise((resolve, reject) => {
+        BlogDislike.findOne({authorId: req.userData.userId, blogId: req.body.blogId})
+        .then(blogLike => {
+            resolve(blogLike)
+        })
+        .catch(err => {
+            reject(err);
+        });
+    })
+
+    console.log(req.body)
+
+    if(req.body.type === "blog"){
+        checkIfLikedAlreadyBlog.then((like, error)=>{
+            if(like===null){
+                checkIfDislikedAlreadyBlog.then((dislike, error) => {
+                    if(dislike){
+                        res.json({
+                            response: "dislike"
+                        })
+                    }
+                    if(dislike === null){
+                        res.json({
+                            response: "none"
+                        })
+                    }
+                    if(error){
+                        console.log(error)
+                    }
+                })
+            }
+            else if(like){
+                res.json({
+                    response: "like"
+                })
+            }
+            if(error){
+                console.log(error);
+            }
+        })
+
+    }
+    else if(req.body.type === "comment"){
+
+    }
+
+})
+
+
+
+
+
+
 module.exports = router;

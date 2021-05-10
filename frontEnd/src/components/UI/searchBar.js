@@ -31,9 +31,9 @@ const SearchBar = (props) => {
     let select = (
         <select className={classes.Select} value={optionSelected} onChange={(e)=>selectOptionHandler(e.target.value)}>
             {
-                props.selectValues.map((value) => {
+                props.selectValues.map((value, index) => {
                     return (
-                        <option>{value}</option>
+                        <option key={index}>{value}</option>
                     )
                 })
             }

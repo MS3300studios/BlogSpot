@@ -22,9 +22,9 @@ class FriendsList extends Component {
         }
     }
     render() { 
-        let faces = this.state.photos.map((photo) => {
+        let faces = this.state.photos.map((photo, index) => {
             return (
-                <div className={classes.face}>
+                <div className={classes.face} key={index}>
                     <img src={photo} alt="user face"/>
                 </div>
             )

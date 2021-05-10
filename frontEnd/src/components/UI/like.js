@@ -6,6 +6,7 @@ import axios from 'axios';
 class Like extends Component {
     constructor(props){
         super(props);
+        console.log(props);
         this.state = {
             fill: props.fill,
             number: 0,
@@ -74,10 +75,10 @@ class Like extends Component {
             })
             .then((res)=>{
                 if(res.status===200){
+                    this.props.FillPropFunction(this.props.dislike, this.state.fill);
                     this.setState((prevState) => {
                         return ({
                             ...prevState,
-                            fill: !prevState.fill,
                             number: res.data.count
                         })
                     })
@@ -99,10 +100,10 @@ class Like extends Component {
             })
             .then((res)=>{
                 if(res.status===200){
+                    this.props.FillPropFunction(this.props.dislike, this.state.fill);
                     this.setState((prevState) => {
                         return ({
                             ...prevState,
-                            fill: !prevState.fill,
                             number: res.data.count
                         })
                     })

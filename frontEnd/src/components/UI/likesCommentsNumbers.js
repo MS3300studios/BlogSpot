@@ -14,12 +14,17 @@ class LikesCommentsNumbers extends Component {
 
         let token = getToken();
 
+        let fillData = this.handleFill(true, token);
+
         this.state = {
             objectId: props.objectId,
             userId: props.userId,
             token: token,
-            numberOfComments: 0
+            numberOfComments: 0,
+            LikeFill: fillData.LikeFill,
+            DislikeFill: fillData.DislikeFill,
         }
+        this.handleFill.bind(this);
     }
 
     componentDidMount() {
@@ -42,7 +47,60 @@ class LikesCommentsNumbers extends Component {
                 console.log(error);
             })
         }
+        // this.handleFill();
     }
+
+    handleFill = (constr, t) => {
+        let data = {commentId: this.props.objectId, type: "comment"}
+        if(this.props.objectIsBlog){
+            data = {blogId: this.props.objectId, type: "blog"}
+        }
+        let token = t;
+        if(!constr){
+            token = this.state.token
+        }
+        axios({
+            method: 'post',
+            url: `http://localhost:3001/checkIfLikedAlready`,
+            headers: {'Authorization': token},
+            data: data
+        })
+        .then((res)=>{
+            if(res.status===200){
+                if(res.data.response === "like"){
+                    if(constr){
+                        return {LikeFill: true, DislikeFill: false}
+                    }
+                    this.setState({LikeFill: true, DislikeFill: false});
+                }
+                else if(res.data.response === "dislike"){
+                    if(constr){
+                        return {LikeFill: true, DislikeFill: false}
+                    }
+                    this.setState({LikeFill: false, DislikeFill: true});
+                }
+                else if(res.data.response === "none"){
+                    if(constr){
+                        return {LikeFill: true, DislikeFill: false}
+                    }
+                    this.setState({LikeFill: false, DislikeFill: false});
+                }
+                return;
+            }
+        })
+        .catch(error => {
+            console.log(error);
+        })
+    }
+
+    FillPropFunction = (typeClicked, val) => {
+        if(typeClicked === undefined){
+            this.setState({LikeFill: val, DislikeFill: !val});
+        }
+        else if(typeClicked === true){
+            this.setState({LikeFill: !val, DislikeFill: val});
+        }
+    }   
 
     render() { 
         let commentIcon = null;
@@ -69,21 +127,25 @@ class LikesCommentsNumbers extends Component {
                 <div className={innerContainer}>
                     <div className={[classes.iconDataContainer, classes.likeIconPContainer].join(" ")}>
                         <Like 
-                        objectIsBlog 
-                        token={this.state.token} 
-                        authorId={this.state.userId} 
-                        objectId={this.state.objectId} 
-                        size="1.5em" 
-                        color="#0a42a4" 
-                        className={classes.icon}/>
-                    </div>
-                    <div className={dislikeclasses}>
-                        <Like 
-                            objectIsBlog 
+                            fill={this.state.LikeFill}
+                            objectIsBlog={this.props.objectIsBlog} 
                             token={this.state.token} 
                             authorId={this.state.userId} 
                             objectId={this.state.objectId} 
+                            FillPropFunction={this.FillPropFunction}
+                            size="1.5em" 
+                            color="#0a42a4" 
+                            className={classes.icon}/>
+                    </div>
+                    <div className={dislikeclasses}>
+                        <Like 
+                            fill={this.state.DislikeFill}
                             dislike 
+                            objectIsBlog={this.props.objectIsBlog} 
+                            token={this.state.token} 
+                            authorId={this.state.userId} 
+                            objectId={this.state.objectId} 
+                            FillPropFunction={this.FillPropFunction}
                             size="1.5em" 
                             color="#0a42a4" 
                             className={classes.icon}/>
