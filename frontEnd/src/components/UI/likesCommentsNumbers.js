@@ -14,15 +14,15 @@ class LikesCommentsNumbers extends Component {
 
         let token = getToken();
 
-        let fillData = this.handleFill(true, token);
+        // let fillData = this.handleFill(true, token);
 
         this.state = {
             objectId: props.objectId,
             userId: props.userId,
             token: token,
             numberOfComments: 0,
-            LikeFill: fillData.LikeFill,
-            DislikeFill: fillData.DislikeFill,
+            LikeFill: false,
+            DislikeFill: false,
         }
         this.handleFill.bind(this);
     }
@@ -47,7 +47,7 @@ class LikesCommentsNumbers extends Component {
                 console.log(error);
             })
         }
-        // this.handleFill();
+        this.handleFill();
     }
 
     handleFill = (constr, t) => {
