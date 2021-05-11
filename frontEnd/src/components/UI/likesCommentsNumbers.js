@@ -19,7 +19,10 @@ class LikesCommentsNumbers extends Component {
             userId: props.userId,
             token: token,
             numberOfComments: 0,
+            LikeRefresh: false,
+            DislikeRefresh: false,
         }
+        this.actionCleanUp.bind(this);
     }
 
     componentDidMount() {
@@ -41,6 +44,16 @@ class LikesCommentsNumbers extends Component {
             .catch(error => {
                 console.log(error);
             })
+        }
+    }
+
+    actionCleanUp = (type) => {
+        console.log(type)
+        if(type==="like"){
+            this.setState({LikeRefresh: true});
+        }
+        else if(type==="dislike"){
+            this.setState({DislikeRefresh: true});
         }
     }
 
@@ -68,26 +81,26 @@ class LikesCommentsNumbers extends Component {
             <div className={classes.numberInfoContainer}>
                 <div className={innerContainer}>
                     <div className={[classes.iconDataContainer, classes.likeIconPContainer].join(" ")}>
-                        <Like 
-                            fill={this.state.LikeFill}
+                        <Like
+                            refresh={this.state.LikeRefresh} 
                             objectIsBlog={this.props.objectIsBlog} 
                             token={this.state.token} 
                             authorId={this.state.userId} 
                             objectId={this.state.objectId} 
-                            FillPropFunction={this.FillPropFunction}
+                            cleanUp={this.actionCleanUp}
                             size="1.5em" 
                             color="#0a42a4" 
                             className={classes.icon}/>
                     </div>
                     <div className={dislikeclasses}>
-                        <Like 
-                            fill={this.state.DislikeFill}
+                        <Like
+                            refresh={this.state.DislikeRefresh} 
                             dislike 
                             objectIsBlog={this.props.objectIsBlog} 
                             token={this.state.token} 
                             authorId={this.state.userId} 
                             objectId={this.state.objectId} 
-                            FillPropFunction={this.FillPropFunction}
+                            cleanUp={this.actionCleanUp}
                             size="1.5em" 
                             color="#0a42a4" 
                             className={classes.icon}/>

@@ -12,7 +12,7 @@ class Like extends Component {
             number: 0,
             objectId: props.objectId,
             authorId: props.authorId,
-            token: props.token
+            token: props.token,
         }
         this.sendAction.bind(this);
         this.getData.bind(this);
@@ -105,23 +105,16 @@ class Like extends Component {
                 data: { blogId: this.state.objectId }
             })
             .then((res)=>{
-                if(res.status===200){
-                    this.setState((prevState) => {
-                        let newState = {
-                            ...prevState,
-                            DislikeFill: !prevState.DislikeFill,
-                            number: res.data.count
-                        };
-                        if(like){
-                            newState = {
-                                ...prevState,
-                                LikeFill: !prevState.LikeFill,
-                                number: res.data.count
-                            };
-                        }   
-                        return newState;
-                    })
+                if(res.status===201 || res.status===200){
+                    if(like){
+                        this.props.cleanUp("like");
+                    }
+                    else {
+                        this.props.cleanUp("dislike");
+                    }
                 }
+                // this.setState({redirect: true})
+                window.location.reload();
             })
             .catch(error => {
                 console.log(error);
@@ -154,7 +147,13 @@ class Like extends Component {
     }
 
     render() { 
-
+        // if(this.props.refresh){
+        //     console.log('ok?')
+        // }
+        // if(this.props.refresh){
+        //     console.log('props were refeshed: initiating forceUpdate')
+        //     this.forceUpdate();
+        // }
         let content;
     
         if(this.props.dislike && this.state.DislikeFill){
@@ -180,3 +179,7 @@ class Like extends Component {
 }
  
 export default Like;
+
+
+
+// this.forceUpdate();
