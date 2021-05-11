@@ -94,7 +94,7 @@ class Like extends Component {
         })
     }
 
-    sendAction = () => {
+    sendAction = (like) => {
         if(this.props.objectIsBlog){
             let url = "http://localhost:3001/blogLike/upvote";
             if(this.props.dislike) url = "http://localhost:3001/blogLike/downvote";    
@@ -106,12 +106,20 @@ class Like extends Component {
             })
             .then((res)=>{
                 if(res.status===200){
-                    this.props.FillPropFunction(this.props.dislike, this.state.fill);
                     this.setState((prevState) => {
-                        return ({
+                        let newState = {
                             ...prevState,
+                            DislikeFill: !prevState.DislikeFill,
                             number: res.data.count
-                        })
+                        };
+                        if(like){
+                            newState = {
+                                ...prevState,
+                                LikeFill: !prevState.LikeFill,
+                                number: res.data.count
+                            };
+                        }   
+                        return newState;
                     })
                 }
             })
@@ -131,7 +139,6 @@ class Like extends Component {
             })
             .then((res)=>{
                 if(res.status===200){
-                    this.props.FillPropFunction(this.props.dislike, this.state.fill);
                     this.setState((prevState) => {
                         return ({
                             ...prevState,
@@ -151,16 +158,16 @@ class Like extends Component {
         let content;
     
         if(this.props.dislike && this.state.DislikeFill){
-            content = <AiFillDislike size={this.props.size} color={this.props.color} onClick={this.sendAction}/>;
+            content = <AiFillDislike size={this.props.size} color={this.props.color} onClick={() => this.sendAction(false)}/>;
         }
         else if(this.props.dislike && !this.state.DislikeFill){
-            content = <AiOutlineDislike size={this.props.size} color={this.props.color} onClick={this.sendAction}/>;
+            content = <AiOutlineDislike size={this.props.size} color={this.props.color} onClick={() => this.sendAction(false)}/>;
         }
         else if(this.state.LikeFill){
-            content = <AiFillLike size={this.props.size} color={this.props.color} onClick={this.sendAction}/>;
+            content = <AiFillLike size={this.props.size} color={this.props.color} onClick={() => this.sendAction(true)}/>;
         }
         else if(!this.state.LikeFill){
-            content = <AiOutlineLike size={this.props.size} color={this.props.color} onClick={this.sendAction}/>;
+            content = <AiOutlineLike size={this.props.size} color={this.props.color} onClick={() => this.sendAction(true)}/>;
         }
 
         return (

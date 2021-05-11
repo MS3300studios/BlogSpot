@@ -23,7 +23,19 @@ class Login extends Component {
         this.onChangeHandler.bind(this);
         this.keepLoggedHandler.bind(this);
         this.flash.bind(this);
+        this.handleEnterKey.bind(this);
     }
+
+    handleEnterKey = (e) => {
+        if(e.key === "Enter"){
+            if(this.state.readyForSubmission){
+                this.loginHandler(e);
+            }
+            else{
+                this.flash('fill in all the inputs');
+            }
+        }
+    }   
 
     keepLoggedHandler = () => {
         let keepLoggedIn = !this.state.keepLoggedIn;
@@ -41,12 +53,14 @@ class Login extends Component {
             default:
                 break;
         }
-        if(this.state.email!=="" && this.state.password!==""){
+        if(this.state.email!=="" && this.state.password!=="" && 
+            this.state.email!==" " && this.state.password!==" " &&
+            this.state.email!==null && this.state.password!==null){
             this.setState({readyForSubmission: true});
          }
-        else{
-            this.setState({readyForSubmission: false});
-        }
+        // else{
+        //     this.setState({readyForSubmission: false});
+        // }
     }
 
     loginHandler = (e) => {     
@@ -119,7 +133,7 @@ class Login extends Component {
                     <label className={classes.labelEmail}>email:</label>
                     <input onChange={(e) => {this.onChangeHandler(e, "email")}} type="email" placeholder="enter your email" className={classes.inputEmail} />
                     <label className={classes.labelPassword}>Password:</label>
-                    <input onChange={(e) => {this.onChangeHandler(e, "password")}} type="password" placeholder="enter your password" className={classes.inputPassword} />
+                    <input onChange={(e) => {this.onChangeHandler(e, "password")}} type="password" placeholder="enter your password" className={classes.inputPassword} onKeyDown={this.handleEnterKey}/>
                     <p className={classes.keepLoggedinP}>Keep me logged in</p>
                     <label className={classes.switch}>
                         <input type="checkbox" onChange={this.keepLoggedHandler} />
