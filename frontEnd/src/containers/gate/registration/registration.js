@@ -231,7 +231,6 @@ class Registration extends Component {
                 {this.state.redirectToLogin ? <Redirect to="/login" /> : null}
             </div> 
             {flash}
-            <p>{this.state.password}</p>
            </React.Fragment>
         );
     }
