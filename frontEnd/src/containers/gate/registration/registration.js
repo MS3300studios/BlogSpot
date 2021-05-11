@@ -28,7 +28,8 @@ class Registration extends Component {
         this.submitUser.bind(this);
         this.inputHandler.bind(this);
         this.flash.bind(this);
-        this.EmailAndPasswordCorrect.bind(this);
+        this.PasswordCorrect.bind(this);
+        this.EmailCorrect.bind(this);
     }
     
     inputHandler = (e, type) => {
@@ -81,7 +82,7 @@ class Registration extends Component {
         }
     }
 
-    EmailAndPasswordCorrect = (password, email) => {
+    PasswordCorrect = (password) => {
         let character;
         let foundUpperCase = false;
         let foundNumber = false;
@@ -103,52 +104,74 @@ class Registration extends Component {
         else return false;
     }
 
+    EmailCorrect = (email) => {
+        let character;
+        let foundAt = false;
+        let foundDot = false;
+        for(let i = 0; i<=email.length-1; i++){
+            character = email.charAt(i);
+            if(character === "@"){
+                console.log("found at")
+                foundAt = true;
+            }
+            if(character === "."){
+                console.log("found dot")
+                foundDot = true;
+            }
+        }
+
+        if(foundAt && foundDot){
+            console.log("returning true")
+            return true;
+        }
+        else return false;
+    }
+
     submitUser = (e) => {
         e.preventDefault();
         // let check =
-        if(!this.EmailAndPasswordCorrect(this.state.password)){
-            console.log("the password should have at least 8 characters, have one digit and upper case letter in it")
+        if(this.PasswordCorrect(this.state.password)===false || this.EmailCorrect(this.state.email)===false){
+            this.flash("the password should have at least 8 characters, have one digit and upper case letter in it");
         }
-        else{
-            console.log("the password is correct")
-        }
-        if(this.state.name && this.state.surname && this.state.email && this.state.password && this.state.nickname){
-            let userData = {
-                name: this.state.name,
-                surname: this.state.surname,
-                email: this.state.email,
-                password: this.state.password,
-                nickname: this.state.nickname,
-                photoString: this.state.photo
+        else if(this.PasswordCorrect(this.state.password) && this.EmailCorrect(this.state.email)){
+            if(this.state.name && this.state.surname && this.state.email && this.state.password && this.state.nickname){
+                let userData = {
+                    name: this.state.name,
+                    surname: this.state.surname,
+                    email: this.state.email,
+                    password: this.state.password,
+                    nickname: this.state.nickname,
+                    photoString: this.state.photo
+                }
+                
+                axios.post('http://localhost:3001/users/register', userData)
+                        .then((res)=>{
+                            if(Object.keys(res.data).includes("error")){
+                                let taken = Object.keys(res.data.error.keyValue)[0]
+                                if(taken==="email"){
+                                    this.setState({readyForSubmission: false});
+                                    this.flash("email already taken");
+                                }
+                                else if(taken==="nickname"){
+                                    this.setState({readyForSubmission: false});
+                                    this.flash("nickname already taken");
+                                }
+                            }
+                            if(res.status === 201){
+                                this.setState({redirectToLogin: true});
+                            }
+                        }).catch( error => {
+                            console.log(error);
+                            if(error.status === 413){
+                                this.setState({readyForSubmission: false});
+                                this.flash("Image size too big, maximum image size is 10mb");
+                            }
+                        })
             }
-            
-            // axios.post('http://localhost:3001/users/register', userData)
-            //         .then((res)=>{
-            //             if(Object.keys(res.data).includes("error")){
-            //                 let taken = Object.keys(res.data.error.keyValue)[0]
-            //                 if(taken==="email"){
-            //                     this.setState({readyForSubmission: false});
-            //                     this.flash("email already taken");
-            //                 }
-            //                 else if(taken==="nickname"){
-            //                     this.setState({readyForSubmission: false});
-            //                     this.flash("nickname already taken");
-            //                 }
-            //             }
-            //             if(res.status === 201){
-            //                 this.setState({redirectToLogin: true});
-            //             }
-            //         }).catch( error => {
-            //             console.log(error);
-            //             if(error.status === 413){
-            //                 this.setState({readyForSubmission: false});
-            //                 this.flash("Image size too big, maximum image size is 10mb");
-            //             }
-            //         })
-        }
-        else{
-            this.setState({readyForSubmission: false});
-            this.flash("fill in all the inputs");
+            else{
+                this.setState({readyForSubmission: false});
+                this.flash("fill in all the inputs");
+            }
         }
     }
 
