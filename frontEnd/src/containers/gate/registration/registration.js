@@ -28,6 +28,7 @@ class Registration extends Component {
         this.submitUser.bind(this);
         this.inputHandler.bind(this);
         this.flash.bind(this);
+        this.EmailAndPasswordCorrect.bind(this);
     }
     
     inputHandler = (e, type) => {
@@ -80,8 +81,37 @@ class Registration extends Component {
         }
     }
 
+    EmailAndPasswordCorrect = (password, email) => {
+        let character;
+        let foundUpperCase = false;
+        let foundNumber = false;
+        for(let i = 0; i<=password.length-1; i++){
+            character = password.charAt(i);
+            if(!isNaN(character)){
+                foundNumber = true;
+                console.log("found number")
+            }
+            if(character === character.toUpperCase()){
+                console.log("foundUpperCase")
+                foundUpperCase = true;
+            }
+        }
+
+        if(foundNumber && foundUpperCase && password.length >= 8){
+            return true;
+        }
+        else return false;
+    }
+
     submitUser = (e) => {
         e.preventDefault();
+        // let check =
+        if(!this.EmailAndPasswordCorrect(this.state.password)){
+            console.log("the password should have at least 8 characters, have one digit and upper case letter in it")
+        }
+        else{
+            console.log("the password is correct")
+        }
         if(this.state.name && this.state.surname && this.state.email && this.state.password && this.state.nickname){
             let userData = {
                 name: this.state.name,
@@ -92,29 +122,29 @@ class Registration extends Component {
                 photoString: this.state.photo
             }
             
-            axios.post('http://localhost:3001/users/register', userData)
-                    .then((res)=>{
-                        if(Object.keys(res.data).includes("error")){
-                            let taken = Object.keys(res.data.error.keyValue)[0]
-                            if(taken==="email"){
-                                this.setState({readyForSubmission: false});
-                                this.flash("email already taken");
-                            }
-                            else if(taken==="nickname"){
-                                this.setState({readyForSubmission: false});
-                                this.flash("nickname already taken");
-                            }
-                        }
-                        if(res.status === 201){
-                            this.setState({redirectToLogin: true});
-                        }
-                    }).catch( error => {
-                        console.log(error);
-                        if(error.status === 413){
-                            this.setState({readyForSubmission: false});
-                            this.flash("Image size too big, maximum image size is 10mb");
-                        }
-                    })
+            // axios.post('http://localhost:3001/users/register', userData)
+            //         .then((res)=>{
+            //             if(Object.keys(res.data).includes("error")){
+            //                 let taken = Object.keys(res.data.error.keyValue)[0]
+            //                 if(taken==="email"){
+            //                     this.setState({readyForSubmission: false});
+            //                     this.flash("email already taken");
+            //                 }
+            //                 else if(taken==="nickname"){
+            //                     this.setState({readyForSubmission: false});
+            //                     this.flash("nickname already taken");
+            //                 }
+            //             }
+            //             if(res.status === 201){
+            //                 this.setState({redirectToLogin: true});
+            //             }
+            //         }).catch( error => {
+            //             console.log(error);
+            //             if(error.status === 413){
+            //                 this.setState({readyForSubmission: false});
+            //                 this.flash("Image size too big, maximum image size is 10mb");
+            //             }
+            //         })
         }
         else{
             this.setState({readyForSubmission: false});
@@ -178,6 +208,7 @@ class Registration extends Component {
                 {this.state.redirectToLogin ? <Redirect to="/login" /> : null}
             </div> 
             {flash}
+            <p>{this.state.password}</p>
            </React.Fragment>
         );
     }
