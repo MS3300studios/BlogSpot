@@ -226,7 +226,62 @@ class LikesCommentsNumbers extends Component {
             })
             .then((res)=>{
                 if(res.status===201 || res.status===200){
-                    console.log('action completed')
+                    if(like){
+                        this.setState((prevState)=>{
+                            let data = {
+                                ...prevState,
+                                LikeFill: true,
+                                DislikeFill: false,
+                                LikeCount: prevState.LikeCount+1
+                            }
+                            if(prevState.LikeFill){
+                                data = {
+                                    ...prevState,
+                                    LikeFill: false,
+                                    DislikeFill: false,
+                                    LikeCount: prevState.LikeCount-1
+                                }
+                            }
+                            if(prevState.DislikeFill){
+                                data = {
+                                    ...prevState,
+                                    LikeFill: true,
+                                    DislikeFill: false,
+                                    LikeCount: prevState.LikeCount+1,
+                                    DislikeCount: prevState.DislikeCount-1
+                                }
+                            }
+                            return data;
+                        })
+                    }
+                    else{
+                        this.setState((prevState)=>{
+                            let data = {
+                                ...prevState,
+                                LikeFill: false,
+                                DislikeFill: true,
+                                DislikeCount: prevState.DislikeCount+1
+                            }
+                            if(prevState.DislikeFill){
+                                data = {
+                                    ...prevState,
+                                    LikeFill: false,
+                                    DislikeFill: false,
+                                    DislikeCount: prevState.DislikeCount-1
+                                }
+                            }
+                            if(prevState.LikeFill){
+                                data = {
+                                    ...prevState,
+                                    LikeFill: false,
+                                    DislikeFill: true,
+                                    LikeCount: prevState.LikeCount-1,
+                                    DislikeCount: prevState.DislikeCount+1
+                                }
+                            }
+                            return data;
+                        })
+                    }
                 }
             })
             .catch(error => {
