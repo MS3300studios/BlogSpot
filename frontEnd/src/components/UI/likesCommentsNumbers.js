@@ -27,6 +27,7 @@ class LikesCommentsNumbers extends Component {
         this.getCommentsCount.bind(this);
         this.getLikesCount.bind(this);
         this.getFill.bind(this);
+        this.sendAction.bind(this);
     }
 
     componentDidMount() {
@@ -139,6 +140,46 @@ class LikesCommentsNumbers extends Component {
         })
     }
 
+    sendAction = (like) => {
+        if(this.props.objectIsBlog){
+            let url = "http://localhost:3001/blogLike/upvote";
+            if(!like) url = "http://localhost:3001/blogLike/downvote";    
+            axios({
+                method: 'post',
+                url: url,
+                headers: {'Authorization': this.state.token},
+                data: { blogId: this.state.objectId }
+            })
+            .then((res)=>{
+                if(res.status===201 || res.status===200){
+                    console.log('object sent')
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            })
+        }
+        else{
+            let url = "http://localhost:3001/commentLike/upvote";
+            if(!like) url = "http://localhost:3001/commentLike/downvote";
+    
+            axios({
+                method: 'post',
+                url: url,
+                headers: {'Authorization': this.state.token},
+                data: { commentId: this.state.objectId }
+            })
+            .then((res)=>{
+                if(res.status===201 || res.status===200){
+                    console.log('action completed')
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            })
+        }
+    }
+
     render() { 
         let commentIcon = null;
         if(this.props.comments){
@@ -164,6 +205,7 @@ class LikesCommentsNumbers extends Component {
                 <div className={innerContainer}>
                     <div className={[classes.iconDataContainer, classes.likeIconPContainer].join(" ")}>
                         <Like
+                            sendAction={this.sendAction}
                             fill={this.state.LikeFill}
                             number={this.state.LikeCount}
                             size="1.5em" 
@@ -173,6 +215,7 @@ class LikesCommentsNumbers extends Component {
                     <div className={dislikeclasses}>
                         <Like
                             dislike 
+                            sendAction={this.sendAction}
                             fill={this.state.DislikeFill}
                             number={this.state.DislikeCount}
                             size="1.5em" 
