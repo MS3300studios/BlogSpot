@@ -19,26 +19,88 @@ class LikesCommentsNumbers extends Component {
             userId: props.userId,
             token: token,
             numberOfComments: 0,
-            LikeRefresh: false,
-            DislikeRefresh: false,
+            DislikeCount: 0,
+            LikeCount: 0,
+            LikeFill: false,
+            DislikeFill: false,
         }
-        this.actionCleanUp.bind(this);
+        this.getCommentsCount.bind(this);
+        this.getLikesCount.bind(this);
+        this.getFill.bind(this);
     }
 
     componentDidMount() {
         if(this.props.comments){
+            this.getCommentsCount();
+        }
+        this.getLikesCount(true); //get dislikes count
+        this.getLikesCount(false); //get likes count
+        this.getFill();
+        console.log('componentDidMount after functions')
+    }
+
+    getCommentsCount = () => {
+        axios({
+            method: 'post',
+            url: "http://localhost:3001/comments/getNumber",
+            headers: {'Authorization': this.state.token},
+            data: {
+                blogId: this.state.objectId
+            }
+        })
+        .then((res)=>{
+            if(res.status===200){
+                this.setState({numberOfComments: res.data.count});
+                return;
+            }
+        })
+        .catch(error => {
+            console.log(error);
+        })
+    }
+
+    getLikesCount = (dislike) => {
+        if(this.props.objectIsBlog){
+            let url = "http://localhost:3001/blogLike/count";
+            if(dislike) url = "http://localhost:3001/blogDislike/count";    
             axios({
                 method: 'post',
-                url: "http://localhost:3001/comments/getNumber",
+                url: url,
                 headers: {'Authorization': this.state.token},
-                data: {
-                    blogId: this.state.objectId
-                }
+                data: { blogId: this.state.objectId }
             })
             .then((res)=>{
                 if(res.status===200){
-                    this.setState({numberOfComments: res.data.count});
-                    return;
+                    if(dislike){
+                        this.setState({DislikeCount: res.data.count});
+                    }
+                    else{
+                        this.setState({LikeCount: res.data.count});
+                    }
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            })
+        }
+        else{
+            let url = "http://localhost:3001/commentLike/count";
+            if(dislike) url = "http://localhost:3001/commentDislike/count";
+    
+            axios({
+                method: 'post',
+                url: url,
+                headers: {'Authorization': this.state.token},
+                data: { commentId: this.state.objectId }
+            })
+            .then((res)=>{
+                if(res.status===200){
+                    if(dislike){
+                        this.setState({DislikeCount: res.data.count});
+                    }
+                    else{
+                        this.setState({LikeCount: res.data.count});
+                    }
                 }
             })
             .catch(error => {
@@ -47,14 +109,34 @@ class LikesCommentsNumbers extends Component {
         }
     }
 
-    actionCleanUp = (type) => {
-        console.log(type)
-        if(type==="like"){
-            this.setState({LikeRefresh: true});
+    getFill = () => {
+        let data = {commentId: this.props.objectId, type: "comment"}
+        if(this.props.objectIsBlog){
+            data = {blogId: this.props.objectId, type: "blog"}
         }
-        else if(type==="dislike"){
-            this.setState({DislikeRefresh: true});
-        }
+
+        axios({
+            method: 'post',
+            url: `http://localhost:3001/checkIfLikedAlready`,
+            headers: {'Authorization': this.state.token},
+            data: data
+        })
+        .then((res)=>{
+            if(res.status===200){
+                if(res.data.response === "like"){
+                    this.setState({LikeFill: true, DislikeFill: false});
+                }
+                else if(res.data.response === "dislike"){
+                    this.setState({LikeFill: false, DislikeFill: true});
+                }
+                else if(res.data.response === "none"){
+                    this.setState({LikeFill: false, DislikeFill: false});
+                }
+            }
+        })
+        .catch(error => {
+            console.log(error);
+        })
     }
 
     render() { 
@@ -82,25 +164,17 @@ class LikesCommentsNumbers extends Component {
                 <div className={innerContainer}>
                     <div className={[classes.iconDataContainer, classes.likeIconPContainer].join(" ")}>
                         <Like
-                            refresh={this.state.LikeRefresh} 
-                            objectIsBlog={this.props.objectIsBlog} 
-                            token={this.state.token} 
-                            authorId={this.state.userId} 
-                            objectId={this.state.objectId} 
-                            cleanUp={this.actionCleanUp}
+                            fill={this.state.LikeFill}
+                            number={this.state.LikeCount}
                             size="1.5em" 
                             color="#0a42a4" 
                             className={classes.icon}/>
                     </div>
                     <div className={dislikeclasses}>
                         <Like
-                            refresh={this.state.DislikeRefresh} 
                             dislike 
-                            objectIsBlog={this.props.objectIsBlog} 
-                            token={this.state.token} 
-                            authorId={this.state.userId} 
-                            objectId={this.state.objectId} 
-                            cleanUp={this.actionCleanUp}
+                            fill={this.state.DislikeFill}
+                            number={this.state.DislikeCount}
                             size="1.5em" 
                             color="#0a42a4" 
                             className={classes.icon}/>
