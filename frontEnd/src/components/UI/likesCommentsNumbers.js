@@ -152,7 +152,42 @@ class LikesCommentsNumbers extends Component {
             })
             .then((res)=>{
                 if(res.status===201 || res.status===200){
-                    console.log('object sent')
+                    if(like){
+                        this.setState((prevState)=>{
+                            let data = {
+                                LikeFill: true,
+                                DislikeFill: false,
+                                LikeCount: prevState.LikeCount+1
+                            }
+                            if(prevState.DislikeFill){
+                                data = {
+                                    LikeFill: true,
+                                    DislikeFill: false,
+                                    LikeCount: prevState.LikeCount+1,
+                                    DislikeCount: prevState.DislikeCount-1
+                                }
+                            }
+                            return data;
+                        })
+                    }
+                    else{
+                        this.setState((prevState)=>{
+                            let data = {
+                                LikeFill: false,
+                                DislikeFill: true,
+                                DislikeCount: prevState.DislikeCount+1
+                            }
+                            if(prevState.LikeFill){
+                                data = {
+                                    LikeFill: false,
+                                    DislikeFill: true,
+                                    LikeCount: prevState.LikeCount-1,
+                                    DislikeCount: prevState.DislikeCount+1
+                                }
+                            }
+                            return data;
+                        })
+                    }
                 }
             })
             .catch(error => {
