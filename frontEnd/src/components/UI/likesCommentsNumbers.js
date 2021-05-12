@@ -155,12 +155,22 @@ class LikesCommentsNumbers extends Component {
                     if(like){
                         this.setState((prevState)=>{
                             let data = {
+                                ...prevState,
                                 LikeFill: true,
                                 DislikeFill: false,
                                 LikeCount: prevState.LikeCount+1
                             }
+                            if(prevState.LikeFill){
+                                data = {
+                                    ...prevState,
+                                    LikeFill: false,
+                                    DislikeFill: false,
+                                    LikeCount: prevState.LikeCount-1
+                                }
+                            }
                             if(prevState.DislikeFill){
                                 data = {
+                                    ...prevState,
                                     LikeFill: true,
                                     DislikeFill: false,
                                     LikeCount: prevState.LikeCount+1,
@@ -173,12 +183,22 @@ class LikesCommentsNumbers extends Component {
                     else{
                         this.setState((prevState)=>{
                             let data = {
+                                ...prevState,
                                 LikeFill: false,
                                 DislikeFill: true,
                                 DislikeCount: prevState.DislikeCount+1
                             }
+                            if(prevState.DislikeFill){
+                                data = {
+                                    ...prevState,
+                                    LikeFill: false,
+                                    DislikeFill: false,
+                                    DislikeCount: prevState.DislikeCount-1
+                                }
+                            }
                             if(prevState.LikeFill){
                                 data = {
+                                    ...prevState,
                                     LikeFill: false,
                                     DislikeFill: true,
                                     LikeCount: prevState.LikeCount-1,
