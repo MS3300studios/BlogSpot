@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Link, withRouter } from 'react-router-dom';
+// import { Link, withRouter } from 'react-router-dom';
 
 import classes from './comments.module.css';
 import Button from '../../../../components/UI/button';
@@ -89,7 +89,7 @@ class Comments extends Component {
                             <p className={authorClassArr}>
                                 <a href={"/user/profile/?id="+comment.author}>@{comment.authorNick}</a>
                             </p>
-                            <LikesCommentsNumbers blogId={this.state.blogId} small={setSmall}/>
+                            <LikesCommentsNumbers objectId={comment._id} userId={comment.author}/>
                             <p>{formattedCurrentDate(comment.createdAt)}</p>
                         </div>
                         <p className={classes.commentContent}>{comment.content}</p>
@@ -108,4 +108,4 @@ class Comments extends Component {
     }
 }
  
-export default withRouter(Comments);
+export default Comments;

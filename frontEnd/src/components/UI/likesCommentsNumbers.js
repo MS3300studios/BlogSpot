@@ -37,7 +37,6 @@ class LikesCommentsNumbers extends Component {
         this.getLikesCount(true); //get dislikes count
         this.getLikesCount(false); //get likes count
         this.getFill();
-        console.log('componentDidMount after functions')
     }
 
     getCommentsCount = () => {

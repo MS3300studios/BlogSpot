@@ -12,6 +12,7 @@ import PostForm from '../UI/PostForm';
 import Backdrop from '../UI/backdrop';
 import formattedCurrentDate from '../../formattedCurrentDate';
 import getUserData from '../../getUserData';
+import LikesCommentsNumbers from '../UI/likesCommentsNumbers';
 
 class PostView extends Component {
     constructor(props){
@@ -101,28 +102,29 @@ class PostView extends Component {
         else {
             info = (
                 <div className={classes.blogCards}>
-                            <div className={classes.blogFaceContainer}>
-                                <div className={classes.blogFace}>
-                                    <p className={classes.postTitle}>{this.state.post.title}</p>
-                                    <p className={classes.postAuthor}>@{this.state.post.author}</p>
-                                    <p>started at: {formattedCurrentDate(this.state.post.createdAt)}</p>
-                                    <p>latest edit: {formattedCurrentDate(this.state.post.updatedAt)}</p>
-                                    <div className={classes.btnsContainer}>
-                                        <Button clicked={this.displayPostForm}>Edit</Button>
-                                        <Button clicked={()=>this.deletePost(this.state.postId)}>Delete</Button>
-                                        <div className={classes.smallSpinnerLocation}>
-                                            {smallSpinner}
-                                        </div>
-                                    </div>
+                    <div className={classes.blogFaceContainer}>
+                        <div className={classes.blogFace}>
+                            <p className={classes.postTitle}>{this.state.post.title}</p>
+                            <p className={classes.postAuthor}>@{this.state.post.author}</p>
+                            <p>started at: {formattedCurrentDate(this.state.post.createdAt)}</p>
+                            <p>latest edit: {formattedCurrentDate(this.state.post.updatedAt)}</p>
+                            <LikesCommentsNumbers objectId={this.state.postId} userId={this.state.userData._id} comments objectIsBlog />
+                            <div className={classes.btnsContainer}>
+                                <Button clicked={this.displayPostForm}>Edit</Button>
+                                <Button clicked={()=>this.deletePost(this.state.postId)}>Delete</Button>
+                                <div className={classes.smallSpinnerLocation}>
+                                    {smallSpinner}
                                 </div>
-                                <div className={[classes.blogFace, classes.commentsContainer].join(" ")}>
-                                    <Comments blogId={this.state.postId} small/>
-                                </div>
-                            </div>
-                            <div className={classes.cardBig} >
-                                <p>{this.state.post.content}</p>
                             </div>
                         </div>
+                        <div className={[classes.blogFace, classes.commentsContainer].join(" ")}>
+                            <Comments blogId={this.state.postId} small/>
+                        </div>
+                    </div>
+                    <div className={classes.cardBig} >
+                        <p>{this.state.post.content}</p>
+                    </div>
+                </div>
             )
         }
         
