@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Switch, withRouter, Router } from 'react-router-dom';
+import { Route, Switch} from 'react-router-dom';
 import { connect } from 'react-redux';
 // import io from 'socket.io-client';
 
@@ -14,7 +14,6 @@ import Gate from './containers/gate/gate';
 import Login from './containers/gate/login/login';
 import Registration from './containers/gate/registration/registration';
 import URLnotFound from './components/URLnotfound/404';
-import axios from 'axios';
 
 class App extends Component {
   constructor(props){

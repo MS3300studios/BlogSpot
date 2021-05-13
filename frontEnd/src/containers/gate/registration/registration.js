@@ -63,7 +63,6 @@ class Registration extends Component {
     photosubmit = (e) => {
         var reader = new FileReader();
         var data;
-        console.log(e.target.files)
         if(e.target.files.length>0){
             reader.readAsDataURL(e.target.files[0]);
             let execute = new Promise(function(resolve, reject) {
@@ -90,10 +89,8 @@ class Registration extends Component {
             character = password.charAt(i);
             if(!isNaN(character)){
                 foundNumber = true;
-                console.log("found number")
             }
             if(character === character.toUpperCase()){
-                console.log("foundUpperCase")
                 foundUpperCase = true;
             }
         }
@@ -111,17 +108,14 @@ class Registration extends Component {
         for(let i = 0; i<=email.length-1; i++){
             character = email.charAt(i);
             if(character === "@"){
-                console.log("found at")
                 foundAt = true;
             }
             if(character === "."){
-                console.log("found dot")
                 foundDot = true;
             }
         }
 
         if(foundAt && foundDot){
-            console.log("returning true")
             return true;
         }
         else return false;

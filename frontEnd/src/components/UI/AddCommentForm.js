@@ -45,7 +45,6 @@ class AddCommentForm extends Component {
     }
 
     sendComment = (e, content) => {
-        console.log(content)
         e.preventDefault();
         if(content === ""){
             this.flash("you cannot send an empty comment");
@@ -64,7 +63,6 @@ class AddCommentForm extends Component {
             }
         })
         .then((res)=>{
-            console.log(res)
             if(res.status===201){
                 this.flash("you posted a comment!");
                 this.setState({content: ""});
