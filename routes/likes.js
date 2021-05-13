@@ -549,7 +549,33 @@ router.post('/checkIfLikedAlready',auth, (req, res) => {
 
     }
     else if(req.body.type === "comment"){
-
+        checkIfLikedAlreadyComment.then((like, error)=>{
+            if(like===null){
+                checkIfDislikedAlreadyComment.then((dislike, error) => {
+                    if(dislike){
+                        res.json({
+                            response: "dislike"
+                        })
+                    }
+                    if(dislike === null){
+                        res.json({
+                            response: "none"
+                        })
+                    }
+                    if(error){
+                        console.log(error)
+                    }
+                })
+            }
+            else if(like){
+                res.json({
+                    response: "like"
+                })
+            }
+            if(error){
+                console.log(error);
+            }
+        })
     }
 
 })

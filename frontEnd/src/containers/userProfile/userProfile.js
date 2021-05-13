@@ -8,7 +8,7 @@ import getToken from '../../getToken';
 import { FaUserFriends } from 'react-icons/fa';
 import { BsPencil } from 'react-icons/bs';
 import { GoPencil } from 'react-icons/go';
-import { AiFillPlusCircle, AiOutlinePlusCircle } from 'react-icons/ai';
+import { AiFillPlusCircle } from 'react-icons/ai'; //, AiOutlinePlusCircle 
 import { BiPhotoAlbum, BiPaperPlane } from 'react-icons/bi';
 import getUserData from '../../getUserData';
 import Spinner from '../../components/UI/spinner';

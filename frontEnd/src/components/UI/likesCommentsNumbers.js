@@ -45,7 +45,7 @@ class LikesCommentsNumbers extends Component {
             url: "http://localhost:3001/comments/getNumber",
             headers: {'Authorization': this.state.token},
             data: {
-                blogId: this.state.objectId
+                blogId: this.props.objectId
             }
         })
         .then((res)=>{
@@ -67,7 +67,7 @@ class LikesCommentsNumbers extends Component {
                 method: 'post',
                 url: url,
                 headers: {'Authorization': this.state.token},
-                data: { blogId: this.state.objectId }
+                data: { blogId: this.props.objectId }
             })
             .then((res)=>{
                 if(res.status===200){
@@ -91,7 +91,7 @@ class LikesCommentsNumbers extends Component {
                 method: 'post',
                 url: url,
                 headers: {'Authorization': this.state.token},
-                data: { commentId: this.state.objectId }
+                data: { commentId: this.props.objectId }
             })
             .then((res)=>{
                 if(res.status===200){
@@ -147,7 +147,7 @@ class LikesCommentsNumbers extends Component {
                 method: 'post',
                 url: url,
                 headers: {'Authorization': this.state.token},
-                data: { blogId: this.state.objectId }
+                data: { blogId: this.props.objectId }
             })
             .then((res)=>{
                 if(res.status===201 || res.status===200){
@@ -221,7 +221,7 @@ class LikesCommentsNumbers extends Component {
                 method: 'post',
                 url: url,
                 headers: {'Authorization': this.state.token},
-                data: { commentId: this.state.objectId }
+                data: { commentId: this.props.objectId }
             })
             .then((res)=>{
                 if(res.status===201 || res.status===200){

@@ -79,7 +79,7 @@ class Comments extends Component {
         let comments = this.state.comments.map((comment, index) => { 
             return ( 
                 <React.Fragment key={index}>
-                    <div className={classes.commentContainer} key={index}>
+                    <div className={classes.commentContainer}>
                         <div className={classes.topBar}>   
                             <div className={classes.userPhotoDiv}>
                                 <a href={"/user/profile/?id="+comment.author}>
@@ -89,8 +89,10 @@ class Comments extends Component {
                             <p className={authorClassArr}>
                                 <a href={"/user/profile/?id="+comment.author}>@{comment.authorNick}</a>
                             </p>
-                            <LikesCommentsNumbers objectId={comment._id} userId={comment.author}/>
                             <p>{formattedCurrentDate(comment.createdAt)}</p>
+                            <div className={classes.positionNumberContainer}>
+                                <LikesCommentsNumbers objectId={comment._id} userId={comment.author}/>
+                            </div>
                         </div>
                         <p className={classes.commentContent}>{comment.content}</p>
                     </div>
