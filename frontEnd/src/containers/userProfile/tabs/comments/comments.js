@@ -22,7 +22,7 @@ class Comments extends Component {
             token: token,
             limit: 2,
             blogId: props.blogId,
-            comments: []
+            comments: [],
         }
 
         this.loadmorehandler.bind(this);
@@ -73,9 +73,10 @@ class Comments extends Component {
         let authorClassArr = classes.commentAuthor;
         let setSmall = false;
         if(this.props.small) {
-            authorClassArr=[classes.smallAuthorClass, classes.commentAuthor].join(" ");
+            authorClassArr = [classes.smallAuthorClass, classes.commentAuthor].join(" ");
             setSmall = true;
         }
+        
         let comments = this.state.comments.map((comment, index) => { 
             return ( 
                 <React.Fragment key={index}>

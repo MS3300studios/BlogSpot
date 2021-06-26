@@ -7,6 +7,7 @@ import './App.css';
 
 import Menu from './components/menu/menu';
 import UserProfile from './containers/userProfile/userProfile';
+import Chat from './containers/chat/chat';
 import FriendsList from './containers/FriendsList/FriendsList';
 import Dashboard from './containers/dashboard/dashboard';
 import PostView from './components/postView/postView';
@@ -42,6 +43,7 @@ class App extends Component {
         <React.Fragment>
           <Menu />
             <Switch>
+              <Route path="/chat/" component={Chat} />
               <Route path="/post/" component={PostView} />
               <Route path="/user/profile/" component={UserProfile} />
               <Route path="/user/friends/" component={FriendsList} />
