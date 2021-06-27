@@ -29,7 +29,7 @@ class ChatMenu extends Component {
     render() { 
         let converstaions = this.state.converstaions.map((el, index) => {
             return (
-                <div className={classes.converstaion} onClick={()=>this.props.selectChat(index)}>
+                <div className={classes.converstaion} onClick={()=>this.props.selectChat(index)} key={index}>
                     <h1>{el.user}</h1>
                     <p>{el.message}</p>
                 </div>

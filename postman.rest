@@ -40,3 +40,13 @@ Content-Type: application/json
     "blogId": "6093f1b82fa2903c940f792e",
 }
 
+###
+# testing friend requests
+
+POST http://localhost:3001/createRequest
+Content-Type: application/json
+
+{
+    "friendId": "609ce3e1f3927449a80fa096",
+}
+

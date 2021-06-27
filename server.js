@@ -8,6 +8,7 @@ app.use(require('./routes/users'));
 app.use(require('./routes/blogs'));
 app.use(require('./routes/comments'));
 app.use(require('./routes/likes'));
+app.use(require('./routes/friends'));
 
 const server = app.listen(PORT, ()=>{
     console.log(chalk.green("------------------------------"));
