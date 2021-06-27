@@ -379,6 +379,20 @@ class Dashboard extends Component {
                 >
                     accept friend request
                 </button>                   
+                <button
+                    onClick={()=>{
+                        axios({
+                            method: 'post',
+                            url: "http://localhost:3001/deleteFriend",
+                            headers: {'Authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Implbm55c2FuQHRlc3QucGwiLCJ1c2VySWQiOiI2MDljZTUwNmYzOTI3NDQ5YTgwZmEwOWQiLCJpYXQiOjE2MjQ3OTczMTYsImV4cCI6MTYyNDgwMDkxNn0.i8La4QD7XGzfal5vOcvNlUxn2MBEftjHcu4MM8RqxdE'},
+                            data: { 
+                                friendId: "509ce3e1f3927449a80fa096"
+                            }
+                        })
+                    }}
+                >
+                    delete friend
+                </button>                   
             </React.Fragment>               
         );
     }

@@ -8,9 +8,10 @@ const auth = require('../middleware/authorization');
 
 router.use(express.json());
 
-//creating request
 
+//creating request
 router.post('/createRequest', auth, (req, res) => {
+    //check if the request already exists
     FriendRequest.findOne({friendId: req.body.friendId}).exec().then(friend => {
         if(friend){
             console.log('this request already exists')
@@ -20,7 +21,7 @@ router.post('/createRequest', auth, (req, res) => {
             User.findOne({_id: req.body.friendId})
             .exec()
             .then(friend => {
-                //creating request instance
+                //creating request 
                 const friendRequest = new FriendRequest({
                     userId: req.userData.userId,
                     friendId: friend._id
@@ -52,8 +53,8 @@ router.post('/createRequest', auth, (req, res) => {
     
 });
 
-//managing request (decline or accept)
 
+//managing request (decline or accept)
 router.post('/anwserRequest', auth, (req, res) => {
     if(req.body.accept === true){
         //delete request, add friend
@@ -94,6 +95,28 @@ router.post('/anwserRequest', auth, (req, res) => {
         console.log('request data error');
         res.status(500);
     }
+});
+
+
+//delete friends 
+
+router.post('/deleteFriend', auth, (req, res) => {
+    Friend.findOneAndDelete({friendId: req.body.friendId})
+        .exec()
+        .then(response => {
+            if(response){
+                console.log('user deleted successfully');
+                res.status(200);
+            }
+            else{
+                console.log('friend deletion failed, friend was not found');
+                res.status(404);
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            return res.status(500)
+        });
 });
 
 module.exports = router;
