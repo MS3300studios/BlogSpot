@@ -18,27 +18,81 @@ class FriendsList extends Component {
         this.state = {
             photos: [
                 photo1,photo2,photo3,photo4,photo5,photo6,photo7
-            ]
+            ],
+            names: [
+                {name: 'Anna', surname: 'Marks', nickname: 'anna74'},
+                {name: 'Ted', surname: 'Wilinks', nickname: 'teddy22'},
+                {name: 'Maciej', surname: 'Warnik', nickname: 'macieK23'},
+                {name: 'Józef', surname: 'Seren', nickname: 'koks101'},
+                {name: 'Adam', surname: 'Sęp', nickname: 'adamex'},
+                {name: 'Natalia', surname: 'Jarska', nickname: 'Kicia<3'},
+                {name: 'Bolek', surname: 'Tokarski', nickname: 'Chrobry3000'}
+            ],
+            viewAsFaces: false
+        }
+        this.changeView.bind(this);
+    }
+
+    changeView = (option) => {
+        if(option === "list"){
+            this.setState({viewAsFaces: false});
+        }
+        else if(option === "photos"){
+            this.setState({viewAsFaces: true});
         }
     }
+
     render() { 
-        let faces = this.state.photos.map((photo, index) => {
-            return (
-                <div className={classes.face} key={index}>
-                    <img src={photo} alt="user face"/>
+        let names = (
+            <div className={classes.nameListContainer}>
+                {
+                    this.state.names.map((name, index)=>{
+                        let img = this.state.photos[index];
+                        return (
+                            <React.Fragment>
+                                <div className={classes.listElement} key={index}>
+                                    <div className={classes.smallFaceContainer}>
+                                        <img src={img} alt="friend's face"/>
+                                    </div>
+                                    <div className={classes.namesContainer}>
+                                        <h1>{name.name} {name.surname}</h1>
+                                        <p>@{name.nickname}</p>
+                                    </div>
+                                </div>
+                                <hr/>
+                            </React.Fragment>
+                        )
+                    })
+                }
+            </div>
+        );
+
+        let faces = (
+            <div className={classes.wrapper}>
+                {
+                    this.state.photos.map((photo, index) => {
+                        return (
+                            <div className={classes.face} key={index}>
+                                <img src={photo} alt="user face"/>
+                            </div>
+                        )
+                    })
+                }
+                <div className={classes.face}>
+                    <button>add a new friend</button>
                 </div>
-            )
-        })
+            </div>
+        );
 
         return (
             <div className={classes.mainContainer}>
                 <div className={classes.upperContainer}>
-                    <h1 className={classes.mainHeader}>Friends</h1>
+                    <h1 className={classes.mainHeader}>Your friends:</h1>
                     <div className={classes.viewOptions}>
                         <h3 className={classes.viewOptionsH3}>View Options:</h3>
-                        <select className={classes.Select} onChange={(e)=>console.log(e.target.value)}>
-                            <option>photos</option>
+                        <select className={classes.Select} onChange={(e)=>this.changeView(e.target.value)}>
                             <option>list</option>
+                            <option>photos</option>
                         </select>
                     </div>
                     <SearchBar 
@@ -47,9 +101,7 @@ class FriendsList extends Component {
                         selectValues={["nickname", "name", "surname", "id"]}
                     />
                 </div>
-                <div className={classes.wrapper}>
-                {faces}
-                </div>
+                {this.state.viewAsFaces ? faces : names}
             </div>
         );
     }

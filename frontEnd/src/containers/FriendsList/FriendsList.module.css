@@ -1,5 +1,4 @@
 .mainContainer{
-    border: solid 1px black;
     position: relative;
 }
 
@@ -39,4 +38,46 @@
 }
 .Select{
 
+}
+/* list elements: */
+
+.nameListContainer{
+    background-color: #82ca66;
+    margin: 0 auto;
+    width: 50%;
+    border: 3px solid green;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.listElement {
+    /* border: black dashed 2px; */
+    height: 100px;
+    display: flex;
+    justify-content: space-evenly;
+    padding: 5px;
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+.smallFaceContainer{
+    width: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.namesContainer{
+    width: 80%;
+}
+.listElement h1{
+    margin: 0;
+}
+.listElement img{
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+}
+hr {
+    border-color: green;
+    color: green;
+    background-color: green;
 }
