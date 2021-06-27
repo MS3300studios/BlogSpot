@@ -372,7 +372,7 @@ class Dashboard extends Component {
                             headers: {'Authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Implbm55c2FuQHRlc3QucGwiLCJ1c2VySWQiOiI2MDljZTUwNmYzOTI3NDQ5YTgwZmEwOWQiLCJpYXQiOjE2MjQ3OTczMTYsImV4cCI6MTYyNDgwMDkxNn0.i8La4QD7XGzfal5vOcvNlUxn2MBEftjHcu4MM8RqxdE'},
                             data: { 
                                 accept: true,
-                                friendId: "509ce3e1f3927449a80fa096"
+                                friendId: "609ce3e1f3927449a80fa096"
                             }
                         })
                     }}

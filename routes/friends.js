@@ -11,31 +11,45 @@ router.use(express.json());
 //creating request
 
 router.post('/createRequest', auth, (req, res) => {
-    User.findOne({_id: req.body.friendId})
-        .exec()
-        .then(friend => {
-            //creating request instance
-            const friendRequest = new FriendRequest({
-                userId: req.userData.userId,
-                friendId: friend._id
-            });
-            
-            friendRequest.save()
-                .then(response => {
-                    console.log("friend request added");
-                    res.sendStatus(201);
-                })
-                .catch(err => {
-                    console.log(err);
-                    res.status(500).json({error: err});
+    FriendRequest.findOne({friendId: req.body.friendId}).exec().then(friend => {
+        if(friend){
+            console.log('this request already exists')
+            res.status(401);
+        }
+        else{
+            User.findOne({_id: req.body.friendId})
+            .exec()
+            .then(friend => {
+                //creating request instance
+                const friendRequest = new FriendRequest({
+                    userId: req.userData.userId,
+                    friendId: friend._id
                 });
-        })
-        .catch(err => {
-            return res.status(500).json({
-                message: 'user not found',
-                error: err
+                
+                friendRequest.save()
+                    .then(response => {
+                        console.log("friend request added");
+                        res.sendStatus(201);
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        res.status(500).json({error: err});
+                    });
             })
-        });
+            .catch(err => {
+                return res.status(500).json({
+                    message: 'user not found',
+                    error: err
+                })
+            });
+        }
+    })
+    .catch(err => {
+        return res.status(500).json({
+            error: err
+        })
+    });
+    
 });
 
 //managing request (decline or accept)
