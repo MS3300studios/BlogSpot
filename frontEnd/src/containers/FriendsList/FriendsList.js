@@ -42,6 +42,10 @@ class FriendsList extends Component {
         }
     }
 
+    filterfriends = () => {
+
+    }
+
     render() { 
         let names = (
             <div className={classes.nameListContainer}>
@@ -49,8 +53,8 @@ class FriendsList extends Component {
                     this.state.names.map((name, index)=>{
                         let img = this.state.photos[index];
                         return (
-                            <React.Fragment>
-                                <div className={classes.listElement} key={index}>
+                            <React.Fragment key={index}>
+                                <div className={classes.listElement}>
                                     <div className={classes.smallFaceContainer}>
                                         <img src={img} alt="friend's face"/>
                                     </div>
@@ -89,7 +93,7 @@ class FriendsList extends Component {
                 <div className={classes.upperContainer}>
                     <h1 className={classes.mainHeader}>Your friends:</h1>
                     <div className={classes.viewOptions}>
-                        <h3 className={classes.viewOptionsH3}>View Options:</h3>
+                        <h3 className={classes.viewOptionsH3}>View as:</h3>
                         <select className={classes.Select} onChange={(e)=>this.changeView(e.target.value)}>
                             <option>list</option>
                             <option>photos</option>
@@ -97,7 +101,7 @@ class FriendsList extends Component {
                     </div>
                     <SearchBar 
                         placeholder="search friends by..."
-                        clicked={()=>{console.log('you clicked the search icon')}}
+                        clicked={(arg, arg2)=>{console.log(`option: ${arg} string: ${arg2}`)}}
                         selectValues={["nickname", "name", "surname", "id"]}
                     />
                 </div>

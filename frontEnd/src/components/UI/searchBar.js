@@ -6,11 +6,11 @@ import classes from './searchBar.module.css';
 
 const SearchBar = (props) => {
     const [searchString, setsearchString] = useState("");
-    const [optionSelected, setoptionSelected] = useState("title");
+    const [optionSelected, setoptionSelected] = useState(props.selectValues[0]);
 
     let resetState = () => {
         setsearchString("");
-        setoptionSelected("title");
+        setoptionSelected(props.selectValues[0]);
         props.resetFilter()
     }
 
