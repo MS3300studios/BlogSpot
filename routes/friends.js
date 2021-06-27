@@ -2,6 +2,7 @@ const express = require('express');
 const router = express();
 
 const User = require('../models/user');
+const Friend = require('../models/friend');
 const FriendRequest = require('../models/friendRequest');
 const auth = require('../middleware/authorization');
 
@@ -42,13 +43,34 @@ router.post('/createRequest', auth, (req, res) => {
 router.post('/anwserRequest', auth, (req, res) => {
     if(req.body.accept === true){
         //delete request, add friend
+        FriendRequest.findOneAndRemove({friendId: req.body.friendId}).exec().then((response)=>{
+            if(response){ //if there was such a request
+                const friend = new Friend({
+                    userId: req.userData.userId,
+                    friendId: req.body.friendId
+                });
+                friend.save()
+                    .then(response => {
+                        console.log("friend added");
+                        res.sendStatus(201);
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        res.status(500).json({error: err});
+                    });
+            }
+            else{
+                console.log("friend request doesn't exist");
+                res.status(500);
+            }
+        })
     }
     else if(req.body.accept === false){
         //delete request
         FriendRequest.findOneAndRemove({friendId: req.body.friendId})
         .exec()
-        .then(res => {
-            console.log(res);
+        .then(response => {
+            res.sendStatus(200);
         })
         .catch(err => {
             return res.status(500)
