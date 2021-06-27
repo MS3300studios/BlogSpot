@@ -11,36 +11,6 @@
     color: black;
 }
 
-.wrapper{
-    margin: 10px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    border: black 1px solid;
-}
-
-.face img{
-    border-radius: 10%;
-    height: 280px;
-    width: 280px;
-    margin: 20px;
-    transition: 0.5s all ease;
-}
-.face img:hover{
-    transform: scale(1.2);
-}
-
-.viewOptions{
-
-}
-.viewOptionsH3{
-
-}
-.Select{
-
-}
-/* list elements: */
-
 .nameListContainer{
     background-color: #82ca66;
     margin: 0 auto;

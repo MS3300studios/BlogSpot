@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import classes from './FriendsList.module.css';
 import SearchBar from '../../components/UI/searchBar';
-import NoSearchResult from '../../components/UI/noSearchResult';
+import Button from '../../components/UI/button'; 
 import FriendsListItem from './friendsListItem';
 
 import photo1 from '../../assets/userPhoto/image (1).jfif';
@@ -29,13 +29,18 @@ class FriendsList extends Component {
                 {name: 'Natalia', surname: 'Jarska', nickname: 'Kicia<3'},
                 {name: 'Bolek', surname: 'Tokarski', nickname: 'Chrobry3000'}
             ],
-            viewAsFaces: false,
             filterIn: "none",
             filterBy: "none"
         }
         this.changeView.bind(this);
         this.filterSearchHandler.bind(this);
         this.filterFriends.bind(this);
+        this.searchNewUser.bind(this);
+    }
+
+    searchNewUser = () => {
+        console.log('searching!');
+        //make call to API with field, and string.
     }
 
     changeView = (option) => {
@@ -117,17 +122,21 @@ class FriendsList extends Component {
             }
         }
 
-        // if(friendsRdy.length === 0){
-        //     friendsRdy = (
-        //         <NoSearchResult />
-        //     );
-        // }
-        console.log(friendsRdy)
+        if(friendsRdy.length === 0){
+            friendsRdy = (
+                <React.Fragment>
+                    <h1>Ooops, you don't have a friend with that {this.state.filterIn}!</h1>
+                    <hr />
+                    <p>Do you wish to search for a user with this {this.state.filterIn}?</p>
+                    <Button clicked={this.searchNewUser}>Search</Button>
+                </React.Fragment>
+            );
+        }
         return friendsRdy;
     }
 
     render() { 
-        let names = (
+        let friends = (
             <div className={classes.nameListContainer}>
                 {
                     this.filterFriends(this.state.filterIn, this.state.filterBy)
@@ -135,36 +144,10 @@ class FriendsList extends Component {
             </div>
         );
 
-        let faces = (
-            <div className={classes.wrapper}>
-                {
-                    this.state.photos.map((photo, index) => {
-                        return (
-                            <div className={classes.face} key={index}>
-                                <img src={photo} alt="user face"/>
-                            </div>
-                        )
-                    })
-                }
-                <div className={classes.face}>
-                    <button>add a new friend</button>
-                </div>
-            </div>
-        );
-
-        console.log(`filterBy: ${this.state.filterBy}, filterIn: ${this.state.filterIn}`)
-
         return (
             <div className={classes.mainContainer}>
                 <div className={classes.upperContainer}>
                     <h1 className={classes.mainHeader}>Your friends:</h1>
-                    <div className={classes.viewOptions}>
-                        <h3 className={classes.viewOptionsH3}>View as:</h3>
-                        <select className={classes.Select} onChange={(e)=>this.changeView(e.target.value)}>
-                            <option>list</option>
-                            <option>photos</option>
-                        </select>
-                    </div>
                     <SearchBar 
                         placeholder="search friends by..."
                         clicked={this.filterSearchHandler}
@@ -172,7 +155,7 @@ class FriendsList extends Component {
                         resetFilter={()=>{this.setState({filterIn: "none", filterBy: "none"})}}
                     />
                 </div>
-                {this.state.viewAsFaces ? faces : names}
+                {friends}
             </div>
         );
     }
