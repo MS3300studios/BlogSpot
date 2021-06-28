@@ -4,6 +4,7 @@ import classes from './FriendsList.module.css';
 import SearchBar from '../../components/UI/searchBar';
 import Button from '../../components/UI/button'; 
 import FriendsListItem from './friendsListItem';
+import getToken from '../../getToken';
 
 import photo1 from '../../assets/userPhoto/image (1).jfif';
 import photo2 from '../../assets/userPhoto/image (2).jfif';
@@ -12,47 +13,80 @@ import photo4 from '../../assets/userPhoto/image (4).jfif';
 import photo5 from '../../assets/userPhoto/image (14).jfif';
 import photo6 from '../../assets/userPhoto/image2.jfif';
 import photo7 from '../../assets/userPhoto/image.jfif';
+import axios from 'axios';
+import { BackgroundColor } from 'chalk';
 
 class FriendsList extends Component {
     constructor(props){
         super(props);
+
+        let token = getToken();
+
         this.state = {
-            photos: [
-                photo1,photo2,photo3,photo4,photo5,photo6,photo7
-            ],
-            names: [
-                {name: 'Anna', surname: 'Marks', nickname: 'anna74'},
-                {name: 'Ted', surname: 'Wilinks', nickname: 'teddy22'},
-                {name: 'Maciej', surname: 'Warnik', nickname: 'macieK23'},
-                {name: 'Józef', surname: 'Seren', nickname: 'koks101'},
-                {name: 'Adam', surname: 'Sęp', nickname: 'adamex'},
-                {name: 'Natalia', surname: 'Jarska', nickname: 'Kicia<3'},
-                {name: 'Bolek', surname: 'Tokarski', nickname: 'Chrobry3000'}
-            ],
+            token: token,
+            friends: [],
             filterIn: "none",
-            filterBy: "none"
+            filterBy: "none",
+            wasSearched: false,
+            fullFriends: [{}]
         }
-        this.changeView.bind(this);
+
         this.filterSearchHandler.bind(this);
         this.filterFriends.bind(this);
         this.searchNewUser.bind(this);
+        this.setProps.bind(this);
+    }
+
+    componentDidMount(){
+        axios({
+            method: 'post',
+            url: 'http://localhost:3001/getFriends',
+            headers: {'Authorization': this.state.token},
+        })
+        .then((res)=>{
+            if(res.status===200){
+                this.setState({friends: res.data.friends});
+                return;
+            }
+        })
+        .catch(error => {
+            console.log(error);
+        })
+    }
+
+    setProps = (user, index) => {
+        var newArray = this.state.fullFriends;
+        newArray.splice(index,0, user);
+        this.setState({fullFriends: newArray});
     }
 
     searchNewUser = () => {
-        console.log('searching!');
         //make call to API with field, and string.
-    }
-
-    changeView = (option) => {
-        if(option === "list"){
-            this.setState({viewAsFaces: false});
-        }
-        else if(option === "photos"){
-            this.setState({viewAsFaces: true});
-        }
+        axios({
+            method: 'post',
+            url: `http://localhost:3001/users/find`,
+            headers: {'Authorization': this.state.token},
+            data: {
+                field: this.state.filterIn,
+                payload: this.state.filterBy
+            }
+        })
+        .then((res)=>{
+            console.log(res)
+            if(res.status===200){
+                this.setState({friends: res.data.users})
+                return;
+            }
+        })
+        .catch(error => {
+            console.log(error);
+        })
     }
 
     filterSearchHandler = (option, string) => {
+        if(!this.state.wasSearched){
+            this.setState({wasSearched: false});
+        }
         this.setState({filterIn: option, filterBy: string});
     }
 
@@ -62,35 +96,30 @@ class FriendsList extends Component {
         
         //default filter: no filter applied
         if(filterIn==="none" || filterBy==="none"){
-            friendsRdy = this.state.names.map((name, index)=>{
-                let img = this.state.photos[index];
+            friendsRdy = this.state.friends.map((friend, index)=>{
                 return (
-                    <React.Fragment key={index}>
-                        <div className={classes.listElement}>
-                            <div className={classes.smallFaceContainer}>
-                                <img src={img} alt="friend's face"/>
-                            </div>
-                            <div className={classes.namesContainer}>
-                                <h1>{name.name} {name.surname}</h1>
-                                <p>@{name.nickname}</p>
-                            </div>
-                        </div>
-                        <hr/>
-                    </React.Fragment>
+                    <FriendsListItem 
+                        sendInfo={this.setProps}
+                        id={friend.friendId} 
+                        key={index} 
+                        name={this.state.fullFriends[index].name} 
+                        surname={this.state.fullFriends[index].surname} 
+                        nickname={this.state.fullFriends[index].nickname} 
+                    />
                 )
             });
         }
         else{
-            friendsJSX = this.state.names.map((friend, index)=>{
-                let img = this.state.photos[index];
+            friendsJSX = this.state.friends.map((friend, index)=>{
                 return (
                     <FriendsListItem 
-                        name={friend.name}
-                        surname={friend.surname}
-                        nickname={friend.nickname} 
-                        index={index} 
-                        img={img} 
-                        key={index}/>
+                        sendInfo={this.setProps}
+                        id={friend.friendId} 
+                        key={index} 
+                        name={this.state.fullFriends[index].name} 
+                        surname={this.state.fullFriends[index].surname} 
+                        nickname={this.state.fullFriends[index].nickname} 
+                    />
                 )
             });
 
@@ -105,18 +134,18 @@ class FriendsList extends Component {
     
             else if(filterIn==="name"){
                 // eslint-disable-next-line
-                friendsRdy = friendsJSX.filter((post)=>{
-                    if(post.props.name.includes(filterBy)){
-                        return post;
+                friendsRdy = friendsJSX.filter((friend)=>{
+                    if(friend.props.name.includes(filterBy)){
+                        return friend;
                     }
                 })
             }
 
             else if(filterIn==="surname"){
                 // eslint-disable-next-line
-                friendsRdy = friendsJSX.filter((post)=>{
-                    if(post.props.surname.includes(filterBy)){
-                        return post;
+                friendsRdy = friendsJSX.filter((friend)=>{
+                    if(friend.props.surname.includes(filterBy)){
+                        return friend;
                     }
                 })
             }
@@ -136,6 +165,17 @@ class FriendsList extends Component {
     }
 
     render() { 
+
+        let noFriendsYet = (
+            <div className={classes.nameListContainer}>
+                <h1>You don't have any friends yet!</h1>
+                <hr />
+                <p>To add new friends, type their data in the search bar above and click search</p>
+                <Button clicked={this.searchNewUser}>Search</Button>
+            </div>
+        );
+
+        
         let friends = (
             <div className={classes.nameListContainer}>
                 {
@@ -143,6 +183,10 @@ class FriendsList extends Component {
                 }
             </div>
         );
+        
+        if(this.state.friends.length>0){
+            noFriendsYet = friends;
+        }
 
         return (
             <div className={classes.mainContainer}>
@@ -155,7 +199,15 @@ class FriendsList extends Component {
                         resetFilter={()=>{this.setState({filterIn: "none", filterBy: "none"})}}
                     />
                 </div>
-                {friends}
+                {this.state.wasSearched ? friends : noFriendsYet}
+                <button
+                        onClick={()=>{
+                            console.log(this.state.fullFriends)
+                        }}
+                        style={{BackgroundColor: "black"}}
+                    >
+                    check full friends arr
+                </button>
             </div>
         );
     }

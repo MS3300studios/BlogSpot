@@ -119,4 +119,18 @@ router.post('/deleteFriend', auth, (req, res) => {
         });
 });
 
+router.post('/getFriends', auth, (req, res) => {
+    Friend.find({userId: req.userData.userId})
+        .exec()
+        .then(friends => {
+            return res.status(200).json({
+                friends: friends
+            }) 
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500);
+        })
+})
+
 module.exports = router;
