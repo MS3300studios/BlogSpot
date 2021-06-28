@@ -127,5 +127,36 @@ router.get('/users/getUserPhoto/:userId', auth, (req, res) => {
         })
 })
 
+router.post('/users/find', auth, (req, res) => {
+    let search = {};
+    switch (req.body.field) {
+        case "nickname":
+            search = {nickname: req.body.payload}
+            break;
+        case "name":
+            search = {name: req.body.payload}
+            break;
+        case "surname":
+            search = {surname: req.body.payload}
+            break;
+        case "id":
+            search = {_id: req.body.payload}
+            break;
+        default:
+            res.json({error: "incorrect request field"});
+            break;
+    }
+    User.find(search)
+        .exec()
+        .then(users => {
+            if(users.length<1){
+                res.status(404).send("user not found");
+            }
+            else{
+                res.status(200).json({users: users});
+            }
+        })
+        .catch(err => res.status(404).json({message: "error finding user", error: err}))
+})
 
 module.exports = router;

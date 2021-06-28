@@ -351,6 +351,7 @@ class Dashboard extends Component {
                 {addPostActive}
                 {flash} 
                 <button
+                    style={{backgroundColor: "black"}}
                     onClick={()=>{
                         axios({
                             method: 'post',
@@ -365,6 +366,7 @@ class Dashboard extends Component {
                     send friend request
                 </button>                   
                 <button
+                    style={{backgroundColor: "black"}}
                     onClick={()=>{
                         axios({
                             method: 'post',
@@ -380,6 +382,7 @@ class Dashboard extends Component {
                     accept friend request
                 </button>                   
                 <button
+                    style={{backgroundColor: "black"}}
                     onClick={()=>{
                         axios({
                             method: 'post',
@@ -392,6 +395,22 @@ class Dashboard extends Component {
                     }}
                 >
                     delete friend
+                </button>                   
+                <button
+                    style={{backgroundColor: "black"}}
+                    onClick={()=>{
+                        axios({
+                            method: 'post',
+                            url: "http://localhost:3001/users/find",
+                            headers: {'Authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Implbm55c2FuQHRlc3QucGwiLCJ1c2VySWQiOiI2MDljZTUwNmYzOTI3NDQ5YTgwZmEwOWQiLCJpYXQiOjE2MjQ4NzU1MDQsImV4cCI6MTYyNDg3OTEwNH0.GnFSJJuRvIO28OkszRc29xJLw_QuQ4G-ieCoa7jUGKs'},
+                            data: { 
+                                field: "id",
+                                payload: "509ce3e1f3927449a80fa096"
+                            }
+                        }).then(response => console.log(response))
+                    }}
+                >
+                    search for user
                 </button>                   
             </React.Fragment>               
         );
