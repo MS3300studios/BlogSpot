@@ -33,7 +33,6 @@ class FriendsListItem extends Component {
     }
 
     render() { 
-        console.log(this.props)
         return (
             <a href={"/user/profile/?id="+this.props.id} key={this.props.index} className={classes.containerLink}>
                 <div className={classes.listElement}>

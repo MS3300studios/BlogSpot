@@ -19,7 +19,9 @@ class FriendsList extends Component {
             filterIn: "none",
             filterBy: "none",
             wasSearched: false,
-            fullFriends: [{}]
+            fullFriends: [{}],
+            searchedForUsers: false,
+            newUsers: []
         }
 
         this.filterSearchHandler.bind(this);
@@ -63,11 +65,7 @@ class FriendsList extends Component {
             }
         })
         .then((res)=>{
-            console.log(res)
-            if(res.status===200){
-                this.setState({friends: res.data.users})
-                return;
-            }
+            this.setState({fullFriends: res.data.users, searchedForUsers: true});
         })
         .catch(error => {
             console.log(error);
@@ -174,7 +172,30 @@ class FriendsList extends Component {
                 }
             </div>
         );
-        
+
+        if(this.state.searchedForUsers){
+            friends = (
+                <div className={classes.nameListContainer}>
+                    {
+                        this.state.newUsers.map((user, index)=>(
+                                <a href={"/user/profile/?id="+user._id} key={index} className={classes.containerLink}>
+                                    <div className={classes.listElement}>
+                                        <div className={classes.smallFaceContainer}>
+                                            <img src={user.photo} alt="users's face"/>
+                                        </div>
+                                        <div className={classes.namesContainer}>
+                                            <h1>{user.name} {user.surname}</h1>
+                                            <p>@{user.nickname}</p>
+                                        </div>
+                                    </div>
+                                    <hr/>
+                                </a>
+                            ))
+                    }
+                </div>
+            )
+        }
+
         if(this.state.friends.length>0){
             noFriendsYet = friends;
         }
