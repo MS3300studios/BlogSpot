@@ -5,16 +5,7 @@ import SearchBar from '../../components/UI/searchBar';
 import Button from '../../components/UI/button'; 
 import FriendsListItem from './friendsListItem';
 import getToken from '../../getToken';
-
-import photo1 from '../../assets/userPhoto/image (1).jfif';
-import photo2 from '../../assets/userPhoto/image (2).jfif';
-import photo3 from '../../assets/userPhoto/image (3).jfif';
-import photo4 from '../../assets/userPhoto/image (4).jfif';
-import photo5 from '../../assets/userPhoto/image (14).jfif';
-import photo6 from '../../assets/userPhoto/image2.jfif';
-import photo7 from '../../assets/userPhoto/image.jfif';
 import axios from 'axios';
-import { BackgroundColor } from 'chalk';
 
 class FriendsList extends Component {
     constructor(props){
@@ -204,7 +195,7 @@ class FriendsList extends Component {
                         onClick={()=>{
                             console.log(this.state.fullFriends)
                         }}
-                        style={{BackgroundColor: "black"}}
+                        style={{backgroundColor: "black"}}
                     >
                     check full friends arr
                 </button>
