@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 
 import classes from './userProfile.module.css';
+import Flash from '../../components/UI/flash';
 import TabSelector from './tabSelector/tabSelector';
 import getToken from '../../getToken';
 // import Like from '../../components/UI/like';
@@ -46,9 +47,12 @@ class UserProfile extends Component {
             editPressed: false,
             editing: false,
             isFriend: false,
+            flashMessage: "",
+            flashNotClosed: true,
         }
-        this.handleMenuSelect.bind();
-        this.sendFriendRequest.bind();
+        this.handleMenuSelect.bind(this);
+        this.sendFriendRequest.bind(this);
+        this.flash.bind(this);
     }
 
     componentDidMount () {
@@ -58,7 +62,6 @@ class UserProfile extends Component {
                 url: `http://localhost:3001/users/getUser/${this.state.userId}`,
                 headers: {'Authorization': this.state.token},
             }).then((res) => {
-                console.log(res)
                 const user = {
                     nickname: res.data.user.nickname,
                     name: res.data.user.name,
@@ -107,8 +110,63 @@ class UserProfile extends Component {
         })
     }
 
-    sendFriendRequest = () => {
+    flash = (message) => {
+        this.setState({flashMessage: message});
         
+        setTimeout(()=>{
+            this.setState({flashNotClosed: false});
+        }, 2000)
+
+        setTimeout(()=>{
+            this.setState({flashMessage: ""});
+        }, 3000);
+    
+        setTimeout(()=>{
+            this.setState({flashNotClosed: true});
+        }, 3000);
+    }
+
+    sendFriendRequest = () => {
+        if(this.state.isFriend){
+            //removing user from friends list 
+            axios({
+                method: 'post',
+                url: `http://localhost:3001/deleteFriend`,
+                headers: {'Authorization': this.state.token},
+                data: { friendId: this.state.userId }
+            })
+            .then((res)=>{
+                console.log(res.status);
+                if(res.status === 200){
+                    this.setState({isFriend: false});
+                    this.flash(`${this.state.userData.name} ${this.state.userData.surname} removed from friends`);
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            })
+        }
+        else{
+            //sending friend request
+            axios({
+                method: 'post',
+                url: `http://localhost:3001/createRequest`,
+                headers: {'Authorization': this.state.token},
+                data: { friendId: this.state.userId }
+            })
+            .then((res)=>{
+                if(res.status===201){
+                    this.setState({isFriend: true});
+                    this.flash("friend request sent successfully");
+                    return;
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            })
+        }
+
+       
     }
 
     handleMenuSelect(selectedOption){
@@ -196,6 +254,14 @@ class UserProfile extends Component {
         let friendButtonText = "Send friend request";
         if(this.state.isFriend) friendButtonText = "Delete friend";
 
+        let flash = null;
+        if(this.state.flashMessage && this.state.flashNotClosed){
+            flash = <Flash>{this.state.flashMessage}</Flash>
+        }
+        else if(this.state.flashMessage && this.state.flashNotClosed === false){
+            flash = <Flash close>{this.state.flashMessage}</Flash>
+        }
+
         return ( 
             <React.Fragment>
                 <div className={classes.flexContainer}>
@@ -261,6 +327,7 @@ class UserProfile extends Component {
                  <div className={classes.center}>
                     <TabSelector selectedOption={this.state.currentSelectedMenu} userId={this.props.location.search}/>
                  </div>
+                 {flash}
              </React.Fragment>
         );
     }
