@@ -15,6 +15,7 @@ const SearchBar = (props) => {
     }
 
     let selectOptionHandler = (option) => {
+        props.selectedOption(option, searchString);
         setoptionSelected(option);
     }
 

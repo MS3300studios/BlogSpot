@@ -16,9 +16,8 @@ class FriendsList extends Component {
         this.state = {
             token: token,
             friends: [],
-            filterIn: "nickname",
+            filterIn: "none",
             filterBy: "none",
-            wasSearched: false,
             fullFriends: [{}],
             searchedForUsers: false,
             newUsers: [],
@@ -69,11 +68,10 @@ class FriendsList extends Component {
         .then((res)=>{
             console.log(res.data)
             if(res.data === "user not found"){
-                this.setState({userNotFound: true, wasSearched: true});
+                this.setState({userNotFound: true, searchedForUsers: true});
             }
             else{
-                this.setState({userNotFound: false});
-                this.setState({newUsers: res.data.users, searchedForUsers: true, wasSearched: true});
+                this.setState({newUsers: res.data.users, searchedForUsers: true, userNotFound: false});
             }
         })
         .catch(error => {
@@ -82,9 +80,7 @@ class FriendsList extends Component {
     }
 
     filterSearchHandler = (option, string) => {
-        if(!this.state.wasSearched){
-            this.setState({wasSearched: false});
-        }
+        console.log(option)
         this.setState({filterIn: option, filterBy: string});
     }
 
@@ -93,7 +89,7 @@ class FriendsList extends Component {
         let friendsRdy = null;
         
         //default filter: no filter applied
-        if(filterIn==="nickname" || filterBy==="none"){
+        if(filterIn==="none" || filterBy==="none"){
             friendsRdy = this.state.friends.map((friend, index)=>{
                 return (
                     <FriendsListItem 
@@ -163,60 +159,58 @@ class FriendsList extends Component {
     }
 
     render() { 
-
-        let noFriendsYet = (
-            <div className={classes.nameListContainer}>
-                <h1>You don't have any friends yet!</h1>
-                <hr />
-                <p>To add new friends, type their data in the search bar above and click search</p>
-                <Button clicked={this.searchNewUser}>Search</Button>
-            </div>
-        );
-
-        
-        let friends = (
-            <div className={classes.nameListContainer}>
-                {
-                    this.filterFriends(this.state.filterIn, this.state.filterBy)
-                }
-            </div>
-        );
-
-        if(this.state.searchedForUsers){
-            // friends = (
-            //     <div className={classes.nameListContainer}>
-            //         {
-            //             this.state.newUsers.map((user, index)=>(
-            //                     <a href={"/user/profile/?id="+user._id} key={index} className={classes.containerLink}>
-            //                         <div className={classes.listElement}>
-            //                             <div className={classes.smallFaceContainer}>
-            //                                 <img src={user.photo} alt="users's face"/>
-            //                             </div>
-            //                             <div className={classes.namesContainer}>
-            //                                 <h1>{user.name} {user.surname}</h1>
-            //                                 <p>@{user.nickname}</p>
-            //                             </div>
-            //                         </div>
-            //                         <hr/>
-            //                     </a>
-            //                 ))
-            //         }
-            //     </div>
-            // )
+        let friends;
+        if(this.state.friends.length===0){
+            friends = (
+                <div className={classes.nameListContainer}>
+                    <h1>You don't have any friends yet!</h1>
+                    <hr />
+                    <p>To add new friends, type their data in the search bar above and click search</p>
+                    <Button clicked={this.searchNewUser}>Search</Button>
+                </div>
+            );
+        }
+        else{
+            friends = (
+                <div className={classes.nameListContainer}>
+                    {
+                        this.filterFriends(this.state.filterIn, this.state.filterBy)
+                    }
+                </div>
+            );
         }
 
-        if(this.state.friends.length>0){
-            noFriendsYet = friends;
+        //if the user was searching for other users, then we want to show the results from the newUsers array
+        if(this.state.searchedForUsers){ 
+            friends = (
+                <div className={classes.nameListContainer}>
+                    {
+                        this.state.newUsers.map((user, index)=>(
+                                <a href={"/user/profile/?id="+user._id} key={index} className={classes.containerLink}>
+                                    <div className={classes.listElement}>
+                                        <div className={classes.smallFaceContainer}>
+                                            <img src={user.photo} alt="users's face"/>
+                                        </div>
+                                        <div className={classes.namesContainer}>
+                                            <h1>{user.name} {user.surname}</h1>
+                                            <p>@{user.nickname}</p>
+                                        </div>
+                                    </div>
+                                    <hr/>
+                                </a>
+                            ))
+                    }
+                </div>
+            )
         }
-        console.log(this.state.userNotFound)
-        console.log('was searched');
-        console.log(this.state.wasSearched)
-        if(this.state.userNotFound === true){
-            console.log('pathetic')
+       
+        if(this.state.userNotFound){
             friends = (
                 <div className={classes.nameListContainer}>
                     <h1>404: No user with this {this.state.filterIn} was found</h1>
                     <hr />
+                    <p>Type the data in the search bar above and click search</p>
+                    <Button clicked={this.searchNewUser}>Search again</Button>
                 </div>
             );
         } 
@@ -227,20 +221,19 @@ class FriendsList extends Component {
                     <h1 className={classes.mainHeader}>Your friends:</h1>
                     <SearchBar 
                         placeholder="search friends by..."
+                        selectedOption={this.filterSearchHandler}
                         clicked={this.filterSearchHandler}
                         selectValues={["nickname", "name", "surname", "id"]}
-                        resetFilter={()=>{this.setState({filterIn: "nickname", filterBy: "none"})}}
+                        resetFilter={()=>{this.setState({filterIn: "none", filterBy: "none"})}}
                     />
                 </div>
-                {this.state.wasSearched ? friends : noFriendsYet}
-                <button
-                        onClick={()=>{
-                            console.log(this.state.fullFriends)
-                        }}
-                        style={{backgroundColor: "black"}}
-                    >
-                    check full friends arr
-                </button>
+                {friends}
+                {
+                    <React.Fragment>
+                        <h1>{this.state.filterIn}</h1>
+                        <h1>{this.state.filterBy}</h1>
+                    </React.Fragment>
+                }
             </div>
         );
     }
@@ -249,3 +242,11 @@ class FriendsList extends Component {
 export default FriendsList;
 
 
+// <button
+//                         onClick={()=>{
+//                             console.log(this.state.fullFriends)
+//                         }}
+//                         style={{backgroundColor: "black"}}
+//                     >
+//                     check full friends arr
+//                 </button>
