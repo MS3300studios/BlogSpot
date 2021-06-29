@@ -4,7 +4,8 @@ import { Redirect } from 'react-router-dom';
 
 import { BsPeople, BsPeopleFill } from 'react-icons/bs';
 
-import { IoNotifications, IoChatbubbles, IoChatbubblesOutline } from 'react-icons/io5';
+import { IoChatbubbles, IoChatbubblesOutline } from 'react-icons/io5';
+import Notifications from '../../containers/notifications/notifications';
 import classes from './menu.module.css';
 import Logo from '../UI/logo';
 import UserPhoto from '../UI/userphoto';
@@ -52,22 +53,7 @@ const Menu = () => {
                         {chatPressed ? <IoChatbubblesOutline size="2em" color="#0a42a4"/> : <IoChatbubbles size="2em" color="#0a42a4"/>}
                     </div>
                 </div>
-                <div className={classes.dropdown}>
-                    <div className={classes.center}><IoNotifications size="2em" color="#0a42a4"/><div className={classes.notificationNumber}>6</div></div> 
-                    <div className={classes.dropdownContent}>
-                        <p>notification</p>
-                        <hr />
-                        <p>notification</p>
-                        <hr />
-                        <p>notification</p>
-                        <hr />
-                        <p>notification</p>
-                        <hr />
-                        <p>notification</p>
-                        <hr />
-                        <p>notification</p>
-                    </div>                    
-                </div>          
+                <Notifications />        
             </div>
             <UserPhoto userId={data._id} dropdown/>
             {redirect ? <Redirect to="/user/friends/" /> : null}

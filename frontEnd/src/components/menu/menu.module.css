@@ -14,45 +14,10 @@
     margin-right: 0px;
     position: relative;
 }
-.dropdown:hover .dropdownContent{
-    max-height: 600px;
-}
-.dropdownContent{
-    background-color: antiquewhite;
-    max-height: 0;
-    overflow: hidden;
-    width: 300px;
-    border-radius: 10px;
-    margin-top: 23px;
-    transition: 0.8s max-height ease;
-    z-index: 1000;
-    position: relative;
-}
-.dropdownContent p{
-    margin: 10px 0 10px 0;
-    /* border-top: teal 1px solid;
-    border-bottom: teal 1px solid; */
-    padding: 10px;
-    display: flex;
-    justify-content: center;
-}
 .center{
     display: flex;
     justify-content: center;
     position: relative;
-}
-.notificationNumber{
-    position: absolute;
-    top: -9px;
-    right: 126px;
-    width: 20px;
-    height: 20px;
-    font-size: 14px;
-    background-color: red;
-    border-radius: 100%;
-    color: white;
-    display: flex;
-    justify-content: center;
 }
 .otherIcons{
     position: absolute;
