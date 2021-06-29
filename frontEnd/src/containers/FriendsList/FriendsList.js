@@ -16,12 +16,13 @@ class FriendsList extends Component {
         this.state = {
             token: token,
             friends: [],
-            filterIn: "none",
+            filterIn: "nickname",
             filterBy: "none",
             wasSearched: false,
             fullFriends: [{}],
             searchedForUsers: false,
-            newUsers: []
+            newUsers: [],
+            userNotFound: false
         }
 
         this.filterSearchHandler.bind(this);
@@ -66,9 +67,14 @@ class FriendsList extends Component {
             }
         })
         .then((res)=>{
-            this.setState({newUsers: res.data.users, searchedForUsers: true});
-            console.log('res:\n');
-            console.log(res)
+            console.log(res.data)
+            if(res.data === "user not found"){
+                this.setState({userNotFound: true, wasSearched: true});
+            }
+            else{
+                this.setState({userNotFound: false});
+                this.setState({newUsers: res.data.users, searchedForUsers: true, wasSearched: true});
+            }
         })
         .catch(error => {
             console.log(error);
@@ -87,7 +93,7 @@ class FriendsList extends Component {
         let friendsRdy = null;
         
         //default filter: no filter applied
-        if(filterIn==="none" || filterBy==="none"){
+        if(filterIn==="nickname" || filterBy==="none"){
             friendsRdy = this.state.friends.map((friend, index)=>{
                 return (
                     <FriendsListItem 
@@ -177,31 +183,43 @@ class FriendsList extends Component {
         );
 
         if(this.state.searchedForUsers){
-            friends = (
-                <div className={classes.nameListContainer}>
-                    {
-                        this.state.newUsers.map((user, index)=>(
-                                <a href={"/user/profile/?id="+user._id} key={index} className={classes.containerLink}>
-                                    <div className={classes.listElement}>
-                                        <div className={classes.smallFaceContainer}>
-                                            <img src={user.photo} alt="users's face"/>
-                                        </div>
-                                        <div className={classes.namesContainer}>
-                                            <h1>{user.name} {user.surname}</h1>
-                                            <p>@{user.nickname}</p>
-                                        </div>
-                                    </div>
-                                    <hr/>
-                                </a>
-                            ))
-                    }
-                </div>
-            )
+            // friends = (
+            //     <div className={classes.nameListContainer}>
+            //         {
+            //             this.state.newUsers.map((user, index)=>(
+            //                     <a href={"/user/profile/?id="+user._id} key={index} className={classes.containerLink}>
+            //                         <div className={classes.listElement}>
+            //                             <div className={classes.smallFaceContainer}>
+            //                                 <img src={user.photo} alt="users's face"/>
+            //                             </div>
+            //                             <div className={classes.namesContainer}>
+            //                                 <h1>{user.name} {user.surname}</h1>
+            //                                 <p>@{user.nickname}</p>
+            //                             </div>
+            //                         </div>
+            //                         <hr/>
+            //                     </a>
+            //                 ))
+            //         }
+            //     </div>
+            // )
         }
 
         if(this.state.friends.length>0){
             noFriendsYet = friends;
         }
+        console.log(this.state.userNotFound)
+        console.log('was searched');
+        console.log(this.state.wasSearched)
+        if(this.state.userNotFound === true){
+            console.log('pathetic')
+            friends = (
+                <div className={classes.nameListContainer}>
+                    <h1>404: No user with this {this.state.filterIn} was found</h1>
+                    <hr />
+                </div>
+            );
+        } 
 
         return (
             <div className={classes.mainContainer}>
@@ -211,7 +229,7 @@ class FriendsList extends Component {
                         placeholder="search friends by..."
                         clicked={this.filterSearchHandler}
                         selectValues={["nickname", "name", "surname", "id"]}
-                        resetFilter={()=>{this.setState({filterIn: "none", filterBy: "none"})}}
+                        resetFilter={()=>{this.setState({filterIn: "nickname", filterBy: "none"})}}
                     />
                 </div>
                 {this.state.wasSearched ? friends : noFriendsYet}
@@ -231,4 +249,3 @@ class FriendsList extends Component {
 export default FriendsList;
 
 
-// resetFilter={()=>{this.setState({filterIn: "none", filterBy: "none"})}}

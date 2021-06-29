@@ -9,6 +9,7 @@ app.use(require('./routes/blogs'));
 app.use(require('./routes/comments'));
 app.use(require('./routes/likes'));
 app.use(require('./routes/friends'));
+app.use(require('./routes/notifications'));
 
 const server = app.listen(PORT, ()=>{
     console.log(chalk.green("------------------------------"));

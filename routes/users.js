@@ -149,8 +149,9 @@ router.post('/users/find', auth, (req, res) => {
     User.find(search)
         .exec()
         .then(users => {
+            console.log(users)
             if(users.length<1){
-                res.status(404).send("user not found");
+                res.send("user not found");
             }
             else{
                 res.status(200).json({users: users});
