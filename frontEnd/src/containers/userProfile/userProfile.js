@@ -44,9 +44,11 @@ class UserProfile extends Component {
             friendsClass: [classes.border],
             badgesClass: [classes.border],
             editPressed: false,
-            editing: false
+            editing: false,
+            isFriend: false,
         }
         this.handleMenuSelect.bind();
+        this.sendFriendRequest.bind();
     }
 
     componentDidMount () {
@@ -87,6 +89,26 @@ class UserProfile extends Component {
         getData.then((photo)=>{
             this.setState({userPhoto: photo});
         })
+
+        //check if user is friend
+        axios({
+            method: 'post',
+            url: `http://localhost:3001/checkFriendStatus`,
+            headers: {'Authorization': this.state.token},
+            data: {
+                friendId: this.state.userId
+            }
+        })
+        .then((res)=>{
+            this.setState({isFriend: res.data.isFriend});
+        })
+        .catch(error => {
+            console.log(error);
+        })
+    }
+
+    sendFriendRequest = () => {
+        
     }
 
     handleMenuSelect(selectedOption){
@@ -171,6 +193,9 @@ class UserProfile extends Component {
             userImg = <img src={this.state.userPhoto} alt="user" className={classes.userPhoto}/>
         }
 
+        let friendButtonText = "Send friend request";
+        if(this.state.isFriend) friendButtonText = "Delete friend";
+
         return ( 
             <React.Fragment>
                 <div className={classes.flexContainer}>
@@ -207,7 +232,7 @@ class UserProfile extends Component {
                             </div>
                             <div className={classes.socialButtonsContainer}>
                                 <button className={classes.follow}>Follow</button>
-                                <button className={classes.addFriend}>Add to friends</button>
+                                <button className={classes.addFriend} onClick={this.sendFriendRequest}>{friendButtonText}</button>
                                 <button className={classes.sendMessage}>Send Message</button>
                             </div>
                         </div>

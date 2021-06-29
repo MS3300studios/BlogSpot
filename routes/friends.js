@@ -133,4 +133,13 @@ router.post('/getFriends', auth, (req, res) => {
         })
 })
 
+router.post('/checkFriendStatus', auth, (req, res) => {
+    Friend.exists({userId: req.userData.userId, friendId: req.body.friendId}, (err, exists) => {
+        res.json({
+            isFriend: exists
+        });
+    })
+
+})
+
 module.exports = router;

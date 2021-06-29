@@ -55,6 +55,7 @@ class FriendsList extends Component {
 
     searchNewUser = () => {
         //make call to API with field, and string.
+        console.log(`filterin: ${this.state.filterIn}, filterBy: ${this.state.filterBy}`);
         axios({
             method: 'post',
             url: `http://localhost:3001/users/find`,
@@ -65,7 +66,9 @@ class FriendsList extends Component {
             }
         })
         .then((res)=>{
-            this.setState({fullFriends: res.data.users, searchedForUsers: true});
+            this.setState({newUsers: res.data.users, searchedForUsers: true});
+            console.log('res:\n');
+            console.log(res)
         })
         .catch(error => {
             console.log(error);
