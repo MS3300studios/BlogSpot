@@ -79,12 +79,9 @@ router.post('/blogs/new', auth, (req, res) => {
 });
 
 router.delete('/blogs/delete/:blogId', auth, (req, res) => {
-    console.log(req.params.blogId)
     Blog.deleteOne({_id: req.params.blogId})
         .exec()
         .then((response => {
-            console.log('deleted?')
-            console.log('response: \n', response);
             res.sendStatus(200);
         }))
         .catch(err => {
@@ -94,11 +91,9 @@ router.delete('/blogs/delete/:blogId', auth, (req, res) => {
 })
 
 router.post('/blogs/edit/:blogId', auth, (req, res) => {
-    console.log(req.body)
     Blog.findByIdAndUpdate(req.params.blogId, {title: req.body.title, content: req.body.content})
     .exec()
         .then((response => {
-            console.log(response);
             res.sendStatus(200);
         }))
         .catch(err => {
