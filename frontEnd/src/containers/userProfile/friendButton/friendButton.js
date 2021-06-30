@@ -25,7 +25,9 @@ class FriendButton extends Component {
     }
 
     componentDidMount(){
+        console.log(this.props.isFriend)
         if(this.props.isFriend === false){
+            console.log('checking for Friend Request')
             axios({
                 method: 'post',
                 url: `http://localhost:3001/checkFriendRequest`,
@@ -33,7 +35,6 @@ class FriendButton extends Component {
                 data: {friendId: this.props.friendId}
             })
             .then((res)=>{
-                console.log(res.data.requestExists)
                 if(res.data.requestExists){
                     this.setState({requestStatus: true, buttonText: "Remove friend request"});
                 }
@@ -63,6 +64,7 @@ class FriendButton extends Component {
     }
 
     render() { 
+        console.log(this.props.isFriend)
         return (
             <button className={classes.addFriend} onClick={this.sendAction}>{this.state.buttonText}</button>
         );

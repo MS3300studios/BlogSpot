@@ -49,6 +49,7 @@ class UserProfile extends Component {
             editing: false,
             isFriend: false,
             requestActive: false,
+            friendBtnDataRdy: false,
             flashMessage: "",
             flashNotClosed: true,
         }
@@ -106,7 +107,8 @@ class UserProfile extends Component {
             }
         })
         .then((res)=>{
-            this.setState({isFriend: res.data.isFriend});
+            console.log('res from checkFriendStatus: ', res.data.isFriend)
+            this.setState({isFriend: res.data.isFriend, friendBtnDataRdy: true});
         })
         .catch(error => {
             console.log(error);
@@ -172,7 +174,7 @@ class UserProfile extends Component {
                 console.log(error);
             })
         }
-        else if(!this.state.requestActive){
+        else if(this.state.requestActive === false){
             //sending friend request
             axios({
                 method: 'post',
@@ -321,9 +323,12 @@ class UserProfile extends Component {
                             </div>
                             <div className={classes.socialButtonsContainer}>
                                 <button className={classes.follow}>Follow</button>
-                                <FriendButton 
-                                    isFriend={true} 
-                                />
+                                {this.state.friendBtnDataRdy ? (
+                                    <FriendButton 
+                                        isFriend={this.state.isFriend} 
+                                    />
+                                ) : <Spinner darkgreen />}
+                                
                                 <button className={classes.sendMessage}>Send Message</button>
                             </div>
                         </div>
