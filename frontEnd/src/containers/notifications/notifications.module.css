@@ -5,7 +5,7 @@
     background-color: antiquewhite;
     max-height: 0;
     overflow: hidden;
-    width: 300px;
+    width: 415px;
     border-radius: 10px;
     margin-top: 23px;
     transition: 0.8s max-height ease;
@@ -26,7 +26,7 @@
 .notificationNumber{
     position: absolute;
     top: -9px;
-    right: 126px;
+    right: 184px;
     width: 20px;
     height: 20px;
     font-size: 14px;
@@ -38,7 +38,39 @@
 }
 
 .friendRequestPhoto{
-    width: 20px;
-    height: 20px;
+    margin-right: 20px;
+    margin-left: -10px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
 }
+
+.bold{
+    font-weight: 700;
+}
+
+.refreshIconContainer{
+    position: absolute;
+    width: 40px;
+    /* border: 1px solid black; */
+    height: 40px;
+    top: 5px;
+    right: 5px;
+}
+
+.refreshIconContainer :hover{
+    animation-name:             rotate; 
+    animation-duration:         0.7s; 
+    animation-iteration-count:  1;
+    animation-timing-function:  ease-out;
+}
+
+@keyframes rotate {
+    from{
+        transform: rotate(360deg);
+    }
+    to{
+        transform: rotate(0deg);
+    }
+}
+

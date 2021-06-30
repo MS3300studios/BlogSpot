@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import classes from './notifications.module.css';
 import { IoNotifications } from 'react-icons/io5';
+import { FiRefreshCcw } from 'react-icons/fi';
 import Button from '../../components/UI/button';
 
 import getToken from '../../getToken';
@@ -59,13 +60,17 @@ class Notifications extends Component {
         ) : zeroNotifs = null;
         
 
+        console.log(this.state.friendRequests)
+
         return (
             <div className={classes.dropdown}>
                 <div className={classes.center}><IoNotifications size="2em" color="#0a42a4"/>
                     <div className={classes.notificationNumber}>{notificationsCount}</div>
                 </div> 
                 <div className={classes.dropdownContent}>
-                    <Button clicked={this.getNotifications}>refresh</Button>
+                    <div onClick={this.getNotifications} className={classes.refreshIconContainer}>
+                        <FiRefreshCcw size="2em" color="#0a42a4" className={classes.refreshIcon}/>
+                    </div>
                     {friendRequests}
                     {zeroNotifs}
                 </div>                    

@@ -107,7 +107,6 @@ class UserProfile extends Component {
             }
         })
         .then((res)=>{
-            console.log('res from checkFriendStatus: ', res.data.isFriend)
             this.setState({isFriend: res.data.isFriend, friendBtnDataRdy: true});
         })
         .catch(error => {

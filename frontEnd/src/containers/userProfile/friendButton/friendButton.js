@@ -25,9 +25,7 @@ class FriendButton extends Component {
     }
 
     componentDidMount(){
-        console.log(this.props.isFriend)
         if(this.props.isFriend === false){
-            console.log('checking for Friend Request')
             axios({
                 method: 'post',
                 url: `http://localhost:3001/checkFriendRequest`,
