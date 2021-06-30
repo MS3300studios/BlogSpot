@@ -228,12 +228,6 @@ class FriendsList extends Component {
                     />
                 </div>
                 {friends}
-                {
-                    <React.Fragment>
-                        <h1>{this.state.filterIn}</h1>
-                        <h1>{this.state.filterBy}</h1>
-                    </React.Fragment>
-                }
             </div>
         );
     }

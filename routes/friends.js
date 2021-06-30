@@ -53,6 +53,14 @@ router.post('/createRequest', auth, (req, res) => {
     
 });
 
+router.post('/revokeRequest', auth, (req, res) => {
+    FriendRequest.findOneAndDelete({userId: req.userData.userId, friendId: req.body.friendId}).exec()
+        .then(response => {
+            console.log('deleting friend request response:', response);
+            res.send('deletion successful');
+        })
+        .catch(err => console.log(err));
+})
 
 //managing request (decline or accept)
 router.post('/anwserRequest', auth, (req, res) => {
@@ -100,24 +108,24 @@ router.post('/anwserRequest', auth, (req, res) => {
 
 //delete friends 
 
-router.post('/deleteFriend', auth, (req, res) => {
-    Friend.findOneAndDelete({friendId: req.body.friendId})
-        .exec()
-        .then(response => {
-            if(response){
-                console.log('user deleted successfully');
-                res.status(200);
-            }
-            else{
-                console.log('friend deletion failed, friend was not found');
-                res.status(404);
-            }
-        })
-        .catch(err => {
-            console.log(err);
-            return res.status(500)
-        });
-});
+// router.post('/deleteFriend', auth, (req, res) => {
+//     Friend.findOneAndDelete({friendId: req.body.friendId})
+//         .exec()
+//         .then(response => {
+//             if(response){
+//                 console.log('user deleted successfully');
+//                 res.status(200);
+//             }
+//             else{
+//                 console.log('friend deletion failed, friend was not found');
+//                 res.status(404);
+//             }
+//         })
+//         .catch(err => {
+//             console.log(err);
+//             return res.status(500)
+//         });
+// });
 
 router.post('/getFriends', auth, (req, res) => {
     Friend.find({userId: req.userData.userId})
@@ -140,6 +148,14 @@ router.post('/checkFriendStatus', auth, (req, res) => {
         });
     })
 
+})
+
+router.post('/checkFriendRequest', auth, (req, res) => {
+    FriendRequest.exists({userId: req.userData.userId, friendId: req.body.friendId}, (err, exists) => {
+        res.json({
+            requestExists: exists
+        });
+    })
 })
 
 module.exports = router;

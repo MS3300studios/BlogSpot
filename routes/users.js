@@ -117,6 +117,9 @@ router.get('/users/getUserPhoto/:userId', auth, (req, res) => {
     User.findById(req.params.userId)
         .exec()
         .then(user => {
+            if(user === null){
+                res.send('error loading photo, incorrect user id');
+            }
             res.json({
                 photo: user.photo
             });

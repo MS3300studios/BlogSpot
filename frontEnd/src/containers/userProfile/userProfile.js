@@ -5,7 +5,8 @@ import classes from './userProfile.module.css';
 import Flash from '../../components/UI/flash';
 import TabSelector from './tabSelector/tabSelector';
 import getToken from '../../getToken';
-// import Like from '../../components/UI/like';
+import FriendButton from './friendButton/friendButton';
+
 import { FaUserFriends } from 'react-icons/fa';
 import { BsPencil } from 'react-icons/bs';
 import { GoPencil } from 'react-icons/go';
@@ -47,12 +48,14 @@ class UserProfile extends Component {
             editPressed: false,
             editing: false,
             isFriend: false,
+            requestActive: false,
             flashMessage: "",
             flashNotClosed: true,
         }
         this.handleMenuSelect.bind(this);
         this.sendFriendRequest.bind(this);
         this.flash.bind(this);
+        this.setFriendRequestStatus.bind(this);
     }
 
     componentDidMount () {
@@ -126,6 +129,10 @@ class UserProfile extends Component {
         }, 3000);
     }
 
+    setFriendRequestStatus = (data) => {
+        this.setState({requestActive: data});
+    }
+
     sendFriendRequest = () => {
         if(this.state.isFriend){
             //removing user from friends list 
@@ -146,7 +153,26 @@ class UserProfile extends Component {
                 console.log(error);
             })
         }
-        else{
+        else if(this.state.requestActive){
+            //removing friend request
+            axios({
+                method: 'post',
+                url: `http://localhost:3001/revokeRequest`,
+                headers: {'Authorization': this.state.token},
+                data: { friendId: this.state.userId }
+            })
+            .then((res)=>{
+                if(res.data==="deletion successful"){
+                    this.flash("friend request deleted");
+                    this.setState({requestActive: false});
+                    return;
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            })
+        }
+        else if(!this.state.requestActive){
             //sending friend request
             axios({
                 method: 'post',
@@ -156,7 +182,7 @@ class UserProfile extends Component {
             })
             .then((res)=>{
                 if(res.status===201){
-                    this.setState({isFriend: true});
+                    this.setState({requestActive: true});
                     this.flash("friend request sent successfully");
                     return;
                 }
@@ -251,9 +277,6 @@ class UserProfile extends Component {
             userImg = <img src={this.state.userPhoto} alt="user" className={classes.userPhoto}/>
         }
 
-        let friendButtonText = "Send friend request";
-        if(this.state.isFriend) friendButtonText = "Delete friend";
-
         let flash = null;
         if(this.state.flashMessage && this.state.flashNotClosed){
             flash = <Flash>{this.state.flashMessage}</Flash>
@@ -298,7 +321,9 @@ class UserProfile extends Component {
                             </div>
                             <div className={classes.socialButtonsContainer}>
                                 <button className={classes.follow}>Follow</button>
-                                <button className={classes.addFriend} onClick={this.sendFriendRequest}>{friendButtonText}</button>
+                                <FriendButton 
+                                    isFriend={true} 
+                                />
                                 <button className={classes.sendMessage}>Send Message</button>
                             </div>
                         </div>
@@ -328,13 +353,17 @@ class UserProfile extends Component {
                     <TabSelector selectedOption={this.state.currentSelectedMenu} userId={this.props.location.search}/>
                  </div>
                  {flash}
+                 <button
+                    onClick={()=>{
+                        console.log(this.state.requestActive)
+                    }}
+                    style={{backgroundColor: "black"}}
+                 >
+                     check Friend Request
+                 </button>
              </React.Fragment>
         );
     }
 }
  
 export default UserProfile;
-
-
-// <Like size="2em" color="blue"/>
-// <Like dislike size="2em" color="blue"/>
