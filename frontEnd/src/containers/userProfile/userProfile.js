@@ -54,9 +54,9 @@ class UserProfile extends Component {
             flashNotClosed: true,
         }
         this.handleMenuSelect.bind(this);
-        this.sendFriendRequest.bind(this);
         this.flash.bind(this);
         this.setFriendRequestStatus.bind(this);
+        this.friendButtonAction.bind(this);
     }
 
     componentDidMount () {
@@ -135,8 +135,8 @@ class UserProfile extends Component {
         this.setState({requestActive: data});
     }
 
-    sendFriendRequest = () => {
-        if(this.state.isFriend){
+    friendButtonAction = (option) => {
+        if(option==="removeFriend"){
             //removing user from friends list 
             axios({
                 method: 'post',
@@ -155,7 +155,7 @@ class UserProfile extends Component {
                 console.log(error);
             })
         }
-        else if(this.state.requestActive){
+        else if(option === "removeRequest"){
             //removing friend request
             axios({
                 method: 'post',
@@ -174,7 +174,7 @@ class UserProfile extends Component {
                 console.log(error);
             })
         }
-        else if(this.state.requestActive === false){
+        else if(option==="addRequest"){
             //sending friend request
             axios({
                 method: 'post',
@@ -326,6 +326,7 @@ class UserProfile extends Component {
                                 {this.state.friendBtnDataRdy ? (
                                     <FriendButton 
                                         isFriend={this.state.isFriend} 
+                                        pressAction={this.friendButtonAction}
                                     />
                                 ) : <Spinner darkgreen />}
                                 

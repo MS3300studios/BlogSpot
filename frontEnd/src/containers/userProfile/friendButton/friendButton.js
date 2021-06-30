@@ -51,20 +51,19 @@ class FriendButton extends Component {
     sendAction = () => {
         if(this.state.isFriend){
             this.setState({buttonText: "Send friend request", requestStatus: false, isFriend: false});
-            // props.removeFriend();
+            this.props.pressAction("removeFriend");
         }
         else if(this.state.requestStatus === false){
             this.setState({buttonText: "Remove friend request", requestStatus: true});
-            // props.addRequest();
+            this.props.pressAction("addRequest");
         }
         else if(this.state.requestStatus){
             this.setState({buttonText: "Send friend request", requestStatus: false});
-            // props.removeRequest();
+            this.props.pressAction("removeRequest");
         }
     }
 
     render() { 
-        console.log(this.props.isFriend)
         return (
             <button className={classes.addFriend} onClick={this.sendAction}>{this.state.buttonText}</button>
         );
