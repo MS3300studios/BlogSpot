@@ -42,8 +42,10 @@ class DropdownItem extends Component {
         if(this.state.friendRequestUser != null){
             notification = (
                 <React.Fragment>
-                    <img src={this.state.friendRequestUser.photo} alt="this person wants to be your friend" className={classes.friendRequestPhoto}/>
-                    <p><bold className={classes.bold}>{`@${this.state.friendRequestUser.nickname}`}</bold> wants to be your friend</p> 
+                    <a href={"/user/profile/?id="+this.state.friendRequestUser._id} className={classes.notificationLink}>
+                        <img src={this.state.friendRequestUser.photo} alt="this person wants to be your friend" className={classes.friendRequestPhoto}/>
+                        <p><div className={classes.bold}>{`@${this.state.friendRequestUser.nickname}`}</div> wants to be your friend</p> 
+                    </a>
                 </React.Fragment>
             )
         }

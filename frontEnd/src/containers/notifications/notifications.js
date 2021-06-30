@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import classes from './notifications.module.css';
-import { IoNotifications } from 'react-icons/io5';
-import { FiRefreshCcw } from 'react-icons/fi';
-import Button from '../../components/UI/button';
 
+import { FiRefreshCcw } from 'react-icons/fi';
+import { IoNotifications } from 'react-icons/io5';
 import getToken from '../../getToken';
+import Spinner from '../../components/UI/spinner';
 import DropdownItem from './dropdownItem/dropdownItem';
 
 class Notifications extends Component {
@@ -16,6 +16,7 @@ class Notifications extends Component {
 
         this.state = {
             token: token,
+            refreshing: false,
             friendRequests: []
         }
         this.getNotifications.bind(this);
@@ -26,6 +27,7 @@ class Notifications extends Component {
     }
 
     getNotifications = () => {
+        this.setState({refreshing: true});
         axios({
             method: 'post',
             url: `http://localhost:3001/notifications/getFriendRequests`,
@@ -37,6 +39,10 @@ class Notifications extends Component {
         .catch(error => {
             console.log(error);
         })
+
+        setTimeout(() => {
+            this.setState({refreshing: false});
+        }, 1000)
     }
 
     render() {
@@ -59,19 +65,19 @@ class Notifications extends Component {
             </React.Fragment>
         ) : zeroNotifs = null;
         
-
-        console.log(this.state.friendRequests)
-
         return (
             <div className={classes.dropdown}>
                 <div className={classes.center}><IoNotifications size="2em" color="#0a42a4"/>
                     <div className={classes.notificationNumber}>{notificationsCount}</div>
                 </div> 
                 <div className={classes.dropdownContent}>
-                    <div onClick={this.getNotifications} className={classes.refreshIconContainer}>
+                    <div 
+                        onClick={this.getNotifications}
+                        className={classes.refreshIconContainer}
+                    >
                         <FiRefreshCcw size="2em" color="#0a42a4" className={classes.refreshIcon}/>
                     </div>
-                    {friendRequests}
+                    {this.state.refreshing ? <Spinner darkgreen /> : friendRequests}
                     {zeroNotifs}
                 </div>                    
             </div>  
