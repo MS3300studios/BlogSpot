@@ -50,6 +50,7 @@
 }
 
 .bold{
+    margin: 0;
     font-weight: 700;
 }
 
@@ -83,7 +84,9 @@
     display: flex;
     vertical-align: middle;
 }
-
+.notificationLink div{
+    margin-top: 17px;
+}
 .notificationLink p {
     font-size: large;
 }

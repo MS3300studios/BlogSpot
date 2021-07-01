@@ -44,7 +44,7 @@ class DropdownItem extends Component {
                 <React.Fragment>
                     <a href={"/user/profile/?id="+this.state.friendRequestUser._id} className={classes.notificationLink}>
                         <img src={this.state.friendRequestUser.photo} alt="this person wants to be your friend" className={classes.friendRequestPhoto}/>
-                        <p><div className={classes.bold}>{`@${this.state.friendRequestUser.nickname}`}</div> wants to be your friend</p> 
+                        <div><p className={classes.bold}>{`@${this.state.friendRequestUser.nickname}`}</p> wants to be your friend</div> 
                     </a>
                 </React.Fragment>
             )

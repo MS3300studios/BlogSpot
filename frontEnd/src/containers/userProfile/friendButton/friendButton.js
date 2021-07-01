@@ -56,7 +56,6 @@ class FriendButton extends Component {
             // this.props.pressAction("removeFriend");
         }
         else if(this.state.requestStatus === false){
-            console.log(acceptRequest)
             if(acceptRequest !== "none"){
                 if(acceptRequest==="accept"){
                     this.setState({receivedRequest: false, isFriend: true, buttonText: "Remove from Friends"});
@@ -90,9 +89,6 @@ class FriendButton extends Component {
         return (
             <React.Fragment>
                 {btn}
-                <p>is friend: {this.state.isFriend ? "yes" : "no"}</p>
-                <p>got request from her: {this.state.receivedRequest ? "yes" : "no"}</p>
-                <p>I send her request: {this.state.requestStatus ? "yes" : "no"}</p>
             </React.Fragment>
         );
     }
