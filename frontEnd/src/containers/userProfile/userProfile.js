@@ -97,7 +97,6 @@ class UserProfile extends Component {
         getData.then((photo)=>{
             this.setState({userPhoto: photo});
         })
-
         //check if user is friend
         axios({
             method: 'post',

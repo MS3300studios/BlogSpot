@@ -133,9 +133,42 @@ router.post('/getFriends', auth, (req, res) => {
     Friend.find({userId: req.userData.userId})
         .exec()
         .then(friends => {
-            return res.status(200).json({
-                friends: friends
-            }) 
+            Friend.find({friendId: req.userData.userId})
+            .exec()
+            .then(friends2 => {
+                let allFriends = friends.concat(friends2);
+                let readyFriends = allFriends.map((object, index) => {
+                    if(object.userId === req.userData.userId){
+                        return (
+                            {
+                                _id: object._id,
+                                userId: object.userId,
+                                friendId: object.friendId,
+                                createdAt: object.createdAt,
+                                updatedAt: object.updatedAt
+                            }
+                        )
+                    }
+                    else if(object.friendId === req.userData.userId){
+                        return (
+                            {
+                                _id: object._id,
+                                userId: object.friendId,
+                                friendId: object.userId,
+                                createdAt: object.createdAt,
+                                updatedAt: object.updatedAt
+                            }
+                        )
+                    }
+                })
+                return res.status(200).json({
+                    friends: readyFriends
+                }) 
+            })
+            .catch(err => {
+                console.log(err);
+                res.status(500);
+            })
         })
         .catch(err => {
             console.log(err);
@@ -145,9 +178,13 @@ router.post('/getFriends', auth, (req, res) => {
 
 router.post('/checkFriendStatus', auth, (req, res) => {
     Friend.exists({userId: req.userData.userId, friendId: req.body.friendId}, (err, exists) => {
-        res.json({
-            isFriend: exists
-        });
+        Friend.exists({userId: req.body.friendId, friendId: req.userData.userId}, (err, exists2) => {
+            let reply = exists || exists2;
+            console.log('reply:', reply)
+            res.json({
+                isFriend: reply
+            });
+        })
     })
 
 })

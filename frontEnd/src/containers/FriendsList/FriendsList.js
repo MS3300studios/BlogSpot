@@ -6,15 +6,18 @@ import Button from '../../components/UI/button';
 import FriendsListItem from './friendsListItem';
 import getToken from '../../getToken';
 import axios from 'axios';
+import getUserData from '../../getUserData';
 
 class FriendsList extends Component {
     constructor(props){
         super(props);
 
         let token = getToken();
+        let userData = getUserData();
 
         this.state = {
             token: token,
+            userData: userData,
             friends: [],
             filterIn: "none",
             filterBy: "none",
@@ -49,7 +52,7 @@ class FriendsList extends Component {
 
     setProps = (user, index) => {
         var newArray = this.state.fullFriends;
-        newArray.splice(index,0, user);
+        newArray.splice(index, 0, user);
         this.setState({fullFriends: newArray});
     }
 
@@ -96,9 +99,6 @@ class FriendsList extends Component {
                         sendInfo={this.setProps}
                         id={friend.friendId} 
                         key={index} 
-                        name={this.state.fullFriends[index].name} 
-                        surname={this.state.fullFriends[index].surname} 
-                        nickname={this.state.fullFriends[index].nickname} 
                     />
                 )
             });
@@ -228,6 +228,8 @@ class FriendsList extends Component {
                     />
                 </div>
                 {friends}
+                <h1>in: {this.state.filterIn}</h1>
+                <h1>by: {this.state.filterBy}</h1>
             </div>
         );
     }
