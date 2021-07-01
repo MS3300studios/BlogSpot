@@ -49,6 +49,7 @@ class UserProfile extends Component {
             editing: false,
             isFriend: false,
             requestActive: false,
+            receivedRequest: false,
             friendBtnDataRdy: false,
             flashMessage: "",
             flashNotClosed: true,
@@ -107,7 +108,24 @@ class UserProfile extends Component {
             }
         })
         .then((res)=>{
-            this.setState({isFriend: res.data.isFriend, friendBtnDataRdy: true});
+            if(res.data.isFriend === false){
+                axios({
+                    method: 'post',
+                    url: `http://localhost:3001/checkFriendRequest`,
+                    headers: {'Authorization': this.state.token},
+                    data: {friendId: this.state.userId}
+                })
+                .then((res2)=>{
+                    console.log(res.data)
+                    this.setState({isFriend: res.data.isFriend, receivedRequest: res2.data.iReceivedRequest, friendBtnDataRdy: true});
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+            }
+            else{
+                this.setState({isFriend: res.data.isFriend, friendBtnDataRdy: true});
+            }
         })
         .catch(error => {
             console.log(error);
@@ -192,8 +210,12 @@ class UserProfile extends Component {
                 console.log(error);
             })
         }
+        else if(option === "acceptFriendRequest"){
 
-       
+        }
+        else if(option === "declineFriendRequest"){
+            
+        }
     }
 
     handleMenuSelect(selectedOption){
@@ -324,6 +346,7 @@ class UserProfile extends Component {
                                 <button className={classes.follow}>Follow</button>
                                 {this.state.friendBtnDataRdy ? (
                                     <FriendButton 
+                                        receivedRequest={this.state.receivedRequest}
                                         isFriend={this.state.isFriend} 
                                         pressAction={this.friendButtonAction}
                                     />
@@ -360,7 +383,18 @@ class UserProfile extends Component {
                  {flash}
                  <button
                     onClick={()=>{
-                        console.log(this.state.requestActive)
+                        axios({
+                            method: 'post',
+                            url: `http://localhost:3001/checkFriendRequest`,
+                            headers: {'Authorization': this.state.token},
+                            data: {friendId: this.state.userId}
+                        })
+                        .then((res)=>{
+                            console.log(res.data)
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        })
                     }}
                     style={{backgroundColor: "black"}}
                  >

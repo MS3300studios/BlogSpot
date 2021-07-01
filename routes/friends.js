@@ -151,10 +151,17 @@ router.post('/checkFriendStatus', auth, (req, res) => {
 })
 
 router.post('/checkFriendRequest', auth, (req, res) => {
+    /*
+        first we check if the user has sent any requests: where he is the sender (userId)
+        and then we check if the user has received any requests: where he is the friend (friendId) that someone wants to have
+    */
     FriendRequest.exists({userId: req.userData.userId, friendId: req.body.friendId}, (err, exists) => {
-        res.json({
-            requestExists: exists
-        });
+        FriendRequest.exists({userId: req.body.friendId, friendId: req.userData.userId}, (err2, exists2) => {
+            res.json({
+                iSendRequest: exists,
+                iReceivedRequest: exists2
+            });
+        })
     })
 })
 

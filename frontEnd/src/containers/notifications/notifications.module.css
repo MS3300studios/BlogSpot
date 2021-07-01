@@ -87,3 +87,11 @@
 .notificationLink p {
     font-size: large;
 }
+
+.acceptRequest {
+    background-color: chartreuse;
+}
+
+.declineRequest {
+    background-color: brown;    
+}

@@ -18,6 +18,7 @@ class FriendButton extends Component {
         this.state = {
             token: token,
             requestStatus: reqStat,
+            receivedRequest: this.props.receivedRequest,
             buttonText: btnTxt,
             isFriend: this.props.isFriend
         }
@@ -33,8 +34,11 @@ class FriendButton extends Component {
                 data: {friendId: this.props.friendId}
             })
             .then((res)=>{
-                if(res.data.requestExists){
+                if(res.data.iSendRequest){
                     this.setState({requestStatus: true, buttonText: "Remove friend request"});
+                }
+                else if(res.data.iReceivedRequest){
+                    this.setState({receivedRequest: true, buttonText: "Accept friend request"});
                 }
                 else{
                     this.setState({requestStatus: false, buttonText: "Send friend request"});
@@ -46,24 +50,50 @@ class FriendButton extends Component {
         }
     }
 
-    sendAction = () => {
+    sendAction = (acceptRequest) => {
         if(this.state.isFriend){
             this.setState({buttonText: "Send friend request", requestStatus: false, isFriend: false});
-            this.props.pressAction("removeFriend");
+            // this.props.pressAction("removeFriend");
         }
         else if(this.state.requestStatus === false){
-            this.setState({buttonText: "Remove friend request", requestStatus: true});
-            this.props.pressAction("addRequest");
+            console.log(acceptRequest)
+            if(acceptRequest !== "none"){
+                if(acceptRequest==="accept"){
+                    this.setState({receivedRequest: false, isFriend: true, buttonText: "Remove from Friends"});
+                }
+                else if(acceptRequest==="decline"){
+                    this.setState({receivedRequest: false, buttonText: "Send friend request"});
+                }
+            }
+            else if(acceptRequest === "none"){
+                this.setState({buttonText: "Remove friend request", requestStatus: true});
+                // this.props.pressAction("addRequest");
+            }
         }
         else if(this.state.requestStatus){
             this.setState({buttonText: "Send friend request", requestStatus: false});
-            this.props.pressAction("removeRequest");
+            // this.props.pressAction("removeRequest");
         }
     }
 
     render() { 
+        let btn = <button className={classes.addFriend} onClick={() => this.sendAction("none")}>{this.state.buttonText}</button>
+        if(this.state.receivedRequest){
+            btn = (
+                <React.Fragment>
+                    <button className={[classes.addFriend, classes.acceptRequest].join(" ")} onClick={() => this.sendAction('accept')}>Accept friend request</button>
+                    <button className={[classes.addFriend, classes.declineRequest].join(" ")} onClick={() => this.sendAction('decline')}>Decline friend request</button>
+                </React.Fragment>
+            )
+        }
+
         return (
-            <button className={classes.addFriend} onClick={this.sendAction}>{this.state.buttonText}</button>
+            <React.Fragment>
+                {btn}
+                <p>is friend: {this.state.isFriend ? "yes" : "no"}</p>
+                <p>got request from her: {this.state.receivedRequest ? "yes" : "no"}</p>
+                <p>I send her request: {this.state.requestStatus ? "yes" : "no"}</p>
+            </React.Fragment>
         );
     }
 }
