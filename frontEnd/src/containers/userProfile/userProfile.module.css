@@ -112,7 +112,6 @@
     height: 50px;
     margin: 10px;
     margin-left: 0;
-    background-color: #53c253;
     transition: 0.3s all ease;
     font-size: 18px;
 }
@@ -127,7 +126,7 @@
     background-color: darkcyan !important;
 }
 .addFriend{
-    background-color: darkgoldenrod !important;
+    background-color: darkgoldenrod;
 }
 .sendMessage{
     background-color: darkorchid !important;
@@ -180,4 +179,12 @@
 .center{
     display: flex;
     justify-content: center;
+}
+
+.acceptRequest{
+    background-color: darkgreen;
+}
+
+.declineRequest{
+    background-color: darkred;
 }

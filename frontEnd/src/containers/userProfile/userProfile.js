@@ -116,7 +116,6 @@ class UserProfile extends Component {
                     data: {friendId: this.state.userId}
                 })
                 .then((res2)=>{
-                    console.log(res.data)
                     this.setState({isFriend: res.data.isFriend, receivedRequest: res2.data.iReceivedRequest, friendBtnDataRdy: true});
                 })
                 .catch(error => {
@@ -153,69 +152,105 @@ class UserProfile extends Component {
     }
 
     friendButtonAction = (option) => {
-        if(option==="removeFriend"){
-            //removing user from friends list 
-            axios({
-                method: 'post',
-                url: `http://localhost:3001/deleteFriend`,
-                headers: {'Authorization': this.state.token},
-                data: { friendId: this.state.userId }
-            })
-            .then((res)=>{
-                console.log(res.status);
-                if(res.status === 200){
-                    this.setState({isFriend: false});
-                    this.flash(`${this.state.userData.name} ${this.state.userData.surname} removed from friends`);
-                }
-            })
-            .catch(error => {
-                console.log(error);
-            })
+        switch (option) {
+            case "removeFriend":
+                console.log('remove friend')
+                axios({
+                    method: 'post',
+                    url: `http://localhost:3001/deleteFriend`,
+                    headers: {'Authorization': this.state.token},
+                    data: { friendId: this.state.userId }
+                })
+                .then((res)=>{
+                    console.log(res.status);
+                    if(res.status === 200){
+                        this.setState({isFriend: false});
+                        this.flash(`${this.state.userData.name} ${this.state.userData.surname} removed from friends`);
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+                break;
+            case "removeRequest":
+                console.log('remove request')
+                axios({
+                    method: 'post',
+                    url: `http://localhost:3001/revokeRequest`,
+                    headers: {'Authorization': this.state.token},
+                    data: { friendId: this.state.userId }
+                })
+                .then((res)=>{
+                    if(res.data==="deletion successful"){
+                        this.flash("friend request deleted");
+                        this.setState({requestActive: false});
+                        return;
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+                break;
+            case "addRequest":
+                console.log('add request')
+                axios({
+                    method: 'post',
+                    url: `http://localhost:3001/createRequest`,
+                    headers: {'Authorization': this.state.token},
+                    data: { friendId: this.state.userId }
+                })
+                .then((res)=>{
+                    if(res.status===201){
+                        this.setState({requestActive: true});
+                        this.flash("friend request sent successfully");
+                        return;
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+                break;
+            case "acceptFriendRequest":
+                console.log('accept friend request');       
+                axios({
+                    method: 'post',
+                    url: `http://localhost:3001/anwserRequest`,
+                    headers: {'Authorization': this.state.token},
+                    data: { accept: true, friendId: this.state.userId }
+                })
+                .then((res)=>{
+                    if(res.status===201){
+                        this.flash("friend request accepted");
+                        return;
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+                break;
+            case "declineFriendRequest":
+                console.log('decline friend request');
+                axios({
+                    method: 'post',
+                    url: `http://localhost:3001/anwserRequest`,
+                    headers: {'Authorization': this.state.token},
+                    data: { accept: false }
+                })
+                .then((res)=>{
+                    if(res.status===201){
+                        this.flash("friend request declined");
+                        return;
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+                break;
+            default:
+                console.log("[userProfile] sendAction: incorrect option passed as an argument");
+                break;
         }
-        else if(option === "removeRequest"){
-            //removing friend request
-            axios({
-                method: 'post',
-                url: `http://localhost:3001/revokeRequest`,
-                headers: {'Authorization': this.state.token},
-                data: { friendId: this.state.userId }
-            })
-            .then((res)=>{
-                if(res.data==="deletion successful"){
-                    this.flash("friend request deleted");
-                    this.setState({requestActive: false});
-                    return;
-                }
-            })
-            .catch(error => {
-                console.log(error);
-            })
-        }
-        else if(option==="addRequest"){
-            //sending friend request
-            axios({
-                method: 'post',
-                url: `http://localhost:3001/createRequest`,
-                headers: {'Authorization': this.state.token},
-                data: { friendId: this.state.userId }
-            })
-            .then((res)=>{
-                if(res.status===201){
-                    this.setState({requestActive: true});
-                    this.flash("friend request sent successfully");
-                    return;
-                }
-            })
-            .catch(error => {
-                console.log(error);
-            })
-        }
-        else if(option === "acceptFriendRequest"){
-
-        }
-        else if(option === "declineFriendRequest"){
-            
-        }
+        
     }
 
     handleMenuSelect(selectedOption){

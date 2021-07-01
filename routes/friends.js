@@ -66,7 +66,8 @@ router.post('/revokeRequest', auth, (req, res) => {
 router.post('/anwserRequest', auth, (req, res) => {
     if(req.body.accept === true){
         //delete request, add friend
-        FriendRequest.findOneAndRemove({friendId: req.body.friendId}).exec().then((response)=>{
+        FriendRequest.findOneAndRemove({userId: req.body.friendId, friendId: req.userData.userId}).exec().then((response)=>{
+            console.log(response)
             if(response){ //if there was such a request
                 const friend = new Friend({
                     userId: req.userData.userId,
@@ -93,6 +94,7 @@ router.post('/anwserRequest', auth, (req, res) => {
         FriendRequest.findOneAndRemove({friendId: req.body.friendId})
         .exec()
         .then(response => {
+            console.log('friend request deleted');
             res.sendStatus(200);
         })
         .catch(err => {
@@ -100,7 +102,7 @@ router.post('/anwserRequest', auth, (req, res) => {
         });
     }
     else{
-        console.log('request data error');
+        console.log('[friends route] incorrect request data. Data type should be a boolean');
         res.status(500);
     }
 });
@@ -108,24 +110,24 @@ router.post('/anwserRequest', auth, (req, res) => {
 
 //delete friends 
 
-// router.post('/deleteFriend', auth, (req, res) => {
-//     Friend.findOneAndDelete({friendId: req.body.friendId})
-//         .exec()
-//         .then(response => {
-//             if(response){
-//                 console.log('user deleted successfully');
-//                 res.status(200);
-//             }
-//             else{
-//                 console.log('friend deletion failed, friend was not found');
-//                 res.status(404);
-//             }
-//         })
-//         .catch(err => {
-//             console.log(err);
-//             return res.status(500)
-//         });
-// });
+router.post('/deleteFriend', auth, (req, res) => {
+    Friend.findOneAndDelete({userId: req.userData.userId, friendId: req.body.friendId})
+        .exec()
+        .then(response => {
+            if(response){
+                console.log('user deleted');
+                res.status(200);
+            }
+            else{
+                console.log('friend deletion failed, friend was not found');
+                res.status(404);
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            return res.status(500)
+        });
+});
 
 router.post('/getFriends', auth, (req, res) => {
     Friend.find({userId: req.userData.userId})
