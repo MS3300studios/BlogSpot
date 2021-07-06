@@ -34,6 +34,7 @@ class FriendsList extends Component {
     }
 
     componentDidMount(){
+        this.props.redux_clear_store();
         axios({
             method: 'post',
             url: 'http://localhost:3001/getFriends',
@@ -222,6 +223,14 @@ class FriendsList extends Component {
                     />
                 </div>
                 {friends}
+                {
+                    this.state.searchedForUser ? null : (
+                        <div className={classes.nameListContainer} style={{marginTop: "10px"}}>
+                            <p>To add new friends, type their data in the search bar above and click search</p>
+                            <Button clicked={this.searchNewUser}>Search</Button>
+                        </div>
+                    )
+                }
             </div>
         );
     }
@@ -235,7 +244,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        redux_check_store: () => dispatch({type: actionTypes.CHECK_STORE})
+        redux_check_store: () => dispatch({type: actionTypes.CHECK_STORE}),
+        redux_clear_store: () => dispatch({type: actionTypes.CLEAR_STATE})
     }
 }
 

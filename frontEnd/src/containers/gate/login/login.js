@@ -152,10 +152,11 @@ class Login extends Component {
 }
  
 
-const mapDispatchToProps = dispatch => {
-    return {
-        redux_store_token: (token) => dispatch({type: actionTypes.STORE_TOKEN, data: token}),
-    }
-}
+// const mapDispatchToProps = dispatch => {
+//     return {
+//         redux_store_token: (token) => dispatch({type: actionTypes.STORE_TOKEN, data: token}),
+//     }
+// }
 
-export default connect(null, mapDispatchToProps)(Login);
+// export default connect(null, mapDispatchToProps)(Login);
+export default Login;

@@ -16,6 +16,11 @@ const reducer = ( state = initialState, action ) => {
         case actionTypes.CHECK_STORE:
             console.log(state)
             return state;
+        case actionTypes.CLEAR_STATE:
+            return {
+                ...state,
+                fullFriends: []
+            };
         default:
             return state;
     }
