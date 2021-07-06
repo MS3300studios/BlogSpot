@@ -3,6 +3,9 @@ import getToken from '../../getToken';
 import axios from 'axios';
 import classes from './FriendsList.module.css';
 
+import { connect } from 'react-redux';
+import * as actionTypes from '../../store/actions';
+
 class FriendsListItem extends Component {
     constructor(props) {
         super(props);
@@ -24,7 +27,9 @@ class FriendsListItem extends Component {
         .then((res)=>{
             if(res.status===200){
                 this.setState({friend: res.data.user});
-                this.props.sendInfo(res.data.user);
+                if(this.props.initRender){
+                    this.props.redux_add_friend(res.data.user);
+                }
             }
         })
         .catch(error => {
@@ -50,4 +55,16 @@ class FriendsListItem extends Component {
     }
 }
  
-export default FriendsListItem;
+const mapStateToProps = state => {
+    return {
+        state: state
+    };
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        redux_add_friend: (friend) => dispatch({type: actionTypes.ADD_FRIEND, data: friend}),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(FriendsListItem);

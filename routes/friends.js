@@ -5,6 +5,7 @@ const User = require('../models/user');
 const Friend = require('../models/friend');
 const FriendRequest = require('../models/friendRequest');
 const auth = require('../middleware/authorization');
+const { response } = require('express');
 
 router.use(express.json());
 
@@ -137,7 +138,7 @@ router.post('/getFriends', auth, (req, res) => {
             .exec()
             .then(friends2 => {
                 let allFriends = friends.concat(friends2);
-                let readyFriends = allFriends.map((object, index) => {
+                let friendsData = allFriends.map((object, index) => {
                     if(object.userId === req.userData.userId){
                         return (
                             {
@@ -161,8 +162,9 @@ router.post('/getFriends', auth, (req, res) => {
                         )
                     }
                 })
-                return res.status(200).json({
-                    friends: readyFriends
+
+                res.status(200).json({
+                    friends: friendsData
                 }) 
             })
             .catch(err => {

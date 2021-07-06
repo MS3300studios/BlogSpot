@@ -407,7 +407,29 @@ class Dashboard extends Component {
                     }}
                 >
                     get all friends
-                </button>                   
+                </button>                                    
+                {/* <button
+                    style={{backgroundColor: "black"}}
+                    onClick={()=>{
+                        this.props.redux_add_friend({
+                            name: "nick",
+                            surname: "strus"
+                        })
+                    }}
+                >
+                    test dispatch
+                </button>                                    
+                <button
+                    style={{backgroundColor: "black"}}
+                    onClick={()=>{
+                        this.props.redux_add_friend({
+                            name: "nick",
+                            surname: "strus"
+                        })
+                    }}
+                >
+                    check store
+                </button>                                     */}
             </React.Fragment>               
         );
     }
@@ -415,16 +437,14 @@ class Dashboard extends Component {
 
 const mapStateToProps = state => {
     return {
-        posts: state.posts,
-        token: state.token
+        state: state
     };
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        redux_add_post: (post) => dispatch({type: actionTypes.ADD_POST, data: post}),
-        redux_refresh_posts: () => dispatch({type: actionTypes.REFRESH_POSTS}),
-        redux_remove_post: (post_id) => dispatch({type: actionTypes.REMOVE_POST, id: post_id})
+        redux_add_friend: (friend) => dispatch({type: actionTypes.ADD_FRIEND, data: friend}),
+        redux_check_store: () => dispatch({type: actionTypes.CHECK_STORE})
     }
 }
 

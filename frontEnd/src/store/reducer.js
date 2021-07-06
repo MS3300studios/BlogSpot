@@ -1,68 +1,26 @@
 import * as actionTypes from './actions';
-import axios from 'axios';
 
 const initialState = {
-    posts: [],
-    id: "",
-    token: " "
+    fullFriends: []
 };
-
-
-if(initialState.token!== " ")
-axios.get('/blogs')
-.then(res => {
-    for(let key in res.data) {
-        initialState.posts.push({
-            ...res.data[key],
-            id: key
-        });
-    }
-});
-
-
-// console.log("initial state posts after axios.get\n",initialState.posts);
-
 
 const reducer = ( state = initialState, action ) => {
     switch ( action.type ) {
-        case actionTypes.ADD_POST:
+        case actionTypes.ADD_FRIEND:
+            let arr = state.fullFriends;
+            arr.push(action.data);
+            // function uniqArr (arr){
+            //     return  [...new Set(arr)]
+            // }
+            // let unique = uniqArr(arr);
+            // console.log(unique)
             return {
                 ...state,
-                posts: [
-                    ...state.posts,
-                    {
-                        author: action.data.author,
-                        content: action.data.content,
-                        title: action.data.title,
-                        id: action.data.id
-                    }
-                ]
+                fullFriends: arr
             };
-        case actionTypes.REMOVE_POST:
-            return {
-                ...state,
-                posts: state.posts.filter(post => post.id !== action.id)
-            };
-        case actionTypes.STORE_TOKEN:
-            return {
-                ...state,
-                token: action.token
-            };
-        case actionTypes.REFRESH_POSTS:
-            let newPosts = [];
-            axios.get('/blogs')
-                .then(res => {
-                    for(let key in res.data) {
-                        newPosts.push({
-                            ...res.data[key],
-                            id: key
-                        });
-                    }
-                });
-            return {
-                ...state,
-                posts: newPosts
-            };
+        case actionTypes.CHECK_STORE:
+            console.log(state)
+            return state;
         default:
             return state;
     }

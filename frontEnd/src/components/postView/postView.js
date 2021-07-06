@@ -164,8 +164,8 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => {
+    // redux_add_post: (post) => dispatch({type: actionTypes.ADD_POST, data: post}),
     return {
-        redux_add_post: (post) => dispatch({type: actionTypes.ADD_POST, data: post}),
         redux_remove_post: (post_id) => dispatch({type: actionTypes.REMOVE_POST, id: post_id})
     }
 }
