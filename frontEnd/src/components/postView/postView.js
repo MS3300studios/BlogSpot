@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import { Redirect, withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
 import axios from 'axios';
 
 import Comments from '../../containers/userProfile/tabs/comments/comments';
-import * as actionTypes from '../../store/actions';
 import Spinner from '../UI/spinner';
 import classes from './postView.module.css';
 import Button from '../UI/button';
@@ -157,23 +155,5 @@ class PostView extends Component {
     }
 }
  
-// const mapStateToProps = state => {
-//     return {
-//         posts: state.posts,
-//     };
-// }
 
-// const mapDispatchToProps = dispatch => {
-    // redux_add_post: (post) => dispatch({type: actionTypes.ADD_POST, data: post}),
-//     return {
-//         redux_remove_post: (post_id) => dispatch({type: actionTypes.REMOVE_POST, id: post_id})
-//     }
-// }
-
-// export default connect(mapStateToProps, mapDispatchToProps)(withRouter(PostView));
 export default withRouter(PostView);
-
-
-
-// titleChanged={this.titleChangedHandler} 
-// contentChanged={this.contentChangedHandler}

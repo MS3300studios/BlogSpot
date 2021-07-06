@@ -48,12 +48,24 @@ class Notifications extends Component {
     render() {
         let notificationsCount = 0;
 
-        let friendRequests = this.state.friendRequests.map((request, index) => {
-            notificationsCount++;
-            return (
-                <DropdownItem friendRequest data={request} key={index}/>
-            )
-        })
+        let friendRequests;
+        if(this.props.refreshNotifs){
+            let requestsTrimmed = this.state.friendRequests.filter(req => req._id === this.props.idToDrop);
+            friendRequests = requestsTrimmed.map((request, index) => {
+                notificationsCount++;
+                return (
+                    <DropdownItem friendRequest data={request} key={index}/>
+                )
+            })
+        }
+        else {
+            friendRequests = this.state.friendRequests.map((request, index) => {
+                notificationsCount++;
+                return (
+                    <DropdownItem friendRequest data={request} key={index}/>
+                )
+            })
+        }
 
         let zeroNotifs;
         (notificationsCount<1) ? zeroNotifs = (

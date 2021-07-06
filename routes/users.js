@@ -56,6 +56,7 @@ router.delete('/users/delete/:userId', (req, res) => {
 });
 
 router.post('/users/login', (req, res) => {
+    // console.log('logging in')
     User.find({email: req.body.email})
         .exec()
         .then(users => {

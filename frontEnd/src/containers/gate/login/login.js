@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import classes from './login.module.css';
-import * as actionTypes from '../../../store/actions';
-import {connect} from 'react-redux'
 import Button from '../../../components/UI/button';
 import Flash from '../../../components/UI/flash';
 
@@ -69,11 +67,11 @@ class Login extends Component {
             email: this.state.email,
             password: this.state.password
         }
-        console.log(loginData);
+        // console.log(loginData);
         axios.post('http://localhost:3001/users/login', loginData)
             .then(res => {
                 if(res.status===200){
-                    this.props.redux_store_token(res.data.token); //saving to redux store 
+                    //this.props.redux_store_token(res.data.token); //saving to redux store 
                     if(this.state.keepLoggedIn){
                         localStorage.setItem('token', res.data.token);
                         let userData = JSON.parse(res.data.userData);

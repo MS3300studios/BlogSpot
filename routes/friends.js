@@ -13,37 +13,45 @@ router.use(express.json());
 //creating request
 router.post('/createRequest', auth, (req, res) => {
     //check if the request already exists
-    FriendRequest.findOne({friendId: req.body.friendId}).exec().then(friend => {
+    FriendRequest.findOne({userId: req.userData.userId, friendId: req.body.friendId}).exec().then(friend => {
         if(friend){
-            console.log('this request already exists')
+            console.log('this request already exists: you have sent it');
             res.status(401);
         }
         else{
-            User.findOne({_id: req.body.friendId})
-            .exec()
-            .then(friend => {
-                //creating request 
-                const friendRequest = new FriendRequest({
-                    userId: req.userData.userId,
-                    friendId: friend._id
-                });
-                
-                friendRequest.save()
-                    .then(response => {
-                        console.log("friend request added");
-                        res.sendStatus(201);
+            FriendRequest.findOne({userId: req.body.friendId, friendId: req.userData.userId}).exec().then(friend2 => {
+                if(friend2){
+                    console.log('this request already exists: the user has sent it to you');
+                    res.status(401);
+                }
+                else{
+                    User.findOne({_id: req.body.friendId})
+                    .exec()
+                    .then(friend => {
+                        //creating request 
+                        const friendRequest = new FriendRequest({
+                            userId: req.userData.userId,
+                            friendId: friend._id
+                        });
+                        
+                        friendRequest.save()
+                            .then(response => {
+                                console.log("friend request added");
+                                res.sendStatus(201);
+                            })
+                            .catch(err => {
+                                console.log(err);
+                                res.status(500).json({error: err});
+                            });
                     })
                     .catch(err => {
-                        console.log(err);
-                        res.status(500).json({error: err});
+                        return res.status(500).json({
+                            message: 'user not found',
+                            error: err
+                        })
                     });
+                }
             })
-            .catch(err => {
-                return res.status(500).json({
-                    message: 'user not found',
-                    error: err
-                })
-            });
         }
     })
     .catch(err => {

@@ -1,7 +1,11 @@
 import * as actionTypes from './actions';
 
 const initialState = {
-    fullFriends: []
+    fullFriends: [],
+    removeNotif: {
+        type: "",
+        idToDrop: "",
+    }
 };
 
 const reducer = ( state = initialState, action ) => {
@@ -16,7 +20,12 @@ const reducer = ( state = initialState, action ) => {
         case actionTypes.CHECK_STORE:
             console.log(state)
             return state;
-        case actionTypes.CLEAR_STATE:
+        case actionTypes.CLEAR_FULLFRIENDS:
+            return {
+                ...state,
+                fullFriends: []
+            };
+        case actionTypes.REMOVE_NOTIF:
             return {
                 ...state,
                 fullFriends: []

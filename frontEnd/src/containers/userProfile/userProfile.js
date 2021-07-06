@@ -210,6 +210,7 @@ class UserProfile extends Component {
                 })
                 break;
             case "acceptFriendRequest":
+                //redux remove notif
                 console.log('accept friend request');       
                 axios({
                     method: 'post',
@@ -228,6 +229,7 @@ class UserProfile extends Component {
                 })
                 break;
             case "declineFriendRequest":
+                //redux remove notif
                 console.log('decline friend request');
                 axios({
                     method: 'post',

@@ -34,7 +34,7 @@ class FriendsList extends Component {
     }
 
     componentDidMount(){
-        this.props.redux_clear_store();
+        this.props.redux_clear_fullfriends();
         axios({
             method: 'post',
             url: 'http://localhost:3001/getFriends',
@@ -245,7 +245,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         redux_check_store: () => dispatch({type: actionTypes.CHECK_STORE}),
-        redux_clear_store: () => dispatch({type: actionTypes.CLEAR_STATE})
+        redux_clear_fullfriends: () => dispatch({type: actionTypes.CLEAR_FULLFRIENDS})
     }
 }
 
