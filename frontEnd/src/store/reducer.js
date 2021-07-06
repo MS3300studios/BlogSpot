@@ -9,11 +9,6 @@ const reducer = ( state = initialState, action ) => {
         case actionTypes.ADD_FRIEND:
             let arr = state.fullFriends;
             arr.push(action.data);
-            // function uniqArr (arr){
-            //     return  [...new Set(arr)]
-            // }
-            // let unique = uniqArr(arr);
-            // console.log(unique)
             return {
                 ...state,
                 fullFriends: arr

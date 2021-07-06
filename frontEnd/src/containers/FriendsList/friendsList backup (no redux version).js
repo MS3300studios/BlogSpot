@@ -6,33 +6,32 @@ import Button from '../../components/UI/button';
 import FriendsListItem from './friendsListItem';
 import getToken from '../../getToken';
 import axios from 'axios';
-
-import { connect } from 'react-redux';
-import * as actionTypes from '../../store/actions';
+import getUserData from '../../getUserData';
 
 class FriendsList extends Component {
-    constructor(props) {
+    constructor(props){
         super(props);
 
         let token = getToken();
+        let userData = getUserData();
 
         this.state = {
             token: token,
-            friendsIds: [],
-            fullFriends: this.props.fullFriends,
-            users: [],
-            searchedForUser: false,
-            searchedForFriend: false,
+            userData: userData,
+            friends: [],
+            newUsers: [],
+            fullFriends: [],
             filterIn: "none",
             filterBy: "none",
-            userNotFound: false,
-            usedFilter: false
+            searchedForUsers: false,
+            usedFilter: false,
+            userNotFound: false
         }
 
-        this.searchNewUser.bind(this);
         this.filterSearchHandler.bind(this);
-        this.setProps.bind(this);
         this.filterFriends.bind(this);
+        this.searchNewUser.bind(this);
+        this.setProps.bind(this);
     }
 
     componentDidMount(){
@@ -43,13 +42,20 @@ class FriendsList extends Component {
         })
         .then((res)=>{
             if(res.status===200){
-                this.setState({friendsIds: res.data.friends});
+                this.setState({friends: res.data.friends});
                 return;
             }
         })
         .catch(error => {
             console.log(error);
         })
+    }
+
+    setProps = (user, index) => {
+        var newArray = this.state.fullFriends;
+        newArray.splice(index, 0, user);
+        console.log(newArray[index].name)
+        this.setState({fullFriends: newArray});
     }
 
     searchNewUser = () => {
@@ -81,14 +87,8 @@ class FriendsList extends Component {
         this.setState({filterIn: option, filterBy: string, usedFilter: true});
     }
 
-    setProps(user){
-        console.log(this.state.fullFriends)
-        let array = this.state.fullFriends;
-        array.push(user);
-        this.setState({fullFriends: array});
-    }
-
     filterFriends = (filterIn, filterBy) => {
+        // this.setState({usedFilter: true});
         let friendsJSX = null; //temporary array of all jsx friends, to be filtered and converted to friendsRdy
         let friendsRdy = null;
         
@@ -112,20 +112,27 @@ class FriendsList extends Component {
         }
         else{
             friendsJSX = this.state.fullFriends.map((friend, index)=>{
-                return (
-                    <FriendsListItem 
-                        id={friend._id} 
-                        key={index} 
-                        name={friend.name} 
-                        surname={friend.surname} 
-                        nickname={friend.nickname} 
-                    />
-                )
+                //if(!this.state.fullFriends[index].name) return null;
+                //else{
+                    return (
+                        <FriendsListItem 
+                            sendInfo={this.setProps}
+                            id={friend.friendId} 
+                            key={index} 
+                            name={this.state.fullFriends[index].name} 
+                            surname={this.state.fullFriends[index].surname} 
+                            nickname={this.state.fullFriends[index].nickname} 
+                        />
+                    )
+                //}
             });
 
             if(filterIn==="nickname"){
                 //eslint-disable-next-line
                 friendsRdy = friendsJSX.filter((friend)=>{
+                    // if(!friend){
+                    //     return null;
+                    // }
                     if(friend.props.nickname.includes(filterBy)){
                         return friend;
                     }
@@ -166,7 +173,7 @@ class FriendsList extends Component {
 
     render() { 
         let friends;
-        if(this.state.friendsIds.length===0){
+        if(this.state.friends.length===0){
             friends = (
                 <div className={classes.nameListContainer}>
                     <h1>You don't have any friends yet!</h1>
@@ -176,27 +183,21 @@ class FriendsList extends Component {
                 </div>
             );
         }
-        else if(this.state.searchedForFriend){
-            console.log(this.state.fullFriends);
-        }
-        else if(this.state.usedFilter){
-            friends = (
-                <div className={classes.nameListContainer}>
-                    {this.filterFriends(this.state.filterIn, this.state.filterBy)}
-                </div>
-            );
+        else if(this.state.usedFilter && this.state.filterBy!==""){
+            <div className={classes.nameListContainer}>
+                {this.filterFriends(this.state.filterIn, this.state.filterBy)}
+            </div>
         }
         else{
             friends = (
                 <div className={classes.nameListContainer}>
                     {
-                        this.state.friendsIds.map((friend, index)=>{
+                        this.state.friends.map((friend, index)=>{
                             return (
                                 <FriendsListItem 
                                     sendInfo={this.setProps}
                                     id={friend.friendId} 
                                     key={index}  
-                                    initRender
                                 />
                             )
                         })
@@ -205,7 +206,40 @@ class FriendsList extends Component {
             );
         }
 
-        
+        //if the user was searching for other users, then we want to show the results from the newUsers array
+        if(this.state.searchedForUsers){ 
+            friends = (
+                <div className={classes.nameListContainer}>
+                    {
+                        this.state.newUsers.map((user, index)=>(
+                                <a href={"/user/profile/?id="+user._id} key={index} className={classes.containerLink}>
+                                    <div className={classes.listElement}>
+                                        <div className={classes.smallFaceContainer}>
+                                            <img src={user.photo} alt="users's face"/>
+                                        </div>
+                                        <div className={classes.namesContainer}>
+                                            <h1>{user.name} {user.surname}</h1>
+                                            <p>@{user.nickname}</p>
+                                        </div>
+                                    </div>
+                                    <hr/>
+                                </a>
+                            ))
+                    }
+                </div>
+            )
+        }
+       
+        if(this.state.userNotFound){
+            friends = (
+                <div className={classes.nameListContainer}>
+                    <h1>404: No user with this {this.state.filterIn} was found</h1>
+                    <hr />
+                    <p>Type the data in the search bar above and click search</p>
+                    <Button clicked={this.searchNewUser}>Search again</Button>
+                </div>
+            );
+        } 
 
         return (
             <div className={classes.mainContainer}>
@@ -216,25 +250,28 @@ class FriendsList extends Component {
                         selectedOption={this.filterSearchHandler}
                         clicked={this.filterSearchHandler}
                         selectValues={["nickname", "name", "surname", "id"]} 
-                        resetFilter={()=>{this.setState({filterIn: "none", filterBy: "none", searchedForUser: false, searchedForFriend: false})}}
+                        resetFilter={()=>{this.setState({filterIn: "none", filterBy: "none", searchedForUsers: false, usedFilter: false})}}
                     />
                 </div>
                 {friends}
+                <h1>in: {this.state.filterIn}</h1>
+                <h1>by: {this.state.filterBy}</h1>
+                <h1>has searched for users: {this.state.searchedForUsers ? "yes" : "no"}</h1>
+                <button style={{backgroundColor: "black"}} onClick={()=>console.log(this.state.fullFriends)}>check full users</button>
+                <button style={{backgroundColor: "black"}} onClick={()=>console.log(this.state.usedFilter)}>check if filtered</button>
             </div>
         );
     }
 }
  
-const mapStateToProps = state => {
-    return {
-        fullFriends: state.fullFriends
-    };
-}
+export default FriendsList;
 
-const mapDispatchToProps = dispatch => {
-    return {
-        redux_check_store: () => dispatch({type: actionTypes.CHECK_STORE})
-    }
-}
 
-export default connect(mapStateToProps, mapDispatchToProps)(FriendsList);
+// <button
+//                         onClick={()=>{
+//                             console.log(this.state.fullFriends)
+//                         }}
+//                         style={{backgroundColor: "black"}}
+//                     >
+//                     check full friends arr
+//                 </button>
