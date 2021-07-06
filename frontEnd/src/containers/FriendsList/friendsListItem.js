@@ -19,39 +19,57 @@ class FriendsListItem extends Component {
     }
 
     componentDidMount(){
-        axios({
-            method: 'get',
-            url: `http://localhost:3001/users/getUser/${this.props.id}`,
-            headers: {'Authorization': this.state.token},
-        })
-        .then((res)=>{
-            if(res.status===200){
-                this.setState({friend: res.data.user});
-                if(this.props.initRender){
-                    this.props.redux_add_friend(res.data.user);
+        if(this.props.getData){
+            axios({
+                method: 'get',
+                url: `http://localhost:3001/users/getUser/${this.props.id}`,
+                headers: {'Authorization': this.state.token},
+            })
+            .then((res)=>{
+                if(res.status===200){
+                    this.setState({friend: res.data.user});
+                    if(this.props.getData){
+                        this.props.redux_add_friend(res.data.user);
+                    }
                 }
-            }
-        })
-        .catch(error => {
-            console.log(error);
-        })
+            })
+            .catch(error => {
+                console.log(error);
+            })
+        }
     }
 
     render() { 
-        return (
+        if(this.props.getData){
+            return (
+                <a href={"/user/profile/?id="+this.props.id} key={this.props.index} className={classes.containerLink}>
+                    <div className={classes.listElement}>
+                        <div className={classes.smallFaceContainer}>
+                            <img src={this.state.friend.photo} alt="friend's face"/>
+                        </div>
+                        <div className={classes.namesContainer}>
+                            <h1>{this.state.friend.name} {this.state.friend.surname}</h1>
+                            <p>@{this.state.friend.nickname}</p>
+                        </div>
+                    </div>
+                    <hr/>
+                </a>
+            );
+        }
+        else return (
             <a href={"/user/profile/?id="+this.props.id} key={this.props.index} className={classes.containerLink}>
                 <div className={classes.listElement}>
                     <div className={classes.smallFaceContainer}>
-                        <img src={this.state.friend.photo} alt="friend's face"/>
+                        <img src={this.props.friend.photo} alt="friend's face"/>
                     </div>
                     <div className={classes.namesContainer}>
-                        <h1>{this.state.friend.name} {this.state.friend.surname}</h1>
-                        <p>@{this.state.friend.nickname}</p>
+                        <h1>{this.props.friend.name} {this.props.friend.surname}</h1>
+                        <p>@{this.props.friend.nickname}</p>
                     </div>
                 </div>
                 <hr/>
             </a>
-        );
+    )
     }
 }
  

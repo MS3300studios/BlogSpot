@@ -22,7 +22,6 @@ class FriendsList extends Component {
             fullFriends: this.props.fullFriends,
             users: [],
             searchedForUser: false,
-            searchedForFriend: false,
             filterIn: "none",
             filterBy: "none",
             userNotFound: false,
@@ -31,7 +30,6 @@ class FriendsList extends Component {
 
         this.searchNewUser.bind(this);
         this.filterSearchHandler.bind(this);
-        this.setProps.bind(this);
         this.filterFriends.bind(this);
     }
 
@@ -66,10 +64,10 @@ class FriendsList extends Component {
         .then((res)=>{
             console.log(res.data)
             if(res.data === "user not found"){
-                this.setState({userNotFound: true, searchedForUsers: true});
+                this.setState({userNotFound: true, searchedForUser: true});
             }
             else{
-                this.setState({newUsers: res.data.users, searchedForUsers: true, userNotFound: false});
+                this.setState({users: res.data.users, searchedForUser: true, userNotFound: false});
             }
         })
         .catch(error => {
@@ -79,13 +77,6 @@ class FriendsList extends Component {
 
     filterSearchHandler = (option, string) => {
         this.setState({filterIn: option, filterBy: string, usedFilter: true});
-    }
-
-    setProps(user){
-        console.log(this.state.fullFriends)
-        let array = this.state.fullFriends;
-        array.push(user);
-        this.setState({fullFriends: array});
     }
 
     filterFriends = (filterIn, filterBy) => {
@@ -100,9 +91,9 @@ class FriendsList extends Component {
                         this.state.friends.map((friend, index)=>{
                             return (
                                 <FriendsListItem 
-                                    sendInfo={this.setProps}
                                     id={friend.friendId} 
                                     key={index}  
+                                    getData
                                 />
                             )
                         })
@@ -116,13 +107,13 @@ class FriendsList extends Component {
                     <FriendsListItem 
                         id={friend._id} 
                         key={index} 
-                        name={friend.name} 
-                        surname={friend.surname} 
-                        nickname={friend.nickname} 
+                        name={friend.name}
+                        nickname={friend.nickname}
+                        surname={friend.surname}
+                        friend={friend}
                     />
                 )
             });
-
             if(filterIn==="nickname"){
                 //eslint-disable-next-line
                 friendsRdy = friendsJSX.filter((friend)=>{
@@ -176,8 +167,20 @@ class FriendsList extends Component {
                 </div>
             );
         }
-        else if(this.state.searchedForFriend){
-            console.log(this.state.fullFriends);
+        else if(this.state.searchedForUser){
+            friends = (
+                <div className={classes.nameListContainer}>
+                    {
+                        this.state.users.map((user, index) => (
+                            <FriendsListItem 
+                                id={user._id} 
+                                key={index}  
+                                friend={user}
+                            />
+                        ))
+                    }
+                </div>
+            );         
         }
         else if(this.state.usedFilter){
             friends = (
@@ -193,10 +196,9 @@ class FriendsList extends Component {
                         this.state.friendsIds.map((friend, index)=>{
                             return (
                                 <FriendsListItem 
-                                    sendInfo={this.setProps}
                                     id={friend.friendId} 
                                     key={index}  
-                                    initRender
+                                    getData
                                 />
                             )
                         })
@@ -216,7 +218,7 @@ class FriendsList extends Component {
                         selectedOption={this.filterSearchHandler}
                         clicked={this.filterSearchHandler}
                         selectValues={["nickname", "name", "surname", "id"]} 
-                        resetFilter={()=>{this.setState({filterIn: "none", filterBy: "none", searchedForUser: false, searchedForFriend: false})}}
+                        resetFilter={()=>{this.setState({filterIn: "none", filterBy: "none", searchedForUser: false, usedFilter: false})}}
                     />
                 </div>
                 {friends}
