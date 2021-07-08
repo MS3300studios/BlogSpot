@@ -102,13 +102,6 @@ class FriendButton extends Component {
         return (
             <React.Fragment>
                 {btn}
-                <button onClick={()=>{
-                    console.log('removing Id: '+this.props.friendId)
-                    this.props.redux_remove_friendReq_notif(this.props.friendId); 
-                }}
-                style={{backgroundColor: "black"}}>
-                    click to remove notif
-                </button>
             </React.Fragment>
         );
     }

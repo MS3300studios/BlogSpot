@@ -114,7 +114,6 @@ class BlogsTab extends Component {
                 <div className={[classes.center, classes.loadmorebtn].join(" ")}>
                     <Button clicked={this.getMorePosts}>load 2 more</Button>
                 </div>
-                <button onClick={()=>this.forceUpdate()}>refresh</button>
             </React.Fragment>
         );
     }

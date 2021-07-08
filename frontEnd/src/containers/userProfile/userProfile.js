@@ -422,25 +422,6 @@ class UserProfile extends Component {
                     <TabSelector selectedOption={this.state.currentSelectedMenu} userId={this.props.location.search}/>
                  </div>
                  {flash}
-                 <button
-                    onClick={()=>{
-                        axios({
-                            method: 'post',
-                            url: `http://localhost:3001/checkFriendRequest`,
-                            headers: {'Authorization': this.state.token},
-                            data: {friendId: this.state.userId}
-                        })
-                        .then((res)=>{
-                            console.log(res.data)
-                        })
-                        .catch(error => {
-                            console.log(error);
-                        })
-                    }}
-                    style={{backgroundColor: "black"}}
-                 >
-                     check Friend Request
-                 </button>
              </React.Fragment>
         );
     }
