@@ -2,10 +2,7 @@ import * as actionTypes from './actions';
 
 const initialState = {
     fullFriends: [],
-    removeNotif: {
-        type: "",
-        idToDrop: "",
-    }
+    friendReqIdToBeRemoved: null
 };
 
 const reducer = ( state = initialState, action ) => {
@@ -25,10 +22,10 @@ const reducer = ( state = initialState, action ) => {
                 ...state,
                 fullFriends: []
             };
-        case actionTypes.REMOVE_NOTIF:
+        case actionTypes.REMOVE_NOTIF_FRIENDREQ:
             return {
                 ...state,
-                fullFriends: []
+                friendReqIdToBeRemoved: action.data
             };
         default:
             return state;

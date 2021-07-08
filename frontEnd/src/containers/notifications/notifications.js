@@ -8,6 +8,8 @@ import getToken from '../../getToken';
 import Spinner from '../../components/UI/spinner';
 import DropdownItem from './dropdownItem/dropdownItem';
 
+import { connect } from 'react-redux';
+
 class Notifications extends Component {
     constructor(props) {
         super(props);
@@ -17,7 +19,9 @@ class Notifications extends Component {
         this.state = {
             token: token,
             refreshing: false,
-            friendRequests: []
+            friendRequests: [],
+            friendRequestsJSX: [],
+            notificationsCount: 0
         }
         this.getNotifications.bind(this);
     }
@@ -26,7 +30,25 @@ class Notifications extends Component {
         this.getNotifications();
     }
 
+    componentDidUpdate(prevProps){
+        if(prevProps.idToDrop !== this.props.idToDrop){
+            this.getNotifications();
+            // console.log(this.state.friendRequests)
+            // let notifCount = 0;
+            // let requestsTrimmed = this.state.friendRequests.filter(el => el.userId !== this.props.idToDrop);
+            // console.log(requestsTrimmed[0])
+            // let friendsRdy = requestsTrimmed.map((request, index) => {
+            //     notifCount++;
+            //     return (
+            //         <DropdownItem friendRequest data={request} key={index}/>
+            //     )
+            // })
+            // this.setState({friendRequestsJSX: friendsRdy, notificationsCount: notifCount});
+        }
+    }
+
     getNotifications = () => {
+        console.log('getting notifications')
         this.setState({refreshing: true});
         axios({
             method: 'post',
@@ -34,7 +56,14 @@ class Notifications extends Component {
             headers: {'Authorization': this.state.token},
         })
         .then((res)=>{
-            this.setState({friendRequests: res.data.requests});
+            let notifCount = 0;
+            let friendsRdy = res.data.requests.map((request, index) => {
+                notifCount++;
+                return (
+                    <DropdownItem friendRequest data={request} key={index}/>
+                )
+            })
+            this.setState({friendRequests: res.data.requests, friendRequestsJSX: friendsRdy, notificationsCount: notifCount});
         })
         .catch(error => {
             console.log(error);
@@ -46,29 +75,8 @@ class Notifications extends Component {
     }
 
     render() {
-        let notificationsCount = 0;
-
-        let friendRequests;
-        if(this.props.refreshNotifs){
-            let requestsTrimmed = this.state.friendRequests.filter(req => req._id === this.props.idToDrop);
-            friendRequests = requestsTrimmed.map((request, index) => {
-                notificationsCount++;
-                return (
-                    <DropdownItem friendRequest data={request} key={index}/>
-                )
-            })
-        }
-        else {
-            friendRequests = this.state.friendRequests.map((request, index) => {
-                notificationsCount++;
-                return (
-                    <DropdownItem friendRequest data={request} key={index}/>
-                )
-            })
-        }
-
         let zeroNotifs;
-        (notificationsCount<1) ? zeroNotifs = (
+        (this.state.notificationsCount<1) ? zeroNotifs = (
             <React.Fragment>
                 <div className={classes.dropdownItem}>
                     <p>no notifications</p>
@@ -80,7 +88,7 @@ class Notifications extends Component {
         return (
             <div className={classes.dropdown}>
                 <div className={classes.center}><IoNotifications size="2em" color="#0a42a4"/>
-                    <div className={classes.notificationNumber}>{notificationsCount}</div>
+                    <div className={classes.notificationNumber}>{this.state.notificationsCount}</div>
                 </div> 
                 <div className={classes.dropdownContent}>
                     <div 
@@ -89,7 +97,7 @@ class Notifications extends Component {
                     >
                         <FiRefreshCcw size="2em" color="#0a42a4" className={classes.refreshIcon}/>
                     </div>
-                    {this.state.refreshing ? <Spinner darkgreen /> : friendRequests}
+                    {this.state.refreshing ? <Spinner darkgreen /> : this.state.friendRequestsJSX}
                     {zeroNotifs}
                 </div>                    
             </div>  
@@ -97,4 +105,10 @@ class Notifications extends Component {
     }
 }
  
-export default Notifications;
+const mapStateToProps = state => {
+    return {
+        idToDrop: state.friendReqIdToBeRemoved
+    };
+}
+
+export default connect(mapStateToProps)(Notifications);

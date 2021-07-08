@@ -3,6 +3,9 @@ import axios from 'axios';
 import classes from '../userProfile.module.css';
 import getToken from '../../../getToken';
 
+import { connect } from 'react-redux';
+import * as actionTypes from '../../../store/actions';
+
 class FriendButton extends Component {
     constructor(props) {
         super(props);
@@ -52,26 +55,34 @@ class FriendButton extends Component {
 
     sendAction = (acceptRequest) => {
         if(this.state.isFriend){
+            //if user deleted the friend 
             this.setState({buttonText: "Send friend request", requestStatus: false, isFriend: false});
             this.props.pressAction("removeFriend");
         }
         else if(this.state.requestStatus === false){
             if(acceptRequest !== "none"){
+                //if request was made for the user
                 if(acceptRequest==="accept"){
+                    //user accepts the request
                     this.setState({receivedRequest: false, isFriend: true, buttonText: "Remove from Friends"});
+                    this.props.redux_remove_friendReq_notif(this.props.friendId); 
                     this.props.pressAction("acceptFriendRequest")
                 }
                 else if(acceptRequest==="decline"){
+                    //user declines the request
                     this.setState({receivedRequest: false, buttonText: "Send friend request"});
+                    this.props.redux_remove_friendReq_notif(this.props.friendId); 
                     this.props.pressAction("declineFriendRequest")
                 }
             }
             else if(acceptRequest === "none"){
+                //if request was made by the user
                 this.setState({buttonText: "Remove friend request", requestStatus: true});
                 this.props.pressAction("addRequest");
             }
         }
         else if(this.state.requestStatus){
+            //if person's profile is not friend
             this.setState({buttonText: "Send friend request", requestStatus: false});
             this.props.pressAction("removeRequest");
         }
@@ -91,9 +102,21 @@ class FriendButton extends Component {
         return (
             <React.Fragment>
                 {btn}
+                <button onClick={()=>{
+                    console.log('removing Id: '+this.props.friendId)
+                    this.props.redux_remove_friendReq_notif(this.props.friendId); 
+                }}
+                style={{backgroundColor: "black"}}>
+                    click to remove notif
+                </button>
             </React.Fragment>
         );
     }
 }
- 
-export default FriendButton;
+
+const mapDispatchToProps = dispatch => {
+    return {
+        redux_remove_friendReq_notif: (requestDetails) => dispatch({type: actionTypes.REMOVE_NOTIF_FRIENDREQ, data: requestDetails})
+    }
+}
+export default connect(null ,mapDispatchToProps)(FriendButton);

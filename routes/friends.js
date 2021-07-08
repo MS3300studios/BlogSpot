@@ -190,7 +190,7 @@ router.post('/checkFriendStatus', auth, (req, res) => {
     Friend.exists({userId: req.userData.userId, friendId: req.body.friendId}, (err, exists) => {
         Friend.exists({userId: req.body.friendId, friendId: req.userData.userId}, (err, exists2) => {
             let reply = exists || exists2;
-            console.log('reply:', reply)
+            console.log('user is friend:', reply)
             res.json({
                 isFriend: reply
             });

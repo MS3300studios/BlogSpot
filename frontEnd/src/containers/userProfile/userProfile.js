@@ -385,6 +385,7 @@ class UserProfile extends Component {
                                         receivedRequest={this.state.receivedRequest}
                                         isFriend={this.state.isFriend} 
                                         pressAction={this.friendButtonAction}
+                                        friendId={this.state.userId}
                                     />
                                 ) : <Spinner darkgreen />}
                                 
