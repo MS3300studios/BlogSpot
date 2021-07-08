@@ -378,19 +378,23 @@ class UserProfile extends Component {
                                     <p>55</p>
                                 </div>                                
                             </div>
-                            <div className={classes.socialButtonsContainer}>
-                                <button className={classes.follow}>Follow</button>
-                                {this.state.friendBtnDataRdy ? (
-                                    <FriendButton 
-                                        receivedRequest={this.state.receivedRequest}
-                                        isFriend={this.state.isFriend} 
-                                        pressAction={this.friendButtonAction}
-                                        friendId={this.state.userId}
-                                    />
-                                ) : <Spinner darkgreen />}
-                                
-                                <button className={classes.sendMessage}>Send Message</button>
-                            </div>
+                            {
+                                this.state.userLogged ? null : (
+                                    <div className={classes.socialButtonsContainer}>
+                                        <button className={classes.follow}>Follow</button>
+                                        {this.state.friendBtnDataRdy ? (
+                                            <FriendButton 
+                                                receivedRequest={this.state.receivedRequest}
+                                                isFriend={this.state.isFriend} 
+                                                pressAction={this.friendButtonAction}
+                                                friendId={this.state.userId}
+                                            />
+                                        ) : <Spinner darkgreen />}
+                                        
+                                        <button className={classes.sendMessage}>Send Message</button>
+                                    </div>
+                                )
+                            }
                         </div>
                     </div>                    
                  </div>
