@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
+import classes from './userphoto.module.css';
 
 import axios from 'axios';
 import logout from '../../logout';
-import classes from './userphoto.module.css';
 import getToken from '../../getToken';
 import getUserData from '../../getUserData';
 
@@ -51,6 +51,9 @@ class UserPhoto extends Component {
         let userPhotoClasses = classes.userPhoto;
         if(this.props.small){
             userPhotoClasses = classes.smallUserPhoto;
+        }
+        if(this.props.smallPhotoCommentForm){
+            userPhotoClasses = classes.smallPhotoCommentForm;
         }
 
         let dropdown = null;
