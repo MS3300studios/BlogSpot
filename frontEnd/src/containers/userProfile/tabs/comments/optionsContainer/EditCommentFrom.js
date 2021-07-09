@@ -6,8 +6,6 @@ import classes from './editCommentForm.module.css';
 const EditCommentForm = (props) => {
     const [editContent, seteditContent] = useState(props.commentContent);
 
-    console.log(props.commentContent)
-
     let submitHandler = () => {
         console.log(editContent);
     }
