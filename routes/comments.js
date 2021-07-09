@@ -91,11 +91,9 @@ router.get('/comments/one/:commentId', auth, (req, res) => {
 });
 
 router.delete('/comments/delete/:commentId', auth, (req, res) => {
-    console.log(req.params.commentId)
     Comment.deleteOne({_id: req.params.commentId})
         .exec()
         .then((response => {
-            console.log('deleted?')
             console.log('response: \n', response);
             res.sendStatus(200);
         }))

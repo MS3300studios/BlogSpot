@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-// import { Link, withRouter } from 'react-router-dom';
 
 import classes from './comments.module.css';
 import Button from '../../../../components/UI/button';
 import AddCommentForm from '../../../../components/UI/AddCommentForm';
 import LikesCommentsNumbers from '../../../../components/UI/likesCommentsNumbers';
 import UserPhoto from '../../../../components/UI/userphoto';
+import CommentOptions from './optionsContainer/CommentOptions';
 
 import getToken from '../../../../getToken';
+import getUserData from '../../../../getUserData';
 import formattedCurrentDate from '../../../../formattedCurrentDate';
 
 
@@ -16,13 +17,16 @@ class Comments extends Component {
     constructor(props){
         super(props);
         let token = getToken();
+        let userData = getUserData();
 
         this.state = {
             test: '',
             token: token,
+            userData: userData,
             limit: 2,
             blogId: props.blogId,
             comments: [],
+            editing: false
         }
 
         this.loadmorehandler.bind(this);
@@ -69,6 +73,10 @@ class Comments extends Component {
         this.getComments(newLimit);
     }
 
+    editCommentHandler = () => {
+        this.setState({editing: true});
+    }
+
     render() { 
         let authorClassArr = classes.commentAuthor;
         let setSmall = false;
@@ -94,8 +102,16 @@ class Comments extends Component {
                             <div className={classes.positionNumberContainer}>
                                 <LikesCommentsNumbers objectId={comment._id} userId={comment.author}/>
                             </div>
+                            {
+                                (this.state.userData._id === comment.author) ? 
+                                    <CommentOptions editComment={this.editCommentHandler} commentId={comment._id}/> : null
+                            }
                         </div>
-                        <p className={classes.commentContent}>{comment.content}</p>
+                        {
+                            this.state.editing ? (
+                                <AddCommentForm />
+                            ) : <p className={classes.commentContent}>{comment.content}</p>
+                        }
                     </div>
                 </React.Fragment>                
             )

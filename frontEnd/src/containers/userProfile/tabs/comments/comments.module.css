@@ -16,6 +16,8 @@
 
 .commentAuthor{
     font-weight: 500;
+    margin-left: -245px;
+    margin-top: 28px;
 }
 .commentAuthor a{
     color: inherit;
@@ -38,4 +40,31 @@
 .positionNumberContainer{
     margin-left: -103px;
     width: 110px;
+}
+
+.optionsDiv{
+    position: absolute;
+    width: 20px;
+    top: 13px;
+    right: 15px;
+}
+
+.optionsDiv :hover{
+    cursor: pointer;
+}
+
+.optionsContainer{
+    background-color: blanchedalmond;
+    border-radius: 10px;
+    width: 58px;
+    padding: 6px;
+}
+
+.optionsContainer option{
+    margin: 5px;
+    font-weight: 600;
+}
+
+.optionsContainer option:hover{
+    cursor: pointer;
 }
