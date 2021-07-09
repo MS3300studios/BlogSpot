@@ -63,7 +63,6 @@ class FriendsList extends Component {
             }
         })
         .then((res)=>{
-            console.log(res.data)
             if(res.data === "user not found"){
                 this.setState({userNotFound: true, searchedForUser: true});
             }
@@ -176,22 +175,7 @@ class FriendsList extends Component {
                 </div>
             );
         }
-        else if(this.state.searchedForUser){
-            bottomSearchNotice = null;
-            friends = (
-                <div className={classes.nameListContainer}>
-                    {
-                        this.state.users.map((user, index) => (
-                            <FriendsListItem 
-                                id={user._id} 
-                                key={index}  
-                                friend={user}
-                            />
-                        ))
-                    }
-                </div>
-            );         
-        }
+        
         else if(this.state.usedFilter){
             friends = (
                 <div className={classes.nameListContainer}>
@@ -216,8 +200,23 @@ class FriendsList extends Component {
                 </div>
             );
         }
-
         
+        if(this.state.searchedForUser){
+            bottomSearchNotice = null;
+            friends = (
+                <div className={classes.nameListContainer}>
+                    {
+                        this.state.users.map((user, index) => (
+                            <FriendsListItem 
+                                id={user._id} 
+                                key={index}  
+                                friend={user}
+                            />
+                        ))
+                    }
+                </div>
+            );         
+        }
 
         return (
             <div className={classes.mainContainer}>
