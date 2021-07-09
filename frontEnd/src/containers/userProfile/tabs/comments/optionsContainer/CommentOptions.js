@@ -52,8 +52,8 @@ class CommentOptions extends Component {
                 <BsThreeDots size="1.5em" color="#0a42a4" className={classes.threeDotsIcon}/>
                 { this.state.open ? (
                     <div className={classes.optionsContainer}>
-                        <option onClick={()=>this.optionsAction("delete")}>delete</option>
                         <option onClick={()=>this.optionsAction("edit")}>edit</option>
+                        <option onClick={()=>this.optionsAction("delete")}>delete</option>
                     </div>
                 ) : null }
             </div>

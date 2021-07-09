@@ -8,6 +8,7 @@ import LikesCommentsNumbers from '../../../../components/UI/likesCommentsNumbers
 import UserPhoto from '../../../../components/UI/userphoto';
 import CommentOptions from './optionsContainer/CommentOptions';
 import Flash from '../../../../components/UI/flash';
+import EditCommentForm from './optionsContainer/EditCommentFrom';
 
 import getToken from '../../../../getToken';
 import getUserData from '../../../../getUserData';
@@ -133,7 +134,7 @@ class Comments extends Component {
                         </div>
                         {
                             this.state.editing ? (
-                                <AddCommentForm />
+                                <EditCommentForm commentContent={comment.content} cancelEdit={()=>this.setState({editing: false})} />
                             ) : <p className={classes.commentContent}>{comment.content}</p>
                         }
                     </div>
