@@ -69,7 +69,11 @@ const Comment = (props) => {
                 </div>
                 {
                     editing ? (
-                        <EditCommentForm commentContent={props.comment.content} cancelEdit={()=>setediting(false)} />
+                        <EditCommentForm 
+                            commentId={props.comment._id} 
+                            flashProp={flashHandle} 
+                            commentContent={props.comment.content} 
+                            cancelEdit={()=>setediting(false)} />
                     ) : <p className={classes.commentContent}>{props.comment.content}</p>
                 }
             </div>

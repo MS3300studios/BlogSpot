@@ -104,8 +104,7 @@ router.delete('/comments/delete/:commentId', auth, (req, res) => {
 })
 
 router.post('/comments/edit/:commentId', auth, (req, res) => {
-    console.log(req.body)
-    Comment.findByIdAndUpdate(req.params.commentId, {title: req.body.title, content: req.body.content})
+    Comment.findByIdAndUpdate(req.params.commentId, {content: req.body.content})
     .exec()
         .then((response => {
             console.log(response);
