@@ -157,8 +157,16 @@ class FriendsList extends Component {
     }
 
     render() { 
+        let bottomSearchNotice = (
+            <div className={classes.nameListContainer} style={{marginTop: "10px"}}>
+                <p>To add new friends, type their data in the search bar above and click search</p>
+                <Button clicked={this.searchNewUser}>Search</Button>
+            </div>
+        );
+
         let friends;
         if(this.state.friendsIds.length===0){
+            bottomSearchNotice = null;
             friends = (
                 <div className={classes.nameListContainer}>
                     <h1>You don't have any friends yet!</h1>
@@ -169,6 +177,7 @@ class FriendsList extends Component {
             );
         }
         else if(this.state.searchedForUser){
+            bottomSearchNotice = null;
             friends = (
                 <div className={classes.nameListContainer}>
                     {
@@ -223,14 +232,7 @@ class FriendsList extends Component {
                     />
                 </div>
                 {friends}
-                {
-                    this.state.searchedForUser ? null : (
-                        <div className={classes.nameListContainer} style={{marginTop: "10px"}}>
-                            <p>To add new friends, type their data in the search bar above and click search</p>
-                            <Button clicked={this.searchNewUser}>Search</Button>
-                        </div>
-                    )
-                }
+                {bottomSearchNotice}
             </div>
         );
     }
