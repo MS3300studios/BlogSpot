@@ -26,21 +26,20 @@ class CommentOptions extends Component {
     optionsAction = (type) => {
         if(type === "delete"){
             //delete comment from props id
-            // axios({
-            //     method: 'post',
-            //     url: `http://localhost:3001/`,
-            //     headers: {},
-            //     data: {}
-            // })
-            // .then((res)=>{
-            //     if(res.status===200){
-                    
-            //         return;
-            //     }
-            // })
-            // .catch(error => {
-                //     console.log(error);
-                // })
+            axios({
+                method: 'delete',
+                url: `http://localhost:3001/comments/delete/${this.props.commentId}`,
+                headers: {'Authorization': this.state.token}
+            })
+            .then((res)=>{
+                if(res.status===200){
+                    this.props.flashProp("comment deleted");
+                    return;
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            })
         }
         else if(type === "edit"){
             this.props.editComment();

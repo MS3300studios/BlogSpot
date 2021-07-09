@@ -7,6 +7,7 @@ import AddCommentForm from '../../../../components/UI/AddCommentForm';
 import LikesCommentsNumbers from '../../../../components/UI/likesCommentsNumbers';
 import UserPhoto from '../../../../components/UI/userphoto';
 import CommentOptions from './optionsContainer/CommentOptions';
+import Flash from '../../../../components/UI/flash';
 
 import getToken from '../../../../getToken';
 import getUserData from '../../../../getUserData';
@@ -26,11 +27,14 @@ class Comments extends Component {
             limit: 2,
             blogId: props.blogId,
             comments: [],
-            editing: false
+            editing: false,
+            flashMessage: "",
+            flashNotClosed: true
         }
 
         this.loadmorehandler.bind(this);
         this.getComments.bind(this);
+        this.flash.bind(this);
     }
 
     componentDidMount(){
@@ -77,6 +81,23 @@ class Comments extends Component {
         this.setState({editing: true});
     }
 
+    flash = (message) => {
+        this.setState({flashMessage: message});
+        this.getComments();
+        
+        setTimeout(()=>{
+            this.setState({flashNotClosed: false});
+        }, 2000)
+
+        setTimeout(()=>{
+            this.setState({flashMessage: ""});
+        }, 3000);
+    
+        setTimeout(()=>{
+            this.setState({flashNotClosed: true});
+        }, 3000);
+    }
+
     render() { 
         let authorClassArr = classes.commentAuthor;
         let setSmall = false;
@@ -104,7 +125,10 @@ class Comments extends Component {
                             </div>
                             {
                                 (this.state.userData._id === comment.author) ? 
-                                    <CommentOptions editComment={this.editCommentHandler} commentId={comment._id}/> : null
+                                    <CommentOptions 
+                                        flashProp={this.flash}
+                                        editComment={this.editCommentHandler} 
+                                        commentId={comment._id}/> : null
                             }
                         </div>
                         {
@@ -117,11 +141,20 @@ class Comments extends Component {
             )
         })
 
+        let flash = null;
+        if(this.state.flashMessage && this.state.flashNotClosed){
+            flash = <Flash>{this.state.flashMessage}</Flash>
+        }
+        else if(this.state.flashMessage && this.state.flashNotClosed === false){
+            flash = <Flash close>{this.state.flashMessage}</Flash>
+        }
+
         return (
             <div className={classes.commentsContainer}>
                 <AddCommentForm blogId={this.state.blogId} afterSend={this.getComments} small={setSmall}/>
                 {comments}
                 <Button clicked={this.loadmorehandler}>Load more comments</Button>
+                {flash}
             </div>
         );
     }
