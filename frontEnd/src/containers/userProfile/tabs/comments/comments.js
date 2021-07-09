@@ -85,6 +85,7 @@ class Comments extends Component {
                     comment={comment}
                     authorClassArr={authorClassArr}
                     userId={this.state.userData._id}
+                    small={this.props.small}
                 />         
             )
         })

@@ -57,7 +57,7 @@ const Comment = (props) => {
                     </p>
                     <p>{formattedCurrentDate(props.comment.createdAt)}</p>
                     <div className={classes.positionNumberContainer}>
-                        <LikesCommentsNumbers objectId={props.comment._id} userId={props.comment.author}/>
+                        <LikesCommentsNumbers objectId={props.comment._id} userId={props.comment.author} small={props.small}/>
                     </div>
                     {
                         (props.userId === props.comment.author) ? 
