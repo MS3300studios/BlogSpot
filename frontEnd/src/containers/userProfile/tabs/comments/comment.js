@@ -9,6 +9,9 @@ import UserPhoto from '../../../../components/UI/userphoto';
 import CommentOptions from './optionsContainer/CommentOptions';
 import Flash from '../../../../components/UI/flash';
 
+import { connect } from 'react-redux';
+import * as actionTypes from '../../../../store/actions';
+
 const Comment = (props) => {
     const [flashMessage, setflashMessage] = useState("");
     const [flashNotClosed, setflashNotClosed] = useState(true);
@@ -82,4 +85,10 @@ const Comment = (props) => {
     );
 }
  
-export default Comment;
+const mapDispatchToProps = dispatch => {
+    return {
+        redux_refresh_comments: () => dispatch({type: actionTypes.CHECK_STORE})
+    }
+}
+
+export default connect(null, mapDispatchToProps)(Comment);

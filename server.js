@@ -11,6 +11,8 @@ app.use(require('./routes/likes'));
 app.use(require('./routes/friends'));
 app.use(require('./routes/notifications'));
 
+require("dotenv").config();
+
 const server = app.listen(PORT, ()=>{
     console.log(chalk.green("------------------------------"));
     console.log(chalk.green(`server is running on port ${PORT}`));

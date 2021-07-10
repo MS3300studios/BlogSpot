@@ -9,6 +9,8 @@ import Comment from './comment';
 import getToken from '../../../../getToken';
 import getUserData from '../../../../getUserData';
 
+import { connect } from 'react-redux';
+// import * as actionTypes from '../../../../store/actions';
 
 class Comments extends Component {
     constructor(props){
@@ -31,6 +33,12 @@ class Comments extends Component {
 
     componentDidMount(){
         this.getComments();
+    }
+
+    componentDidUpdate(prevProps){
+        if(prevProps.refresh !== this.props.refresh){
+            this.getComments();
+        }
     }
 
     getComments = (newLimit) => {
@@ -92,12 +100,28 @@ class Comments extends Component {
 
         return (
             <div className={classes.commentsContainer}>
-                <AddCommentForm blogId={this.state.blogId} afterSend={this.getComments} small={setSmall}/>
+                <AddCommentForm blogId={this.state.blogId} afterSend={()=>{
+                    this.getComments();
+                    // this.props.redux_refresh_comments();
+                }} small={setSmall}/>
                 {comments}
                 <Button clicked={this.loadmorehandler}>Load more comments</Button>
             </div>
         );
     }
 }
- 
-export default Comments;
+
+const mapStateToProps = state => {
+    return {
+        refresh: state.refreshComments
+    };
+}
+
+// const mapDispatchToProps = dispatch => {
+//     return {
+//         redux_refresh_comments: () => dispatch({type: actionTypes.CHECK_STORE})
+//     }
+// }
+
+// export default connect(mapStateToProps, mapDispatchToProps)(Comments);
+export default connect(mapStateToProps)(Comments);

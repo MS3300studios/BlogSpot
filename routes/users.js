@@ -2,7 +2,7 @@ const express = require('express');
 const router = express();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const secret = require('../secret.json');
+// const secret = require('../secret.json');
 const cors = require('cors');
 const User = require('../models/user');
 const auth = require('../middleware/authorization');
@@ -66,12 +66,22 @@ router.post('/users/login', (req, res) => {
             bcrypt.compare(req.body.password, users[0].password, (err, isEqual) => {
                 if(err) return res.sendStatus(401);
                 if(isEqual) {
+                    // const token = jwt.sign(
+                    //     {
+                    //         email: users[0].email,
+                    //         userId: users[0]._id
+                    //     },
+                    //     secret.key,
+                    //     {
+                    //         expiresIn: "1h"
+                    //     }
+                    // );
                     const token = jwt.sign(
                         {
                             email: users[0].email,
                             userId: users[0]._id
                         },
-                        secret.key,
+                        process.env.SECRET,
                         {
                             expiresIn: "1h"
                         }

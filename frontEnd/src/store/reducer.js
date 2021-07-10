@@ -2,7 +2,8 @@ import * as actionTypes from './actions';
 
 const initialState = {
     fullFriends: [],
-    friendReqIdToBeRemoved: null
+    friendReqIdToBeRemoved: null,
+    refreshComments: false
 };
 
 const reducer = ( state = initialState, action ) => {
@@ -26,6 +27,12 @@ const reducer = ( state = initialState, action ) => {
             return {
                 ...state,
                 friendReqIdToBeRemoved: action.data
+            };
+        case actionTypes.REFRESH_COMMENTS:
+            let temp = initialState.refreshComments;
+            return {
+                ...state,
+                refreshComments: !temp
             };
         default:
             return state;
