@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import getToken from '../../getToken';
+import getUserData from '../../getUserData'
 
 import classes from './photoForm.module.css';
 import addYourPhoto from '../../assets/gfx/addyourphoto.png';
@@ -10,7 +12,13 @@ import Flash from '../../components/UI/flash';
 class PhotoForm extends Component {
     constructor(props) {
         super(props);
+
+        let token = getToken();
+        let userData = getUserData();
+
         this.state = {
+            token: token,
+            userData: userData,
             description: "",
             photo: null,
             likes: [],
@@ -68,22 +76,27 @@ class PhotoForm extends Component {
     }
 
     sendData = () => {
-        console.log(this.state);
         if(!this.state.photo){
             this.flash('you need to add a photo!');
         }
         else{
             axios({
                 method: 'post',
-                url: `http://localhost:3001/`,
-                headers: {},
-                data: {}
+                url: `http://localhost:3001/photo/new`,
+                headers: {'Authorization': this.state.token},
+                data: {
+                    authorId: this.state.userData._id,
+                    description: this.state.description,
+                    photoString: this.state.photo, 
+                }
             })
             .then((res)=>{
-                if(res.status===200){
+                console.log(res)
+                // this.flash(res);
+                // if(res.status===200){
                     
-                    return;
-                }
+                //     return;
+                // }
             })
             .catch(error => {
                 console.log(error);

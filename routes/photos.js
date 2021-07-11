@@ -16,10 +16,12 @@ router.post('/photo/new', auth, (req, res) => {
         description: req.body.description,
         data: req.body.photoString, //base64 encoded
         likes: [],
-        dislikes: []
+        dislikes: [],
+        comments: []
     })
     photo.save()
     .then(result => {
+        console.log(result)
         res.sendStatus(201); //created
     })
     .catch(err => {
