@@ -30,48 +30,6 @@ router.post('/photo/new', auth, (req, res) => {
     });
 })
 
-//get limited, newest photos from all users
-router.post('/photos/public/limited', auth, (req, res) => {
-    let limit = req.body.limit;
-    Photo.find().sort({ createdAt: -1 }).limit(limit)
-        .exec()
-        .then(photos => {
-            return res.status(200).json({
-                photos: photos
-            });
-        })
-        .catch(err => {
-            console.log(err);
-            return res.json({
-                message: 'photos not found',
-                error: err
-            });
-        });
-})
-
-//sends newest, limited photos of a specific user
-router.post('/photos/user/limited', auth, (req, res) => {
-    let limit = req.body.limit;
-    let author = req.body.authorId
-    if(req.body.authorId === "self"){
-        author = req.userData.userId
-    }
-    Photo.find({authorId: author}).sort({ createdAt: -1 }).limit(limit)
-        .exec()
-        .then(photos => {
-            return res.status(200).json({
-                photos: photos
-            });
-        })
-        .catch(err => {
-            console.log(err);
-            return res.json({
-                message: 'photos not found',
-                error: err
-            });
-        });
-})
-
 router.delete('/photo/delete', auth, (req, res) => {
     Photo.findOneAndDelete({authorId: req.userData.userId})
         .then(response => {
@@ -111,6 +69,58 @@ router.post('/photo/addComment', auth, (req, res) => {
         }
     })
 })
+
+//get limited, newest photos from all users
+router.post('/photos/public/limited', auth, (req, res) => {
+    let limit = req.body.limit;
+    Photo.find().sort({ createdAt: -1 }).limit(limit)
+        .exec()
+        .then(photos => {
+            return res.status(200).json({
+                photos: photos
+            });
+        })
+        .catch(err => {
+            console.log(err);
+            return res.json({
+                message: 'photos not found',
+                error: err
+            });
+        });
+})
+
+router.get('/photos/getone/:id', (req, res) => {
+    Photo.findById(req.params.id, (err, photo) => {
+        console.log(photo)
+        res.json({
+            photo: photo
+        })
+    })
+})
+
+//sends newest, limited photos of a specific user
+router.post('/photos/user/limited', auth, (req, res) => {
+    let limit = req.body.limit;
+    let author = req.body.authorId
+    if(req.body.authorId === "self"){
+        author = req.userData.userId
+    }
+    Photo.find({authorId: author}).sort({ createdAt: -1 }).limit(limit)
+        .exec()
+        .then(photos => {
+            return res.status(200).json({
+                photos: photos
+            });
+        })
+        .catch(err => {
+            console.log(err);
+            return res.json({
+                message: 'photos not found',
+                error: err
+            });
+        });
+})
+
 
 
 module.exports = router;

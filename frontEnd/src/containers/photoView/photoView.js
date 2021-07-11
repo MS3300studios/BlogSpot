@@ -7,8 +7,12 @@ import Like from '../../components/UI/like';
 import { FaCommentAlt } from 'react-icons/fa';
 import classes from './photoView.module.css';
 import Button from '../../components/UI/button';
-import fillerPhoto from '../../assets/userPhoto/pobierz.jpg';
+// import fillerPhoto from '../../assets/userPhoto/pobierz.jpg';
+import formattedCurrentDate from '../../formattedCurrentDate';
 import UserPhoto from '../../components/UI/userphoto';
+import AddCommentForm from '../../components/UI/AddCommentForm';
+import Spinner from '../../components/UI/spinner';
+
 
 class photoView extends Component {
     constructor(props) {
@@ -20,35 +24,69 @@ class photoView extends Component {
         this.state = {
             token: token,
             userData: userData,
-            object: {
-                description: "this is a photo of a beautiful city that I painted in 3 hours. Give it a like if you love it!",
-                likes: [],
-                dislikes: [],
-                comments: []
-            }
+            loading: true,
+            photo: null,
         }
     }
 
     componentDidMount(){
-
+        this.setState({loading: true});
+        axios({
+            method: 'get',
+            url: `http://localhost:3001/photos/getone/60eadacbd90e8d374c9759a1`,
+        })
+        .then((res)=>{
+            if(res.status===200){
+                this.setState({photo: res.data.photo, loading: false});
+                return;
+            }
+            else{
+                this.flash("Error: wrong request, photo not found")
+            }
+        })
+        .catch(error => {
+            console.log(error);
+        })
     }
 
-    render() { 
+    render() {
+        // let comments = [];
+        // if(this.state.loading === false){
+        //     comments = this.state.photo.comments.map(comment => {
+        //         return (
+        //             <div>
+        //                 <p>@{comment.authorId}</p>
+        //                 <p>{comment.content}</p>
+        //             </div>
+        //         )
+        //     })
+        // }
+
         return (
             <div className={classes.backdrop}>
                 <div className={classes.photoViewContainer}>
                     <Button clicked={()=>console.log('this.props.close')}>Close</Button>
                     <div className={classes.imgContainer}>
-                        <img src={fillerPhoto} alt="refresh your page"/>
+                        {
+                            this.state.loading ? <Spinner darkgreen /> : <img src={this.state.photo.data} alt="refresh your page"/>
+                        }
                     </div>
                     <div className={classes.dataContainer}>
                         <div className={classes.authorInfoContainer}>
                             <div className={classes.authorPhoto}>
-                                <UserPhoto userId={this.state.userData._id} small />
+                                {
+                                    this.state.loading ? <Spinner darkgreen /> : <UserPhoto userId={this.state.photo.authorId} small />
+                                }
                             </div>
                             <div className={classes.authorData}>
-                                <p>@Princess89</p>
-                                <p>12.03.2021</p>
+                                {
+                                    this.state.loading ? <Spinner darkgreen /> : (
+                                        <React.Fragment>
+                                            <p>@Princess89</p>
+                                            <p>{formattedCurrentDate(this.state.photo.createdAt)}</p>
+                                        </React.Fragment>
+                                    )
+                                }
                             </div>
                         </div>
                         <div className={classes.LikesCommentsNumbers}>
@@ -74,11 +112,17 @@ class photoView extends Component {
                         </div>
                         <hr />
                         <div className={classes.description}>
-                            <p>{this.state.object.description}</p>
+                            {
+                                //this.state.loading ? <Spinner darkgreen /> : <p>{this.state.photo.description}</p>
+                            }
+                        </div>
+                        <hr />
+                        <div className={classes.commentForm}>
+                            <AddCommentForm small />
                         </div>
                     </div>
-                </div>
-            </div>
+                </div> 
+            </div> 
         );
     }
 }
