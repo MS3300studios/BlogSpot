@@ -16,6 +16,8 @@ import Login from './containers/gate/login/login';
 import Registration from './containers/gate/registration/registration';
 import URLnotFound from './components/URLnotfound/404';
 
+import PhotoForm from './containers/PhotoForm/photoForm';
+
 class App extends Component {
   constructor(props){
     super(props);
@@ -43,6 +45,7 @@ class App extends Component {
         <React.Fragment>
           <Menu />
             <Switch>
+            <Route path="/photoForm" exact component={PhotoForm} />
               <Route path="/chat/" component={Chat} />
               <Route path="/post/" component={PostView} />
               <Route path="/user/profile/" component={UserProfile} />
