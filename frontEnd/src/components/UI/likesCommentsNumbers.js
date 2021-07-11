@@ -294,9 +294,9 @@ class LikesCommentsNumbers extends Component {
         if(this.props.comments){
             commentIcon = (
                 <div className={classes.iconDataContainer}>
-                        <FaCommentAlt size="1em" color="#0a42a4" className={classes.icon}/>
-                        <p>{this.state.numberOfComments}</p>
-                    </div>
+                    <FaCommentAlt size="1em" color="#0a42a4" className={classes.icon}/>
+                    <p>{this.state.numberOfComments}</p>
+                </div>
             )
         }
         let dislikeclasses = classes.iconDataContainer;

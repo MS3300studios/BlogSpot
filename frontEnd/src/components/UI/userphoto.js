@@ -5,6 +5,7 @@ import axios from 'axios';
 import logout from '../../logout';
 import getToken from '../../getToken';
 import getUserData from '../../getUserData';
+import Spinner from './spinner';
 
 class UserPhoto extends Component {
     constructor(props){
@@ -24,11 +25,13 @@ class UserPhoto extends Component {
             logOut: false,
             nickname: userData.nickname,
             userId: userId,
-            photo: null
+            photo: null,
+            loading: false
         }
     }
 
     componentDidMount() {
+        this.setState({loading: true});
         let getData = new Promise((resolve, reject) => {
             axios({
                 method: 'get',
@@ -43,7 +46,7 @@ class UserPhoto extends Component {
         })
 
         getData.then((photo)=>{
-            this.setState({photo: photo});
+            this.setState({photo: photo, loading: false});
         })
     }
 
@@ -72,7 +75,7 @@ class UserPhoto extends Component {
 
         return (
             <div className={classes.dropdown}>
-                <img alt="user" src={this.state.photo} className={userPhotoClasses}/>
+                {this.state.loading ? <Spinner small darkgreen /> : <img alt="user" src={this.state.photo} className={userPhotoClasses}/>}
                 {dropdown}
             </div>
         );

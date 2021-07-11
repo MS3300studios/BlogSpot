@@ -31,10 +31,15 @@ class Like extends Component {
             onClick={() => this.props.sendAction(true)}/>;
         }
 
+        let classNames = [classes.likeP];
+        if(this.props.photoView){
+            classNames = [classes.likeP, classes.align].join(" ");
+        }
+
         return (
             <div className={classes.likeContainer}>
                 {content}
-                <p className={classes.likeP}>{this.props.number}</p>
+                <p className={classNames}>{this.props.number}</p>
             </div>
         );
     }

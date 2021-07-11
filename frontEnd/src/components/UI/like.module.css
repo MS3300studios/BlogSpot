@@ -1,5 +1,10 @@
 .likeContainer{
     display: flex;
     justify-content: space-around;
+    position: relative;
 }
-
+.align{
+    position: absolute;
+    top: -15px;
+    left: 25px;
+}
