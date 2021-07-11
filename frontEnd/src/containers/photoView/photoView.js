@@ -50,18 +50,6 @@ class photoView extends Component {
     }
 
     render() {
-        // let comments = [];
-        // if(this.state.loading === false){
-        //     comments = this.state.photo.comments.map(comment => {
-        //         return (
-        //             <div>
-        //                 <p>@{comment.authorId}</p>
-        //                 <p>{comment.content}</p>
-        //             </div>
-        //         )
-        //     })
-        // }
-
         return (
             <div className={classes.backdrop}>
                 <div className={classes.photoViewContainer}>
@@ -71,56 +59,63 @@ class photoView extends Component {
                             this.state.loading ? <Spinner darkgreen /> : <img src={this.state.photo.data} alt="refresh your page"/>
                         }
                     </div>
-                    <div className={classes.dataContainer}>
-                        <div className={classes.authorInfoContainer}>
-                            <div className={classes.authorPhoto}>
-                                {
-                                    this.state.loading ? <Spinner darkgreen /> : <UserPhoto userId={this.state.photo.authorId} small />
-                                }
+                    {
+                        this.state.loading ? <Spinner darkgreen /> : (
+                            <div className={classes.dataContainer}>
+                                <div className={classes.authorInfoContainer}>
+                                    <div className={classes.authorPhoto}>
+                                        {
+                                            this.state.loading ? <Spinner darkgreen /> : <UserPhoto userId={this.state.photo.authorId} small />
+                                        }
+                                    </div>
+                                    <div className={classes.authorData}>
+                                        <p>@Princess89</p>
+                                        <p>{formattedCurrentDate(this.state.photo.createdAt)}</p>
+                                    </div>
+                                </div>
+                                <div className={classes.LikesCommentsNumbers}>
+                                    <div className={classes.like}><Like
+                                        sendAction={this.sendAction}
+                                        fill={true}
+                                        number={12}
+                                        size="1.5em" 
+                                        color="#0a42a4" 
+                                        photoView/></div>
+                                    <div className={classes.dislike}><Like
+                                        dislike 
+                                        sendAction={this.sendAction}
+                                        fill={false}
+                                        number={7}
+                                        size="1.5em" 
+                                        color="#0a42a4" 
+                                        photoView/></div>
+                                    <div className={classes.comment}>
+                                        <FaCommentAlt size="1em" color="#0a42a4" className={classes.commenticon}/>
+                                        <p>10</p>
+                                    </div>
+                                </div>
+                                <hr />
+                                <div className={classes.description}>
+                                    <p>{this.state.photo.description}</p>
+                                </div>
+                                <hr />
+                                <div className={classes.commentForm}>
+                                    <AddCommentForm small />
+                                </div>
+                                <div>
+                                    {
+                                        this.state.photo.comments.map((comment, index) => {
+                                            return (
+                                                <div key={index}>
+                                                    <p>{comment.content}</p>
+                                                </div>
+                                            )
+                                        })
+                                    }
+                                </div>
                             </div>
-                            <div className={classes.authorData}>
-                                {
-                                    this.state.loading ? <Spinner darkgreen /> : (
-                                        <React.Fragment>
-                                            <p>@Princess89</p>
-                                            <p>{formattedCurrentDate(this.state.photo.createdAt)}</p>
-                                        </React.Fragment>
-                                    )
-                                }
-                            </div>
-                        </div>
-                        <div className={classes.LikesCommentsNumbers}>
-                            <div className={classes.like}><Like
-                                sendAction={this.sendAction}
-                                fill={true}
-                                number={12}
-                                size="1.5em" 
-                                color="#0a42a4" 
-                                photoView/></div>
-                            <div className={classes.dislike}><Like
-                                dislike 
-                                sendAction={this.sendAction}
-                                fill={false}
-                                number={7}
-                                size="1.5em" 
-                                color="#0a42a4" 
-                                photoView/></div>
-                            <div className={classes.comment}>
-                                <FaCommentAlt size="1em" color="#0a42a4" className={classes.commenticon}/>
-                                <p>10</p>
-                            </div>
-                        </div>
-                        <hr />
-                        <div className={classes.description}>
-                            {
-                                //this.state.loading ? <Spinner darkgreen /> : <p>{this.state.photo.description}</p>
-                            }
-                        </div>
-                        <hr />
-                        <div className={classes.commentForm}>
-                            <AddCommentForm small />
-                        </div>
-                    </div>
+                        )
+                    }
                 </div> 
             </div> 
         );
