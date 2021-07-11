@@ -7,7 +7,7 @@ import classes from './photoForm.module.css';
 import addYourPhoto from '../../assets/gfx/addyourphoto.png';
 import Button from '../../components/UI/button';
 import Flash from '../../components/UI/flash';
-
+import Spinner from '../../components/UI/spinner';
 
 class PhotoForm extends Component {
     constructor(props) {
@@ -27,6 +27,7 @@ class PhotoForm extends Component {
             photoPreview: null,
             flashMessage: "",
             flashNotClosed: true,
+            sending: false
         }
         this.inputDesc.bind(this);
         this.photosubmit.bind(this);
@@ -80,6 +81,7 @@ class PhotoForm extends Component {
             this.flash('you need to add a photo!');
         }
         else{
+            this.setState({sending: true});
             axios({
                 method: 'post',
                 url: `http://localhost:3001/photo/new`,
@@ -91,12 +93,8 @@ class PhotoForm extends Component {
                 }
             })
             .then((res)=>{
-                console.log(res)
-                // this.flash(res);
-                // if(res.status===200){
-                    
-                //     return;
-                // }
+                this.setState({sending: false});
+                this.flash('photo added!');
             })
             .catch(error => {
                 console.log(error);
@@ -136,7 +134,7 @@ class PhotoForm extends Component {
                         <img src={photoSrc} alt="default"/>
                     </div>
                     <div className={classes.center}>
-                        <Button btnType="Continue" clicked={this.sendData}>Send</Button>
+                        <Button btnType="Continue" clicked={this.sendData}>{this.state.sending ? <Spinner small /> : <p>Send</p>}</Button>
                         <Button btnType="Cancel">Cancel</Button>
                     </div>
                 </div>
