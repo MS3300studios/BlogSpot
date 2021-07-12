@@ -34,7 +34,9 @@ class photoView extends Component {
             flashNotClosed: true,
             newCommentContent: "",
             sendPressed: false,
-            comments: []
+            comments: [],
+            likeFill: false,
+            dislikeFill: false
         }
         this.getPhoto.bind(this);
         this.sendComment.bind(this);
@@ -42,6 +44,7 @@ class photoView extends Component {
         this.deleteCommentHandler.bind(this);
         this.indexComments.bind(this);
         this.sendLikeAction.bind(this);
+        this.checkFills.bind(this);
     }
 
     componentDidMount(){
@@ -59,7 +62,8 @@ class photoView extends Component {
             }
         })
         .then((res)=>{
-            this.setState({photo: res.data.photo})
+            let fills = this.checkFills(res.data.photo);
+            this.setState({photo: res.data.photo, likeFill: fills.likeFill, dislikeFill: fills.dislikeFill})
         })
         .catch(error => {
             console.log(error);
@@ -116,7 +120,13 @@ class photoView extends Component {
                     comment.index = index;
                     return comment
                 })
-                this.setState({photo: res.data.photo, loading: false, comments: comments});
+                let fills = this.checkFills(res.data.photo);
+                this.setState({
+                    photo: res.data.photo, 
+                    loading: false, 
+                    comments: comments, 
+                    likeFill: fills.likeFill, 
+                    dislikeFill: fills.dislikeFill});
                 return;
             }
             else{
@@ -125,6 +135,21 @@ class photoView extends Component {
         })
         .catch(error => {
             console.log(error);
+        })
+    }
+
+    checkFills = (photo) => {
+        let likeFill = false;
+        photo.likes.forEach(like => {
+            if(like.authorId===this.state.userData._id) likeFill = true
+        })
+        let dislikeFill = false;
+        photo.dislikes.forEach(dislike => {
+            if(dislike.authorId===this.state.userData._id) dislikeFill = true
+        })
+        return ({
+            likeFill: likeFill,
+            dislikeFill: dislikeFill
         })
     }
 
@@ -150,7 +175,7 @@ class photoView extends Component {
             })
             .then((res)=>{
                 if(res.status===201){
-                    this.setState({photo: res.data.photo})
+                    this.setState({photo: res.data.photo, newCommentContent: ""})
                     return;
                 }
             })
@@ -202,16 +227,16 @@ class photoView extends Component {
                                 <div className={classes.LikesCommentsNumbers}>
                                     <div className={classes.like}><Like
                                         sendAction={()=>this.sendLikeAction(true)}
-                                        fill={true}
-                                        number={12}
+                                        fill={this.state.likeFill}
+                                        number={this.state.photo.likes.length}
                                         size="1.5em" 
                                         color="#0a42a4" 
                                         photoView/></div>
                                     <div className={classes.dislike}><Like
                                         dislike 
                                         sendAction={()=>this.sendLikeAction(false)}
-                                        fill={false}
-                                        number={7}
+                                        fill={this.state.dislikeFill}
+                                        number={this.state.photo.dislikes.length}
                                         size="1.5em" 
                                         color="#0a42a4" 
                                         photoView/></div>
