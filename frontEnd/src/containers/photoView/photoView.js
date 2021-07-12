@@ -41,10 +41,37 @@ class photoView extends Component {
         this.flash.bind(this);
         this.deleteCommentHandler.bind(this);
         this.indexComments.bind(this);
+        this.sendLikeAction.bind(this);
     }
 
     componentDidMount(){
         this.getPhoto();
+    }
+
+    sendLikeAction = (like) => {
+        if(like){   
+            axios({
+                method: 'post',
+                url: `http://localhost:3001/`,
+                headers: {},
+                data: {}
+            })
+            .then((res)=>{
+                if(res.status===200){
+                    
+                    return;
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            })
+        }
+        else if(like === false){
+
+        }
+        else{
+            console.log('incorrect send like action argument!');
+        }
     }
 
     deleteCommentHandler = (index) => {
@@ -118,26 +145,30 @@ class photoView extends Component {
     }
 
     sendComment = () => {
-        axios({
-            method: 'post',
-            url: `http://localhost:3001/photo/addComment`,
-            headers: {'Authorization': this.state.token},
-            data: {
-                photoId: "60eadacbd90e8d374c9759a1",
-                nickname: this.state.userData.nickname,
-                content: this.state.content
-            }
-        })
-        .then((res)=>{
-            if(res.status===201){
-                this.setState({photo: res.data.photo})
-                this.props.afterSend();
-                return;
-            }
-        })
-        .catch(error => {
-            console.log(error);
-        })
+        if(this.state.newCommentContent !== ""){
+            axios({
+                method: 'post',
+                url: `http://localhost:3001/photo/addComment`,
+                headers: {'Authorization': this.state.token},
+                data: {
+                    photoId: "60eadacbd90e8d374c9759a1",
+                    nickname: this.state.userData.nickname,
+                    content: this.state.newCommentContent
+                }
+            })
+            .then((res)=>{
+                if(res.status===201){
+                    this.setState({photo: res.data.photo})
+                    return;
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            })
+        }
+        else{
+            this.flash("you cannot send an empty comment")
+        }
     }  
 
     render() {
@@ -178,7 +209,7 @@ class photoView extends Component {
                                 </div>
                                 <div className={classes.LikesCommentsNumbers}>
                                     <div className={classes.like}><Like
-                                        sendAction={this.sendAction}
+                                        sendAction={()=>this.sendLikeAction(true)}
                                         fill={true}
                                         number={12}
                                         size="1.5em" 
@@ -186,7 +217,7 @@ class photoView extends Component {
                                         photoView/></div>
                                     <div className={classes.dislike}><Like
                                         dislike 
-                                        sendAction={this.sendAction}
+                                        sendAction={()=>this.sendLikeAction(false)}
                                         fill={false}
                                         number={7}
                                         size="1.5em" 
@@ -194,7 +225,7 @@ class photoView extends Component {
                                         photoView/></div>
                                     <div className={classes.comment}>
                                         <FaCommentAlt size="1em" color="#0a42a4" className={classes.commenticon}/>
-                                        <p>10</p>
+                                        <p>{this.state.photo.comments.length}</p>
                                     </div>
                                 </div>
                                 <hr />
@@ -208,12 +239,12 @@ class photoView extends Component {
                                         <UserPhoto userId={this.state.userData._id} smallPhotoCommentForm />
                                     </div>
                                     <form className={smallClass} style={{marginLeft: "-54px"}}>
-                                        <input value={this.state.content} placeholder="write your comment here" onChange={(event)=>this.setState({content: event.target.value})}/>
+                                        <input value={this.state.newCommentContent} placeholder="write your comment here" onChange={(event)=>this.setState({newCommentContent: event.target.value})}/>
                                     </form>
                                     <div 
                                         onMouseDown={(e)=>{
                                             this.setState({sendPressed: true})
-                                            this.sendComment(e, this.state.content)
+                                            this.sendComment()
                                         }}
                                         onMouseUp={()=>{this.setState({sendPressed: false})}} 
                                         className={newCommentClasses.sendIcon}>
@@ -265,10 +296,11 @@ class photoView extends Component {
                         data: {
                             photoId: "60eadacbd90e8d374c9759a1",
                             nickname: this.state.userData.nickname,
-                            content: "Good for me!"
+                            content: ""
                         }
                     })
                     .then((res)=>{
+                        console.log(res.status)
                         if(res.status===201){
                             this.setState({photo: res.data.photo})
                             return;

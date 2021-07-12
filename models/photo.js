@@ -1,7 +1,9 @@
 const db = require("../db");
 
 const likeSchema = new db.Schema({ authorId: {type: String}});
+
 const dislikeSchema = new db.Schema({ authorId: {type: String}});
+
 const commentSchema = new db.Schema({
     authorId: {type: String},
     authorNick: {type: String},
@@ -27,6 +29,8 @@ const Photo = db.model("Photo", schema);
 const PhotoComment = db.model("PhotoComment", commentSchema);
 
 module.exports = {
-    photo: Photo,
-    photoComment: PhotoComment
+  photo: Photo,
+  photoComment: PhotoComment,
+  likeSchema: likeSchema,
+  dislikeSchema: dislikeSchema
 }

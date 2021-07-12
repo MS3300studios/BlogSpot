@@ -7,8 +7,12 @@ const auth = require('../middleware/authorization');
 const Module = require('../models/photo');
 const Photo = Module.photo;
 const PhotoComment = Module.photoComment;
+const Like = Module.likeSchema;
+const Dislike = Module.dislikeSchema;
 
 router.use(express.json());
+
+//----------------------------------------------CREATING PHOTOS
 
 router.post('/photo/new', auth, (req, res) => {
     const photo = new Photo({
@@ -48,25 +52,32 @@ router.delete('/photo/delete', auth, (req, res) => {
         });
 })
 
+//----------------------------------------------COMMENTS
+
 router.post('/photo/addComment', auth, (req, res) => {
-    Photo.findById(req.body.photoId, (err, photo) => {
-        if(err) console.log(err)
-        else{
-            let comments = photo.comments;
-            const photoComment = new PhotoComment({
-                authorId: req.userData.userId,
-                authorNick: req.body.nickname,
-                content: req.body.content
-            })
-            comments.push(photoComment);
-            photo.comments = comments;
-            photo.save().then(resp => {
-                res.status(201).json({
-                    photo: resp
+    if(req.body.content === ""){
+        res.status(401);
+    }
+    else{
+        Photo.findById(req.body.photoId, (err, photo) => {
+            if(err) console.log(err)
+            else{
+                let comments = photo.comments;
+                const photoComment = new PhotoComment({
+                    authorId: req.userData.userId,
+                    authorNick: req.body.nickname,
+                    content: req.body.content
                 })
-            })
-        }
-    })
+                comments.push(photoComment);
+                photo.comments = comments;
+                photo.save().then(resp => {
+                    res.status(201).json({
+                        photo: resp
+                    })
+                })
+            }
+        })
+    }
 })
 
 router.post('/photo/deleteComment', auth, (req, res) => { //photoId, content
@@ -89,6 +100,122 @@ router.post('/photo/deleteComment', auth, (req, res) => { //photoId, content
         }   
     })
 })
+
+//----------------------------------------------LIKES
+
+router.post('/photo/rate', auth, (req, res) => {
+    Photo.findById(req.body.photoId, (err, photo) => {
+        if(err) console.log(err)
+        else{
+
+            //checking for like with userId
+            let likes = photo.likes;
+            let hasLikedBefore = false;
+            likes.forEach(like => {
+                if(like.authorId === req.userData.userId) hasLikedBefore = true;
+            })
+
+            //checking for dislike with userId 
+            let dislikes = photo.dislikes;
+            let hasDislikedBefore = false;
+            dislikes.forEach(like => {
+                if(like.authorId === req.userData.userId) hasDislikedBefore = true;
+            })
+
+            if(req.body.like){
+                if(hasLikedBefore){
+                    console.log('user liked before, deleting like')
+                    let newLikes = likes.filter(like => like.authorId !== req.userData.userId)
+                    photo.likes = newLikes;
+                    photo.save().then(resp => {
+                        res.status(201).json({
+                            photo: resp
+                        })
+                    })
+                }
+                else if(hasDislikedBefore){
+                    console.log('user disliked before, deleting dislike, creating like')
+                    let newDislikes = dislikes.filter(dislike => dislike.authorId !== req.userData.userId)
+                    photo.dislikes = newDislikes;
+
+                    const photoLike = new Like({
+                        authorId: req.userData.userId,
+                    })
+
+                    likes.push(photoLike);
+                    photo.likes = likes;
+                    photo.save().then(resp => {
+                        res.status(201).json({
+                            photo: resp
+                        })
+                    })
+                }
+                else{
+                    console.log('user didnt like before, creating like')
+                    const photoLike = new Like({
+                        authorId: req.userData.userId,
+                    })
+                    likes.push(photoLike);
+                    photo.likes = likes;
+                    photo.save().then(resp => {
+                        res.status(201).json({
+                            photo: resp
+                        })
+                    })
+                }
+            }
+            else if(req.body.like === false){
+                
+
+                if(hasDislikedBefore){
+                    console.log('user disliked before, deleting dislike')
+                    let newDislikes = dislikes.filter(dislike => dislike.authorId !== req.userData.userId)
+                    photo.dislikes = newDislikes;
+                    photo.save().then(resp => {
+                        res.status(201).json({
+                            photo: resp
+                        })
+                    })
+                }
+                else if(hasLikedBefore){
+                    console.log('user liked before, deleting like, creating dislike')
+                    let newLikes = likes.filter(like => like.authorId !== req.userData.userId)
+                    photo.likes = newLikes;
+
+                    const photoDislike = new Dislike({
+                        authorId: req.userData.userId,
+                    })
+
+                    dislikes.push(photoDislike);
+                    photo.dislikes = dislikes;
+                    photo.save().then(resp => {
+                        res.status(201).json({
+                            photo: resp
+                        })
+                    })
+
+                }
+                else{
+                    console.log('user didnt dislike before, creating dislike')
+                    const photoDislike = new Dislike({
+                        authorId: req.userData.userId,
+                    })
+                    dislikes.push(photoDislike);
+                    photo.dislikes = dislikes;
+                    photo.save().then(resp => {
+                        res.status(201).json({
+                            photo: resp
+                        })
+                    })
+                }
+
+            }
+        }
+    })
+
+})
+
+//----------------------------------------------GETTING PHOTOS
 
 //get limited, newest photos from all users
 router.post('/photos/public/limited', auth, (req, res) => {
