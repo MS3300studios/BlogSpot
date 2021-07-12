@@ -80,7 +80,7 @@ router.post('/photo/addComment', auth, (req, res) => {
     }
 })
 
-router.post('/photo/deleteComment', auth, (req, res) => { //photoId, content
+router.post('/photo/comment/delete', auth, (req, res) => { //photoId, content
     Photo.findById(req.body.photoId, (err, photo) => {
         if(err) console.log(err)
         else{
@@ -90,6 +90,28 @@ router.post('/photo/deleteComment', auth, (req, res) => { //photoId, content
                     return false
                 }
                 else return true
+            })
+            photo.comments = commentsMod;
+            photo.save().then(resp => {
+                res.status(200).json({
+                    photo: photo
+                })
+            })
+        }   
+    })
+})
+
+router.post('/photo/comment/edit', auth, (req, res) => { //photoId, content, newcontent
+    Photo.findById(req.body.photoId, (err, photo) => {
+        if(err) console.log(err)
+        else{
+            let comments = photo.comments;
+            let commentsMod = comments.map((com, index) => {
+                if(com.authorId === req.userData.userId && com.content === req.body.content){
+                    com.content = req.body.newcontent
+                    return com
+                }
+                else return com
             })
             photo.comments = commentsMod;
             photo.save().then(resp => {

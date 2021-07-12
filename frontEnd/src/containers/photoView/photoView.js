@@ -17,6 +17,7 @@ import Flash from '../../components/UI/flash';
 
 import photoCommentClasses from './photoComment/photoComment.module.css';
 import CommentOptions from '../userProfile/tabs/comments/optionsContainer/CommentOptions';
+import EditCommentForm from '../userProfile/tabs/comments/optionsContainer/EditCommentFrom';
 
 class photoView extends Component {
     constructor(props) {
@@ -35,6 +36,7 @@ class photoView extends Component {
             newCommentContent: "",
             sendPressed: false,
             comments: [],
+            commentsEditing: [],
             likeFill: false,
             dislikeFill: false
         }
@@ -42,6 +44,7 @@ class photoView extends Component {
         this.sendComment.bind(this);
         this.flash.bind(this);
         this.deleteCommentHandler.bind(this);
+        this.editCommentHandler.bind(this);
         this.indexComments.bind(this);
         this.sendLikeAction.bind(this);
         this.checkFills.bind(this);
@@ -70,10 +73,35 @@ class photoView extends Component {
         })
     }
 
+    editCommentHandler = (index, cancelEdit) => {
+        let editComArr = this.state.commentsEditing;
+        let temp = true;
+        if(cancelEdit){
+            temp = false;
+        }
+        editComArr[index] = temp;
+        this.setState({commentsEditing: editComArr});
+        // axios({
+        //     method: 'post',
+        //     url: `http://localhost:3001/`,
+        //     headers: {},
+        //     data: {}
+        // })
+        // .then((res)=>{
+        //     if(res.status===200){
+                
+        //         return;
+        //     }
+        // })
+        // .catch(error => {
+        //     console.log(error);
+        // })
+    }
+
     deleteCommentHandler = (index) => {
         axios({
             method: 'post',
-            url: `http://localhost:3001/photo/deleteComment`,
+            url: `http://localhost:3001/photo/comment/delete`,
             headers: {'Authorization': this.state.token},
             data: {
                 photoId: this.state.photo._id,
@@ -116,7 +144,10 @@ class photoView extends Component {
         })
         .then((res)=>{
             if(res.status===200){
+                //indexComments:
+                let editingComments = [];
                 let comments = res.data.photo.comments.map((comment, index) => {
+                    editingComments.push(false);
                     comment.index = index;
                     return comment
                 })
@@ -125,6 +156,7 @@ class photoView extends Component {
                     photo: res.data.photo, 
                     loading: false, 
                     comments: comments, 
+                    commentsEditing: editingComments,
                     likeFill: fills.likeFill, 
                     dislikeFill: fills.dislikeFill});
                 return;
@@ -154,11 +186,13 @@ class photoView extends Component {
     }
 
     indexComments = () => {
+        let editingComments = [];
         let comments = this.state.photo.comments.map((com, index) => {
+            editingComments.push(false);
             com.index = index;
             return com
         })
-        this.setState({comments: comments});
+        this.setState({comments: comments, commentsEditing: editingComments});
     }
 
     sendComment = () => {
@@ -204,7 +238,7 @@ class photoView extends Component {
         return (
             <div className={classes.backdrop}>
                 <div className={classes.photoViewContainer}>
-                    <Button clicked={()=>console.log('this.props.close')}>Close</Button>
+                    <Button className={classes.CloseButton} clicked={()=>console.log('this.props.close')}>Close</Button>
                     <div className={classes.imgContainer}>
                         {
                             this.state.loading ? <Spinner darkgreen /> : <img src={this.state.photo.data} alt="refresh your page"/>
@@ -289,11 +323,19 @@ class photoView extends Component {
                                                                     <CommentOptions 
                                                                         photoComment
                                                                         deleteComment={() => this.deleteCommentHandler(index)}
-                                                                        editComment={this.editCommentHandler} /> : null
+                                                                        editComment={() => this.editCommentHandler(index, false)} /> : null
                                                             }
                                                         </div>
                                                         <div className={photoCommentClasses.content}>
-                                                            <p>{comment.content}</p>
+                                                            {
+                                                                this.state.commentsEditing[index] ? 
+                                                                <EditCommentForm 
+                                                                    photo
+                                                                    cancelEdit={()=>this.editCommentHandler(index, true)}    
+                                                                    editComment={comment.content}  
+                                                                    flashProp={this.flash}                              
+                                                                /> : <p>{comment.content}</p>
+                                                            }
                                                         </div>
                                                     </div>
                                                 </div>
@@ -332,7 +374,7 @@ class photoView extends Component {
                 <button style={{backgroundColor: "black"}} onClick={()=>{
                     axios({
                         method: 'post',
-                        url: `http://localhost:3001/photo/deleteComment`,
+                        url: `http://localhost:3001/photo/comment/delete`,
                         headers: {'Authorization': this.state.token},
                         data: {
                             photoId: "60eadacbd90e8d374c9759a1",

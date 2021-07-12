@@ -105,3 +105,6 @@
     overflow: auto;
     overflow-x: hidden;
 }
+.commentsContainer button{
+    position: unset;
+}
