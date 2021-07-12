@@ -49,29 +49,21 @@ class photoView extends Component {
     }
 
     sendLikeAction = (like) => {
-        if(like){   
-            axios({
-                method: 'post',
-                url: `http://localhost:3001/`,
-                headers: {},
-                data: {}
-            })
-            .then((res)=>{
-                if(res.status===200){
-                    
-                    return;
-                }
-            })
-            .catch(error => {
-                console.log(error);
-            })
-        }
-        else if(like === false){
-
-        }
-        else{
-            console.log('incorrect send like action argument!');
-        }
+        axios({
+            method: 'post',
+            url: `http://localhost:3001/photo/rate`,
+            headers: {'Authorization': this.state.token},
+            data: {
+                photoId: '60eadacbd90e8d374c9759a1',
+                like: like
+            }
+        })
+        .then((res)=>{
+            this.setState({photo: res.data.photo})
+        })
+        .catch(error => {
+            console.log(error);
+        })
     }
 
     deleteCommentHandler = (index) => {

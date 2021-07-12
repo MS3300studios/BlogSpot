@@ -7,8 +7,8 @@ const auth = require('../middleware/authorization');
 const Module = require('../models/photo');
 const Photo = Module.photo;
 const PhotoComment = Module.photoComment;
-const Like = Module.likeSchema;
-const Dislike = Module.dislikeSchema;
+const Like = Module.photoLike;
+const Dislike = Module.photoDislike;
 
 router.use(express.json());
 
@@ -103,7 +103,9 @@ router.post('/photo/deleteComment', auth, (req, res) => { //photoId, content
 
 //----------------------------------------------LIKES
 
-router.post('/photo/rate', auth, (req, res) => {
+//photoId, like=[bool]
+router.post('/photo/rate', auth, (req, res) => { 
+
     Photo.findById(req.body.photoId, (err, photo) => {
         if(err) console.log(err)
         else{
@@ -118,8 +120,8 @@ router.post('/photo/rate', auth, (req, res) => {
             //checking for dislike with userId 
             let dislikes = photo.dislikes;
             let hasDislikedBefore = false;
-            dislikes.forEach(like => {
-                if(like.authorId === req.userData.userId) hasDislikedBefore = true;
+            dislikes.forEach(dislike => {
+                if(dislike.authorId === req.userData.userId) hasDislikedBefore = true;
             })
 
             if(req.body.like){
