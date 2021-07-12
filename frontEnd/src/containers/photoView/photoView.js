@@ -39,10 +39,34 @@ class photoView extends Component {
         this.getPhoto.bind(this);
         this.sendComment.bind(this);
         this.flash.bind(this);
+        this.deleteCommentHandler.bind(this);
+        this.indexComments.bind(this);
     }
 
     componentDidMount(){
         this.getPhoto();
+    }
+
+    deleteCommentHandler = (index) => {
+        axios({
+            method: 'post',
+            url: `http://localhost:3001/photo/deleteComment`,
+            headers: {'Authorization': this.state.token},
+            data: {
+                photoId: this.state.photo._id,
+                content: this.state.comments[index].content
+            }
+        })
+        .then((res)=>{
+            if(res.status===200){
+                this.setState({photo: res.data.photo});
+                this.indexComments();
+                return;
+            }
+        })
+        .catch(error => {
+            console.log(error);
+        })
     }
 
     flash = (message) => {
@@ -83,6 +107,14 @@ class photoView extends Component {
         .catch(error => {
             console.log(error);
         })
+    }
+
+    indexComments = () => {
+        let comments = this.state.photo.comments.map((com, index) => {
+            com.index = index;
+            return com
+        })
+        this.setState({comments: comments});
     }
 
     sendComment = () => {
@@ -208,7 +240,7 @@ class photoView extends Component {
                                                                 (this.state.userData._id === comment.authorId) ? 
                                                                     <CommentOptions 
                                                                         photoComment
-                                                                        deleteComment={this.deleteCommentHandler}
+                                                                        deleteComment={() => this.deleteCommentHandler(index)}
                                                                         editComment={this.editCommentHandler} /> : null
                                                             }
                                                         </div>

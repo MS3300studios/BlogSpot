@@ -69,7 +69,7 @@ router.post('/photo/addComment', auth, (req, res) => {
     })
 })
 
-router.post('/photo/deleteComment', auth, (req, res) => { //photoId, commentId
+router.post('/photo/deleteComment', auth, (req, res) => { //photoId, content
     Photo.findById(req.body.photoId, (err, photo) => {
         if(err) console.log(err)
         else{
