@@ -2,7 +2,14 @@ const db = require("../db");
 
 const likeSchema = new db.Schema({ authorId: {type: String}});
 const dislikeSchema = new db.Schema({ authorId: {type: String}});
-const commentSchema = new db.Schema({ authorId: {type: String}, content: {type: String}});
+const commentSchema = new db.Schema({
+    authorId: {type: String},
+    authorNick: {type: String},
+    content: {type: String}
+  },
+  {
+    timestamps: true
+  });
 
 const schema = new db.Schema({
     authorId: {type: String, require: true},

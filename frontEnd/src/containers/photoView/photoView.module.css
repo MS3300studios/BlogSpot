@@ -36,7 +36,6 @@
 
 .dataContainer{
     width: 30%;
-    border: teal 2px solid;
 }
 
 .authorInfoContainer{
@@ -99,4 +98,10 @@
 }
 .commentForm{
     margin-left: 20px;
+}
+
+.commentsContainer{
+    max-height: 450px;
+    overflow: auto;
+    overflow-x: hidden;
 }

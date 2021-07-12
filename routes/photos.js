@@ -53,20 +53,40 @@ router.post('/photo/addComment', auth, (req, res) => {
         if(err) console.log(err)
         else{
             let comments = photo.comments;
-            console.log('previous comments: ', comments)
             const photoComment = new PhotoComment({
                 authorId: req.userData.userId,
+                authorNick: req.body.nickname,
                 content: req.body.content
             })
             comments.push(photoComment);
             photo.comments = comments;
             photo.save().then(resp => {
-                console.log("response from saving photo comment", resp);
-                // res.json({
-                //     photo: resp
-                // })
+                res.status(201).json({
+                    photo: resp
+                })
             })
         }
+    })
+})
+
+router.post('/photo/deleteComment', auth, (req, res) => { //photoId, commentId
+    Photo.findById(req.body.photoId, (err, photo) => {
+        if(err) console.log(err)
+        else{
+            let comments = photo.comments;
+            let commentsMod = comments.filter((com, index) => {
+                if(com.authorId === req.userData.userId && com.content === req.body.content){
+                    return false
+                }
+                else return true
+            })
+            photo.comments = commentsMod;
+            photo.save().then(resp => {
+                res.status(200).json({
+                    photo: photo
+                })
+            })
+        }   
     })
 })
 
@@ -91,7 +111,6 @@ router.post('/photos/public/limited', auth, (req, res) => {
 
 router.get('/photos/getone/:id', (req, res) => {
     Photo.findById(req.params.id, (err, photo) => {
-        console.log(photo)
         res.json({
             photo: photo
         })

@@ -56,6 +56,13 @@
     right: 15px;
 }
 
+.optionsDivPhoto{
+    position: absolute;
+    width: 20px;
+    top: 7px;
+    right: 110px;
+}
+
 .optionsDiv :hover{
     cursor: pointer;
 }

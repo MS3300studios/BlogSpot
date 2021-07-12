@@ -26,20 +26,25 @@ class CommentOptions extends Component {
     optionsAction = (type) => {
         if(type === "delete"){
             //delete comment from props id
-            axios({
-                method: 'delete',
-                url: `http://localhost:3001/comments/delete/${this.props.commentId}`,
-                headers: {'Authorization': this.state.token}
-            })
-            .then((res)=>{
-                if(res.status===200){
-                    this.props.flashProp("comment deleted");
-                    return;
-                }
-            })
-            .catch(error => {
-                console.log(error);
-            })
+            if(this.props.photoComment){
+                this.props.deleteComment();
+            } 
+            else{
+                axios({
+                    method: 'delete',
+                    url: `http://localhost:3001/comments/delete/${this.props.commentId}`,
+                    headers: {'Authorization': this.state.token}
+                })
+                .then((res)=>{
+                    if(res.status===200){
+                        this.props.flashProp("comment deleted");
+                        return;
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+            }
         }
         else if(type === "edit"){
             this.props.editComment();
@@ -47,8 +52,16 @@ class CommentOptions extends Component {
     }
 
     render() { 
+        let containerClass;
+        if(this.props.photoComment){
+            containerClass = classes.optionsDivPhoto
+        }
+        else{
+            containerClass = classes.optionsDiv
+        }
+
         return (
-            <div className={classes.optionsDiv} onClick={this.openHandler}>
+            <div className={containerClass} onClick={this.openHandler}>
                 <BsThreeDots size="1.5em" color="#0a42a4" className={classes.threeDotsIcon}/>
                 { this.state.open ? (
                     <div className={classes.optionsContainer}>

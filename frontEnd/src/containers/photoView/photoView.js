@@ -6,13 +6,17 @@ import getUserData from '../../getUserData';
 import Like from '../../components/UI/like';
 import { FaCommentAlt } from 'react-icons/fa';
 import classes from './photoView.module.css';
+import newCommentClasses from '../../components/UI/AddCommentForm.module.css'
 import Button from '../../components/UI/button';
-// import fillerPhoto from '../../assets/userPhoto/pobierz.jpg';
 import formattedCurrentDate from '../../formattedCurrentDate';
 import UserPhoto from '../../components/UI/userphoto';
-import AddCommentForm from '../../components/UI/AddCommentForm';
 import Spinner from '../../components/UI/spinner';
+// import PhotoComment from './photoComment/photoComment';
+import { RiSendPlaneFill, RiSendPlaneLine } from 'react-icons/ri' 
+import Flash from '../../components/UI/flash';
 
+import photoCommentClasses from './photoComment/photoComment.module.css';
+import CommentOptions from '../userProfile/tabs/comments/optionsContainer/CommentOptions';
 
 class photoView extends Component {
     constructor(props) {
@@ -26,10 +30,38 @@ class photoView extends Component {
             userData: userData,
             loading: true,
             photo: null,
+            flashMessage: "",
+            flashNotClosed: true,
+            newCommentContent: "",
+            sendPressed: false,
+            comments: []
         }
+        this.getPhoto.bind(this);
+        this.sendComment.bind(this);
+        this.flash.bind(this);
     }
 
     componentDidMount(){
+        this.getPhoto();
+    }
+
+    flash = (message) => {
+        this.setState({flashMessage: message});
+
+        setTimeout(()=>{
+            this.setState({flashNotClosed: false})
+        }, 2000)
+
+        setTimeout(()=>{
+            this.setState({flashMessage: ""});
+        }, 3000);
+    
+        setTimeout(()=>{
+            this.setState({flashNotClosed: true})
+        }, 3000);
+    }
+
+    getPhoto = () => {
         this.setState({loading: true});
         axios({
             method: 'get',
@@ -37,7 +69,11 @@ class photoView extends Component {
         })
         .then((res)=>{
             if(res.status===200){
-                this.setState({photo: res.data.photo, loading: false});
+                let comments = res.data.photo.comments.map((comment, index) => {
+                    comment.index = index;
+                    return comment
+                })
+                this.setState({photo: res.data.photo, loading: false, comments: comments});
                 return;
             }
             else{
@@ -49,7 +85,42 @@ class photoView extends Component {
         })
     }
 
+    sendComment = () => {
+        axios({
+            method: 'post',
+            url: `http://localhost:3001/photo/addComment`,
+            headers: {'Authorization': this.state.token},
+            data: {
+                photoId: "60eadacbd90e8d374c9759a1",
+                nickname: this.state.userData.nickname,
+                content: this.state.content
+            }
+        })
+        .then((res)=>{
+            if(res.status===201){
+                this.setState({photo: res.data.photo})
+                this.props.afterSend();
+                return;
+            }
+        })
+        .catch(error => {
+            console.log(error);
+        })
+    }  
+
     render() {
+        let flashView = null;
+        if(this.state.flashMessage && this.state.flashNotClosed){
+            flashView = <Flash>{this.state.flashMessage}</Flash>
+        }
+        else if(this.state.flashMessage && this.state.flashNotClosed === false){
+            flashView = <Flash close>{this.state.flashMessage}</Flash>
+        }
+        let smallClass = newCommentClasses.mainForm;
+        if(this.props.small){
+            smallClass = [newCommentClasses.mainForm, newCommentClasses.smallForm].join(" ");
+        }
+
         return (
             <div className={classes.backdrop}>
                 <div className={classes.photoViewContainer}>
@@ -100,14 +171,51 @@ class photoView extends Component {
                                 </div>
                                 <hr />
                                 <div className={classes.commentForm}>
-                                    <AddCommentForm small />
+                                <div className={newCommentClasses.mainContainer}>
+                                    <div className={newCommentClasses.userPhotoDiv}>
+                                        <UserPhoto userId={this.state.userData._id} smallPhotoCommentForm />
+                                    </div>
+                                    <form className={smallClass} style={{marginLeft: "-54px"}}>
+                                        <input value={this.state.content} placeholder="write your comment here" onChange={(event)=>this.setState({content: event.target.value})}/>
+                                    </form>
+                                    <div 
+                                        onMouseDown={(e)=>{
+                                            this.setState({sendPressed: true})
+                                            this.sendComment(e, this.state.content)
+                                        }}
+                                        onMouseUp={()=>{this.setState({sendPressed: false})}} 
+                                        className={newCommentClasses.sendIcon}>
+                                        {this.state.sendPressed ? <RiSendPlaneLine size="2em"/> : <RiSendPlaneFill size="2em" />}
+                                    </div>
                                 </div>
-                                <div>
+                                </div>
+                                <div className={classes.commentsContainer}>
                                     {
                                         this.state.photo.comments.map((comment, index) => {
                                             return (
                                                 <div key={index}>
-                                                    <p>{comment.content}</p>
+                                                    {/* <PhotoComment comment={comment} userId={this.state.userData.userId}/> */}
+                                                    <div className={photoCommentClasses.commentContainer}>
+                                                        <div className={photoCommentClasses.topBar}>   
+                                                            <div className={photoCommentClasses.userPhotoDiv}>
+                                                                <UserPhoto userId={comment.authorId} small />
+                                                            </div>
+                                                            <p className={photoCommentClasses.nickName}>
+                                                                <a href={"/user/profile/?id="+comment.authorId}>@{comment.authorNick}</a>
+                                                            </p>
+                                                            <p className={photoCommentClasses.Date}>{formattedCurrentDate(comment.createdAt)}</p>
+                                                            {
+                                                                (this.state.userData._id === comment.authorId) ? 
+                                                                    <CommentOptions 
+                                                                        photoComment
+                                                                        deleteComment={this.deleteCommentHandler}
+                                                                        editComment={this.editCommentHandler} /> : null
+                                                            }
+                                                        </div>
+                                                        <div className={photoCommentClasses.content}>
+                                                            <p>{comment.content}</p>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             )
                                         })
@@ -117,6 +225,52 @@ class photoView extends Component {
                         )
                     }
                 </div> 
+                <button style={{backgroundColor: "black"}} onClick={()=>{
+                    axios({
+                        method: 'post',
+                        url: `http://localhost:3001/photo/addComment`,
+                        headers: {'Authorization': this.state.token},
+                        data: {
+                            photoId: "60eadacbd90e8d374c9759a1",
+                            nickname: this.state.userData.nickname,
+                            content: "Good for me!"
+                        }
+                    })
+                    .then((res)=>{
+                        if(res.status===201){
+                            this.setState({photo: res.data.photo})
+                            return;
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    })
+                }}>
+                    add comment
+                </button>
+                <button style={{backgroundColor: "black"}} onClick={()=>{
+                    axios({
+                        method: 'post',
+                        url: `http://localhost:3001/photo/deleteComment`,
+                        headers: {'Authorization': this.state.token},
+                        data: {
+                            photoId: "60eadacbd90e8d374c9759a1",
+                            content: "Good for me!"
+                        }
+                    })
+                    .then((res)=>{
+                        if(res.status===200){
+                            this.setState({photo: res.data.photo})
+                            return;
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    })
+                }}>
+                    delete comment
+                </button>
+                {flashView}
             </div> 
         );
     }

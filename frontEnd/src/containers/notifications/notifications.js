@@ -48,7 +48,6 @@ class Notifications extends Component {
     }
 
     getNotifications = () => {
-        console.log('getting notifications')
         this.setState({refreshing: true});
         axios({
             method: 'post',

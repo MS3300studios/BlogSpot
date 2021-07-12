@@ -1,0 +1,41 @@
+.commentContainer{
+    border: 2px solid #23610a;
+    border-radius: 30px;
+    padding: 10px;
+    padding-top: 0px;
+    margin: 5px;
+    position: relative;
+}
+
+.commentContainer a{
+    text-decoration: none;
+    color: black;
+    font-weight: 600;
+    font-size: 17px;
+}
+
+.topBar{
+    margin-top: -10px;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.userPhotoDiv{
+    width: 20%;
+    margin-right: -15px;
+}
+
+.nickName{
+    margin-top: 34px;
+    width: 150%;
+}
+.Date{
+    margin-left: 10px;
+    width: 50%;
+}
+
+.content{
+    font-size: 15px;
+    font-weight: 600;
+}
