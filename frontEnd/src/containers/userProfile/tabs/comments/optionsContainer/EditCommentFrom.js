@@ -6,13 +6,32 @@ import classes from './editCommentForm.module.css';
 import getToken from '../../../../../getToken';
 
 const EditCommentForm = (props) => {
-    const [editContent, seteditContent] = useState(props.editComment);
+    const [editContent, seteditContent] = useState(props.initialValue);
     let token = getToken();
 
     let submitHandler = () => {
         if(props.photo){
-            
-            props.flashProp(editContent)
+            axios({
+                method: 'post',
+                url: `http://localhost:3001/photo/comment/edit`,
+                headers: {'Authorization': token},
+                data: {
+                    photoId: props.photoId,
+                    content: props.initialValue,
+                    newcontent: editContent
+                }
+            })
+            .then((res)=>{
+                if(res.status===200){
+                    console.log(res.data.photo)
+                    props.afterSend(res.data.photo);
+                    props.flashProp("comment was edited");
+                    return;
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            })
         }
         else{
             axios({

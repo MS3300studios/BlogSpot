@@ -48,6 +48,7 @@ class photoView extends Component {
         this.indexComments.bind(this);
         this.sendLikeAction.bind(this);
         this.checkFills.bind(this);
+        this.editCommentCleanUp.bind(this);
     }
 
     componentDidMount(){
@@ -81,21 +82,13 @@ class photoView extends Component {
         }
         editComArr[index] = temp;
         this.setState({commentsEditing: editComArr});
-        // axios({
-        //     method: 'post',
-        //     url: `http://localhost:3001/`,
-        //     headers: {},
-        //     data: {}
-        // })
-        // .then((res)=>{
-        //     if(res.status===200){
-                
-        //         return;
-        //     }
-        // })
-        // .catch(error => {
-        //     console.log(error);
-        // })
+    }
+
+    editCommentCleanUp = (photo) => {
+        this.indexComments();
+        this.setState({
+            photo: photo
+        })
     }
 
     deleteCommentHandler = (index) => {
@@ -332,8 +325,10 @@ class photoView extends Component {
                                                                 <EditCommentForm 
                                                                     photo
                                                                     cancelEdit={()=>this.editCommentHandler(index, true)}    
-                                                                    editComment={comment.content}  
-                                                                    flashProp={this.flash}                              
+                                                                    initialValue={comment.content}  
+                                                                    flashProp={this.flash}  
+                                                                    afterSend={this.editCommentCleanUp}  
+                                                                    photoId="60eadacbd90e8d374c9759a1"                          
                                                                 /> : <p>{comment.content}</p>
                                                             }
                                                         </div>

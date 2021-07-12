@@ -108,8 +108,9 @@ router.post('/photo/comment/edit', auth, (req, res) => { //photoId, content, new
             let comments = photo.comments;
             let commentsMod = comments.map((com, index) => {
                 if(com.authorId === req.userData.userId && com.content === req.body.content){
-                    com.content = req.body.newcontent
-                    return com
+                    let newCom = com;
+                    newCom.content = req.body.newcontent
+                    return newCom
                 }
                 else return com
             })
