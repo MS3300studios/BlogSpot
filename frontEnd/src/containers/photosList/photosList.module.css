@@ -4,7 +4,39 @@
     justify-content: center;
 }
 .container{
-    width: 70%; 
+    margin-top: 20px;
+    padding: 10px;
+    width: 80%; 
     background-color: #53c253;
-    border: 1px solid black;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.addPhoto{
+    margin: 10px;
+    width: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.addPhotoContainer{
+    width: 140px;
+    height: 140px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    background-color: #82ca66;
+    transition: 0.3s linear;
+}
+
+.addPhotoContainer img{
+    width: 90px;
+    height: 90px;
+}
+
+.addPhotoContainer:hover{
+    box-shadow: 10px 10px 29px -1px rgba(0,0,0,0.55);
 }

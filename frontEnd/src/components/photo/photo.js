@@ -4,16 +4,17 @@ import classes from './photo.module.css';
 import {BsArrowsAngleExpand} from 'react-icons/bs';
 
 const Photo = (props) => {
+    console.log(props.photo)
     return (
         <div className={classes.photoContainer}>
-            <img src={props.data} alt="refresh your website"/>
-            <div className={classes.expandIconBackground}>
+            <img src={props.photo.data} alt="refresh your page"/>
+            <div className={classes.expandIconBackground} onClick={()=>props.openBigPhoto(props.photo._id)}>
                 <BsArrowsAngleExpand size="1.5em" color="white" />
             </div>
             <div className={classes.panel}>
-                <p>likes: 9</p>
-                <p>dislikes: 12</p>
-                <p>comments: 12</p>
+                <p>likes: {props.photo.likes.length}</p>
+                <p>dislikes: {props.photo.dislikes.length}</p>
+                <p>comments: {props.photo.comments.length}</p>
             </div>
         </div>
     );

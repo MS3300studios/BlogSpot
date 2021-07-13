@@ -47,8 +47,8 @@ class App extends Component {
         <React.Fragment>
           <Menu />
             <Switch>
-              <Route path="/photoView" exact component={PhotoView} />
-              <Route path="/photoForm" exact component={PhotoForm} />
+              <Route path="/photo/view" exact component={PhotoView} />
+              <Route path="/photo/add" exact component={PhotoForm} />
               <Route path="/myActivity" exact component={YourActivities} />
               <Route path="/chat/" component={Chat} />
               <Route path="/post/" component={PostView} />

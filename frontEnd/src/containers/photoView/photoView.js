@@ -130,37 +130,53 @@ class photoView extends Component {
     }
 
     getPhoto = () => {
-        this.setState({loading: true});
-        axios({
-            method: 'get',
-            url: `http://localhost:3001/photos/getone/60eadacbd90e8d374c9759a1`,
+        
+        let editingComments = [];
+        let comments = this.props.photo.comments.map((comment, index) => {
+            editingComments.push(false);
+            comment.index = index;
+            return comment
         })
-        .then((res)=>{
-            if(res.status===200){
-                //indexComments:
-                let editingComments = [];
-                let comments = res.data.photo.comments.map((comment, index) => {
-                    editingComments.push(false);
-                    comment.index = index;
-                    return comment
-                })
-                let fills = this.checkFills(res.data.photo);
-                this.setState({
-                    photo: res.data.photo, 
-                    loading: false, 
-                    comments: comments, 
-                    commentsEditing: editingComments,
-                    likeFill: fills.likeFill, 
-                    dislikeFill: fills.dislikeFill});
-                return;
-            }
-            else{
-                this.flash("Error: wrong request, photo not found")
-            }
-        })
-        .catch(error => {
-            console.log(error);
-        })
+        let fills = this.checkFills(this.props.photo);
+        this.setState({
+            photo: this.props.photo, 
+            loading: false, 
+            comments: comments, 
+            commentsEditing: editingComments,
+            likeFill: fills.likeFill, 
+            dislikeFill: fills.dislikeFill});
+        
+        //this.setState({loading: true});
+        // axios({
+        //     method: 'get',
+        //     url: `http://localhost:3001/photos/getone/60eadacbd90e8d374c9759a1`,
+        // })
+        // .then((res)=>{
+        //     if(res.status===200){
+        //         //indexComments:
+        //         let editingComments = [];
+        //         let comments = res.data.photo.comments.map((comment, index) => {
+        //             editingComments.push(false);
+        //             comment.index = index;
+        //             return comment
+        //         })
+        //         let fills = this.checkFills(res.data.photo);
+        //         this.setState({
+        //             photo: res.data.photo, 
+        //             loading: false, 
+        //             comments: comments, 
+        //             commentsEditing: editingComments,
+        //             likeFill: fills.likeFill, 
+        //             dislikeFill: fills.dislikeFill});
+        //         return;
+        //     }
+        //     else{
+        //         this.flash("Error: wrong request, photo not found")
+        //     }
+        // })
+        // .catch(error => {
+        //     console.log(error);
+        // })
     }
 
     checkFills = (photo) => {
@@ -231,7 +247,7 @@ class photoView extends Component {
         return (
             <div className={classes.backdrop}>
                 <div className={classes.photoViewContainer}>
-                    <Button className={classes.CloseButton} clicked={()=>console.log('this.props.close')}>Close</Button>
+                    <Button className={classes.CloseButton} clicked={this.props.closeBigPhoto}>Close</Button>
                     <div className={classes.imgContainer}>
                         {
                             this.state.loading ? <Spinner darkgreen /> : <img src={this.state.photo.data} alt="refresh your page"/>
@@ -342,52 +358,6 @@ class photoView extends Component {
                         )
                     }
                 </div> 
-                <button style={{backgroundColor: "black"}} onClick={()=>{
-                    axios({
-                        method: 'post',
-                        url: `http://localhost:3001/photo/addComment`,
-                        headers: {'Authorization': this.state.token},
-                        data: {
-                            photoId: "60eadacbd90e8d374c9759a1",
-                            nickname: this.state.userData.nickname,
-                            content: ""
-                        }
-                    })
-                    .then((res)=>{
-                        console.log(res.status)
-                        if(res.status===201){
-                            this.setState({photo: res.data.photo})
-                            return;
-                        }
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    })
-                }}>
-                    add comment
-                </button>
-                <button style={{backgroundColor: "black"}} onClick={()=>{
-                    axios({
-                        method: 'post',
-                        url: `http://localhost:3001/photo/comment/delete`,
-                        headers: {'Authorization': this.state.token},
-                        data: {
-                            photoId: "60eadacbd90e8d374c9759a1",
-                            content: "Good for me!"
-                        }
-                    })
-                    .then((res)=>{
-                        if(res.status===200){
-                            this.setState({photo: res.data.photo})
-                            return;
-                        }
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    })
-                }}>
-                    delete comment
-                </button>
                 {flashView}
             </div> 
         );

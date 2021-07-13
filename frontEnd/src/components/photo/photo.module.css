@@ -8,6 +8,10 @@
 .photoContainer:hover .panel{
     height: 60px;
 }
+.photoContainer:hover .panel p{
+    display: block;
+    opacity: 1;
+}
 
 .photoContainer:hover .expandIconBackground{
     opacity: 1;
@@ -15,12 +19,13 @@
 .photoContainer{
     position: relative;
     width: 30%;
+    margin: 10px;
 }
 .panel{
     position: absolute;
     border-radius: 10px;
     left: 3px;
-    bottom: 3px;
+    bottom: -5px;
     width: 100%;
     background-color: rgba(0, 0, 0, 0.6);
     display: flex;
@@ -31,6 +36,8 @@
 
 .panel p{
     color: white;
+    opacity: 0;
+    display: none;
 }
 
 .expandIconBackground{

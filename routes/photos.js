@@ -261,6 +261,7 @@ router.post('/photos/public/limited', auth, (req, res) => {
         });
 })
 
+//get one specific photo
 router.get('/photos/getone/:id', (req, res) => {
     Photo.findById(req.params.id, (err, photo) => {
         res.json({
@@ -270,7 +271,7 @@ router.get('/photos/getone/:id', (req, res) => {
 })
 
 //sends newest, limited photos of a specific user
-router.post('/photos/user/limited', auth, (req, res) => {
+router.post('/photos/user/limited', auth, (req, res) => { //limit, authorId (self)
     let limit = req.body.limit;
     let author = req.body.authorId
     if(req.body.authorId === "self"){

@@ -5,6 +5,7 @@
     position: fixed;
     top: 0;
     left: 0;
+    z-index: 10;
 }
 
 .photoViewContainer{
@@ -17,6 +18,7 @@
     padding: 10px;
     display: flex;
     justify-content: center;
+    z-index: 100;
 }
 
 .photoViewContainer button{
