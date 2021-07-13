@@ -35,7 +35,7 @@ router.post('/photo/new', auth, (req, res) => {
 })
 
 router.delete('/photo/delete', auth, (req, res) => {
-    Photo.findOneAndDelete({authorId: req.userData.userId})
+    Photo.findOneAndDelete({_id: req.body.id, authorId: req.userData.userId})
         .then(response => {
             if(response){
                 console.log('photo deleted');

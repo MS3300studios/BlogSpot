@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import axios from 'axios';
 import getToken from '../../getToken';
 import getUserData from '../../getUserData'
@@ -27,7 +28,8 @@ class PhotoForm extends Component {
             photoPreview: null,
             flashMessage: "",
             flashNotClosed: true,
-            sending: false
+            sending: false,
+            redirect: false
         }
         this.inputDesc.bind(this);
         this.photosubmit.bind(this);
@@ -93,8 +95,11 @@ class PhotoForm extends Component {
                 }
             })
             .then((res)=>{
-                this.setState({sending: false});
                 this.flash('photo added!');
+                this.setState({sending: false});
+                setTimeout(()=>{
+                    this.setState({redirect: true});
+                },1000)
             })
             .catch(error => {
                 console.log(error);
@@ -135,10 +140,11 @@ class PhotoForm extends Component {
                     </div>
                     <div className={classes.center}>
                         <Button btnType="Continue" clicked={this.sendData}>{this.state.sending ? <Spinner small /> : <p>Send</p>}</Button>
-                        <Button btnType="Cancel">Cancel</Button>
+                        <Button btnType="Cancel" clicked={()=>this.setState({redirect: true})}>Cancel</Button>
                     </div>
                 </div>
                 {flash}
+                {this.state.redirect ? <Redirect to="/myActivity" /> : null}
             </React.Fragment>
         );
     }

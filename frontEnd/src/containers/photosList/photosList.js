@@ -28,6 +28,7 @@ class PhotosList extends Component {
         this.setLimit.bind(this);
         this.getPhotos.bind(this);
         this.openBigPhoto.bind(this);
+        this.bigPhotoWasClosed.bind(this);
     }
 
     componentDidMount(){
@@ -67,6 +68,11 @@ class PhotosList extends Component {
         this.setState({bigPhotoId: id});
     }
 
+    bigPhotoWasClosed = (reload) => {
+        this.setState({bigPhotoId: null});
+        this.getPhotos(this.state.limit)
+    }
+
     render() { 
         let content;
         if(this.state.loading){
@@ -79,7 +85,7 @@ class PhotosList extends Component {
             })
             content = (
                 <React.Fragment>
-                    {this.state.bigPhotoId ? <PhotoView photo={bigPhotoToSend} closeBigPhoto={()=>this.setState({bigPhotoId: null})}/> : null}
+                    {this.state.bigPhotoId ? <PhotoView photo={bigPhotoToSend} closeBigPhoto={this.bigPhotoWasClosed}/> : null}
                     <div className={classes.center}>
                         <div className={classes.container}>
                             {

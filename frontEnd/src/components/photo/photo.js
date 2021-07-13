@@ -4,7 +4,6 @@ import classes from './photo.module.css';
 import {BsArrowsAngleExpand} from 'react-icons/bs';
 
 const Photo = (props) => {
-    console.log(props.photo)
     return (
         <div className={classes.photoContainer}>
             <img src={props.photo.data} alt="refresh your page"/>

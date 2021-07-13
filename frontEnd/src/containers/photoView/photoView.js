@@ -18,6 +18,7 @@ import Flash from '../../components/UI/flash';
 import photoCommentClasses from './photoComment/photoComment.module.css';
 import CommentOptions from '../userProfile/tabs/comments/optionsContainer/CommentOptions';
 import EditCommentForm from '../userProfile/tabs/comments/optionsContainer/EditCommentFrom';
+import { Redirect, withRouter } from 'react-router-dom';
 
 class photoView extends Component {
     constructor(props) {
@@ -38,7 +39,9 @@ class photoView extends Component {
             comments: [],
             commentsEditing: [],
             likeFill: false,
-            dislikeFill: false
+            dislikeFill: false,
+            redirect: false,
+            socialStateWasChanged: false
         }
         this.getPhoto.bind(this);
         this.sendComment.bind(this);
@@ -48,11 +51,38 @@ class photoView extends Component {
         this.indexComments.bind(this);
         this.sendLikeAction.bind(this);
         this.checkFills.bind(this);
-        this.editCommentCleanUp.bind(this);
+        this.deletePhotoHandler.bind(this);
+        this.editPhotoDescHandler.bind(this);
     }
 
     componentDidMount(){
         this.getPhoto();
+        console.log(this.props)
+    }
+
+    deletePhotoHandler = () => {
+        axios({
+            method: 'post',
+            url: `http://localhost:3001/photo/delete`,
+            headers: {'Authorization': this.state.token},
+            data: {
+                id: this.state.photo._id
+            }
+        })
+        .then((res)=>{
+            console.log(res)
+            if(res.status===200){
+                this.setState({redirect: true})
+                return;
+            }
+        })
+        .catch(error => {
+            console.log(error);
+        })
+    }    
+
+    editPhotoDescHandler = () => {
+
     }
 
     sendLikeAction = (like) => {
@@ -61,13 +91,14 @@ class photoView extends Component {
             url: `http://localhost:3001/photo/rate`,
             headers: {'Authorization': this.state.token},
             data: {
-                photoId: '60eadacbd90e8d374c9759a1',
+                photoId: this.state.photo._id,
                 like: like
             }
         })
         .then((res)=>{
             let fills = this.checkFills(res.data.photo);
-            this.setState({photo: res.data.photo, likeFill: fills.likeFill, dislikeFill: fills.dislikeFill})
+            this.setState({photo: res.data.photo, likeFill: fills.likeFill, dislikeFill: fills.dislikeFill, socialStateWasChanged: true});
+            //socialStateWasChanged kiedy klikniemy close to odpali się funkcja w propsach która sprawdzi ten stan i będzie wiedzieć czy odświeżyć czy nie
         })
         .catch(error => {
             console.log(error);
@@ -103,7 +134,7 @@ class photoView extends Component {
         })
         .then((res)=>{
             if(res.status===200){
-                this.setState({photo: res.data.photo});
+                this.setState({photo: res.data.photo, socialStateWasChanged: true});
                 this.indexComments();
                 return;
             }
@@ -211,14 +242,14 @@ class photoView extends Component {
                 url: `http://localhost:3001/photo/addComment`,
                 headers: {'Authorization': this.state.token},
                 data: {
-                    photoId: "60eadacbd90e8d374c9759a1",
+                    photoId: this.state.photo._id,
                     nickname: this.state.userData.nickname,
                     content: this.state.newCommentContent
                 }
             })
             .then((res)=>{
                 if(res.status===201){
-                    this.setState({photo: res.data.photo, newCommentContent: ""})
+                    this.setState({photo: res.data.photo, newCommentContent: "", socialStateWasChanged: true})
                     return;
                 }
             })
@@ -247,7 +278,7 @@ class photoView extends Component {
         return (
             <div className={classes.backdrop}>
                 <div className={classes.photoViewContainer}>
-                    <Button className={classes.CloseButton} clicked={this.props.closeBigPhoto}>Close</Button>
+                    <Button className={classes.CloseButton} clicked={()=>this.props.closeBigPhoto(this.state.socialStateWasChanged)}>Close</Button>
                     <div className={classes.imgContainer}>
                         {
                             this.state.loading ? <Spinner darkgreen /> : <img src={this.state.photo.data} alt="refresh your page"/>
@@ -267,6 +298,17 @@ class photoView extends Component {
                                         <p>{formattedCurrentDate(this.state.photo.createdAt)}</p>
                                     </div>
                                 </div>
+                                {
+                                    (this.state.userData._id === this.state.photo.authorId) ? (
+                                        <div>
+                                            <CommentOptions 
+                                                photoComment
+                                                deleteComment={() => this.deletePhotoHandler()}
+                                                editComment={() => this.editPhotoDescHandler()} />
+                                        </div>
+                                    ) : null
+                                    
+                                }
                                 <div className={classes.LikesCommentsNumbers}>
                                     <div className={classes.like}><Like
                                         sendAction={()=>this.sendLikeAction(true)}
@@ -344,7 +386,7 @@ class photoView extends Component {
                                                                     initialValue={comment.content}  
                                                                     flashProp={this.flash}  
                                                                     afterSend={this.editCommentCleanUp}  
-                                                                    photoId="60eadacbd90e8d374c9759a1"                          
+                                                                    photoId={this.state.photo._id}                          
                                                                 /> : <p>{comment.content}</p>
                                                             }
                                                         </div>
@@ -359,9 +401,10 @@ class photoView extends Component {
                     }
                 </div> 
                 {flashView}
+                {this.state.redirect ? <Redirect to="/myActivity" /> : null}
             </div> 
         );
     }
 }
  
-export default photoView;
+export default withRouter(photoView);
