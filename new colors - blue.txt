@@ -1,0 +1,7 @@
+menu: 305173
+mainBackground: 77aef2
+objects: lightblue
+notifications-red: f53a3a
+napisy: 090e54
+
+friend-photos: 90x90

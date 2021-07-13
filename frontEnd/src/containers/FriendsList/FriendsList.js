@@ -221,7 +221,7 @@ class FriendsList extends Component {
         return (
             <div className={classes.mainContainer}>
                 <div className={classes.upperContainer}>
-                    <h1 className={classes.mainHeader}>Your friends:</h1>
+                    <h1 className={classes.mainHeader}>your friends</h1>
                     <SearchBar 
                         placeholder="search friends by..."
                         selectedOption={this.filterSearchHandler}

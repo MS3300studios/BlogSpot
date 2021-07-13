@@ -18,6 +18,7 @@ import URLnotFound from './components/URLnotfound/404';
 
 import PhotoForm from './containers/PhotoForm/photoForm';
 import PhotoView from './containers/photoView/photoView';
+import YourActivities from './components/activites/youractivities';
 
 class App extends Component {
   constructor(props){
@@ -48,6 +49,7 @@ class App extends Component {
             <Switch>
               <Route path="/photoView" exact component={PhotoView} />
               <Route path="/photoForm" exact component={PhotoForm} />
+              <Route path="/myActivity" exact component={YourActivities} />
               <Route path="/chat/" component={Chat} />
               <Route path="/post/" component={PostView} />
               <Route path="/user/profile/" component={UserProfile} />
