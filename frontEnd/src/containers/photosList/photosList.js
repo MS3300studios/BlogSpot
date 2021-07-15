@@ -80,53 +80,55 @@ class PhotosList extends Component {
             content = <Spinner />
         }
         else{
-
+            let photos; 
             if(this.state.photos.length===0){
-                content = (
-                    <h1>You don't have any photos yet! Click on the + icon to add some!</h1>
+                photos = (
+                    <h1>You don't have any photos yet! Click on the "+" icon to add some!</h1>
                 )
             }
             else{
-                let bigPhotoToSend;
-                this.state.photos.forEach(photo => {
-                    if(photo._id === this.state.bigPhotoId) bigPhotoToSend = photo;
+                photos = this.state.photos.map((photo, index) => {
+                    return(
+                        <Photo photo={photo} key={index} openBigPhoto={this.openBigPhoto}/>
+                    )
                 })
-                content = (
-                    <React.Fragment>
-                        {this.state.bigPhotoId ? <PhotoView photo={bigPhotoToSend} closeBigPhoto={this.bigPhotoWasClosed}/> : null}
-                        <div className={classes.center}>
-                            <div className={classes.container}>
-                                {
-                                    this.state.photos.map((photo, index) => {
-                                        return(
-                                            <Photo photo={photo} key={index} openBigPhoto={this.openBigPhoto}/>
-                                        )
-                                    })
-                                }
-                                <div className={classes.addPhoto}>
-                                        <div className={classes.addPhotoContainer} onClick={this.showPostForm}>
-                                            <Link to="/photo/add">
-                                                <img alt="add a post" src={addPostImage}/>
-                                            </Link>
-                                        </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className={classes.center}>
-                            <div style={{
-                                width: "81%",
-                                display: "flex",
-                                justifyContent: "center",
-                                backgroundColor: "#53c253",
-                                paddingTop: "10px",
-                                paddingBottom: "10px"
-                            }}>
-                                <Button clicked={this.setLimit}>Load more</Button>
-                            </div>
-                        </div>
-                    </React.Fragment>
-                );
             }
+
+            let bigPhotoToSend;
+            this.state.photos.forEach(photo => {
+                if(photo._id === this.state.bigPhotoId) bigPhotoToSend = photo;
+            })
+            content = (
+                <React.Fragment>
+                    {this.state.bigPhotoId ? <PhotoView photo={bigPhotoToSend} closeBigPhoto={this.bigPhotoWasClosed}/> : null}
+                    <div className={classes.center}>
+                        <div className={classes.container}>
+                            {
+                                photos
+                            }
+                            <div className={classes.addPhoto}>
+                                    <div className={classes.addPhotoContainer} onClick={this.showPostForm}>
+                                        <Link to="/photo/add">
+                                            <img alt="add a post" src={addPostImage}/>
+                                        </Link>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className={classes.center}>
+                        <div style={{
+                            width: "81%",
+                            display: "flex",
+                            justifyContent: "center",
+                            backgroundColor: "#53c253",
+                            paddingTop: "10px",
+                            paddingBottom: "10px"
+                        }}>
+                            <Button clicked={this.setLimit}>Load more</Button>
+                        </div>
+                    </div>
+                </React.Fragment>
+            );
         }
         return (
             <React.Fragment>

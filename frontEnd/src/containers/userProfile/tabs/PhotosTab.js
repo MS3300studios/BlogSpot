@@ -68,9 +68,9 @@ class PhotosTab extends Component {
                                                 <BsArrowsAngleExpand size="1.5em" color="white" />
                                             </div>
                                             <div className={classes.photoData}>
-                                                <p>likes: 4</p>
-                                                <p>dislikes: 2</p>
-                                                <p>comments: 3</p>
+                                                <p>likes: {photo.likes.length}</p>
+                                                <p>dislikes: {photo.dislikes.length}</p>
+                                                <p>comments: {photo.comments.length}</p>
                                             </div>
                                         </div>
                                     )
