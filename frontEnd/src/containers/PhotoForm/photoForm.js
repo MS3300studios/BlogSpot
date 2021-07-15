@@ -30,7 +30,8 @@ class PhotoForm extends Component {
             flashMessage: "",
             flashNotClosed: true,
             sending: false,
-            redirect: false
+            redirect: false,
+            error: null
         }
         this.inputDesc.bind(this);
         this.photosubmit.bind(this);
@@ -58,26 +59,9 @@ class PhotoForm extends Component {
         }, 3000);
     }
 
-    // photosubmit = (e) => {
     photosubmit = (files) => {
         var reader = new FileReader();
         var data;
-        // if(e.target.files.length>0){
-        //     reader.readAsDataURL(e.target.files[0]);
-        //     let execute = new Promise(function(resolve, reject) {
-        //         reader.onloadend = function() {
-        //             data = reader.result;
-        //             resolve(data);
-        //         }
-        //     });
-        
-        //     execute.then((b64string)=>{
-        //         this.setState({
-        //             photoPreview: URL.createObjectURL(e.target.files[0]),
-        //             photo: b64string
-        //         });
-        //     })
-        // }
         if(files.length>0){
             reader.readAsDataURL(files[0]);
             let execute = new Promise(function(resolve, reject) {
@@ -119,9 +103,9 @@ class PhotoForm extends Component {
                 },1000)
             })
             .catch(error => {
-                console.log(error);
-                if(error.status === 403){
-                    console.log('picture is too large')
+                // this.setState({error: error})
+                if(error.message === "Request failed with status code 413"){
+                    this.flash("the file is too large!")
                 }
             })
         }
@@ -154,7 +138,6 @@ class PhotoForm extends Component {
                     </div>
                     <div className={classes.center}>
                         <DropZone photoSubmit={this.photosubmit}/>
-                        {/* <input type="file" accept="image/png, image/jpeg" className={classes.InputPhoto} onChange={this.photosubmit}/> */}
                     </div>
                     <div className={[classes.imgContainer, classes.center].join(" ")}>
                         <img src={photoSrc} alt="default"/>
