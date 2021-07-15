@@ -9,6 +9,7 @@ import addYourPhoto from '../../assets/gfx/addyourphoto.png';
 import Button from '../../components/UI/button';
 import Flash from '../../components/UI/flash';
 import Spinner from '../../components/UI/spinner';
+import DropZone from './dropZone';
 
 class PhotoForm extends Component {
     constructor(props) {
@@ -57,11 +58,28 @@ class PhotoForm extends Component {
         }, 3000);
     }
 
-    photosubmit = (e) => {
+    // photosubmit = (e) => {
+    photosubmit = (files) => {
         var reader = new FileReader();
         var data;
-        if(e.target.files.length>0){
-            reader.readAsDataURL(e.target.files[0]);
+        // if(e.target.files.length>0){
+        //     reader.readAsDataURL(e.target.files[0]);
+        //     let execute = new Promise(function(resolve, reject) {
+        //         reader.onloadend = function() {
+        //             data = reader.result;
+        //             resolve(data);
+        //         }
+        //     });
+        
+        //     execute.then((b64string)=>{
+        //         this.setState({
+        //             photoPreview: URL.createObjectURL(e.target.files[0]),
+        //             photo: b64string
+        //         });
+        //     })
+        // }
+        if(files.length>0){
+            reader.readAsDataURL(files[0]);
             let execute = new Promise(function(resolve, reject) {
                 reader.onloadend = function() {
                     data = reader.result;
@@ -71,7 +89,7 @@ class PhotoForm extends Component {
         
             execute.then((b64string)=>{
                 this.setState({
-                    photoPreview: URL.createObjectURL(e.target.files[0]),
+                    photoPreview: URL.createObjectURL(files[0]),
                     photo: b64string
                 });
             })
@@ -89,7 +107,6 @@ class PhotoForm extends Component {
                 url: `http://localhost:3001/photo/new`,
                 headers: {'Authorization': this.state.token},
                 data: {
-                    authorId: this.state.userData._id,
                     description: this.state.description,
                     photoString: this.state.photo, 
                 }
@@ -136,7 +153,8 @@ class PhotoForm extends Component {
                         <label>Choose your photo:</label>
                     </div>
                     <div className={classes.center}>
-                        <input type="file" accept="image/png, image/jpeg" className={classes.InputPhoto} onChange={this.photosubmit}/>
+                        <DropZone photoSubmit={this.photosubmit}/>
+                        {/* <input type="file" accept="image/png, image/jpeg" className={classes.InputPhoto} onChange={this.photosubmit}/> */}
                     </div>
                     <div className={[classes.imgContainer, classes.center].join(" ")}>
                         <img src={photoSrc} alt="default"/>

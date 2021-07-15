@@ -1,0 +1,29 @@
+.dropZone{
+    width: 80%;
+    height: 10%;
+    border: dashed lightgreen 5px;
+    padding: 5px;
+    display: flex;
+    justify-content: center;
+    margin: 20px 0 20px 0;
+    transition: 0.2s linear;
+    cursor: pointer;
+}
+
+.dropZoneActive{
+    transition: 0.2s linear;
+    width: 80%;
+    height: 10%;
+    border: dashed greenyellow 5px;
+    padding: 5px;
+    display: flex;
+    justify-content: center;
+    margin: 20px 0 20px 0;
+    cursor: pointer;
+}
+
+.dropZoneP{
+    font-size: 15px;
+    font-weight: 700;
+    color: #024949;
+}

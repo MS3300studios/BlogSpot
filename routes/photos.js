@@ -4,6 +4,7 @@ const router = express();
 
 const auth = require('../middleware/authorization');
 
+const User = require('../models/user');
 const Module = require('../models/photo');
 const Photo = Module.photo;
 const PhotoComment = Module.photoComment;
@@ -15,23 +16,26 @@ router.use(express.json());
 //----------------------------------------------CREATING PHOTOS
 
 router.post('/photo/new', auth, (req, res) => {
-    const photo = new Photo({
-        authorId: req.userData.userId,
-        description: req.body.description,
-        data: req.body.photoString, //base64 encoded
-        likes: [],
-        dislikes: [],
-        comments: []
+    User.findById(req.userData.userId, (err, user) => {
+        console.log(user.nickname)
+        const photo = new Photo({
+            authorId: req.userData.userId,
+            authorNickname: user.nickname,
+            description: req.body.description,
+            data: req.body.photoString, //base64 encoded
+            likes: [],
+            dislikes: [],
+            comments: []
+        })
+        photo.save()
+        .then(result => {
+            res.sendStatus(201); //created
+        })
+        .catch(err => {
+            console.log(err);
+            res.json({error: err})
+        });
     })
-    photo.save()
-    .then(result => {
-        console.log(result)
-        res.sendStatus(201); //created
-    })
-    .catch(err => {
-        console.log(err);
-        res.json({error: err})
-    });
 })
 
 router.delete('/photo/delete', auth, (req, res) => {

@@ -39,7 +39,6 @@ class PhotosTab extends Component {
             newSt = {loading: true, limit: limit}
         }
         this.setState(newSt);
-        console.log(this.props)
         axios({
             method: 'post',
             url: `http://localhost:3001/photos/user/limited`,

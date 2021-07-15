@@ -283,7 +283,7 @@ class photoView extends Component {
                                         }
                                     </div>
                                     <div className={classes.authorData}>
-                                        <p>@Princess89</p>
+                                        <p>@{this.state.photo.authorNickname}</p>
                                         <p>{formattedCurrentDate(this.state.photo.createdAt)}</p>
                                     </div>
                                     {

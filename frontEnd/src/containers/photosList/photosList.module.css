@@ -16,6 +16,7 @@
 .addPhoto{
     margin: 10px;
     width: 30%;
+    height: 70%;
     display: flex;
     justify-content: center;
     align-items: center;

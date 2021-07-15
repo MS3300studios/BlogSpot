@@ -13,6 +13,7 @@ const commentSchema = new db.Schema({
 
 const schema = new db.Schema({
     authorId: {type: String, require: true},
+    authorNickname: {type: String, require: true},
     description: {type: String},
     data: {type: String, require: true},
     likes: [likeSchema],
