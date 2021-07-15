@@ -6,6 +6,7 @@ import Flash from '../../../components/UI/flash';
 import classes from './registration.module.css';
 import defaultUserPhoto from '../../../assets/gfx/defaultUserPhoto.png';
 import Button from '../../../components/UI/button';
+import DropZone from '../../PhotoForm/dropZone';
 
 class Registration extends Component {
     constructor(props){
@@ -60,11 +61,11 @@ class Registration extends Component {
         }
     }
 
-    photosubmit = (e) => {
+    photosubmit = (files) => {
         var reader = new FileReader();
         var data;
-        if(e.target.files.length>0){
-            reader.readAsDataURL(e.target.files[0]);
+        if(files.length>0){
+            reader.readAsDataURL(files[0]);
             let execute = new Promise(function(resolve, reject) {
                 reader.onloadend = function() {
                     data = reader.result;
@@ -74,7 +75,7 @@ class Registration extends Component {
         
             execute.then((b64string)=>{
                 this.setState({
-                    photoPreview: URL.createObjectURL(e.target.files[0]),
+                    photoPreview: URL.createObjectURL(files[0]),
                     photo: b64string
                 });
             })
@@ -212,7 +213,8 @@ class Registration extends Component {
                     <label>Nickname:</label>
                     <input type="text" placeholder="this will be the name linked to your posts" className={classes.InputNick} onChange={(e)=> this.inputHandler(e,"nickname")}/>
                     <label>Your photo:</label>
-                    <input type="file" className={classes.InputPhoto} onChange={this.photosubmit}/>
+                    {/* <input type="file" className={classes.InputPhoto} onChange={this.photosubmit}/> */}
+                    <DropZone photoSubmit={this.photosubmit}/>
                     <div className={classes.imgContainer}>
                         <img src={this.state.photoPreview} alt="default"/>
                     </div>
