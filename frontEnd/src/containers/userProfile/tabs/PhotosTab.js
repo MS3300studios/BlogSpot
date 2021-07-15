@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import classes from './PhotosTab.module.css';
+import {BsArrowsAngleExpand} from 'react-icons/bs';
 
 import photo1 from '../../../assets/userPhoto/image (1).jfif'
 import photo2 from '../../../assets/userPhoto/image (2).jfif'
@@ -28,10 +29,15 @@ class PhotosTab extends Component {
                     {
                         this.state.photos.map((photo, index)=>{
                             return (
-                                <div className={classes.panel}>
-                                    <img src={photo} alt="aphoto.description" key={index}/>
+                                <div className={classes.panel} key={index}>
+                                    <img src={photo} alt="aphoto.description"/>
+                                    <div className={classes.expandIconBackground} onClick={()=>console.log('opening big photo')}>
+                                        <BsArrowsAngleExpand size="1.5em" color="white" />
+                                    </div>
                                     <div className={classes.photoData}>
-                                        <p>click to see the entire photo!</p>
+                                        <p>likes: 4</p>
+                                        <p>dislikes: 2</p>
+                                        <p>comments: 3</p>
                                     </div>
                                 </div>
                             )
