@@ -121,7 +121,7 @@ class PhotosList extends Component {
                             display: "flex",
                             justifyContent: "center",
                             backgroundColor: "#53c253",
-                            paddingTop: "10px",
+                            paddingTop: "20px",
                             paddingBottom: "10px"
                         }}>
                             <Button clicked={this.setLimit}>Load more</Button>

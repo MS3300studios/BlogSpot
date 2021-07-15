@@ -19,6 +19,7 @@ import URLnotFound from './components/URLnotfound/404';
 import PhotoForm from './containers/PhotoForm/photoForm';
 import PhotoView from './containers/photoView/photoView';
 import YourActivities from './components/activites/youractivities';
+import SocialBoard from './containers/socialBoard/socialBoard';
 
 class App extends Component {
   constructor(props){
@@ -54,7 +55,7 @@ class App extends Component {
               <Route path="/post/" component={PostView} />
               <Route path="/user/profile/" component={UserProfile} />
               <Route path="/user/friends/" component={FriendsList} />
-              <Route path="/" render={()=><Dashboard />} />
+              <Route path="/" render={()=><SocialBoard />} />
             </Switch>
         </React.Fragment>
       );
