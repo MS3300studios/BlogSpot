@@ -2,47 +2,88 @@ import React, { Component } from 'react';
 
 import classes from './PhotosTab.module.css';
 import {BsArrowsAngleExpand} from 'react-icons/bs';
+import Spinner from '../../../components/UI/spinner';
 
-import photo1 from '../../../assets/userPhoto/image (1).jfif'
-import photo2 from '../../../assets/userPhoto/image (2).jfif'
-import photo3 from '../../../assets/userPhoto/image (3).jfif'
-import photo4 from '../../../assets/userPhoto/image (4).jfif'
-import photo5 from '../../../assets/userPhoto/image (14).jfif'
+import axios from 'axios';
+import getToken from '../../../getToken';
+import getUserData from '../../../getUserData';
+import Button from '../../../components/UI/button';
 
 class PhotosTab extends Component {
     constructor(props) {
         super(props);
+
+        let token = getToken();
+        let userData = getUserData();
+
         this.state = {
-            photos: [
-                photo1,
-                photo2,
-                photo3,
-                photo4,
-                photo5,
-            ]
+            token: token,
+            userData: userData,
+            loading: false,
+            limit: 3,
+            photos: []
         }
+        this.getPhotos.bind(this);
     }
+
+    componentDidMount(){
+        this.getPhotos(this.state.limit, false);
+    }
+
+    getPhotos = (limit, setLimit) => {
+        let newSt = {loading: true}
+        if(setLimit){
+            newSt = {loading: true, limit: limit}
+        }
+        this.setState(newSt);
+        axios({
+            method: 'post',
+            url: `http://localhost:3001/photos/user/limited`,
+            headers: {'Authorization': this.state.token},
+            data: {
+                limit: limit,
+                authorId: "self"
+            }
+        })
+        .then((resp)=>{
+            this.setState({photos: resp.data.photos, loading: false})
+        })
+        .catch((err)=>{
+            console.log(err)
+        })
+    }
+
     render() { 
         return (
             <div className={classes.center}>
-                <div className={classes.photosTabContainer}>
-                    {
-                        this.state.photos.map((photo, index)=>{
-                            return (
-                                <div className={classes.panel} key={index}>
-                                    <img src={photo} alt="aphoto.description"/>
-                                    <div className={classes.expandIconBackground} onClick={()=>console.log('opening big photo')}>
-                                        <BsArrowsAngleExpand size="1.5em" color="white" />
-                                    </div>
-                                    <div className={classes.photoData}>
-                                        <p>likes: 4</p>
-                                        <p>dislikes: 2</p>
-                                        <p>comments: 3</p>
-                                    </div>
-                                </div>
-                            )
-                        })
-                    }
+                {
+                    this.state.loading ? <Spinner darkgreen/> : (
+                        <div className={classes.photosTabContainer}>
+                            {
+                                this.state.photos.map((photo, index)=>{
+                                    return (
+                                        <div className={classes.panel} key={index}>
+                                            <img src={photo.data} alt={photo.description}/>
+                                            <div className={classes.expandIconBackground} onClick={()=>console.log('opening big photo')}>
+                                                <BsArrowsAngleExpand size="1.5em" color="white" />
+                                            </div>
+                                            <div className={classes.photoData}>
+                                                <p>likes: 4</p>
+                                                <p>dislikes: 2</p>
+                                                <p>comments: 3</p>
+                                            </div>
+                                        </div>
+                                    )
+                                })
+                            }
+                        </div>  
+                    )
+                }
+                <div className={classes.loadMoreBtn}>
+                    <Button clicked={()=>{
+                        let curLim = this.state.limit+3;
+                        this.getPhotos(curLim, true)
+                    }}>Load more</Button>
                 </div>
             </div>
         );
