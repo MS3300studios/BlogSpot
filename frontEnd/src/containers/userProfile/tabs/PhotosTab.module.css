@@ -15,14 +15,13 @@
 .photosTabContainer img{
     max-width: 100%;
     max-height: 100%;
-    border: 3px seagreen solid;
-    border-radius: 10px;
 }
 
 .panel{
+    border: 3px seagreen solid;
     display: flex;
     justify-content: center;
-    background-color: seagreen;
+    background-color: black;
     border-radius: 10px;
     position: relative;   
     max-width: 50%;
@@ -46,7 +45,7 @@
     height: 30px;
     position: absolute;
     top: 6px;
-    right: 0;    
+    right: 6px;    
     border-radius: 5px;
     display: flex;
     justify-content: center;

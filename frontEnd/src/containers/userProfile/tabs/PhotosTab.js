@@ -8,6 +8,7 @@ import axios from 'axios';
 import getToken from '../../../getToken';
 import getUserData from '../../../getUserData';
 import Button from '../../../components/UI/button';
+import PhotoView from '../../photoView/photoView';
 
 class PhotosTab extends Component {
     constructor(props) {
@@ -21,9 +22,11 @@ class PhotosTab extends Component {
             userData: userData,
             loading: false,
             limit: 3,
-            photos: []
+            photos: [],
+            bigPhotoId: null
         }
         this.getPhotos.bind(this);
+        this.bigPhotoWasClosed.bind(this);
     }
 
     componentDidMount(){
@@ -36,13 +39,14 @@ class PhotosTab extends Component {
             newSt = {loading: true, limit: limit}
         }
         this.setState(newSt);
+        console.log(this.props)
         axios({
             method: 'post',
             url: `http://localhost:3001/photos/user/limited`,
             headers: {'Authorization': this.state.token},
             data: {
                 limit: limit,
-                authorId: "self"
+                authorId: this.props.userId.replace("?id=","")
             }
         })
         .then((resp)=>{
@@ -53,18 +57,31 @@ class PhotosTab extends Component {
         })
     }
 
+    bigPhotoWasClosed = (reload) => {
+        this.setState({bigPhotoId: null});
+        if(reload === true){
+            this.getPhotos(this.state.limit)
+        }
+    }
+
     render() { 
+        let bigPhotoToSend;
+        this.state.photos.forEach(photo => {
+            if(photo._id === this.state.bigPhotoId) bigPhotoToSend = photo;
+        })
+
         return (
             <div className={classes.center}>
                 {
                     this.state.loading ? <Spinner darkgreen/> : (
                         <div className={classes.photosTabContainer}>
+                            {this.state.bigPhotoId ? <PhotoView photo={bigPhotoToSend} closeBigPhoto={this.bigPhotoWasClosed}/> : null}
                             {
                                 this.state.photos.map((photo, index)=>{
                                     return (
                                         <div className={classes.panel} key={index}>
                                             <img src={photo.data} alt={photo.description}/>
-                                            <div className={classes.expandIconBackground} onClick={()=>console.log('opening big photo')}>
+                                            <div className={classes.expandIconBackground} onClick={()=>this.setState({bigPhotoId: photo._id})}>
                                                 <BsArrowsAngleExpand size="1.5em" color="white" />
                                             </div>
                                             <div className={classes.photoData}>
