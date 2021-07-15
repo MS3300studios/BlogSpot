@@ -3,11 +3,25 @@ import React from 'react';
 import classes from './tabSelector.module.css';
 
 import BlogsTab from '../tabs/Blogs';
+import PhotosTab from '../tabs/PhotosTab';
 
 const TabSelector = (props) => {
     let display;
-    if(props.selectedOption === "Blogs"){
-        display = <BlogsTab userId={props.userId} />
+    switch (props.selectedOption) {
+        case "Blogs":
+            display = <BlogsTab userId={props.userId} />
+            break;
+        case "Photos":
+            display = <PhotosTab userId={props.userId} />
+            break;
+        case "Friends":
+            display = <h1>Coming soon!</h1>
+            break;
+        case "Badges":
+            display = <h1>Coming soon!</h1>
+            break;
+        default:
+            break;
     }
     return (
         <div className={classes.mainContainer}>
