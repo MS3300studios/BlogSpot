@@ -70,15 +70,14 @@ class photoView extends Component {
                 id: this.state.photo._id
             }
         })
-        .then((res)=>{
-            if(res.status===200){
-                this.props.closeBigPhoto(true)
-                return;
-            }
-        })
+        .then()
         .catch(error => {
             console.log(error);
         })
+
+        setTimeout(()=>{
+            this.props.closeBigPhoto(true)
+        },500)
     }    
 
     editPhotoDescHandler = () => {
