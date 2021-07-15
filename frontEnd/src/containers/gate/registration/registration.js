@@ -214,7 +214,9 @@ class Registration extends Component {
                     <input type="text" placeholder="this will be the name linked to your posts" className={classes.InputNick} onChange={(e)=> this.inputHandler(e,"nickname")}/>
                     <label>Your photo:</label>
                     {/* <input type="file" className={classes.InputPhoto} onChange={this.photosubmit}/> */}
-                    <DropZone photoSubmit={this.photosubmit}/>
+                    <div style={{marginTop: "110px", marginLeft: "30px"}}>
+                        <DropZone photoSubmit={this.photosubmit}/>
+                    </div>
                     <div className={classes.imgContainer}>
                         <img src={this.state.photoPreview} alt="default"/>
                     </div>
