@@ -35,7 +35,7 @@
 }
 
 .imgContainer{
-    max-width: 1080px;
+    width: 80%;
     max-height: 830px;
     display: flex;
     justify-content: center;
