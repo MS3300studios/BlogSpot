@@ -75,11 +75,14 @@
     font-weight: 650;
     margin: 10px;
 }
+
 .description{
-    margin-top: -20px;
+    padding: 10px;   
     font-size: 18px;
     font-weight: 550;
-    padding: 10px;
+    max-height: 400px;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 .LikesCommentsNumbers{

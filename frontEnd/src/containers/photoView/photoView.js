@@ -86,7 +86,6 @@ class photoView extends Component {
     }
 
     sendEditedDesc = (newContent) => {
-        console.log(newContent)
         axios({
             method: 'post',
             url: `http://localhost:3001/photo/edit`,
@@ -98,7 +97,7 @@ class photoView extends Component {
         })
         .then((res)=>{
             if(res.status===200){
-                this.setState({photo: res.data.photo, editingPhotoDescription: false});
+                this.setState({photo: res.data.photo, editingPhotoDescription: false, socialStateWasChanged: true});
                 return;
             }
         })
@@ -199,38 +198,6 @@ class photoView extends Component {
             commentsEditing: editingComments,
             likeFill: fills.likeFill, 
             dislikeFill: fills.dislikeFill});
-        
-        //this.setState({loading: true});
-        // axios({
-        //     method: 'get',
-        //     url: `http://localhost:3001/photos/getone/60eadacbd90e8d374c9759a1`,
-        // })
-        // .then((res)=>{
-        //     if(res.status===200){
-        //         //indexComments:
-        //         let editingComments = [];
-        //         let comments = res.data.photo.comments.map((comment, index) => {
-        //             editingComments.push(false);
-        //             comment.index = index;
-        //             return comment
-        //         })
-        //         let fills = this.checkFills(res.data.photo);
-        //         this.setState({
-        //             photo: res.data.photo, 
-        //             loading: false, 
-        //             comments: comments, 
-        //             commentsEditing: editingComments,
-        //             likeFill: fills.likeFill, 
-        //             dislikeFill: fills.dislikeFill});
-        //         return;
-        //     }
-        //     else{
-        //         this.flash("Error: wrong request, photo not found")
-        //     }
-        // })
-        // .catch(error => {
-        //     console.log(error);
-        // })
     }
 
     checkFills = (photo) => {
@@ -302,13 +269,11 @@ class photoView extends Component {
             <div className={classes.backdrop}>
                 <div className={classes.photoViewContainer}>
                     <Button className={classes.CloseButton} clicked={()=>this.props.closeBigPhoto(this.state.socialStateWasChanged)}>Close</Button>
-                    {/* <div className={classes.centerPhoto}> */}
                         <div className={classes.imgContainer}>
                             {
                                 this.state.loading ? <Spinner darkgreen /> : <img src={this.state.photo.data} alt="refresh your page"/>
                             }
                         </div>
-                    {/* </div> */}
                     {
                         this.state.loading ? <Spinner darkgreen /> : (
                             <div className={classes.dataContainer}>
@@ -359,7 +324,7 @@ class photoView extends Component {
                                 <div className={classes.description}>
                                     {
                                         this.state.editingPhotoDescription ? 
-                                            <EditPhotoDesc send={this.sendEditedDesc} cancel={()=>this.setState({editingPhotoDescription: false})}/> : 
+                                            <EditPhotoDesc content={this.state.photo.description} send={this.sendEditedDesc} cancel={()=>this.setState({editingPhotoDescription: false})}/> : 
                                             <p>{this.state.photo.description}</p>
                                     }
                                 </div>
