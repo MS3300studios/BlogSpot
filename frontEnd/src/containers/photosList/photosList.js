@@ -21,7 +21,7 @@ class PhotosList extends Component {
         this.state = {
             token: token,
             userData: userData,
-            limit: 2,
+            limit: 3,
             photos: [],
             bigPhotoId: null
         }
@@ -32,11 +32,10 @@ class PhotosList extends Component {
     }
 
     componentDidMount(){
-        this.getPhotos(2);
+        this.getPhotos(3);
     }
 
     getPhotos = (limit) => {
-        console.log('getting photos, new limit: ', limit)
         this.setState({loading: true});
         axios({
             method: 'post',
@@ -70,7 +69,9 @@ class PhotosList extends Component {
 
     bigPhotoWasClosed = (reload) => {
         this.setState({bigPhotoId: null});
-        this.getPhotos(this.state.limit)
+        if(reload === true){
+            this.getPhotos(this.state.limit)
+        }
     }
 
     render() { 

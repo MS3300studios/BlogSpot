@@ -27,8 +27,18 @@
     right: -60px;
 }
 
+.centerPhoto{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+}
+
 .imgContainer{
-    width: 70%;
+    max-width: 1080px;
+    max-height: 830px;
+    display: flex;
+    justify-content: center;
 }
 
 .imgContainer img{
@@ -38,6 +48,7 @@
 
 .dataContainer{
     width: 30%;
+    border-left: 2px solid black;
 }
 
 .authorInfoContainer{
@@ -46,6 +57,7 @@
     display: flex;
     justify-content: center;
     height: 60px;
+    position: relative
 }
 
 .authorPhoto{
@@ -79,10 +91,12 @@
 
 .LikesCommentsNumbers .like{
     margin-right: 13px;
+    cursor: pointer;
 } 
 
 .LikesCommentsNumbers .dislike{
     margin-right: 13px;
+    cursor: pointer;
 } 
 
 .LikesCommentsNumbers .comment{
@@ -109,4 +123,10 @@
 }
 .commentsContainer button{
     position: unset;
+}
+
+.positionPhotoOptions {
+    position: absolute;
+    top: 50px;
+    left: 550px;
 }

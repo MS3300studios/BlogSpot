@@ -28,7 +28,7 @@
     height: 60px;
     display: flex;
     justify-content: space-evenly;
-    z-index: 1000;
+    z-index: 5;
 }
 .friendsIcon:hover{
     cursor: pointer;

@@ -18,7 +18,8 @@ import Flash from '../../components/UI/flash';
 import photoCommentClasses from './photoComment/photoComment.module.css';
 import CommentOptions from '../userProfile/tabs/comments/optionsContainer/CommentOptions';
 import EditCommentForm from '../userProfile/tabs/comments/optionsContainer/EditCommentFrom';
-import { Redirect, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
+import EditPhotoDesc from './EditPhotoDesc';
 
 class photoView extends Component {
     constructor(props) {
@@ -40,8 +41,8 @@ class photoView extends Component {
             commentsEditing: [],
             likeFill: false,
             dislikeFill: false,
-            redirect: false,
-            socialStateWasChanged: false
+            socialStateWasChanged: false,
+            editingPhotoDescription: false
         }
         this.getPhoto.bind(this);
         this.sendComment.bind(this);
@@ -53,16 +54,16 @@ class photoView extends Component {
         this.checkFills.bind(this);
         this.deletePhotoHandler.bind(this);
         this.editPhotoDescHandler.bind(this);
+        this.sendEditedDesc.bind(this);
     }
 
     componentDidMount(){
         this.getPhoto();
-        console.log(this.props)
     }
 
     deletePhotoHandler = () => {
         axios({
-            method: 'post',
+            method: 'delete',
             url: `http://localhost:3001/photo/delete`,
             headers: {'Authorization': this.state.token},
             data: {
@@ -70,9 +71,8 @@ class photoView extends Component {
             }
         })
         .then((res)=>{
-            console.log(res)
             if(res.status===200){
-                this.setState({redirect: true})
+                this.props.closeBigPhoto(true)
                 return;
             }
         })
@@ -82,7 +82,12 @@ class photoView extends Component {
     }    
 
     editPhotoDescHandler = () => {
+        this.setState({editingPhotoDescription: true});
+    }
 
+    sendEditedDesc(newContent){
+        console.log(newContent)
+        // this.setState({editingPhotoDescription: false});
     }
 
     sendLikeAction = (like) => {
@@ -279,11 +284,13 @@ class photoView extends Component {
             <div className={classes.backdrop}>
                 <div className={classes.photoViewContainer}>
                     <Button className={classes.CloseButton} clicked={()=>this.props.closeBigPhoto(this.state.socialStateWasChanged)}>Close</Button>
-                    <div className={classes.imgContainer}>
-                        {
-                            this.state.loading ? <Spinner darkgreen /> : <img src={this.state.photo.data} alt="refresh your page"/>
-                        }
-                    </div>
+                    {/* <div className={classes.centerPhoto}> */}
+                        <div className={classes.imgContainer}>
+                            {
+                                this.state.loading ? <Spinner darkgreen /> : <img src={this.state.photo.data} alt="refresh your page"/>
+                            }
+                        </div>
+                    {/* </div> */}
                     {
                         this.state.loading ? <Spinner darkgreen /> : (
                             <div className={classes.dataContainer}>
@@ -297,18 +304,18 @@ class photoView extends Component {
                                         <p>@Princess89</p>
                                         <p>{formattedCurrentDate(this.state.photo.createdAt)}</p>
                                     </div>
+                                    {
+                                        (this.state.userData._id === this.state.photo.authorId) ? (
+                                            <div className={classes.positionPhotoOptions}>
+                                                <CommentOptions 
+                                                    photoComment
+                                                    deleteComment={() => this.deletePhotoHandler()}
+                                                    editComment={() => this.editPhotoDescHandler()} />
+                                            </div>
+                                        ) : null
+                                        
+                                    }
                                 </div>
-                                {
-                                    (this.state.userData._id === this.state.photo.authorId) ? (
-                                        <div>
-                                            <CommentOptions 
-                                                photoComment
-                                                deleteComment={() => this.deletePhotoHandler()}
-                                                editComment={() => this.editPhotoDescHandler()} />
-                                        </div>
-                                    ) : null
-                                    
-                                }
                                 <div className={classes.LikesCommentsNumbers}>
                                     <div className={classes.like}><Like
                                         sendAction={()=>this.sendLikeAction(true)}
@@ -332,7 +339,11 @@ class photoView extends Component {
                                 </div>
                                 <hr />
                                 <div className={classes.description}>
-                                    <p>{this.state.photo.description}</p>
+                                    {
+                                        this.state.editingPhotoDescription ? 
+                                            <EditPhotoDesc send={this.sendEditedDesc} cancel={()=>this.setState({editingPhotoDescription: false})}/> : 
+                                            <p>{this.state.photo.description}</p>
+                                    }
                                 </div>
                                 <hr />
                                 <div className={classes.commentForm}>
@@ -401,7 +412,7 @@ class photoView extends Component {
                     }
                 </div> 
                 {flashView}
-                {this.state.redirect ? <Redirect to="/myActivity" /> : null}
+                <button onClick={()=>this.props.closeBigPhoto(true)}>close</button>
             </div> 
         );
     }

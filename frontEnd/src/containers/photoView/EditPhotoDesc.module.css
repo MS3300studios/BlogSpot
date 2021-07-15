@@ -1,0 +1,23 @@
+.EditPhotoDescContainer{
+    margin-top: 15px;
+
+}
+
+.editPhotoDescTextarea{
+    height: 200px;
+    width: 415px;
+    border-radius: 10px;
+    border: none;
+    font-size: 18px;
+    /* padding: 5px; */
+}
+
+.editPhotoDescButtons{
+    margin-top: 5px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.editPhotoDescButtons button{
+    position: unset;
+}

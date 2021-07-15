@@ -103,6 +103,9 @@ class PhotoForm extends Component {
             })
             .catch(error => {
                 console.log(error);
+                if(error.status === 403){
+                    console.log('picture is too large')
+                }
             })
         }
     }
