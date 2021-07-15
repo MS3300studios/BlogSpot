@@ -80,7 +80,7 @@
     padding: 10px;   
     font-size: 18px;
     font-weight: 550;
-    max-height: 400px;
+    max-height: 240px;
     overflow-x: hidden;
     overflow-y: auto;
 }
@@ -120,7 +120,7 @@
 }
 
 .commentsContainer{
-    max-height: 450px;
+    max-height: 392px;
     overflow: auto;
     overflow-x: hidden;
 }
