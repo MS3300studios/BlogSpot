@@ -85,8 +85,26 @@ class photoView extends Component {
         this.setState({editingPhotoDescription: true});
     }
 
-    sendEditedDesc(newContent){
+    sendEditedDesc = (newContent) => {
         console.log(newContent)
+        axios({
+            method: 'post',
+            url: `http://localhost:3001/photo/edit`,
+            headers: {'Authorization': this.state.token},
+            data: {
+                id: this.state.photo._id,
+                newDescription: newContent
+            }
+        })
+        .then((res)=>{
+            if(res.status===200){
+                this.setState({photo: res.data.photo, editingPhotoDescription: false});
+                return;
+            }
+        })
+        .catch(error => {
+            console.log(error);
+        })
         // this.setState({editingPhotoDescription: false});
     }
 

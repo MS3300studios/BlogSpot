@@ -52,6 +52,23 @@ router.delete('/photo/delete', auth, (req, res) => {
         });
 })
 
+router.post('/photo/edit', auth, (req, res) => {
+    Photo.findOne({_id: req.body.id, authorId: req.userData.userId}).exec()
+        .then(photo => {
+            if(photo){
+                photo.description = req.body.newDescription
+                photo.save().then(resp => {
+                    res.status(200).json({
+                        photo: resp
+                    })
+                })
+            }
+            else{
+                res.status(404);
+            }
+        })
+})
+
 //----------------------------------------------COMMENTS
 
 router.post('/photo/addComment', auth, (req, res) => {
