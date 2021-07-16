@@ -98,3 +98,7 @@
     overflow: hidden;
     border-radius: 10px;
 }
+
+h2{
+    font-weight: 500;
+}

@@ -394,7 +394,6 @@ class photoView extends Component {
                     }
                 </div> 
                 {flashView}
-                <button onClick={()=>this.props.closeBigPhoto(true)}>close</button>
             </div> 
         );
     }

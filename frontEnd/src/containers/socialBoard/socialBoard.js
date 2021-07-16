@@ -52,14 +52,16 @@ class SocialBoard extends Component {
         })
     }
 
-    openBigPhoto = (photo) => {
-        this.setState({bigPhoto: photo});
+    openBigPhoto = (photoId) => {
+        this.state.elements.forEach(el => {
+            if(el._id === photoId) this.setState({bigPhoto: el});
+        })
     }
 
     bigPhotoWasClosed = (update) => {
         this.setState({bigPhoto: null});
         if(update === true){
-            this.getPhotos(this.state.limit)
+            this.getElements(this.state.limit)
         }
     }
 
@@ -94,7 +96,6 @@ class SocialBoard extends Component {
             <div className={classes.mainContainer}>
                 {content}
                 {this.state.bigPhoto ? <PhotoView photo={this.state.bigPhoto} closeBigPhoto={this.bigPhotoWasClosed}/> : null}
-                
             </div>
         );
     }

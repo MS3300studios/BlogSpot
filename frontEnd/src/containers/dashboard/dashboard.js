@@ -260,7 +260,7 @@ class Dashboard extends Component {
                 return (
                     <Post
                         title={post.title}
-                        author={userData.nickname}
+                        author={userData._id}
                         content={post.content}
                         id={post._id}
                         key={index}
