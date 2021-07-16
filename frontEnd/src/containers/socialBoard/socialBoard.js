@@ -68,7 +68,7 @@ class SocialBoard extends Component {
     render() { 
         let content;
         if(this.state.loading){
-            content = <Spinner darkgreen />
+            content = <Spinner />
         }
         else{
             content = this.state.elements.map((el, index) => {
@@ -90,20 +90,10 @@ class SocialBoard extends Component {
                 }
             })
         }
-        // this.state.loading ? content = <Spinner darkgreen /> : content = this.state.elements.map((el, index) => {
-        //     if(el.isBlog === true) return null
-        //     else if(el.isBlog === false){
-        //         return (
-        //             <Photo photo={el} key={index} openBigPhoto={this.openBigPhoto}/>
-        //         )
-        //     }
-        // })
 
-        // let test = this.state.elements[]
         return (
             <div className={classes.mainContainer}>
                 {content}
-                {}
                 {this.state.bigPhoto ? <PhotoView photo={this.state.bigPhoto} closeBigPhoto={this.bigPhotoWasClosed}/> : null}
             </div>
         );
