@@ -5,12 +5,12 @@ import {BsArrowsAngleExpand} from 'react-icons/bs';
 
 const Photo = (props) => {
 
-    let classNameImg = classes.normalImage;
-    if(props.socialBoard) classNameImg = classes.smallImage
+    let className = classes.photoContainer;
+    if(props.socialBoard) className = classes.photoContainerSmall
 
     return (
-        <div className={classes.photoContainer}>
-            <img src={props.photo.data} alt="refresh your page" className={classNameImg}/>
+        <div className={className}>
+            <img src={props.photo.data} alt="refresh your page" className={classes.normalImage}/>
             <div className={classes.expandIconBackground} onClick={()=>props.openBigPhoto(props.photo._id)}>
                 <BsArrowsAngleExpand size="1.5em" color="white" />
             </div>

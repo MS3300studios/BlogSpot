@@ -5,24 +5,35 @@
     height: 100%;
 }
 
-.smallImage{
-    border: 3px solid black;
-    border-radius: 10px;
-    width: 320px;
-    height: 300px;
+.photoContainerSmall{
+    position: relative;
+    width: 30%;
+    margin: 10px;
+    max-width: 320px;
+    max-height: 300px;
 }
 
 .photoContainer:hover .panel{
+    height: 60px;
+}
+.photoContainerSmall:hover .panel{
     height: 60px;
 }
 .photoContainer:hover .panel p{
     display: block;
     opacity: 1;
 }
-
+.photoContainerSmall:hover .panel p{
+    display: block;
+    opacity: 1;
+}
 .photoContainer:hover .expandIconBackground{
     opacity: 1;
 }
+.photoContainerSmall:hover .expandIconBackground{
+    opacity: 1;
+}
+
 .photoContainer{
     position: relative;
     width: 30%;
