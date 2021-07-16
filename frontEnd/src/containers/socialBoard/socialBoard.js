@@ -8,6 +8,7 @@ import Photo from '../../components/photo/photo';
 import Spinner from '../../components/UI/spinner'; 
 import PhotoView from '../photoView/photoView';
 import Post from '../../components/post/post';
+import Button from '../../components/UI/button';
 
 class SocialBoard extends Component {
     constructor(props) {
@@ -20,7 +21,8 @@ class SocialBoard extends Component {
             elements: [],
             loading: false,
             bigPhoto: null,
-            limit: 0
+            limitPhotos: 0,
+            limitPosts: 0,
         }
         this.getElements.bind(this);
         this.openBigPhoto.bind(this);
@@ -28,23 +30,38 @@ class SocialBoard extends Component {
     }
 
     componentDidMount(){
-        this.getElements(this.state.limit);
+        this.getElements(this.state.limitPhotos, this.state.limitPosts, false);
     }
 
-    getElements = (limit) => {
+    getElements = (limitphotos, limitposts, join) => {
         this.setState({loading: true})
+
+        console.log('skip photos: ', limitphotos)
+        console.log('skip posts: ', limitposts)
+        
         axios({
-            method: 'get',
+            method: 'post',
             url: `http://localhost:3001/socialBoard/init`,
             headers: {'Authorization': this.state.token},
             data: {
-                skip: limit
+                skipPhotos: limitphotos,
+                skipPosts: limitposts
             }
         })
         .then((res)=>{
             if(res.status===200){
-                this.setState({elements: res.data.elements, loading: false})
-                return;
+                if(join === true){
+                    console.log('appending>...')
+                    let currElems = this.state.elements;
+                    console.log(currElems)
+                    let newElems = currElems.concat(res.data.elements);
+                    console.log(newElems)
+                    this.setState({elements: newElems, loading: false, limitPhotos: limitphotos+4, limitPosts: limitposts+4})
+                }
+                else{
+                    this.setState({elements: res.data.elements, loading: false, limitPhotos: limitphotos+4, limitPosts: limitposts+4})
+                    return;
+                }
             }
         })
         .catch(error => {
@@ -61,7 +78,7 @@ class SocialBoard extends Component {
     bigPhotoWasClosed = (update) => {
         this.setState({bigPhoto: null});
         if(update === true){
-            this.getElements(this.state.limit)
+            this.getElements(this.state.limitPhotos, this.state.limitPosts, true)//come back here later
         }
     }
 
@@ -95,6 +112,9 @@ class SocialBoard extends Component {
         return (
             <div className={classes.mainContainer}>
                 {content}
+                <div className={[classes.center, classes.btnMore].join(" ")}>
+                    <Button clicked={()=>this.getElements(this.state.limitPhotos, this.state.limitPosts, true)}>Load more</Button>
+                </div>
                 {this.state.bigPhoto ? <PhotoView photo={this.state.bigPhoto} closeBigPhoto={this.bigPhotoWasClosed}/> : null}
             </div>
         );

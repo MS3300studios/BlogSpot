@@ -9,9 +9,13 @@ const Blog = require('../models/blog');
 
 router.use(express.json());
 
-router.get('/socialBoard/init', auth, (req, res) => {
-    Blog.find().skip(req.body.skip).exec().then(blogs => {
-        Photo.find().skip(req.body.skip).exec().then(photos=>{
+router.post('/socialBoard/init', auth, (req, res) => {
+    // console.log('skip photos: ', req.body.skipPhotos)
+    console.log(req.body)
+    // console.log('skip posts: ', req.body.skipPosts)
+
+    Blog.find().skip(req.body.skipPosts).limit(4).exec().then(blogs => {
+        Photo.find().skip(req.body.skipPhotos).limit(4).exec().then(photos=>{
             let newArr = blogs.concat(photos);
             newArr.sort((a, b) => {
                 let c = new Date(a.createdAt);
@@ -19,13 +23,18 @@ router.get('/socialBoard/init', auth, (req, res) => {
                 return c-d
             })
 
+            newArr.forEach(el => {
+                const formatted = new Date(el.createdAt).toLocaleDateString();
+                console.log(`${formatted}`);
+            })
+
+            console.log('-----------------------------------')
+
             res.status(200).json({
                 elements: newArr
             })
         })
     })
 })
-
-
 
 module.exports = router;

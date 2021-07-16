@@ -4,4 +4,9 @@
     justify-content: center;
     flex-wrap: wrap;
     margin: 0 auto;
+    position: relative;
+}
+.btnMore{
+    position: absolute;
+    bottom: -100px;
 }
