@@ -46,3 +46,22 @@
     justify-content: space-around;
 }
 
+.userPhoto{
+    width: 45px;
+    height: 45px;
+    margin: 10px;
+    transition: 0.2s;
+    border-radius: 50%;
+}
+
+.userPhoto:hover{
+    transform: scale(1.2);
+}
+
+.userInfoContainer{
+    display: flex;
+    justify-content: flex-start;
+    width: 320px;
+    margin-bottom: -10px;
+    overflow: hidden;
+}

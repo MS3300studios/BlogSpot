@@ -31,9 +31,6 @@ const Post = (props) => {
         }
     }, [])
 
-
-    
-
     return (
         <div className={classes.Card}>
             <div className={classes.contentWrapperSmaller}>
@@ -41,9 +38,19 @@ const Post = (props) => {
                 <h1>{props.title}</h1>
             </Link> 
             </div>
-            <div className={classes.contentWrapperSmaller}>
-                <h2>@{nickname}</h2>
-            </div>
+            {
+                props.socialBoard ? (
+                    <div className={classes.userInfoContainer}>
+                        <img src={userData.photo} alt="user's face" className={classes.userPhoto} />
+                        <h2>@{nickname}</h2>
+                    </div>
+                )
+                : (
+                    <div className={classes.contentWrapperSmaller}>
+                        <h2>@{nickname}</h2>
+                    </div>
+                )
+            }
             <div className={classes.contentWrapper}>
                 <p>{props.content}</p>
             </div>

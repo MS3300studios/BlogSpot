@@ -1,6 +1,5 @@
 .mainContainer{
-    width: 90%;
-    /* border: 1px solid black; */
+    width: 80%;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
