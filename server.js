@@ -11,6 +11,7 @@ app.use(require('./routes/likes'));
 app.use(require('./routes/friends'));
 app.use(require('./routes/notifications'));
 app.use(require('./routes/photos'));
+app.use(require('./routes/socialBoard'));
 
 require("dotenv").config();
 
