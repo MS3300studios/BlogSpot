@@ -45,8 +45,9 @@ class PostView extends Component {
             headers: {'Authorization': this.state.token},
         }).then((res) => {
             this.setState({loading: false});
+            //modify blogs/one to give author nickname
             const post = {
-                author: this.state.userData.nickname,
+                author: this.state.userData.nickname, //change this!
                 title: res.data.blog.title,
                 content: res.data.blog.content,
                 createdAt: res.data.blog.createdAt,

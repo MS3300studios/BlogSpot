@@ -32,7 +32,6 @@ class SocialBoard extends Component {
     }
 
     getElements = (limit) => {
-        console.log('getting elements with limit '+limit)
         this.setState({loading: true})
         axios({
             method: 'get',
@@ -44,7 +43,6 @@ class SocialBoard extends Component {
         })
         .then((res)=>{
             if(res.status===200){
-                console.log(res.data.elements)
                 this.setState({elements: res.data.elements, loading: false})
                 return;
             }
@@ -76,12 +74,13 @@ class SocialBoard extends Component {
                     return (
                         <Post 
                             title={el.title}
-                            // author={userData.nickname}
+                            author={el.author}
                             content={el.content}
                             id={el._id}
                             key={index}
                             delete={this.deletePost}
                             edit={this.editPost}
+                            socialBoard
                         />
                     )
                 }
