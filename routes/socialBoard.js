@@ -10,10 +10,6 @@ const Blog = require('../models/blog');
 router.use(express.json());
 
 router.post('/socialBoard/init', auth, (req, res) => {
-    // console.log('skip photos: ', req.body.skipPhotos)
-    console.log(req.body)
-    // console.log('skip posts: ', req.body.skipPosts)
-
     Blog.find().skip(req.body.skipPosts).limit(4).exec().then(blogs => {
         Photo.find().skip(req.body.skipPhotos).limit(4).exec().then(photos=>{
             let newArr = blogs.concat(photos);
@@ -27,8 +23,6 @@ router.post('/socialBoard/init', auth, (req, res) => {
                 const formatted = new Date(el.createdAt).toLocaleDateString();
                 console.log(`${formatted}`);
             })
-
-            console.log('-----------------------------------')
 
             res.status(200).json({
                 elements: newArr

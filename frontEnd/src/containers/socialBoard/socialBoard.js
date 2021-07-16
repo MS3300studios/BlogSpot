@@ -51,11 +51,8 @@ class SocialBoard extends Component {
         .then((res)=>{
             if(res.status===200){
                 if(join === true){
-                    console.log('appending>...')
                     let currElems = this.state.elements;
-                    console.log(currElems)
                     let newElems = currElems.concat(res.data.elements);
-                    console.log(newElems)
                     this.setState({elements: newElems, loading: false, limitPhotos: limitphotos+4, limitPosts: limitposts+4})
                 }
                 else{
