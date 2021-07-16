@@ -20,7 +20,7 @@ class SocialBoard extends Component {
             elements: [],
             loading: false,
             bigPhoto: null,
-            limit: 10
+            limit: 0
         }
         this.getElements.bind(this);
         this.openBigPhoto.bind(this);
@@ -94,6 +94,7 @@ class SocialBoard extends Component {
             <div className={classes.mainContainer}>
                 {content}
                 {this.state.bigPhoto ? <PhotoView photo={this.state.bigPhoto} closeBigPhoto={this.bigPhotoWasClosed}/> : null}
+                
             </div>
         );
     }

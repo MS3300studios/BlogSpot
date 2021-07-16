@@ -42,7 +42,9 @@ const Post = (props) => {
                 props.socialBoard ? (
                     <div className={classes.userInfoContainer}>
                         <img src={userData.photo} alt="user's face" className={classes.userPhoto} />
-                        <h2>@{nickname}</h2>
+                        <h2><a href={"/user/profile/?id="+userData._id}
+                            style={{color: "black", textDecoration: "none"}}
+                        >@{nickname}</a></h2>
                     </div>
                 )
                 : (
