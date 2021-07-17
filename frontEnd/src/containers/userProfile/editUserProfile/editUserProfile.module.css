@@ -54,12 +54,13 @@
     padding: 5px;
     border: thick;
     border-radius: 10px;
-    transition: all 0.3s ease-in;
     min-width: 350px;
     min-height: 35px;
     transition: all ease 0.3s;
     border-bottom: solid 2px;
     border-bottom-color: #006def;
+    font-size: 20px;
+    font-weight: 500;
 }
 
 .inputContainer input:focus{
@@ -80,6 +81,12 @@
     border-bottom-color: #006def;
     margin-left: 10px;
     padding: 5px;
+    transition: all 0.3s ease-in;
+}
+
+.rightSide textarea:focus{
+    -webkit-box-shadow: 0px 0px 18px 3px #FFFFFF; 
+    box-shadow: 0px 0px 18px 3px #FFFFFF;
 }
 
 .textareaLabel{
@@ -124,3 +131,4 @@
     margin-right: 10px;
     background-color: #b83a3a !important;
 }
+

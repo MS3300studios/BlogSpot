@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
+import {Link} from 'react-router-dom';
 import getToken from '../../../getToken';
 import getUserData from '../../../getUserData';
 import axios from 'axios';
 import DropZone from '../../PhotoForm/dropZone';
-import {Link} from 'react-router-dom';
+import Flash from '../../../components/UI/flash';
 
 import classes from './editUserProfile.module.css';
-
-import photo from '../../../assets/gfx/UserPhoto.png';
+import Spinner from '../../../components/UI/spinner';
 
 class EditUserProfile extends Component {
     constructor(props) {
@@ -20,8 +20,8 @@ class EditUserProfile extends Component {
             token: token,
             userData: userData,
 
-            photo: photo,
-            photoPreview: photo,
+            photo: null,
+            photoPreview: null,
             newName: userData.name,
             newSurname: userData.surname,
             newNickname: userData.nickname,
@@ -29,11 +29,13 @@ class EditUserProfile extends Component {
             
             flashMessage: "",
             flashNotClosed: true,
-            readyForSubmission: true
+            readyForSubmission: true,
+            loading: true
         }
         this.photosubmit.bind(this);
         this.inputHandler.bind(this);
         this.flash.bind(this);
+        this.saveChangedData.bind(this);
     }
 
     componentDidMount(){
@@ -43,7 +45,7 @@ class EditUserProfile extends Component {
             headers: {'Authorization': this.state.token}
         })
         .then((res)=>{
-            this.setState({photo: res.data.photo, photoPreview: res.data.photo});
+            this.setState({photo: res.data.photo, photoPreview: res.data.photo, loading: false});
         })
         .catch(error => {
             console.log(error);
@@ -112,13 +114,48 @@ class EditUserProfile extends Component {
         }
     }
 
+    saveChangedData = () => {
+        let whatWasChanged = {
+            name: false,
+            surname: false,
+            nickname: false,
+            bio: false
+        }
+        if(this.state.userData.name !== this.state.newName) whatWasChanged.name = true;
+        if(this.state.userData.surname !== this.state.newSurname) whatWasChanged.surname = true;
+        if(this.state.userData.nickname !== this.state.newNickname) whatWasChanged.Nickname = true;
+        if(this.state.userData.bio !== this.state.newBio) whatWasChanged.bio = true;
+
+        if(
+            this.state.newName !== "" &&
+            this.state.newSurname !== "" &&
+            this.state.newNickname !== "" &&
+            this.state.newBio !== "" 
+        ){
+            console.log('sending!')
+        }
+        else{
+            console.log('verboten')
+            this.flash("you need to fill every input!");
+        }
+    }
+
     render() { 
+
+        let flash = null;
+        if(this.state.flashMessage && this.state.flashNotClosed){
+            flash = <Flash>{this.state.flashMessage}</Flash>
+        }
+        else if(this.state.flashMessage && this.state.flashNotClosed === false){
+            flash = <Flash close>{this.state.flashMessage}</Flash>
+        }
+
         return (
             <>
             <div className={classes.center}>
                 <div className={classes.mainContainer}>
                     <div className={classes.imgContainer}>
-                        <img src={this.state.photo} alt="your profile"/>
+                        {this.state.loading ? <Spinner darkgreen/> : <img src={this.state.photo} alt="your profile"/>}
                         <div className={classes.center}>
                             <DropZone photoSubmit={this.photosubmit}/>
                         </div>
@@ -169,8 +206,9 @@ class EditUserProfile extends Component {
                 <Link to='/'>
                     <button className={classes.cancelBtn}>cancel</button>
                 </Link>
-                <button>save changes</button>
+                <button onClick={this.saveChangedData}>save changes</button>
             </div>
+            {flash}
             </>
         );
     }
