@@ -7,13 +7,11 @@ import TabSelector from './tabSelector/tabSelector';
 import getToken from '../../getToken';
 import FriendButton from './friendButton/friendButton';
 
-import { FaUserFriends } from 'react-icons/fa';
 import { BsPencil } from 'react-icons/bs';
 import { GoPencil } from 'react-icons/go';
-import { AiFillPlusCircle } from 'react-icons/ai'; //, AiOutlinePlusCircle 
-import { BiPhotoAlbum, BiPaperPlane } from 'react-icons/bi';
 import getUserData from '../../getUserData';
 import Spinner from '../../components/UI/spinner';
+import NumberInfoContainer from './numberInfoContainer/numberInfoContainer';
 
 class UserProfile extends Component {
     constructor(props){
@@ -360,24 +358,7 @@ class UserProfile extends Component {
                             </div>
                         </div>
                         <div className={classes.rightPartInfoContainer}>
-                            <div className={classes.numberInfoContainer}>                                
-                                <div className={classes.socialNumbersPanel}>
-                                    <p><FaUserFriends size="1em" color="#0a42a4"/>  Friends: </p>
-                                    <p>154</p>
-                                </div>                                                                
-                                <div className={classes.socialNumbersPanel}>
-                                    <p><AiFillPlusCircle size="1em" color="#0a42a4" />  Followers: </p>
-                                    <p>12</p>
-                                </div>                                
-                                <div className={classes.socialNumbersPanel}>
-                                    <p><BiPaperPlane size="1em" color="#0a42a4" />  Blogs: </p>
-                                    <p>420</p>
-                                </div>                                
-                                <div className={classes.socialNumbersPanel}>
-                                    <p><BiPhotoAlbum size="1em" color="#0a42a4" />  Photos: </p>
-                                    <p>55</p>
-                                </div>                                
-                            </div>
+                            <NumberInfoContainer token={this.state.token} userId={this.state.userId} />
                             {
                                 this.state.userLogged ? null : (
                                     <div className={classes.socialButtonsContainer}>
