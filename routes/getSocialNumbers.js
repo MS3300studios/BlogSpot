@@ -3,20 +3,47 @@ const router = express();
 
 const auth = require('../middleware/authorization');
 const Friend = require('../models/friend');
-const Photo = require('../models/photo');
+const PhotoModule = require('../models/photo');
+const Photo = PhotoModule.photo;
 const Blog = require('../models/blog');
 
 router.use(express.json());
 
-router.post('/getSocialNumbers/numberOfFriends', auth, (req, res) => {
+router.post('/getSocialNumbers', auth, (req, res) => {
+    //checking friends count
+
     Friend.countDocuments({userId: req.body.userId})
-    .then((count) => {
+    .then((countFriends) => {
         Friend.countDocuments({friendId: req.body.userId})
-            .then(count2 => {
-                let numOfFriends = count+count2;
-                return res.status(200).json({
-                    count: numOfFriends
-                });
+            .then(countFriends2 => {
+                let numOfFriends = countFriends+countFriends2;
+
+                //checking blogs count
+                Blog.countDocuments({author: req.body.userId})
+                    .then(countBlogs => {
+
+                        //cheking photos count 
+
+                        Photo.countDocuments({authorId: req.body.userId})
+                            .then(countPhotos => {
+
+                                //sending numbers:
+
+                                return res.status(200).json({
+                                    friendsCount: numOfFriends,
+                                    blogsCount: countBlogs,
+                                    photosCount: countPhotos
+                                });
+
+                            })
+                            .catch(error => {
+                                console.error(error)
+                            })
+
+                    })
+                    .catch(error => {
+                        console.error(error)
+                    })
             })
             .catch(error => {
                 console.error(error)

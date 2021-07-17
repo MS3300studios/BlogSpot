@@ -15,26 +15,35 @@ class NumberInfoContainer extends Component {
         this.state = {
             loading: false,
             friendsCount: 0,
+            blogsCount: 0,
+            photosCount: 0
         }
     }
 
     componentDidMount(){
         this.setState({loading: true});
-        // axios({
-        //     method: 'post',
-        //     url: `http://localhost:3001/`,
-        //     headers: {},
-        //     data: {}
-        // })
-        // .then((res)=>{
-        //     if(res.status===200){
-        //         this.setState({loading: false})
-        //         return;
-        //     }
-        // })
-        // .catch(error => {
-        //     console.log(error);
-        // })
+        axios({
+            method: 'post',
+            url: `http://localhost:3001/getSocialNumbers`,
+            headers: {'Authorization': this.props.token},
+            data: {userId: this.props.userId}
+        })
+        .then((res)=>{
+            if(res.status===200){
+                this.setState(
+                    {
+                        friendsCount: res.data.friendsCount, 
+                        blogsCount: res.data.blogsCount,
+                        photosCount: res.data.photosCount,
+                        loading: false
+                    }
+                )
+                return;
+            }
+        })
+        .catch(error => {
+            console.log(error);
+        })
     }
 
     render() { 
@@ -48,39 +57,16 @@ class NumberInfoContainer extends Component {
                                 <p>{this.state.friendsCount}</p>
                             </div>                                                                
                             <div className={classes.socialNumbersPanel}>
-                                <p><AiFillPlusCircle size="1em" color="#0a42a4" />  Followers: </p>
-                                <p>12</p>
-                            </div>                                
-                            <div className={classes.socialNumbersPanel}>
                                 <p><BiPaperPlane size="1em" color="#0a42a4" />  Blogs: </p>
-                                <p>420</p>
+                                <p>{this.state.blogsCount}</p>
                             </div>                                
                             <div className={classes.socialNumbersPanel}>
                                 <p><BiPhotoAlbum size="1em" color="#0a42a4" />  Photos: </p>
-                                <p>55</p>
+                                <p>{this.state.photosCount}</p>
                             </div>   
                         </>
                     )
                 }                              
-                <button style={{backgroundColor: "black"}} onClick={()=>{
-                    axios({
-                        method: 'post',
-                        url: `http://localhost:3001/getSocialNumbers/numberOfFriends`,
-                        headers: {'Authorization': this.props.token},
-                        data: {userId: this.props.userId}
-                    })
-                    .then((res)=>{
-                        if(res.status===200){
-                            this.setState({loading: false, friendsCount: res.data.count})
-                            return;
-                        }
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    })
-                }}>
-                    get num of friends
-                </button>
             </div>
         );
     }
