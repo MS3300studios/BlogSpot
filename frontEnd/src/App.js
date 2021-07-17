@@ -20,6 +20,8 @@ import PhotoView from './containers/photoView/photoView';
 import YourActivities from './components/activites/youractivities';
 import SocialBoard from './containers/socialBoard/socialBoard';
 
+import ScrollListener from './components/scrollListener/scrollListener';
+
 class App extends Component {
   constructor(props){
     super(props);
@@ -45,7 +47,8 @@ class App extends Component {
     if(this.state.isLoggedIn){
       content = (
         <React.Fragment>
-          <Menu />
+          <ScrollListener>
+            <Menu />
             <Switch>
               <Route path="/photo/view" exact component={PhotoView} />
               <Route path="/photo/add" exact component={PhotoForm} />
@@ -56,6 +59,7 @@ class App extends Component {
               <Route path="/user/friends/" component={FriendsList} />
               <Route path="/" render={()=><SocialBoard />} />
             </Switch>
+          </ScrollListener>
         </React.Fragment>
       );
       gate = null;

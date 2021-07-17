@@ -7,6 +7,12 @@
     position: relative;
 }
 .btnMore{
-    position: absolute;
-    bottom: -100px;
+    margin: 20px 0 20px 0;
+    display: flex;
+    justify-content: center;
+}
+.mainHeader{
+    margin-left: 20px;
+    font-size: 40px;
+    color: #04255f;
 }

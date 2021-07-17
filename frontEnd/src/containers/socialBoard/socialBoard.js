@@ -107,13 +107,16 @@ class SocialBoard extends Component {
         }
 
         return (
-            <div className={classes.mainContainer}>
-                {content}
+            <>
+                <h1 className={classes.mainHeader}>Newest activity:</h1>
+                <div className={classes.mainContainer}>
+                    {content}
+                    {this.state.bigPhoto ? <PhotoView photo={this.state.bigPhoto} closeBigPhoto={this.bigPhotoWasClosed}/> : null}
+                </div>
                 <div className={[classes.center, classes.btnMore].join(" ")}>
                     <Button clicked={()=>this.getElements(this.state.limitPhotos, this.state.limitPosts, true)}>Load more</Button>
                 </div>
-                {this.state.bigPhoto ? <PhotoView photo={this.state.bigPhoto} closeBigPhoto={this.bigPhotoWasClosed}/> : null}
-            </div>
+            </>
         );
     }
 }

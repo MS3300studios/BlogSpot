@@ -99,7 +99,7 @@ class PhotosList extends Component {
                 if(photo._id === this.state.bigPhotoId) bigPhotoToSend = photo;
             })
             content = (
-                <div className={classes.center}>
+                <>
                     {this.state.bigPhotoId ? <PhotoView photo={bigPhotoToSend} closeBigPhoto={this.bigPhotoWasClosed}/> : null}
                     <div className={classes.center}>
                         <div className={classes.container}>
@@ -127,7 +127,7 @@ class PhotosList extends Component {
                             <Button clicked={this.setLimit}>Load more</Button>
                         </div>
                     </div>
-                </div>
+                </>
             );
         }
         return (
