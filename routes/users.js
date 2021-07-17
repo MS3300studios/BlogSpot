@@ -2,7 +2,6 @@ const express = require('express');
 const router = express();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-// const secret = require('../secret.json');
 const cors = require('cors');
 const User = require('../models/user');
 const auth = require('../middleware/authorization');
@@ -56,7 +55,6 @@ router.delete('/users/delete/:userId', (req, res) => {
 });
 
 router.post('/users/login', (req, res) => {
-    // console.log('logging in')
     User.find({email: req.body.email})
         .exec()
         .then(users => {
@@ -66,16 +64,6 @@ router.post('/users/login', (req, res) => {
             bcrypt.compare(req.body.password, users[0].password, (err, isEqual) => {
                 if(err) return res.sendStatus(401);
                 if(isEqual) {
-                    // const token = jwt.sign(
-                    //     {
-                    //         email: users[0].email,
-                    //         userId: users[0]._id
-                    //     },
-                    //     secret.key,
-                    //     {
-                    //         expiresIn: "1h"
-                    //     }
-                    // );
                     const token = jwt.sign(
                         {
                             email: users[0].email,
@@ -173,5 +161,36 @@ router.post('/users/find', auth, (req, res) => {
         })
         .catch(err => res.status(404).json({message: "error finding user", error: err}))
 })
+
+
+router.post('/users/edit/all', auth, (req, res) => { //newdata, userid, userphoto
+    if(
+        req.body.name !== "" &&
+        req.body.surname !== "" &&
+        req.body.nickname !== "" &&
+        req.body.bio !== "" &&
+        req.body.photo !== "" 
+    ){
+        let update = {photo: req.body.photo}
+        if(req.body.wasChanged.name === true) update.name = req.body.name
+        if(req.body.wasChanged.surname === true) update.surname = req.body.surname
+        if(req.body.wasChanged.nickname === true) update.nickname = req.body.nickname
+        if(req.body.wasChanged.bio === true) update.bio = req.body.bio
+    
+        console.log(req.body.wasChanged)
+
+        User.findByIdAndUpdate(req.userData.userId, update, {new: true}).then(user => {
+            res.json({
+                user: user
+            })
+        })
+    }
+    else{
+        res.status(403)
+    }
+
+})
+
+//router.post('/users/edit/bio', )
 
 module.exports = router;

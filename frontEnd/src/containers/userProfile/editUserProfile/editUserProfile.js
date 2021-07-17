@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Link} from 'react-router-dom';
+import {Link, Redirect} from 'react-router-dom';
 import getToken from '../../../getToken';
 import getUserData from '../../../getUserData';
 import axios from 'axios';
@@ -30,7 +30,9 @@ class EditUserProfile extends Component {
             flashMessage: "",
             flashNotClosed: true,
             readyForSubmission: true,
-            loading: true
+            loading: true,
+            loadingSave: false,
+            redirectToDashboard: false
         }
         this.photosubmit.bind(this);
         this.inputHandler.bind(this);
@@ -115,6 +117,7 @@ class EditUserProfile extends Component {
     }
 
     saveChangedData = () => {
+        this.setState({loadingSave: true});
         let whatWasChanged = {
             name: false,
             surname: false,
@@ -123,7 +126,7 @@ class EditUserProfile extends Component {
         }
         if(this.state.userData.name !== this.state.newName) whatWasChanged.name = true;
         if(this.state.userData.surname !== this.state.newSurname) whatWasChanged.surname = true;
-        if(this.state.userData.nickname !== this.state.newNickname) whatWasChanged.Nickname = true;
+        if(this.state.userData.nickname !== this.state.newNickname) whatWasChanged.nickname = true;
         if(this.state.userData.bio !== this.state.newBio) whatWasChanged.bio = true;
 
         if(
@@ -131,11 +134,65 @@ class EditUserProfile extends Component {
             this.state.newSurname !== "" &&
             this.state.newNickname !== "" &&
             this.state.newBio !== "" 
-        ){
-            console.log('sending!')
+        ){  
+            axios({
+                method: 'post',
+                url: `http://localhost:3001/users/edit/all`,
+                headers: {'Authorization': this.state.token},
+                data: {
+                    wasChanged: whatWasChanged,
+                    name: this.state.newName,
+                    surname: this.state.newSurname,
+                    nickname: this.state.newNickname,
+                    bio: this.state.newBio,
+                    photo: this.state.photo,
+                }
+            })
+            .then((res)=>{
+                this.setState({loadingSave: false});
+
+                this.flash("changes were saved, redirecting...")
+                let newUserData = {
+                    bio: this.state.newBio,
+                    createdAt: this.state.userData.createdAt,
+                    debugpass: this.state.userData.debugpass,
+                    email: this.state.userData.email,
+                    name: this.state.newName,
+                    nickname: this.state.newNickname,
+                    password: this.state.userData.password,
+                    photo: this.state.userData.photo,
+                    surname: this.state.newSurname,
+                    updatedAt: this.state.userData.updatedAt,
+                    __v: this.state.userData.__v,
+                    _id: this.state.userData._id
+                }
+
+                let jsonData = JSON.stringify(newUserData);
+
+                let local = localStorage.getItem('userData')
+                if(local){
+                    console.log('clearing local')
+                    localStorage.clear();
+                    sessionStorage.clear();
+                    localStorage.setItem('token', this.state.token);
+                    localStorage.setItem('userData', jsonData);
+                }
+                else{
+                    localStorage.clear();
+                    sessionStorage.clear();
+                    sessionStorage.setItem('token', this.state.token);
+                    sessionStorage.setItem('userData', jsonData);
+                }
+
+                setTimeout(()=>{
+                    this.setState({redirectToDashboard: true})
+                }, 1500)
+            })
+            .catch(error => {
+                console.log(error);
+            })
         }
         else{
-            console.log('verboten')
             this.flash("you need to fill every input!");
         }
     }
@@ -155,7 +212,7 @@ class EditUserProfile extends Component {
             <div className={classes.center}>
                 <div className={classes.mainContainer}>
                     <div className={classes.imgContainer}>
-                        {this.state.loading ? <Spinner darkgreen/> : <img src={this.state.photo} alt="your profile"/>}
+                        {this.state.loading ? <div style={{marginTop: "-20px"}}><Spinner small/></div> : <img src={this.state.photo} alt="your profile"/>}
                         <div className={classes.center}>
                             <DropZone photoSubmit={this.photosubmit}/>
                         </div>
@@ -206,9 +263,10 @@ class EditUserProfile extends Component {
                 <Link to='/'>
                     <button className={classes.cancelBtn}>cancel</button>
                 </Link>
-                <button onClick={this.saveChangedData}>save changes</button>
+                <button onClick={this.saveChangedData}>{this.state.loadingSave ? <Spinner darkgreen/> : "save changes"}</button>
             </div>
             {flash}
+            {this.state.redirectToDashboard ? <Redirect to="/" /> : null}
             </>
         );
     }
