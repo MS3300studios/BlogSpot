@@ -19,8 +19,8 @@ import PhotoForm from './containers/PhotoForm/photoForm';
 import PhotoView from './containers/photoView/photoView';
 import YourActivities from './components/activites/youractivities';
 import SocialBoard from './containers/socialBoard/socialBoard';
-
 import ScrollListener from './components/scrollListener/scrollListener';
+import EditUserProfile from './containers/userProfile/editUserProfile/editUserProfile';
 
 class App extends Component {
   constructor(props){
@@ -50,6 +50,7 @@ class App extends Component {
           <ScrollListener>
             <Menu />
             <Switch>
+              <Route path="/editProfile" exact component={EditUserProfile} />
               <Route path="/photo/view" exact component={PhotoView} />
               <Route path="/photo/add" exact component={PhotoForm} />
               <Route path="/myActivity" exact component={YourActivities} />

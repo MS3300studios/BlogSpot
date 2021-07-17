@@ -36,9 +36,6 @@ class SocialBoard extends Component {
     getElements = (limitphotos, limitposts, join) => {
         this.setState({loading: true})
 
-        console.log('skip photos: ', limitphotos)
-        console.log('skip posts: ', limitposts)
-        
         axios({
             method: 'post',
             url: `http://localhost:3001/socialBoard/init`,

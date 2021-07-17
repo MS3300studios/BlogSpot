@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 import classes from './userProfile.module.css';
@@ -360,7 +361,13 @@ class UserProfile extends Component {
                         <div className={classes.rightPartInfoContainer}>
                             <NumberInfoContainer token={this.state.token} userId={this.state.userId} />
                             {
-                                this.state.userLogged ? null : (
+                                this.state.userLogged ? (
+                                    <div className={classes.editYourProfileContainer}>
+                                        <Link to="/editProfile">
+                                            <button className={classes.editYourProfile}>Edit your profile</button>
+                                        </Link>
+                                    </div>
+                                ) : (
                                     <div className={classes.socialButtonsContainer}>
                                         <button className={classes.follow}>Follow</button>
                                         {this.state.friendBtnDataRdy ? (

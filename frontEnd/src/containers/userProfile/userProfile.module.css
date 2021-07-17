@@ -73,10 +73,6 @@
     padding: 0;
 }
 
-.imgContainer{
-
-}
-
 .rightPartInfoContainer{
     border: none;
     border-left: solid black 2px;
@@ -187,4 +183,27 @@
 
 .declineRequest{
     background-color: darkred;
+}
+
+.editYourProfile{
+    width: 150px;
+    height: 50px;
+    margin: 10px;
+    margin-top: 70px;
+    transition: 0.3s all ease;
+    font-size: 18px;
+    background-color: teal;
+    cursor: pointer;
+    animation: none;
+}
+.editYourProfile:hover{
+    animation: none;
+    transform: scale(1.3);
+    cursor: pointer;
+}
+
+.editYourProfileContainer{
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
