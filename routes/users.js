@@ -191,6 +191,10 @@ router.post('/users/edit/all', auth, (req, res) => { //newdata, userid, userphot
 
 })
 
-//router.post('/users/edit/bio', )
+router.post('/users/edit/bio', auth, (req, res) => {
+    User.findByIdAndUpdate(req.userData.userId, {bio: req.body.newBio}).then(user => {
+        res.sendStatus(200);
+    })
+})
 
 module.exports = router;

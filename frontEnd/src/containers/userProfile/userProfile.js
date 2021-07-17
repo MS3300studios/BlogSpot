@@ -7,6 +7,7 @@ import Flash from '../../components/UI/flash';
 import TabSelector from './tabSelector/tabSelector';
 import getToken from '../../getToken';
 import FriendButton from './friendButton/friendButton';
+import Button from '../../components/UI/button';
 
 import { BsPencil } from 'react-icons/bs';
 import { GoPencil } from 'react-icons/go';
@@ -52,11 +53,14 @@ class UserProfile extends Component {
             friendBtnDataRdy: false,
             flashMessage: "",
             flashNotClosed: true,
+            editBio: userData.bio
         }
         this.handleMenuSelect.bind(this);
         this.flash.bind(this);
         this.setFriendRequestStatus.bind(this);
         this.friendButtonAction.bind(this);
+        this.editBioHandle.bind(this);
+        this.sendEditedBio.bind(this);
     }
 
     componentDidMount () {
@@ -122,6 +126,59 @@ class UserProfile extends Component {
             }
             else{
                 this.setState({isFriend: res.data.isFriend, friendBtnDataRdy: true});
+            }
+        })
+        .catch(error => {
+            console.log(error);
+        })
+    }
+
+    editBioHandle = (ev) => {
+        this.setState({editBio: ev.target.value});
+    }
+
+    sendEditedBio = () => {
+        axios({
+            method: 'post',
+            url: `http://localhost:3001/users/edit/bio`,
+            headers: {'Authorization': this.state.token},
+            data: {newBio: this.state.editBio}
+        })
+        .then((res)=>{
+            if(res.status===200){
+                let userData = {
+                    bio: this.state.editBio,
+                    createdAt: this.state.userData.createdAt,
+                    debugpass: this.state.userData.debugpass,
+                    email: this.state.userData.email,
+                    name: this.state.userData.name,
+                    nickname: this.state.userData.nickname,
+                    password: this.state.userData.password,
+                    photo: this.state.userData.photo,
+                    surname: this.state.userData.surname,
+                    updatedAt: this.state.userData.updatedAt,
+                    __v: this.state.userData.__v,
+                    _id: this.state.userData._id
+                }
+                
+                console.log(userData.bio)
+
+                let newUserData = JSON.stringify(userData);
+                let token = this.state.token;
+
+                let local = localStorage.getItem('userData')
+                if(local){
+                    localStorage.clear();
+                    localStorage.setItem('userData', newUserData);
+                    localStorage.setItem('token', token);
+                }else{
+                    sessionStorage.clear();
+                    sessionStorage.setItem('userData', newUserData);
+                    sessionStorage.setItem('token', token);
+                }
+
+                this.setState({editing: false});
+                return;
             }
         })
         .catch(error => {
@@ -354,9 +411,21 @@ class UserProfile extends Component {
                             <h1 className={classes.textNameH1}>{this.state.userData.name+" "+this.state.userData.surname}</h1>
                             <h2 className={classes.textNameH2}>@{this.state.userData.nickname}</h2>
                             <div className={classes.bio}>
-                                <p>{this.state.userData.bio}</p>
-                                {editIcon}
+                                {
+                                    this.state.editing ? (
+                                        <>
+                                            <textarea value={this.state.editBio} onChange={this.editBioHandle}/>
+                                        </>
+                                    ) : 
+                                    (<><p>{this.state.editBio}</p>{editIcon}</>)
+                                }
                             </div>
+                            {this.state.editing ? (
+                                <div className={classes.editBioBtnsContainer}>
+                                    <Button btnType="Continue" clicked={this.sendEditedBio}>Continue</Button>
+                                    <Button btnType="Cancel" clicked={()=>this.setState({editing: false})}>Cancel</Button>
+                                </div>
+                                ): null}
                         </div>
                         <div className={classes.rightPartInfoContainer}>
                             <NumberInfoContainer token={this.state.token} userId={this.state.userId} />
