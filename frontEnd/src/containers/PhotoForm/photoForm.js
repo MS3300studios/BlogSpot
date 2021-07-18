@@ -148,7 +148,7 @@ class PhotoForm extends Component {
                     </div>
                 </div>
                 {flash}
-                {this.state.redirect ? <Redirect to="/myActivity" /> : null}
+                {this.state.redirect ? <Redirect to="/user/activity" /> : null}
             </React.Fragment>
         );
     }

@@ -266,7 +266,7 @@ class EditUserProfile extends Component {
                 <button onClick={this.saveChangedData}>{this.state.loadingSave ? <Spinner darkgreen/> : "save changes"}</button>
             </div>
             {flash}
-            {this.state.redirectToDashboard ? <Redirect to="/" /> : null}
+            {this.state.redirectToDashboard ? <Redirect to={"/user/profile/?id="+this.state.userData._id} /> : null}
             </>
         );
     }

@@ -67,7 +67,7 @@ class UserPhoto extends Component {
                     <h1 className={classes.dropdownUsername}>{this.state.nickname}</h1>
                     <hr />
                     <a href={"/user/profile/?id="+this.state.userData._id} className={classes.myProfileLink}><p>My Profile</p></a>
-                    <Link to="/myActivity" className={classes.myProfileLink}><p>My activity</p></Link>
+                    <Link to="/user/activity" className={classes.myProfileLink}><p>My activity</p></Link>
                     <p onClick={() => this.setState({logOut: true})}>Log Out</p>
                     {this.state.logOut ? logout() : null}
                 </div>

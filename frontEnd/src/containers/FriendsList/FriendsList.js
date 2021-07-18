@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 
 import classes from './FriendsList.module.css';
 import SearchBar from '../../components/UI/searchBar';
-import Button from '../../components/UI/button'; 
+// import Button from '../../components/UI/button'; 
+import {IoMdPersonAdd} from 'react-icons/io';
 import FriendsListItem from './friendsListItem';
 import getToken from '../../getToken';
 import axios from 'axios';
+import AddUser from './addUser/addUser';
 
 import { connect } from 'react-redux';
 import * as actionTypes from '../../store/actions';
@@ -20,15 +22,12 @@ class FriendsList extends Component {
             token: token,
             friendsIds: [],
             fullFriends: this.props.fullFriends,
-            users: [],
-            searchedForUser: false,
             filterIn: "none",
             filterBy: "none",
-            userNotFound: false,
-            usedFilter: false
+            usedFilter: false,
+            showAddFriendCoponent: false
         }
 
-        this.searchNewUser.bind(this);
         this.filterSearchHandler.bind(this);
         this.filterFriends.bind(this);
     }
@@ -51,29 +50,29 @@ class FriendsList extends Component {
         })
     }
 
-    searchNewUser = () => {
-        //make call to API with field, and string.
-        axios({
-            method: 'post',
-            url: `http://localhost:3001/users/find`,
-            headers: {'Authorization': this.state.token},
-            data: {
-                field: this.state.filterIn,
-                payload: this.state.filterBy
-            }
-        })
-        .then((res)=>{
-            if(res.data === "user not found"){
-                this.setState({userNotFound: true, searchedForUser: true});
-            }
-            else{
-                this.setState({users: res.data.users, searchedForUser: true, userNotFound: false});
-            }
-        })
-        .catch(error => {
-            console.log(error);
-        })
-    }
+    // searchNewUser = () => {
+    //     //make call to API with field, and string.
+    //     axios({
+    //         method: 'post',
+    //         url: `http://localhost:3001/users/find`,
+    //         headers: {'Authorization': this.state.token},
+    //         data: {
+    //             field: this.state.filterIn,
+    //             payload: this.state.filterBy
+    //         }
+    //     })
+    //     .then((res)=>{
+    //         if(res.data === "user not found"){
+    //             this.setState({userNotFound: true, searchedForUser: true});
+    //         }
+    //         else{
+    //             this.setState({users: res.data.users, searchedForUser: true, userNotFound: false});
+    //         }
+    //     })
+    //     .catch(error => {
+    //         console.log(error);
+    //     })
+    // }
 
     filterSearchHandler = (option, string) => {
         this.setState({filterIn: option, filterBy: string, usedFilter: true});
@@ -147,31 +146,21 @@ class FriendsList extends Component {
                 <React.Fragment>
                     <h1>Ooops, you don't have a friend with that {this.state.filterIn}!</h1>
                     <hr />
-                    <p>Do you wish to search for a user with this {this.state.filterIn}?</p>
-                    <Button clicked={this.searchNewUser}>Search</Button>
                 </React.Fragment>
             );
         }
         return friendsRdy;
     }
 
-    render() { 
-        let bottomSearchNotice = (
-            <div className={classes.nameListContainer} style={{marginTop: "10px"}}>
-                <p>To add new friends, type their data in the search bar above and click search</p>
-                <Button clicked={this.searchNewUser}>Search</Button>
-            </div>
-        );
-
+    render() {
         let friends;
         if(this.state.friendsIds.length===0){
-            bottomSearchNotice = null;
+            //bottomSearchNotice = null;
             friends = (
                 <div className={classes.nameListContainer}>
                     <h1>You don't have any friends yet!</h1>
                     <hr />
-                    <p>To add new friends, type their data in the search bar above and click search</p>
-                    <Button clicked={this.searchNewUser}>Search</Button>
+                    <p>To add new friends click add friend button</p>
                 </div>
             );
         }
@@ -201,37 +190,40 @@ class FriendsList extends Component {
             );
         }
         
-        if(this.state.searchedForUser){
-            bottomSearchNotice = null;
-            friends = (
-                <div className={classes.nameListContainer}>
-                    {
-                        this.state.users.map((user, index) => (
-                            <FriendsListItem 
-                                id={user._id} 
-                                key={index}  
-                                friend={user}
-                            />
-                        ))
-                    }
-                </div>
-            );         
-        }
+        // if(this.state.searchedForUser){
+        //     //bottomSearchNotice = null;
+        //     friends = (
+        //         <div className={classes.nameListContainer}>
+        //             {
+        //                 this.state.users.map((user, index) => (
+        //                     <FriendsListItem 
+        //                         id={user._id} 
+        //                         key={index}  
+        //                         friend={user}
+        //                     />
+        //                 ))
+        //             }
+        //         </div>
+        //     );         
+        // }
 
         return (
             <div className={classes.mainContainer}>
+                <h1 className={classes.mainHeader}>your friends</h1>
                 <div className={classes.upperContainer}>
-                    <h1 className={classes.mainHeader}>your friends</h1>
                     <SearchBar 
                         placeholder="search friends by..."
                         selectedOption={this.filterSearchHandler}
                         clicked={this.filterSearchHandler}
                         selectValues={["nickname", "name", "surname", "id"]} 
-                        resetFilter={()=>{this.setState({filterIn: "none", filterBy: "none", searchedForUser: false, usedFilter: false})}}
+                        resetFilter={()=>{this.setState({filterIn: "none", filterBy: "none", usedFilter: false})}}
                     />
+                    <div className={classes.addUserIcon} onClick={()=>this.setState({showAddFriendCoponent: true})}>
+                        <IoMdPersonAdd size="2em" color="#0a42a4" />
+                    </div>
                 </div>
                 {friends}
-                {bottomSearchNotice}
+                {this.state.showAddFriendCoponent ? <AddUser closeAddUser={()=>this.setState({showAddFriendCoponent: false})} /> : null}
             </div>
         );
     }

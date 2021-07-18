@@ -61,6 +61,7 @@ const SearchBar = (props) => {
             </div>
             {select}
             <div className={classes.buttonConfinement}><Button clicked={resetState}>reset filter</Button></div>
+            {props.children}
         </div>
     );
 }

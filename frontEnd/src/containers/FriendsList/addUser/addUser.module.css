@@ -1,0 +1,27 @@
+.lightbox{
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 100;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.addUserContainer{
+    background-color: #82ca66;
+    margin: auto;
+    margin-top: 100px;
+    width: 50%;
+    border: 3px solid green;
+    padding: 10px;
+    border-radius: 10px;
+}
+.buttonMinifier{
+    margin-top: 36px;
+    height: 5px;
+}
+
+.closeIcon{
+    cursor: pointer;
+}
