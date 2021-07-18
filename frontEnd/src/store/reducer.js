@@ -10,6 +10,7 @@ const reducer = ( state = initialState, action ) => {
     switch ( action.type ) {
         case actionTypes.ADD_FRIEND:
             let arr = state.fullFriends;
+            console.log(state.fullFriends)
             arr.push(action.data);
             return {
                 ...state,

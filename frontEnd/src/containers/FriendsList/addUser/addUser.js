@@ -9,6 +9,7 @@ import Button from '../../../components/UI/button';
 import {AiOutlineSearch} from 'react-icons/ai';
 import {AiOutlineCloseCircle} from 'react-icons/ai';
 import FriendsListItem from '../friendsListItem';
+import Flash from '../../../components/UI/flash';
 
 class AddUser extends Component {
     constructor(props) {
@@ -19,35 +20,43 @@ class AddUser extends Component {
             userNotFound: false,
             filterIn: "none",
             filterBy: "none",
-            loading: false
+            loading: false,
+            flashMessage: "",
+            flashNotClosed: true,
         }
 
         this.searchNewUser.bind(this);
         this.filterSearchHandler.bind(this);
+        this.flash.bind(this);
     }
 
     searchNewUser = () => {
-        this.setState({loading: true});
-        axios({
-            method: 'post',
-            url: `http://localhost:3001/users/find`,
-            headers: {'Authorization': this.state.token},
-            data: {
-                field: this.state.filterIn,
-                payload: this.state.filterBy
-            }
-        })
-        .then((res)=>{
-            if(res.data === "user not found"){
-                this.setState({userNotFound: true, searched: true, loading: false});
-            }
-            else{
-                this.setState({users: res.data.users, searched: true, userNotFound: false, loading: false});
-            }
-        })
-        .catch(error => {
-            console.log(error);
-        })
+        if(this.state.filterBy!=="none" && this.state.filterIn!=="none"){
+            this.setState({loading: true});
+            axios({
+                method: 'post',
+                url: `http://localhost:3001/users/find`,
+                headers: {'Authorization': this.state.token},
+                data: {
+                    field: this.state.filterIn,
+                    payload: this.state.filterBy
+                }
+            })
+            .then((res)=>{
+                if(res.data === "user not found"){
+                    this.setState({userNotFound: true, searched: true, loading: false});
+                }
+                else{
+                    this.setState({users: res.data.users, searched: true, userNotFound: false, loading: false});
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            })
+        }
+        else{
+            this.flash("Write something in the search bar first!");
+        }
     }
 
 
@@ -60,41 +69,75 @@ class AddUser extends Component {
         }
     }
 
+    flash = (message) => {
+        this.setState({flashMessage: message});
+        
+        setTimeout(()=>{
+            this.setState({flashNotClosed: false});
+        }, 2000)
+
+        setTimeout(()=>{
+            this.setState({flashMessage: ""});
+        }, 3000);
+    
+        setTimeout(()=>{
+            this.setState({flashNotClosed: true});
+        }, 3000);
+    }
+
     render() { 
         let content = (
             <div className={classes2.nameListContainer}>
-                <h1>write in the searchbar in order to search</h1>
+                <h1>Write in the searchbar in order to search</h1>
                 <hr />
             </div>
         );
 
         if(this.state.searched){
-            content = (
-                <div className={classes2.nameListContainer}>
-                    {
-                        this.state.users.map((user, index) => {
-                            let flag = false;
-                            this.props.friendIds.forEach(friend => {
-                                console.log(friend._id)
-                                // console.log(user._id === friend._id)
-                                // console.log("user: "+user._id)
-                                // console.log("friend: "+friend._id)
-                                if(user._id === friend._id) flag = true;
+            if(this.state.users.length === 0){
+                content = (
+                    <div className={classes2.nameListContainer}>
+                        <h1>No user with this {this.state.filterIn} was found!</h1>
+                        <hr />
+                    </div>
+                );
+            }
+            else{
+                content = (
+                    <div className={classes2.nameListContainer}>
+                        {
+                            this.state.users.map((user, index) => {
+                                let flag = false;
+                                this.props.friendIds.forEach(friend => {
+                                    console.log(friend._id)
+                                    // console.log(user._id === friend._id)
+                                    // console.log("user: "+user._id)
+                                    // console.log("friend: "+friend._id)
+                                    if(user._id === friend._id) flag = true;
+                                })
+                                if(flag!==true){
+                                    return (
+                                        <FriendsListItem 
+                                            id={user._id} 
+                                            key={index}  
+                                            friend={user}
+                                        />
+                                    );
+                                }
+                                else return null;
                             })
-                            if(flag!==true){
-                                return (
-                                    <FriendsListItem 
-                                        id={user._id} 
-                                        key={index}  
-                                        friend={user}
-                                    />
-                                );
-                            }
-                            else return null;
-                        })
-                    }
-                </div>
-            );         
+                        }
+                    </div>
+                );  
+            }
+        }
+
+        let flash = null;
+        if(this.state.flashMessage && this.state.flashNotClosed){
+            flash = <Flash>{this.state.flashMessage}</Flash>
+        }
+        else if(this.state.flashMessage && this.state.flashNotClosed === false){
+            flash = <Flash close>{this.state.flashMessage}</Flash>
         }
 
         return (
@@ -104,11 +147,12 @@ class AddUser extends Component {
                     <AiOutlineCloseCircle size="2em" color="#0a42a4" />
                 </div>
                     <SearchBar 
+                        dontMove
                         placeholder="search users by..."
                         selectedOption={this.filterSearchHandler}
                         clicked={this.filterSearchHandler}
                         selectValues={["nickname", "name", "surname", "id"]} 
-                        resetFilter={()=>{this.setState({filterIn: "none", filterBy: "none", users: []})}}
+                        resetFilter={()=>{this.setState({filterIn: "none", filterBy: "none", users: [], searched: false})}}
                     >
                         <div className={classes.buttonMinifier}>
                             <Button className={classes.SearchBtnAddUser}>
@@ -132,6 +176,7 @@ class AddUser extends Component {
                     <h1 style={{color: "white"}}>{this.state.filterIn}</h1>
                     <h1 style={{color: "white"}}>searched: {this.state.searched ? "yes" : "no"}</h1>
                 </div>
+                {flash}
             </div>
         );
     }

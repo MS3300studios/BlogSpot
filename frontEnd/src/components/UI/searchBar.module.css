@@ -17,13 +17,15 @@
     padding-right: 10px;
 }
 .Input:focus{
-    width: 400px;
+    color: white;
+    background-color: #65a8a1;
 }
 .Input::placeholder{
     text-align: center;
 }
 .Input:focus::placeholder{
-    text-align: left;
+    /* text-align: left; */
+    color: white;
 }
 
 .Select{

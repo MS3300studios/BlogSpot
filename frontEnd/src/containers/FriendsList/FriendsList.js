@@ -30,6 +30,7 @@ class FriendsList extends Component {
 
         this.filterSearchHandler.bind(this);
         this.filterFriends.bind(this);
+        this.resetFilter.bind(this);
     }
 
     componentDidMount(){
@@ -50,6 +51,11 @@ class FriendsList extends Component {
         })
     }
 
+    resetFilter = () => {
+        this.props.redux_clear_fullfriends();
+        this.setState({filterIn: "none", filterBy: "none", usedFilter: false})
+    }
+
     filterSearchHandler = (option, string) => {
         if(string===""){
             this.setState({filterIn: option});
@@ -58,6 +64,7 @@ class FriendsList extends Component {
             this.setState({filterIn: option, filterBy: string, usedFilter: true});
         }
     }
+
 
     filterFriends = (filterIn, filterBy) => {
         let friendsJSX = null; //temporary array of all jsx friends, to be filtered and converted to friendsRdy
@@ -68,7 +75,7 @@ class FriendsList extends Component {
             return (
                 <div className={classes.nameListContainer}>
                     {
-                        this.state.friends.map((friend, index)=>{
+                        this.state.friendsIds.map((friend, index)=>{
                             return (
                                 <FriendsListItem 
                                     id={friend.friendId} 
@@ -132,12 +139,11 @@ class FriendsList extends Component {
             );
         }
         return friendsRdy;
-    }
+    } 
 
     render() {
         let friends;
         if(this.state.friendsIds.length===0){
-            //bottomSearchNotice = null;
             friends = (
                 <div className={classes.nameListContainer}>
                     <h1>You don't have any friends yet!</h1>
@@ -146,7 +152,6 @@ class FriendsList extends Component {
                 </div>
             );
         }
-        
         else if(this.state.usedFilter){
             friends = (
                 <div className={classes.nameListContainer}>
@@ -181,7 +186,7 @@ class FriendsList extends Component {
                         selectedOption={this.filterSearchHandler}
                         clicked={this.filterSearchHandler}
                         selectValues={["nickname", "name", "surname", "id"]} 
-                        resetFilter={()=>{this.setState({filterIn: "none", filterBy: "none", usedFilter: false})}}
+                        resetFilter={this.resetFilter}
                     />
                     <div className={classes.addUserIcon} onClick={()=>this.setState({showAddFriendCoponent: true})}>
                         <IoMdPersonAdd size="2em" color="#0a42a4" />
@@ -196,6 +201,8 @@ class FriendsList extends Component {
                         /> 
                         : null
                 }
+                <h1>used filter: {this.state.usedFilter?"yes":"no"}</h1>
+                <h1>full friends length: {this.state.fullFriends.length}</h1>
             </div>
         );
     }

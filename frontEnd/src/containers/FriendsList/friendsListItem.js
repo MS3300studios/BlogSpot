@@ -69,7 +69,7 @@ class FriendsListItem extends Component {
                 </div>
                 <hr/>
             </a>
-    )
+        )
     }
 }
  
