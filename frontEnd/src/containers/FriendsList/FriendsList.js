@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import classes from './FriendsList.module.css';
 import SearchBar from '../../components/UI/searchBar';
-// import Button from '../../components/UI/button'; 
+import Button from '../../components/UI/button'; 
 import {IoMdPersonAdd} from 'react-icons/io';
 import FriendsListItem from './friendsListItem';
 import getToken from '../../getToken';
@@ -50,32 +50,13 @@ class FriendsList extends Component {
         })
     }
 
-    // searchNewUser = () => {
-    //     //make call to API with field, and string.
-    //     axios({
-    //         method: 'post',
-    //         url: `http://localhost:3001/users/find`,
-    //         headers: {'Authorization': this.state.token},
-    //         data: {
-    //             field: this.state.filterIn,
-    //             payload: this.state.filterBy
-    //         }
-    //     })
-    //     .then((res)=>{
-    //         if(res.data === "user not found"){
-    //             this.setState({userNotFound: true, searchedForUser: true});
-    //         }
-    //         else{
-    //             this.setState({users: res.data.users, searchedForUser: true, userNotFound: false});
-    //         }
-    //     })
-    //     .catch(error => {
-    //         console.log(error);
-    //     })
-    // }
-
     filterSearchHandler = (option, string) => {
-        this.setState({filterIn: option, filterBy: string, usedFilter: true});
+        if(string===""){
+            this.setState({filterIn: option});
+        }
+        else{
+            this.setState({filterIn: option, filterBy: string, usedFilter: true});
+        }
     }
 
     filterFriends = (filterIn, filterBy) => {
@@ -146,6 +127,7 @@ class FriendsList extends Component {
                 <React.Fragment>
                     <h1>Ooops, you don't have a friend with that {this.state.filterIn}!</h1>
                     <hr />
+                    <p>Click here to add new friends: <Button clicked={()=>this.setState({showAddFriendCoponent: true})}>Search users</Button></p>
                 </React.Fragment>
             );
         }
@@ -189,23 +171,6 @@ class FriendsList extends Component {
                 </div>
             );
         }
-        
-        // if(this.state.searchedForUser){
-        //     //bottomSearchNotice = null;
-        //     friends = (
-        //         <div className={classes.nameListContainer}>
-        //             {
-        //                 this.state.users.map((user, index) => (
-        //                     <FriendsListItem 
-        //                         id={user._id} 
-        //                         key={index}  
-        //                         friend={user}
-        //                     />
-        //                 ))
-        //             }
-        //         </div>
-        //     );         
-        // }
 
         return (
             <div className={classes.mainContainer}>
@@ -223,7 +188,14 @@ class FriendsList extends Component {
                     </div>
                 </div>
                 {friends}
-                {this.state.showAddFriendCoponent ? <AddUser closeAddUser={()=>this.setState({showAddFriendCoponent: false})} /> : null}
+                {
+                    this.state.showAddFriendCoponent ?
+                        <AddUser  
+                            closeAddUser={()=>this.setState({showAddFriendCoponent: false})} 
+                            friendIds={this.state.friendsIds}    
+                        /> 
+                        : null
+                }
             </div>
         );
     }
