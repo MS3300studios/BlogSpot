@@ -5,7 +5,7 @@ const User = require('../models/user');
 const Friend = require('../models/friend');
 const FriendRequest = require('../models/friendRequest');
 const auth = require('../middleware/authorization');
-const { response } = require('express');
+// const { response } = require('express');
 
 router.use(express.json());
 
@@ -138,7 +138,36 @@ router.post('/deleteFriend', auth, (req, res) => {
         });
 });
 
-router.post('/getFriends', auth, (req, res) => {
+router.post('/checkFriendStatus', auth, (req, res) => {
+    Friend.exists({userId: req.userData.userId, friendId: req.body.friendId}, (err, exists) => {
+        Friend.exists({userId: req.body.friendId, friendId: req.userData.userId}, (err, exists2) => {
+            let reply = exists || exists2;
+            console.log('user is friend:', reply)
+            res.json({
+                isFriend: reply
+            });
+        })
+    })
+
+})
+
+router.post('/checkFriendRequest', auth, (req, res) => {
+    /*
+        first we check if the user has sent any requests: where he is the sender (userId)
+        and then we check if the user has received any requests: where he is the friend (friendId) that someone wants to have
+    */
+    FriendRequest.exists({userId: req.userData.userId, friendId: req.body.friendId}, (err, exists) => {
+        FriendRequest.exists({userId: req.body.friendId, friendId: req.userData.userId}, (err2, exists2) => {
+            res.json({
+                iSendRequest: exists,
+                iReceivedRequest: exists2
+            });
+        })
+    })
+})
+
+
+router.get('/friends/all', auth, (req, res) => {
     Friend.find({userId: req.userData.userId})
         .exec()
         .then(friends => {
@@ -171,9 +200,33 @@ router.post('/getFriends', auth, (req, res) => {
                     }
                 })
 
-                res.status(200).json({
-                    friends: friendsData
-                }) 
+                function getter(id){
+                    return new Promise((resolve, reject) => {
+                        User.findById(id)
+                            .exec()
+                            .then(user => {
+                                resolve(user);
+                            }) 
+                            .catch(error => {
+                                reject(error.code);
+                            })
+                    })
+                }
+
+                let fullFriendsArr = [];
+
+                async function looper(){
+                    for(let i=0; i<friendsData.length; i++){
+                        let fullFriend = await getter(friendsData[i].friendId);
+                        fullFriendsArr.push(fullFriend)
+                    }
+                    res.status(200).json({
+                        friends: fullFriendsArr
+                    }) 
+                }
+
+
+                looper();
             })
             .catch(err => {
                 console.log(err);
@@ -186,32 +239,5 @@ router.post('/getFriends', auth, (req, res) => {
         })
 })
 
-router.post('/checkFriendStatus', auth, (req, res) => {
-    Friend.exists({userId: req.userData.userId, friendId: req.body.friendId}, (err, exists) => {
-        Friend.exists({userId: req.body.friendId, friendId: req.userData.userId}, (err, exists2) => {
-            let reply = exists || exists2;
-            console.log('user is friend:', reply)
-            res.json({
-                isFriend: reply
-            });
-        })
-    })
-
-})
-
-router.post('/checkFriendRequest', auth, (req, res) => {
-    /*
-        first we check if the user has sent any requests: where he is the sender (userId)
-        and then we check if the user has received any requests: where he is the friend (friendId) that someone wants to have
-    */
-    FriendRequest.exists({userId: req.userData.userId, friendId: req.body.friendId}, (err, exists) => {
-        FriendRequest.exists({userId: req.body.friendId, friendId: req.userData.userId}, (err2, exists2) => {
-            res.json({
-                iSendRequest: exists,
-                iReceivedRequest: exists2
-            });
-        })
-    })
-})
 
 module.exports = router;

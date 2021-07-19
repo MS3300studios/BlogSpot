@@ -50,3 +50,9 @@ Content-Type: application/json
     "friendId": "609ce3e1f3927449a80fa096",
 }
 
+###
+
+GET http://localhost:3001/friends/all
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Implbm55c2FuQHRlc3QucGwiLCJ1c2VySWQiOiI2MDljZTUwNmYzOTI3NDQ5YTgwZmEwOWQiLCJpYXQiOjE2MjY3MDQwMDUsImV4cCI6MTYyNjcwNzYwNX0.BBhQ4FJ92Ne6qqSOV-PDM3dNzqpJ58mpBPWE08D5dnc
+
+
