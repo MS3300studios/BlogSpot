@@ -34,7 +34,6 @@ class FriendsList extends Component {
     }
 
     componentDidMount(){
-        this.props.redux_clear_fullfriends();
         axios({
             method: 'post',
             url: 'http://localhost:3001/getFriends',
