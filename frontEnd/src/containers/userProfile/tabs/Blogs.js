@@ -83,30 +83,36 @@ class BlogsTab extends Component {
         )
     }
 
-    render() { 
-        let blogs = this.state.blogs.map((el, index)=>(
-            <div className={classes.center} key={index}>
-                <div key={index} className={classes.smallBlogContainer}>
-                    <div className={classes.upperSegment}>
-
-                        <div className={classes.h1Container}>
-                            <h1><Link to={"/post/?id="+el._id}>{el.title}</Link></h1>
+    render() {
+        let blogs = null;
+        if(this.state.blogs.length === 0 ) blogs = <h1>No blogs were added yet!</h1>
+        else{
+            blogs = this.state.blogs.map((el, index)=>{
+                return (
+                    <div className={classes.center} key={index}>
+                        <div key={index} className={classes.smallBlogContainer}>
+                            <div className={classes.upperSegment}>
+        
+                                <div className={classes.h1Container}>
+                                    <h1><Link to={"/post/?id="+el._id}>{el.title}</Link></h1>
+                                </div>
+                                <LikesCommentsNumbers objectId={el._id} userId={this.state.userId} comments objectIsBlog/>
+                            </div>
+        
+        
+                            <p className={classes.date}>{formattedCurrentDate(el.createdAt)}</p>
+        
+                            <div className={classes.content}>
+                                <p>
+                                    {el.content}
+                                </p>
+                            </div>
+                            <ShowComments blogId={el._id}/>
                         </div>
-                        <LikesCommentsNumbers objectId={el._id} userId={this.state.userId} comments objectIsBlog/>
                     </div>
-
-
-                    <p className={classes.date}>{formattedCurrentDate(el.createdAt)}</p>
-
-                    <div className={classes.content}>
-                        <p>
-                            {el.content}
-                        </p>
-                    </div>
-                    <ShowComments blogId={el._id}/>
-                </div>
-            </div>
-        ));
+                )
+            });
+        }
 
         return (
             <React.Fragment>

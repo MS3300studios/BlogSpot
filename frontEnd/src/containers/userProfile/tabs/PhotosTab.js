@@ -69,29 +69,33 @@ class PhotosTab extends Component {
             if(photo._id === this.state.bigPhotoId) bigPhotoToSend = photo;
         })
 
+        let photos = null;
+        if(this.state.photos.length === 0) photos = <h1>No photos were added yet!</h1>
+        else{
+            photos = this.state.photos.map((photo, index)=>{
+                return (
+                    <div className={classes.panel} key={index}>
+                        <img src={photo.data} alt={photo.description}/>
+                        <div className={classes.expandIconBackground} onClick={()=>this.setState({bigPhotoId: photo._id})}>
+                            <BsArrowsAngleExpand size="1.5em" color="white" />
+                        </div>
+                        <div className={classes.photoData}>
+                            <p>likes: {photo.likes.length}</p>
+                            <p>dislikes: {photo.dislikes.length}</p>
+                            <p>comments: {photo.comments.length}</p>
+                        </div>
+                    </div>
+                )
+            })
+        }
+
         return (
             <div className={classes.center}>
                 {
                     this.state.loading ? <Spinner darkgreen/> : (
                         <div className={classes.photosTabContainer}>
                             {this.state.bigPhotoId ? <PhotoView photo={bigPhotoToSend} closeBigPhoto={this.bigPhotoWasClosed}/> : null}
-                            {
-                                this.state.photos.map((photo, index)=>{
-                                    return (
-                                        <div className={classes.panel} key={index}>
-                                            <img src={photo.data} alt={photo.description}/>
-                                            <div className={classes.expandIconBackground} onClick={()=>this.setState({bigPhotoId: photo._id})}>
-                                                <BsArrowsAngleExpand size="1.5em" color="white" />
-                                            </div>
-                                            <div className={classes.photoData}>
-                                                <p>likes: {photo.likes.length}</p>
-                                                <p>dislikes: {photo.dislikes.length}</p>
-                                                <p>comments: {photo.comments.length}</p>
-                                            </div>
-                                        </div>
-                                    )
-                                })
-                            }
+                            {photos}
                         </div>  
                     )
                 }
