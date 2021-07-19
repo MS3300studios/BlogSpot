@@ -9,9 +9,6 @@ import getToken from '../../getToken';
 import axios from 'axios';
 import AddUser from './addUser/addUser';
 
-import { connect } from 'react-redux';
-import * as actionTypes from '../../store/actions';
-
 class FriendsList extends Component {
     constructor(props) {
         super(props);
@@ -20,12 +17,11 @@ class FriendsList extends Component {
 
         this.state = {
             token: token,
-            friendsIds: [],
-            fullFriends: this.props.fullFriends,
-            filterIn: "none",
-            filterBy: "none",
-            usedFilter: false,
-            showAddFriendCoponent: false
+            friends: [],
+            filterIn: "",
+            filterBy: "",
+            showAddFriendCoponent: false,
+            loading: true
         }
 
         this.filterSearchHandler.bind(this);
@@ -35,13 +31,14 @@ class FriendsList extends Component {
 
     componentDidMount(){
         axios({
-            method: 'post',
-            url: 'http://localhost:3001/getFriends',
+            method: 'get',
+            url: 'http://localhost:3001/friends/all',
             headers: {'Authorization': this.state.token},
         })
         .then((res)=>{
             if(res.status===200){
-                this.setState({friendsIds: res.data.friends});
+                console.log(res.data)
+                this.setState({friends: res.data.friends, loading: false});
                 return;
             }
         })
@@ -51,8 +48,7 @@ class FriendsList extends Component {
     }
 
     resetFilter = () => {
-        this.props.redux_clear_fullfriends();
-        this.setState({filterIn: "none", filterBy: "none", usedFilter: false})
+        this.setState({filterIn: "", filterBy: ""})
     }
 
     filterSearchHandler = (option, string) => {
@@ -60,75 +56,29 @@ class FriendsList extends Component {
             this.setState({filterIn: option});
         }
         else{
-            this.setState({filterIn: option, filterBy: string, usedFilter: true});
+            this.setState({filterIn: option, filterBy: string});
         }
     }
 
 
     filterFriends = (filterIn, filterBy) => {
-        let friendsJSX = null; //temporary array of all jsx friends, to be filtered and converted to friendsRdy
-        let friendsRdy = null;
-        
-        //default filter: no filter applied
-        if(filterIn==="none" || filterBy==="none"){
-            return (
-                <div className={classes.nameListContainer}>
-                    {
-                        this.state.friendsIds.map((friend, index)=>{
-                            return (
-                                <FriendsListItem 
-                                    id={friend.friendId} 
-                                    key={index}  
-                                    getData
-                                />
-                            )
-                        })
-                    }
-                </div>
-            )
-        }
-        else{
-            friendsJSX = this.state.fullFriends.map((friend, index)=>{
-                return (
-                    <FriendsListItem 
-                        id={friend._id} 
-                        key={index} 
-                        name={friend.name}
-                        nickname={friend.nickname}
-                        surname={friend.surname}
-                        friend={friend}
-                    />
-                )
-            });
-            if(filterIn==="nickname"){
-                //eslint-disable-next-line
-                friendsRdy = friendsJSX.filter((friend)=>{
-                    if(friend.props.nickname.includes(filterBy)){
-                        return friend;
-                    }
-                })            
-            }
+        let friendsJSX = []; //temporary array of all jsx friends, to be filtered and converted to friendsRdy
+        let friendsRdy = [];
     
-            else if(filterIn==="name"){
-                // eslint-disable-next-line
-                friendsRdy = friendsJSX.filter((friend)=>{
-                    if(friend.props.name.includes(filterBy)){
-                        return friend;
-                    }
-                })
-            }
+        friendsJSX = this.state.friends.map((friend, index)=>{
+            return (
+                <FriendsListItem 
+                    id={friend._id} 
+                    key={index} 
+                    name={friend.name}
+                    nickname={friend.nickname}
+                    surname={friend.surname}
+                    photo={friend.photo}
+                />
+            )
+        });
 
-            else if(filterIn==="surname"){
-                // eslint-disable-next-line
-                friendsRdy = friendsJSX.filter((friend)=>{
-                    if(friend.props.surname.includes(filterBy)){
-                        return friend;
-                    }
-                })
-            }
-        }
-
-        if(friendsRdy.length === 0){
+        if(friendsJSX.length === 0){
             friendsRdy = (
                 <React.Fragment>
                     <h1>Ooops, you don't have a friend with that {this.state.filterIn}!</h1>
@@ -137,12 +87,46 @@ class FriendsList extends Component {
                 </React.Fragment>
             );
         }
+        else if(filterBy===""){
+            friendsRdy = friendsJSX;
+        }
+        else{
+            switch(filterIn){
+                case "nickname":
+                    friendsRdy = friendsJSX.filter((friend)=>{
+                        if(friend.props.nickname.includes(filterBy)){
+                            return true;
+                        }
+                        else return false;
+                    });
+                    break;
+                case "name":
+                    friendsRdy = friendsJSX.filter((friend)=>{
+                        if(friend.props.name.includes(filterBy)){
+                            return true;
+                        }
+                        else return false;
+                    }); 
+                    break;
+                case "surname": 
+                    friendsRdy = friendsJSX.filter((friend)=>{
+                        if(friend.props.surname.includes(filterBy)){
+                            return true;
+                        }
+                        else return false;
+                    })
+                    break;
+                default: friendsRdy = friendsJSX;
+                    break;
+            }
+        }
+
         return friendsRdy;
     } 
 
     render() {
         let friends;
-        if(this.state.friendsIds.length===0){
+        if(this.state.friends.length===0){
             friends = (
                 <div className={classes.nameListContainer}>
                     <h1>You don't have any friends yet!</h1>
@@ -151,27 +135,10 @@ class FriendsList extends Component {
                 </div>
             );
         }
-        else if(this.state.usedFilter){
-            friends = (
-                <div className={classes.nameListContainer}>
-                    {this.filterFriends(this.state.filterIn, this.state.filterBy)}
-                </div>
-            );
-        }
         else{
             friends = (
                 <div className={classes.nameListContainer}>
-                    {
-                        this.state.friendsIds.map((friend, index)=>{
-                            return (
-                                <FriendsListItem 
-                                    id={friend.friendId} 
-                                    key={index}  
-                                    getData
-                                />
-                            )
-                        })
-                    }
+                    {this.filterFriends(this.state.filterIn, this.state.filterBy)}
                 </div>
             );
         }
@@ -200,24 +167,9 @@ class FriendsList extends Component {
                         /> 
                         : null
                 }
-                <h1>used filter: {this.state.usedFilter?"yes":"no"}</h1>
-                <h1>full friends length: {this.state.fullFriends.length}</h1>
             </div>
         );
     }
 }
- 
-const mapStateToProps = state => {
-    return {
-        fullFriends: state.fullFriends
-    };
-}
 
-const mapDispatchToProps = dispatch => {
-    return {
-        redux_check_store: () => dispatch({type: actionTypes.CHECK_STORE}),
-        redux_clear_fullfriends: () => dispatch({type: actionTypes.CLEAR_FULLFRIENDS})
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(FriendsList);
+export default FriendsList;

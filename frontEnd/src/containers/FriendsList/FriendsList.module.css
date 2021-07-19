@@ -36,6 +36,7 @@
     align-items: center;
 }
 .namesContainer{
+    margin-top: 5px;
     width: 80%;
 }
 .listElement h1{
