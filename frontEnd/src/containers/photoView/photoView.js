@@ -11,7 +11,6 @@ import Button from '../../components/UI/button';
 import formattedCurrentDate from '../../formattedCurrentDate';
 import UserPhoto from '../../components/UI/userphoto';
 import Spinner from '../../components/UI/spinner';
-// import PhotoComment from './photoComment/photoComment';
 import { RiSendPlaneFill, RiSendPlaneLine } from 'react-icons/ri' 
 import Flash from '../../components/UI/flash';
 
@@ -144,6 +143,8 @@ class photoView extends Component {
     }
 
     deleteCommentHandler = (index) => {
+        console.log(index)
+        console.log(this.state.comments.length-1)
         axios({
             method: 'post',
             url: `http://localhost:3001/photo/comment/delete`,
@@ -182,7 +183,6 @@ class photoView extends Component {
     }
 
     getPhoto = () => {
-        
         let editingComments = [];
         let comments = this.props.photo.comments.map((comment, index) => {
             editingComments.push(false);
@@ -196,7 +196,8 @@ class photoView extends Component {
             comments: comments, 
             commentsEditing: editingComments,
             likeFill: fills.likeFill, 
-            dislikeFill: fills.dislikeFill});
+            dislikeFill: fills.dislikeFill
+        });
     }
 
     checkFills = (photo) => {
@@ -237,8 +238,10 @@ class photoView extends Component {
                 }
             })
             .then((res)=>{
+                console.log(res.data)
                 if(res.status===201){
-                    this.setState({photo: res.data.photo, newCommentContent: "", socialStateWasChanged: true})
+                    this.indexComments();
+                    this.setState({photo: res.data.photo, comments: res.data.photo.comments, newCommentContent: "", socialStateWasChanged: true})
                     return;
                 }
             })
@@ -266,6 +269,7 @@ class photoView extends Component {
 
         return (
             <div className={classes.backdrop}>
+    <h1 style={{color: "white"}}>comments length: {this.state.comments.length}</h1>
                 <div className={classes.photoViewContainer}>
                     <Button className={classes.CloseButton} clicked={()=>this.props.closeBigPhoto(this.state.socialStateWasChanged)}>Close</Button>
                         <div className={classes.imgContainer}>
