@@ -53,7 +53,7 @@ class UserProfile extends Component {
             friendBtnDataRdy: false,
             flashMessage: "",
             flashNotClosed: true,
-            editBio: userData.bio
+            editBio: ""
         }
         this.handleMenuSelect.bind(this);
         this.flash.bind(this);
@@ -78,7 +78,7 @@ class UserProfile extends Component {
                     bio: res.data.user.bio,
                     createdAt: res.data.user.createdAt
                 };
-                this.setState({userData: user});
+                this.setState({userData: user, editBio: user.bio});
             })
             .catch(error => {
                 console.log(error);
@@ -372,20 +372,23 @@ class UserProfile extends Component {
 
     render() { 
 
-        let editIcon = (
-            <div className={classes.editIconContainer}>
-                <div 
-                    className={classes.editIcon}
-                    onMouseDown={(e)=>{
-                        this.setState({editPressed: true, editing: true})
-                        // this.sendEditedBio(e, this.state.content)
-                    }}
-                    onMouseUp={()=>{this.setState({editPressed: false})}} 
-                >
-                    {this.state.editPressed ? <GoPencil size="1.5em" color="#0a42a4" /> : <BsPencil size="1.5em" color="#0a42a4" /> } 
+        let editIcon = null;
+        if(this.state.userLogged){
+            editIcon = (
+                <div className={classes.editIconContainer}>
+                    <div 
+                        className={classes.editIcon}
+                        onMouseDown={(e)=>{
+                            this.setState({editPressed: true, editing: true})
+                            // this.sendEditedBio(e, this.state.content)
+                        }}
+                        onMouseUp={()=>{this.setState({editPressed: false})}} 
+                    >
+                        {this.state.editPressed ? <GoPencil size="1.5em" color="#0a42a4" /> : <BsPencil size="1.5em" color="#0a42a4" /> } 
+                    </div>
                 </div>
-            </div>
-        )
+            );
+        }
 
         let userImg = <Spinner darkgreen />
         if(this.state.userPhoto){

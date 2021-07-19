@@ -175,7 +175,7 @@ class FriendsList extends Component {
                     this.state.showAddFriendCoponent ?
                         <AddUser
                             closeAddUser={()=>this.setState({showAddFriendCoponent: false})} 
-                            friendIds={this.state.friendsIds}    
+                            friendIds={this.state.friends}    
                         /> 
                         : null
                 }
