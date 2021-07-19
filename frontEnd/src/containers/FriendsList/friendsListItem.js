@@ -2,7 +2,6 @@ import React from 'react';
 import classes from './FriendsList.module.css';
 
 const friendsListItem = (props) => {
-    console.log(props)
     return (
         <a href={"/user/profile/?id="+props.id} key={props.index} className={classes.containerLink}>
             <div className={classes.listElement}>

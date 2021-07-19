@@ -8,15 +8,18 @@ import FriendsListItem from './friendsListItem';
 import getToken from '../../getToken';
 import axios from 'axios';
 import AddUser from './addUser/addUser';
+import getUserData from '../../getUserData';
 
 class FriendsList extends Component {
     constructor(props) {
         super(props);
 
         let token = getToken();
+        let userData = getUserData();
 
         this.state = {
             token: token,
+            userData: userData,
             friends: [],
             filterIn: "",
             filterBy: "",
@@ -30,14 +33,19 @@ class FriendsList extends Component {
     }
 
     componentDidMount(){
+        let id = this.state.userData._id;
+        if(this.props.profileViewComponent){
+            let temp = this.props.profileViewComponent;
+            id = temp.substr(4, temp.length);
+            console.log(id)
+        }
         axios({
             method: 'get',
-            url: 'http://localhost:3001/friends/all',
+            url: `http://localhost:3001/friends/all/${id}`,
             headers: {'Authorization': this.state.token},
         })
         .then((res)=>{
             if(res.status===200){
-                console.log(res.data)
                 this.setState({friends: res.data.friends, loading: false});
                 return;
             }
@@ -145,7 +153,7 @@ class FriendsList extends Component {
 
         return (
             <div className={classes.mainContainer}>
-                <h1 className={classes.mainHeader}>your friends</h1>
+                <h1 className={classes.mainHeader}>{this.props.profileViewComponent ? null : "your friends"}</h1>
                 <div className={classes.upperContainer}>
                     <SearchBar 
                         placeholder="search friends by..."
@@ -154,14 +162,18 @@ class FriendsList extends Component {
                         selectValues={["nickname", "name", "surname", "id"]} 
                         resetFilter={this.resetFilter}
                     />
-                    <div className={classes.addUserIcon} onClick={()=>this.setState({showAddFriendCoponent: true})}>
-                        <IoMdPersonAdd size="2em" color="#0a42a4" />
-                    </div>
+                    {
+                        this.props.profileViewComponent ? null : (
+                            <div className={classes.addUserIcon} onClick={()=>this.setState({showAddFriendCoponent: true})}>
+                                <IoMdPersonAdd size="2em" color="#0a42a4" />
+                            </div>
+                        )
+                    }
                 </div>
                 {friends}
                 {
                     this.state.showAddFriendCoponent ?
-                        <AddUser  
+                        <AddUser
                             closeAddUser={()=>this.setState({showAddFriendCoponent: false})} 
                             friendIds={this.state.friendsIds}    
                         /> 

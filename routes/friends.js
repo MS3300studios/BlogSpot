@@ -167,7 +167,7 @@ router.post('/checkFriendRequest', auth, (req, res) => {
 })
 
 
-router.get('/friends/all', auth, (req, res) => {
+router.get('/friends/all/:id', auth, (req, res) => {
     Friend.find({userId: req.userData.userId})
         .exec()
         .then(friends => {

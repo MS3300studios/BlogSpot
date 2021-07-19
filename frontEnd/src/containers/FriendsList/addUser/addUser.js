@@ -171,11 +171,6 @@ class AddUser extends Component {
                     </SearchBar>
                     {content}
                 </div>
-                <div style={{position: "absolute", top: "0px", left: "0px"}}>
-                    <h1 style={{color: "white"}}>{this.state.filterBy}</h1>
-                    <h1 style={{color: "white"}}>{this.state.filterIn}</h1>
-                    <h1 style={{color: "white"}}>searched: {this.state.searched ? "yes" : "no"}</h1>
-                </div>
                 {flash}
             </div>
         );
