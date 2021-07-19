@@ -9,6 +9,7 @@ import getToken from '../../getToken';
 import axios from 'axios';
 import AddUser from './addUser/addUser';
 import getUserData from '../../getUserData';
+import Spinner from '../../components/UI/spinner';
 
 class FriendsList extends Component {
     constructor(props) {
@@ -154,31 +155,37 @@ class FriendsList extends Component {
 
         return (
             <div className={classes.mainContainer}>
-                <h1 className={classes.mainHeader}>{this.props.profileViewComponent ? null : "your friends"}</h1>
-                <div className={classes.upperContainer}>
-                    <SearchBar 
-                        placeholder="search friends by..."
-                        selectedOption={this.filterSearchHandler}
-                        clicked={this.filterSearchHandler}
-                        selectValues={["nickname", "name", "surname", "id"]} 
-                        resetFilter={this.resetFilter}
-                    />
-                    {
-                        this.props.profileViewComponent ? null : (
-                            <div className={classes.addUserIcon} onClick={()=>this.setState({showAddFriendCoponent: true})}>
-                                <IoMdPersonAdd size="2em" color="#0a42a4" />
-                            </div>
-                        )
-                    }
-                </div>
-                {friends}
                 {
-                    this.state.showAddFriendCoponent ?
-                        <AddUser
-                            closeAddUser={()=>this.setState({showAddFriendCoponent: false})} 
-                            friends={this.state.friends}    
-                        /> 
-                        : null
+                    this.state.loading ? <Spinner /> : (
+                        <>
+                            <h1 className={classes.mainHeader}>{this.props.profileViewComponent ? null : "your friends"}</h1>
+                            <div className={classes.upperContainer}>
+                                <SearchBar 
+                                    placeholder="search friends by..."
+                                    selectedOption={this.filterSearchHandler}
+                                    clicked={this.filterSearchHandler}
+                                    selectValues={["nickname", "name", "surname", "id"]} 
+                                    resetFilter={this.resetFilter}
+                                />
+                                {
+                                    this.props.profileViewComponent ? null : (
+                                        <div className={classes.addUserIcon} onClick={()=>this.setState({showAddFriendCoponent: true})}>
+                                            <IoMdPersonAdd size="2em" color="#0a42a4" />
+                                        </div>
+                                    )
+                                }
+                            </div>
+                            {friends}
+                            {
+                                this.state.showAddFriendCoponent ?
+                                    <AddUser
+                                        closeAddUser={()=>this.setState({showAddFriendCoponent: false})} 
+                                        friends={this.state.friends}    
+                                    /> 
+                                    : null
+                            }
+                        </>
+                    )
                 }
             </div>
         );
