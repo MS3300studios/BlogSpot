@@ -109,18 +109,17 @@ class AddUser extends Component {
                             this.state.users.map((user, index) => {
                                 let flag = false;
                                 this.props.friends.forEach(friend => {
-                                    console.log(friend._id)
-                                    // console.log(user._id === friend._id)
-                                    // console.log("user: "+user._id)
-                                    // console.log("friend: "+friend._id)
                                     if(user._id === friend._id) flag = true;
                                 })
                                 if(flag!==true){
                                     return (
                                         <FriendsListItem 
-                                            id={user._id} 
                                             key={index}  
-                                            friend={user}
+                                            id={user._id} 
+                                            name={user.name}
+                                            nickname={user.nickname}
+                                            surname={user.surname}
+                                            photo={user.photo}
                                         />
                                     );
                                 }
