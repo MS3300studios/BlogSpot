@@ -86,16 +86,7 @@ class FriendsList extends Component {
             )
         });
 
-        if(friendsJSX.length === 0){
-            friendsRdy = (
-                <React.Fragment>
-                    <h1>Ooops, you don't have a friend with that {this.state.filterIn}!</h1>
-                    <hr />
-                    <p>Click here to add new friends: <Button clicked={()=>this.setState({showAddFriendCoponent: true})}>Search users</Button></p>
-                </React.Fragment>
-            );
-        }
-        else if(filterBy===""){
+        if(filterBy===""){
             friendsRdy = friendsJSX;
         }
         else{
@@ -127,6 +118,16 @@ class FriendsList extends Component {
                 default: friendsRdy = friendsJSX;
                     break;
             }
+        }
+
+        if(friendsRdy.length === 0){
+            friendsRdy = (
+                <React.Fragment>
+                    <h1>Ooops, you don't have a friend with that {this.state.filterIn}!</h1>
+                    <hr />
+                    <p>Click here to add new friends: <Button clicked={()=>this.setState({showAddFriendCoponent: true})}>Search users</Button></p>
+                </React.Fragment>
+            );
         }
 
         return friendsRdy;
@@ -175,7 +176,7 @@ class FriendsList extends Component {
                     this.state.showAddFriendCoponent ?
                         <AddUser
                             closeAddUser={()=>this.setState({showAddFriendCoponent: false})} 
-                            friendIds={this.state.friends}    
+                            friends={this.state.friends}    
                         /> 
                         : null
                 }

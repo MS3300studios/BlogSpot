@@ -108,7 +108,7 @@ class AddUser extends Component {
                         {
                             this.state.users.map((user, index) => {
                                 let flag = false;
-                                this.props.friendIds.forEach(friend => {
+                                this.props.friends.forEach(friend => {
                                     console.log(friend._id)
                                     // console.log(user._id === friend._id)
                                     // console.log("user: "+user._id)
