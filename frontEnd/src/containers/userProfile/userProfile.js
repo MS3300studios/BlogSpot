@@ -53,7 +53,7 @@ class UserProfile extends Component {
             friendBtnDataRdy: false,
             flashMessage: "",
             flashNotClosed: true,
-            editBio: ""
+            editBio: userData.bio
         }
         this.handleMenuSelect.bind(this);
         this.flash.bind(this);
@@ -84,6 +84,7 @@ class UserProfile extends Component {
                 console.log(error);
             })
         }
+
         let getData = new Promise((resolve, reject) => {
             axios({
                 method: 'get',
