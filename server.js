@@ -21,13 +21,25 @@ const server = app.listen(PORT, ()=>{
     console.log(chalk.green(`server is running on port ${PORT}`));
 });
 
-
+const corsOptions = {
+    cors: true,
+    origins: ["http://localhost:3000"]
+}
 //creating web socket
-const io = socket(server);
+const io = socket(server, corsOptions);
 
 io.on('connection', (socket) => {
-    socket.on('message', ({userName, content, createdAt}) => {
-        io.emit('message', {userName, content, createdAt});
-    });
+    socket.on('join', ({name}) => {
+        console.log(`${name} joined the server`)
+        socket.emit('message', {authorName: 'Admin', content: `${name} joined the server`, hour: '00:03'})
+    })
+
+    socket.on('sendMessage', message => {
+        socket.emit('message', message)
+    })
+
+    socket.on('disconnect', ()=>{
+        console.log("user disconnected")
+    })
 });
 //each user gets his own socket
