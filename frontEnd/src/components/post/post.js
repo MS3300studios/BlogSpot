@@ -29,7 +29,7 @@ const Post = (props) => {
                 console.log(error);
             })
         }
-    }, [])
+    }, [props.socialBoard, props.author, token])
 
     return (
         <div className={classes.Card}>

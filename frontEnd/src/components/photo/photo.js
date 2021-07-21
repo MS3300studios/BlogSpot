@@ -28,7 +28,7 @@ const Photo = (props) => {
                 console.log(error);
             })
         }
-    }, [])
+    }, [props.socialBoard, props.photo.authorId, token])
 
     let className = classes.photoContainer;
     if(props.socialBoard) className = classes.photoContainerSmall

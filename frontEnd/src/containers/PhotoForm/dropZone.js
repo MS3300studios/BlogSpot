@@ -5,7 +5,7 @@ import classes from './dropZone.module.css';
 const DropZone = (props) => {
     const onDrop = useCallback(acceptedFiles => {
         props.photoSubmit(acceptedFiles)
-    }, [])
+    }, [props])
     const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
     
     let dropZoneClass;

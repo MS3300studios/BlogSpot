@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import classes from '../userProfile.module.css';
 
 import { FaUserFriends } from 'react-icons/fa';
-import { AiFillPlusCircle } from 'react-icons/ai'; //, AiOutlinePlusCircle 
+//import { AiFillPlusCircle } from 'react-icons/ai'; //, AiOutlinePlusCircle 
 import { BiPhotoAlbum, BiPaperPlane } from 'react-icons/bi';
 
 import Spinner from '../../../components/UI/spinner';

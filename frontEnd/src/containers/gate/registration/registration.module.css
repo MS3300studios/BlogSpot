@@ -45,6 +45,7 @@
 .Form input:focus{
     -webkit-box-shadow: 0px 0px 18px 3px #FFFFFF; 
     box-shadow: 0px 0px 18px 3px #FFFFFF;
+    outline: none;
 }
   
 .buttonContainer{

@@ -59,6 +59,7 @@
 .Form input:focus{
   -webkit-box-shadow: -2px -1px 20px 13px rgba(255,255,255,0.6); 
   box-shadow: -2px -1px 20px 13px rgba(255,255,255,0.6);
+  outline: none;
 }
 
 .Form .inputEmail{
@@ -75,6 +76,7 @@
 
 .Form .inputKeepLoggedIn:focus{
   box-shadow: none;
+  outline: none;
 }
 
 .buttonContainer{
