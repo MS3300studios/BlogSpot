@@ -16,6 +16,7 @@ class Conversation extends Component {
             messages: [
                 { authorName: 'Jenny', content: 'I love ice cream lorem ipsum dolor sit amewwwwwwwwwwwwwwwwssssssssssswwwwwwt', hour: '23:03' },
                 { authorName: 'Nick', content: 'I lovwdadwadadwadwadadadwadwwaswwwwwwt', hour: '12:03' },
+                { authorName: 'Admin', content: 'User joined the chat', hour: '12:03' },
             ],
             message: "",
             partner: null,
@@ -25,20 +26,23 @@ class Conversation extends Component {
     }
 
     componentDidMount(){
-        socket = io('http://localhost:3001');
-        socket.emit('join', { name: "nick"})
-        socket.on('message', message => {
-            let prevMessages = this.state.messages;
-            prevMessages.push(message)
-            this.setState({messages: prevMessages})
-        })
+        // socket = io('http://localhost:3001');
+        // socket.emit('join', { name: "nick"})
+        // socket.on('message', message => {
+        //     let prevMessages = this.state.messages;
+        //     prevMessages.push(message)
+        //     this.setState({messages: prevMessages})
+        // })
     }   
 
     sendMessage = (e) => {
         e.preventDefault();
         if(this.state.message === "") return null
         else {
-            socket.emit('sendMessage', { authorName: this.state.user.name, content: this.state.message, hour: '00:10' })
+            let prevMessages = this.state.messages;
+            prevMessages.push({authorName: 'Jenny', content: this.state.message, hour: '12:03'})
+            this.setState({messages: prevMessages})
+            //socket.emit('sendMessage', { authorName: this.state.user.name, content: this.state.message, hour: '00:10' })
         }
         this.setState({message: ""});
     }
@@ -52,13 +56,18 @@ class Conversation extends Component {
                             this.state.messages.map((message, index) => {
                                 let messageClassNames = [classes.message, classes.partnerColor].join(" ");
                                 if(message.authorName === this.state.user.name) messageClassNames = [classes.message, classes.userLoggedColor].join(" ");
+                                else if(message.authorName === "Admin") messageClassNames = [classes.message, classes.adminColor].join(" ");
                                 return (
                                     <div className={classes.elongateMessage} key={index}>
                                         <div className={messageClassNames}>
-                                            <div className={classes.centerAuthorData}>
-                                                <p className={classes.author}>@{message.authorName}</p>
-                                                <p className={classes.hour}>{message.hour}</p>
-                                            </div>
+                                            {
+                                                message.authorName !== "Admin" ? (
+                                                    <div className={classes.centerAuthorData}>
+                                                        <p className={classes.author}>@{message.authorName}</p>
+                                                        <p className={classes.hour}>{message.hour}</p>
+                                                    </div>
+                                                ) : null
+                                            }
                                             <p className={classes.content}>{message.content}</p>
                                         </div>
                                     </div>

@@ -5,13 +5,12 @@
 }
 .messages{
     overflow-y: auto;
-    max-height: 90vh;
-    display: block;
-    align-items: center;
+    max-height: 85vh;
     border: dashed 1px black;
 }
 .elongateMessage{
     width: 100%;
+    display: flow-root;
 }
 .message{
     border-radius: 20px;
@@ -19,8 +18,7 @@
     min-width: 20%;
     padding: 5px 20px;
     margin: 20px;
-    color: white;
-    display: inline-block;
+    color: white; 
 }
 .userLoggedColor{
     background-color: #3ca23c;
@@ -30,6 +28,13 @@
     background-color: #6af76a;
     float: left;
     color: #000;
+}
+.adminColor{
+    max-width: unset;
+    min-width: unset;
+    background-color: unset;
+    display: flex;
+    justify-content: center;
 }
 .centerAuthorData{
     max-width: 100%;
@@ -41,12 +46,6 @@
     font-weight: 550;
     font-size: 14px;
 }
-/* .content{
-
-}
-.hour{
-
-} */
 
 .input{
     margin: 10px;
