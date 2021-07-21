@@ -1,0 +1,6 @@
+.mainContainer h1{
+    color: red;
+}
+.messages{
+    overflow-y: auto;
+}

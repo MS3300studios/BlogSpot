@@ -21,6 +21,7 @@ import YourActivities from './components/activites/youractivities';
 import SocialBoard from './containers/socialBoard/socialBoard';
 import ScrollListener from './components/scrollListener/scrollListener';
 import EditUserProfile from './containers/userProfile/editUserProfile/editUserProfile';
+import Conversation from './containers/chat/conversation/conversation';
 
 class App extends Component {
   constructor(props){
@@ -54,6 +55,7 @@ class App extends Component {
               <Route path="/photo/view" exact component={PhotoView} />
               <Route path="/photo/add" exact component={PhotoForm} />
               <Route path="/user/activity" exact component={YourActivities} />
+              <Route path="/conversation/id" component={Conversation} />
               <Route path="/chat/" component={Chat} />
               <Route path="/post/" component={PostView} />
               <Route path="/user/profile/" component={UserProfile} />
