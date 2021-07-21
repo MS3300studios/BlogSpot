@@ -1,6 +1,68 @@
-.mainContainer h1{
-    color: red;
+.center{
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 .messages{
     overflow-y: auto;
+    max-height: 90vh;
+    display: block;
+    align-items: center;
+    border: dashed 1px black;
+}
+.elongateMessage{
+    width: 100%;
+}
+.message{
+    border-radius: 20px;
+    max-width: 50%;
+    min-width: 20%;
+    padding: 5px 20px;
+    margin: 20px;
+    color: white;
+    display: inline-block;
+}
+.userLoggedColor{
+    background-color: #3ca23c;
+    float: right;
+}
+.partnerColor{
+    background-color: #6af76a;
+    float: left;
+    color: #000;
+}
+.centerAuthorData{
+    max-width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+.author{
+    font-weight: 550;
+    font-size: 14px;
+}
+/* .content{
+
+}
+.hour{
+
+} */
+
+.input{
+    margin: 10px;
+    padding: 5px;
+    border: thick;
+    border-radius: 50px;
+    transition: all 0.3s ease-in;
+    width: 55%;
+    min-height: 20px;
+    font-size: 15px;
+    font-weight: 500;
+    transition: all ease 0.3s;
+}
+
+.input:focus{
+    -webkit-box-shadow: -2px -1px 20px 13px rgba(255,255,255,0.6); 
+    box-shadow: -2px -1px 20px 13px rgba(255,255,255,0.6);
+    outline: none;
 }
