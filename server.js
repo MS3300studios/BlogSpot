@@ -27,17 +27,39 @@ const corsOptions = {
 }
 const io = socket(server, corsOptions);
 
+let users = [];
+
 io.on('connection', (socket) => {
-    socket.on('join', ({name}) => {
-        console.log(`${name} joined the server`)
-        socket.emit('message', {authorName: 'Admin', content: `${name} joined the server`, hour: '00:03'})
+    socket.on('join', ({name, conversationId}) => {
+        console.log(`${name} joined the conversation nr ${conversationId}`)
+        let user = {
+            id: socket.id,
+            name: name,
+            conversationId: conversationId
+        }
+        users.push(user);
+        socket.join(conversationId)
+        io.to(conversationId).emit('message', {authorName: 'Admin', content: `${name} joined the server`, hour: '00:00'})
     })
 
     socket.on('sendMessage', message => {
-        socket.emit('message', message)
+        let currentUser = users.find(user => user.id === socket.id)
+        console.log(currentUser.conversationId)
+        io.to(currentUser.conversationId).emit('message', message);
+        // socket.emit('message', message)
+    })
+
+    socket.on('getUsers', ()=>{
+        console.log(users)
     })
 
     socket.on('disconnect', ()=>{
+        users.forEach((user, index) => {
+            if(user.id === socket.id){
+
+                users.splice(index, 1);
+            }
+        })
         console.log("user disconnected")
     })
 });

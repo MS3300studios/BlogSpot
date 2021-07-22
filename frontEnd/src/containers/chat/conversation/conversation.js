@@ -11,6 +11,9 @@ class Conversation extends Component {
     constructor(props) {
         let userData = getUserData();
 
+        let queryParams = new URLSearchParams(props.location.search);
+        let id = queryParams.get('id'); 
+
         super(props);
         this.state = {
             messages: [
@@ -21,6 +24,7 @@ class Conversation extends Component {
             message: "",
             partner: null,
             user: userData,
+            conversationId: id,
         }
         this.messagesEnd = null;
         this.sendMessage.bind(this);
@@ -29,15 +33,14 @@ class Conversation extends Component {
     componentDidMount(){
 
 
-        // socket = io('http://localhost:3001');
-        // socket.emit('join', { name: this.state.user.name})
-        // socket.on('message', message => {
-        //     let prevMessages = this.state.messages;
-        //     prevMessages.push(message)
-        //     this.setState({messages: prevMessages})
-        // })
-        console.log(this.props.location)
-
+        socket = io('http://localhost:3001');
+        socket.emit('join', { name: this.state.user.name, conversationId: this.state.conversationId })
+        socket.on('message', message => {
+            let prevMessages = this.state.messages;
+            prevMessages.push(message)
+            this.setState({messages: prevMessages})
+        })
+        
     }   
 
     componentDidUpdate(){
@@ -52,7 +55,11 @@ class Conversation extends Component {
         e.preventDefault();
         if(this.state.message === "") return null
         else {
-            // socket.emit('sendMessage', { authorName: this.state.user.name, content: this.state.message, hour: `${new Date().getHours()}:${new Date().getMinutes()}` })
+            let msgs = this.state.messages;
+            msgs.push({ authorName: this.state.user.name, content: this.state.message, hour: `${new Date().getHours()}:${new Date().getMinutes()}` })
+            this.setState({messages: msgs});
+            socket.emit('getUsers')
+            socket.emit('sendMessage', { authorName: this.state.user.name, content: this.state.message, hour: `${new Date().getHours()}:${new Date().getMinutes()}` })
         }
         this.setState({message: ""});
     }
