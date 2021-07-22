@@ -20,8 +20,9 @@ class Conversation extends Component {
             ],
             message: "",
             partner: null,
-            user: userData
+            user: userData,
         }
+        this.messagesEnd = null;
         this.sendMessage.bind(this);
     }
 
@@ -33,7 +34,16 @@ class Conversation extends Component {
         //     prevMessages.push(message)
         //     this.setState({messages: prevMessages})
         // })
+
     }   
+
+    componentDidUpdate(){
+        if(this.state.message === ""){
+            this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+        }
+    }
+
+
 
     sendMessage = (e) => {
         e.preventDefault();
@@ -74,6 +84,7 @@ class Conversation extends Component {
                                 )
                             })
                         }
+                        <div style={{visibility: "none"}} ref={el => this.messagesEnd = el}></div>
                     </div>
                     <input 
                         className={classes.input} 

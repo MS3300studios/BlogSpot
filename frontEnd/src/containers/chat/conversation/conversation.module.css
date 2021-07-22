@@ -5,8 +5,7 @@
 }
 .messages{
     overflow-y: auto;
-    max-height: 85vh;
-    border: dashed 1px black;
+    height: 85vh;
 }
 .elongateMessage{
     width: 100%;
@@ -64,4 +63,23 @@
     -webkit-box-shadow: -2px -1px 20px 13px rgba(255,255,255,0.6); 
     box-shadow: -2px -1px 20px 13px rgba(255,255,255,0.6);
     outline: none;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+background: #64ff64; 
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+background: #3ca23c; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+background: #555; 
 }

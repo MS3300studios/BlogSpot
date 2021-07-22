@@ -51,11 +51,11 @@ class App extends Component {
           <ScrollListener>
             <Menu />
             <Switch>
+              <Route path="/conversation/id" component={Conversation} />
               <Route path="/editProfile" exact component={EditUserProfile} />
               <Route path="/photo/view" exact component={PhotoView} />
               <Route path="/photo/add" exact component={PhotoForm} />
               <Route path="/user/activity" exact component={YourActivities} />
-              <Route path="/conversation/id" component={Conversation} />
               <Route path="/chat/" component={Chat} />
               <Route path="/post/" component={PostView} />
               <Route path="/user/profile/" component={UserProfile} />
