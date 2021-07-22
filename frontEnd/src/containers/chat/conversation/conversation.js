@@ -5,8 +5,6 @@ import Button from '../../../components/UI/button';
 import getUserData from '../../../getUserData';
 import io from 'socket.io-client';
 
-let socket;
-
 class Conversation extends Component {
     constructor(props) {
         let userData = getUserData();
@@ -16,31 +14,30 @@ class Conversation extends Component {
 
         super(props);
         this.state = {
-            messages: [
-                { authorName: 'Jenny', content: 'I love ice cream lorem ipsum dolor sit amewwwwwwwwwwwwwwwwssssssssssswwwwwwt', hour: '23:03' },
-                { authorName: 'Nick', content: 'I lovwdadwadadwadwadadadwadwwaswwwwwwt', hour: '12:03' },
-                { authorName: 'Admin', content: 'User joined the chat', hour: '12:03' },
-            ],
+            messages: [],
             message: "",
             partner: null,
             user: userData,
             conversationId: id,
+            conversationUsers: []
         }
         this.messagesEnd = null;
         this.sendMessage.bind(this);
+        this.socket = io('http://localhost:3001');
     }
 
     componentDidMount(){
+        this.socket.emit('join', { name: this.state.user.name, conversationId: this.state.conversationId })
+        this.socket.emit('askForUsers', this.state.conversationId);
 
-
-        socket = io('http://localhost:3001');
-        socket.emit('join', { name: this.state.user.name, conversationId: this.state.conversationId })
-        socket.on('message', message => {
+        this.socket.on('message', message => {
             let prevMessages = this.state.messages;
             prevMessages.push(message)
             this.setState({messages: prevMessages})
         })
-        
+        this.socket.on('usersInConversation', users => {
+            this.setState({conversationUsers: users})
+        })
     }   
 
     componentDidUpdate(){
@@ -49,23 +46,33 @@ class Conversation extends Component {
         }
     }
 
-
+    componentWillUnmount(){
+        this.socket.emit('leaveConversation', this.state.conversationId)
+    }
 
     sendMessage = (e) => {
         e.preventDefault();
         if(this.state.message === "") return null
         else {
-            let msgs = this.state.messages;
-            msgs.push({ authorName: this.state.user.name, content: this.state.message, hour: `${new Date().getHours()}:${new Date().getMinutes()}` })
-            this.setState({messages: msgs});
-            socket.emit('getUsers')
-            socket.emit('sendMessage', { authorName: this.state.user.name, content: this.state.message, hour: `${new Date().getHours()}:${new Date().getMinutes()}` })
+            let hour = new Date().getHours();
+            if(hour<10) hour = "0 "+hour;
+            let minute = new Date().getMinutes()
+            if(minute<10) minute = "0 "+minute;
+            let time = `${hour}:${minute}`
+            this.socket.emit('sendMessage', { authorName: this.state.user.name, content: this.state.message, hour: time});
         }
         this.setState({message: ""});
     }
 
     render() { 
         return (
+            <>
+            <div className={classes.conversationBanner}>
+                {this.state.conversationUsers.map((user, index) => {
+                    if(index===this.state.conversationUsers.length-1) return <h1 key={index}>{user.name}</h1>
+                    else return <React.Fragment key={index}><h1>{user.name}</h1><h1>+</h1></React.Fragment>
+                })}
+            </div>
             <div className={classes.center}>
                 <div className={classes.mainContainer}>
                     <div className={classes.messages}>
@@ -103,6 +110,7 @@ class Conversation extends Component {
                     <Button clicked={this.sendMessage}>Send</Button>
                 </div>
             </div>
+            </>
         );
     }
 }

@@ -5,7 +5,7 @@
 }
 .messages{
     overflow-y: auto;
-    height: 85vh;
+    height: 80vh;
 }
 .elongateMessage{
     width: 100%;
@@ -52,7 +52,7 @@
     border: thick;
     border-radius: 50px;
     transition: all 0.3s ease-in;
-    width: 55%;
+    width: 85%;
     min-height: 20px;
     font-size: 15px;
     font-weight: 500;
@@ -82,4 +82,24 @@ background: #3ca23c;
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
 background: #555; 
+}
+
+.conversationBanner{
+    width: 100%;
+    background-color: #3ca23c;
+    height: 60px;
+    position: absolute;
+    top: 75;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    color: white;
+}
+.conversationBanner h1{
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.mainContainer{
+    margin-top: 60px;
+    width: 40%;
 }

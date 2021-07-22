@@ -38,29 +38,40 @@ io.on('connection', (socket) => {
             conversationId: conversationId
         }
         users.push(user);
-        socket.join(conversationId)
+        socket.join(conversationId) //user is joining a specific room
         io.to(conversationId).emit('message', {authorName: 'Admin', content: `${name} joined the server`, hour: '00:00'})
     })
 
     socket.on('sendMessage', message => {
         let currentUser = users.find(user => user.id === socket.id)
-        console.log(currentUser.conversationId)
         io.to(currentUser.conversationId).emit('message', message);
-        // socket.emit('message', message)
     })
 
-    socket.on('getUsers', ()=>{
-        console.log(users)
+    socket.on('askForUsers', conversationId => {
+        let usersInConversation = users.filter(user => user.conversationId === conversationId);
+        io.to(conversationId).emit('usersInConversation', usersInConversation);
+    })
+
+    socket.on('leaveConversation', conversationId => {
+        // let currentUser = users.find(user => user.id === socket.id)
+        // let usersInConversation = users.filter(user => user.conversationId === currentUser.conversationId);
+        // io.to(currentUser.conversationId).emit('usersInConversation', usersInConversation);
+        users.forEach((user, index) => {
+            if(user.id === socket.id){
+                users.splice(index, 1);
+            }
+        })
     })
 
     socket.on('disconnect', ()=>{
+        // let currentUser = users.find(user => user.id === socket.id)
+        // let usersInConversation = users.filter(user => user.conversationId === currentUser.conversationId);
+        // io.to(currentUser.conversationId).emit('usersInConversation', usersInConversation);
         users.forEach((user, index) => {
             if(user.id === socket.id){
-
                 users.splice(index, 1);
             }
         })
         console.log("user disconnected")
     })
 });
-//each user gets his own socket
