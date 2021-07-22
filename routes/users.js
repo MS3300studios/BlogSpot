@@ -77,7 +77,6 @@ router.post('/users/login', (req, res) => {
                     
                     users[0].photo = "get /users/getUserPhoto/:userId for photo";
                     let userDataJSON = JSON.stringify(users[0]);
-                    console.log(userDataJSON)
                     return res.status(200).json({
                         message: 'Authorization successful',
                         token: token,
@@ -151,7 +150,6 @@ router.post('/users/find', auth, (req, res) => {
     User.find(search)
         .exec()
         .then(users => {
-            console.log(users)
             if(users.length<1){
                 res.send("user not found");
             }
@@ -177,8 +175,6 @@ router.post('/users/edit/all', auth, (req, res) => { //newdata, userid, userphot
         if(req.body.wasChanged.nickname === true) update.nickname = req.body.nickname
         if(req.body.wasChanged.bio === true) update.bio = req.body.bio
     
-        console.log(req.body.wasChanged)
-
         User.findByIdAndUpdate(req.userData.userId, update, {new: true}).then(user => {
             res.json({
                 user: user

@@ -21,7 +21,6 @@ router.post('/socialBoard/init', auth, (req, res) => {
 
             newArr.forEach(el => {
                 const formatted = new Date(el.createdAt).toLocaleDateString();
-                console.log(`${formatted}`);
             })
 
             res.status(200).json({

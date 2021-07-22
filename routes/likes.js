@@ -516,8 +516,6 @@ router.post('/checkIfLikedAlready',auth, (req, res) => {
         });
     })
 
-    console.log(req.body)
-
     if(req.body.type === "blog"){
         checkIfLikedAlreadyBlog.then((like, error)=>{
             if(like===null){

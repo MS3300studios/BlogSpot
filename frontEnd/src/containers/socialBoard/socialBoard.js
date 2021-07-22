@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {Link} from 'react-router-dom';
 
 import classes from './socialBoard.module.css';
 import axios from 'axios';
@@ -113,6 +114,7 @@ class SocialBoard extends Component {
                 <div className={[classes.center, classes.btnMore].join(" ")}>
                     <Button clicked={()=>this.getElements(this.state.limitPhotos, this.state.limitPosts, true)}>Load more</Button>
                 </div>
+                <Link to="/conversation/?id=1">conversation 1</Link>
             </>
         );
     }

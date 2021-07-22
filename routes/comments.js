@@ -94,7 +94,6 @@ router.delete('/comments/delete/:commentId', auth, (req, res) => {
     Comment.deleteOne({_id: req.params.commentId})
         .exec()
         .then((response => {
-            console.log('response: \n', response);
             res.sendStatus(200);
         }))
         .catch(err => {
@@ -107,7 +106,6 @@ router.post('/comments/edit/:commentId', auth, (req, res) => {
     Comment.findByIdAndUpdate(req.params.commentId, {content: req.body.content})
     .exec()
         .then((response => {
-            console.log(response);
             res.sendStatus(200);
         }))
         .catch(err => {

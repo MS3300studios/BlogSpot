@@ -27,13 +27,16 @@ class Conversation extends Component {
     }
 
     componentDidMount(){
+
+
         // socket = io('http://localhost:3001');
-        // socket.emit('join', { name: "nick"})
+        // socket.emit('join', { name: this.state.user.name})
         // socket.on('message', message => {
         //     let prevMessages = this.state.messages;
         //     prevMessages.push(message)
         //     this.setState({messages: prevMessages})
         // })
+        console.log(this.props.location)
 
     }   
 
@@ -49,10 +52,7 @@ class Conversation extends Component {
         e.preventDefault();
         if(this.state.message === "") return null
         else {
-            let prevMessages = this.state.messages;
-            prevMessages.push({authorName: 'Jenny', content: this.state.message, hour: '12:03'})
-            this.setState({messages: prevMessages})
-            //socket.emit('sendMessage', { authorName: this.state.user.name, content: this.state.message, hour: '00:10' })
+            // socket.emit('sendMessage', { authorName: this.state.user.name, content: this.state.message, hour: `${new Date().getHours()}:${new Date().getMinutes()}` })
         }
         this.setState({message: ""});
     }

@@ -5,7 +5,6 @@ const User = require('../models/user');
 const Friend = require('../models/friend');
 const FriendRequest = require('../models/friendRequest');
 const auth = require('../middleware/authorization');
-// const { response } = require('express');
 
 router.use(express.json());
 
@@ -15,13 +14,11 @@ router.post('/createRequest', auth, (req, res) => {
     //check if the request already exists
     FriendRequest.findOne({userId: req.userData.userId, friendId: req.body.friendId}).exec().then(friend => {
         if(friend){
-            console.log('this request already exists: you have sent it');
             res.status(401);
         }
         else{
             FriendRequest.findOne({userId: req.body.friendId, friendId: req.userData.userId}).exec().then(friend2 => {
                 if(friend2){
-                    console.log('this request already exists: the user has sent it to you');
                     res.status(401);
                 }
                 else{
@@ -36,7 +33,6 @@ router.post('/createRequest', auth, (req, res) => {
                         
                         friendRequest.save()
                             .then(response => {
-                                console.log("friend request added");
                                 res.sendStatus(201);
                             })
                             .catch(err => {
@@ -65,7 +61,6 @@ router.post('/createRequest', auth, (req, res) => {
 router.post('/revokeRequest', auth, (req, res) => {
     FriendRequest.findOneAndDelete({userId: req.userData.userId, friendId: req.body.friendId}).exec()
         .then(response => {
-            console.log('deleting friend request response:', response);
             res.send('deletion successful');
         })
         .catch(err => console.log(err));
@@ -76,7 +71,6 @@ router.post('/anwserRequest', auth, (req, res) => {
     if(req.body.accept === true){
         //delete request, add friend
         FriendRequest.findOneAndRemove({userId: req.body.friendId, friendId: req.userData.userId}).exec().then((response)=>{
-            console.log(response)
             if(response){ //if there was such a request
                 const friend = new Friend({
                     userId: req.userData.userId,
@@ -93,7 +87,6 @@ router.post('/anwserRequest', auth, (req, res) => {
                     });
             }
             else{
-                console.log("friend request doesn't exist");
                 res.status(500);
             }
         })
@@ -103,7 +96,6 @@ router.post('/anwserRequest', auth, (req, res) => {
         FriendRequest.findOneAndRemove({friendId: req.body.friendId})
         .exec()
         .then(response => {
-            console.log('friend request deleted');
             res.sendStatus(200);
         })
         .catch(err => {
@@ -111,7 +103,6 @@ router.post('/anwserRequest', auth, (req, res) => {
         });
     }
     else{
-        console.log('[friends route] incorrect request data. Data type should be a boolean');
         res.status(500);
     }
 });
@@ -124,11 +115,9 @@ router.post('/deleteFriend', auth, (req, res) => {
         .exec()
         .then(response => {
             if(response){
-                console.log('user deleted');
                 res.status(200);
             }
             else{
-                console.log('friend deletion failed, friend was not found');
                 res.status(404);
             }
         })
@@ -142,7 +131,6 @@ router.post('/checkFriendStatus', auth, (req, res) => {
     Friend.exists({userId: req.userData.userId, friendId: req.body.friendId}, (err, exists) => {
         Friend.exists({userId: req.body.friendId, friendId: req.userData.userId}, (err, exists2) => {
             let reply = exists || exists2;
-            console.log('user is friend:', reply)
             res.json({
                 isFriend: reply
             });

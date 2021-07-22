@@ -25,7 +25,6 @@ const corsOptions = {
     cors: true,
     origins: ["http://localhost:3000"]
 }
-//creating web socket
 const io = socket(server, corsOptions);
 
 io.on('connection', (socket) => {

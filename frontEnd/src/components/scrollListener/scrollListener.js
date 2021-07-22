@@ -7,7 +7,6 @@ const ScrollListener = (props) => {
     const [scrollNum, setscrollNum] = useState()
 
     let handleScroll = () => {
-        console.log(window.scrollY)
         setscrollNum(window.scrollY);
     }
 

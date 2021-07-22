@@ -53,7 +53,6 @@ router.get('/blogs/one/:blogId', auth, (req, res) => {
             })
         })
         .catch(err => {
-            console.log(err)
             return res.status(404).json({
                 message: 'blog not found',
                 error: err
