@@ -21,43 +21,6 @@
     border-radius: 10px;
 }
 
-.listElement {
-    height: 100px;
-    display: flex;
-    justify-content: space-evenly;
-    padding: 5px;
-    margin-bottom: 5px;
-    cursor: pointer;
-}
-.smallFaceContainer{
-    width: 10%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.namesContainer{
-    margin-top: 5px;
-    width: 80%;
-}
-.listElement h1{
-    margin: 0;
-}
-.listElement img{
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-}
-hr {
-    border-color: green;
-    color: green;
-    background-color: green;
-}
-
-.containerLink{
-    color: black;
-    text-decoration: none;
-}
-
 .addUserIcon{
     margin-top: 39px;
     background-color: #82ca66;
@@ -85,4 +48,51 @@ hr {
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
+}
+
+
+.listElement {
+    height: 100px;
+    display: flex;
+    justify-content: space-evenly;
+    padding: 5px;
+    margin-bottom: 5px;
+    cursor: pointer;
+    width: 80%;
+}
+.smallFaceContainer{
+    width: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.namesContainer{
+    margin-top: 5px;
+    width: 80%;
+}
+.listElement h1{
+    margin: 0;
+}
+.listElement img{
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+}
+
+hr{
+    border-color: green;
+    color: green;
+    background-color: green;
+}
+
+.containerLink{
+    color: black;
+    text-decoration: none;
+}
+
+.friendContainer{
+    display: flex;
+    justify-content: space-around;
+    position: relative;
 }
