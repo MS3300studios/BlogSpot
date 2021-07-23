@@ -69,6 +69,24 @@
     color: green;
     background-color: green;
 }
+
 .addingUsers h1{
     color: green;
+}
+
+.friendsListItemOutline{
+    border: green 3px solid;
+    border-radius: 20px;
+    margin: 20px;
+}
+
+.center{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.friendsList{
+    width: 50%;
 }

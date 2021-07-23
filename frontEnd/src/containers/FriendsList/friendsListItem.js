@@ -31,7 +31,9 @@ const friendsListItem = (props) => {
                     )
                 }
             </div>
-            <hr/>
+            {
+                props.friendSelect ? null : <hr />
+            }
         </>
     );
 }

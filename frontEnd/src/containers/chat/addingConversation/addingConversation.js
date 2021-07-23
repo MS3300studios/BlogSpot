@@ -48,16 +48,18 @@ class AddingConversation extends Component {
         let friends = <Spinner />
         if(this.state.loading === false){
             friends = this.state.friends.map((friend, index) => (
-                <FriendsListItem
-                    friendNumber={index}
-                    key={index} 
-                    id={friend._id} 
-                    name={friend.name}
-                    nickname={friend.nickname}
-                    surname={friend.surname}
-                    photo={friend.photo}
-                    friendSelect
-                />
+                <div className={classes.friendsListItemOutline}>
+                    <FriendsListItem
+                        friendNumber={index}
+                        key={index} 
+                        id={friend._id} 
+                        name={friend.name}
+                        nickname={friend.nickname}
+                        surname={friend.surname}
+                        photo={friend.photo}
+                        friendSelect
+                    />
+                </div>
             ))
         }
 
@@ -80,7 +82,11 @@ class AddingConversation extends Component {
                         <hr />
                         <div className={classes.addingUsers}>
                             <h1>Add users to the conversation: </h1>
-                            { friends }
+                            <div className={classes.center}>
+                                <div className={classes.friendsList}>
+                                    { friends }
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
