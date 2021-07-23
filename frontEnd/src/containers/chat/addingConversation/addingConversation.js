@@ -8,6 +8,9 @@ import axios from 'axios';
 import getUserData from '../../../getUserData';
 import getToken from '../../../getToken';
 import Spinner from '../../../components/UI/spinner';
+import SearchBar from '../../../components/UI/searchBar';
+
+import Flash from '../../../components/UI/flash';
 
 class AddingConversation extends Component {
     constructor(props) {
@@ -22,8 +25,12 @@ class AddingConversation extends Component {
             conversationName: "",
             nameComplete: false,
             loading: true,
-            friends: []
+            friends: [],
+            flashMessage: "",
+            flashNotClosed: true,
         }
+
+        this.flash.bind(this);
     }
 
     componentDidMount(){
@@ -44,7 +51,31 @@ class AddingConversation extends Component {
         })
     }
 
+    flash = (message) => {
+        this.setState({flashMessage: message});
+        
+        setTimeout(()=>{
+            this.setState({flashNotClosed: false});
+        }, 2000)
+
+        setTimeout(()=>{
+            this.setState({flashMessage: ""});
+        }, 3000);
+    
+        setTimeout(()=>{
+            this.setState({flashNotClosed: true});
+        }, 3000);
+    }    
+
     render() { 
+        let flash = null;
+        if(this.state.flashMessage && this.state.flashNotClosed){
+            flash = <Flash>{this.state.flashMessage}</Flash>
+        }
+        else if(this.state.flashMessage && this.state.flashNotClosed === false){
+            flash = <Flash close>{this.state.flashMessage}</Flash>
+        }
+
         let friends = <Spinner />
         if(this.state.loading === false){
             friends = this.state.friends.map((friend, index) => (
@@ -76,12 +107,25 @@ class AddingConversation extends Component {
                                 <input 
                                     className={classes.Input}
                                     type="text" 
-                                    onChange={(e)=>this.setState({conversationName: e.target.value})}/>
+                                    onChange={(e)=>this.setState({conversationName: e.target.value})}
+                                />
                             </div>
                         </div>
                         <hr />
                         <div className={classes.addingUsers}>
                             <h1>Add users to the conversation: </h1>
+                            <SearchBar 
+                                placeholder="search posts in..."
+                                clicked={this.filterSearchHandler}
+                                resetFilter={()=>{this.setState({filterIn: "none", filterBy: "none"})}}
+                                selectValues={["title", "content"]}
+                            />
+                            <div className={classes.selectAllContainer}>
+                                <div className={classes.selectAllContainerInner}>
+                                    <p>select all</p>
+                                    <input type="checkbox"/>
+                                </div>
+                            </div>
                             <div className={classes.center}>
                                 <div className={classes.friendsList}>
                                     { friends }
@@ -90,6 +134,7 @@ class AddingConversation extends Component {
                         </div>
                     </div>
                 </div>
+                {flash}
             </div>
         );
     }
