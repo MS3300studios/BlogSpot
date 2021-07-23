@@ -2,6 +2,7 @@ import React from 'react';
 import classes from './FriendsList.module.css';
 
 import { BiMessageDetail } from 'react-icons/bi';
+import {Link} from 'react-router-dom';
 
 const friendsListItem = (props) => {
     return (
@@ -18,9 +19,17 @@ const friendsListItem = (props) => {
                         <p>@{props.nickname}</p>
                     </div>
                 </div>
-                <div className={classes.chatIcon}>
-                    <BiMessageDetail size="2em" color="#0a42a4" />
-                </div>
+                {
+                    props.friendSelect ? (
+                        <input type="checkbox" className={classes.inputCheckbox}/>
+                    ) : (
+                        <div className={classes.chatIcon}>
+                            <Link to={`/conversation/?id=${props.friendNumber}`}>
+                                <BiMessageDetail size="2em" color="#0a42a4" />
+                            </Link>
+                        </div>
+                    )
+                }
             </div>
             <hr/>
         </>

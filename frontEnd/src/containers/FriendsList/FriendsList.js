@@ -77,6 +77,7 @@ class FriendsList extends Component {
         friendsJSX = this.state.friends.map((friend, index)=>{
             return (
                 <FriendsListItem 
+                    friendNumber={index}
                     key={index} 
                     id={friend._id} 
                     name={friend.name}

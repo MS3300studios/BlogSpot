@@ -1,5 +1,5 @@
 .chatMenu{
-    width: 20%;
+    width: 40%;
     border-right: black 3px solid;
 }
 .converstaion{
@@ -11,4 +11,40 @@
     margin: 10px;
     margin-left: 4px;
     padding: 10px;
+}
+.noConversationsContainer{
+    margin: 20px auto;
+    color: white;
+    background-color: #53c253;
+    border-radius: 20px;
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 400px;
+}
+
+.noConversationsContainer h1{
+    width: 290px;
+}
+
+.addConversationIcon{
+    height: 50px;
+    width: 90%;
+    background-color: #279a27;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.2s ease-out;
+}
+
+.addConversationIcon:hover{
+    transform: scale(1.2);
+}
+
+.addConversationIcon p{
+    font-size: 18px;
+    font-weight: 550;
 }
