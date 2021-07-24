@@ -1,10 +1,16 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import classes from './FriendsList.module.css';
 
 import { BiMessageDetail } from 'react-icons/bi';
 import {Link} from 'react-router-dom';
 
-const friendsListItem = (props) => {
+const FriendsListItem = (props) => {
+    const [checked, setchecked] = useState(props.selectAll)
+
+    useEffect(() => {
+        setchecked(props.selectAll)
+    }, [props.selectAll])
+
     return (
         <>
             <div className={classes.friendContainer}>
@@ -21,7 +27,15 @@ const friendsListItem = (props) => {
                 </div>
                 {
                     props.friendSelect ? (
-                        <input type="checkbox" className={classes.inputCheckbox}/>
+                        <input 
+                            type="checkbox" 
+                            className={classes.inputCheckbox} 
+                            onChange={()=>{
+                                props.friendWasSelected({_id: props.id, name: props.name}, !checked)
+                                setchecked(!checked)
+                            }}
+                            checked={checked}
+                        />
                     ) : (
                         <div className={classes.chatIcon}>
                             <Link to={`/conversation/?id=${props.friendNumber}`}>
@@ -38,4 +52,4 @@ const friendsListItem = (props) => {
     );
 }
  
-export default friendsListItem;
+export default FriendsListItem;

@@ -24,6 +24,8 @@ class AddingConversation extends Component {
             token: token,
             userData: userData,
             conversationName: "",
+            selectedFriends: [],
+            selectAll: false,
             nameComplete: false,
             loading: true,
             friends: [],
@@ -36,6 +38,7 @@ class AddingConversation extends Component {
         this.flash.bind(this);
         this.filterSearchHandler.bind(this);
         this.filterFriends.bind(this);
+        this.addFriendSelect.bind(this);
     }
 
     componentDidMount(){
@@ -82,6 +85,17 @@ class AddingConversation extends Component {
         }, 3000);
     }    
 
+    addFriendSelect = (friend, adding) => {
+        // console.log(friend.name, friend.id)
+        let temp = this.state.selectedFriends;
+        if(adding === true) temp.push(friend);
+        else if(adding === false){
+            let temp2 = temp.filter(user => user._id !== friend._id)
+            temp = temp2;
+        }
+        this.setState({selectedFriends: temp});
+    }
+
     filterFriends = (filterIn, filterBy) => {
         let friendsJSX = []; //temporary array of all jsx friends, to be filtered and converted to friendsRdy
         let friendsRdy = [];
@@ -96,6 +110,8 @@ class AddingConversation extends Component {
                     surname={friend.surname}
                     photo={friend.photo}
                     friendSelect
+                    selectAll={this.state.selectAll}
+                    friendWasSelected={this.addFriendSelect}
                 />
             )
         });
@@ -230,7 +246,16 @@ class AddingConversation extends Component {
                                     <div className={classes.selectAllContainer}>
                                         <div className={classes.selectAllContainerInner}>
                                             <p>select all</p>
-                                            <input type="checkbox"/>
+                                            <input 
+                                                type="checkbox" 
+                                                onClick={()=>this.setState(prevState => {
+                                                    let temp = prevState.friends.map(friend => ({name: friend.name, _id: friend._id}));
+                                                    if(prevState.selectAll === true) temp = [];
+                                                    return(
+                                                        {selectAll: !prevState.selectAll, selectedFriends: temp}
+                                                    )
+                                                })}
+                                            />
                                         </div>
                                     </div>
                                     <div className={classes.center}>
@@ -244,6 +269,7 @@ class AddingConversation extends Component {
                     )
                 }
                 {flash}
+                <button style={{backgroundColor: "black"}} onClick={()=>console.log(this.state.selectedFriends)}>log selected friends</button>
             </div>
         );
     }
