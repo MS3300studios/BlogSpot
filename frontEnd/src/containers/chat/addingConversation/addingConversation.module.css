@@ -33,6 +33,13 @@
 .closeIcon:hover{
     background-color: teal;
 }
+
+.topContainer{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
 .centerInput{
     width: 100%;
     display: flex;
@@ -109,4 +116,19 @@
     justify-content: flex-end;
     align-items: center;
     width: 510px;
+}
+
+.nextBtn{
+    width: 100px;
+    height: 40px;
+    background-color: #01b1b1;
+    margin-left: 20%;
+    animation: none;
+    transition: 0.3s ease-out;
+    cursor: pointer;
+}
+.nextBtn:hover{
+    animation: none;
+    font-size: 20px;
+    transform: scale(1.3);
 }

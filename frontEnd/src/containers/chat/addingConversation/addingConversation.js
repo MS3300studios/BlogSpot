@@ -39,6 +39,7 @@ class AddingConversation extends Component {
         this.filterSearchHandler.bind(this);
         this.filterFriends.bind(this);
         this.addFriendSelect.bind(this);
+        this.sendConversation.bind(this);
     }
 
     componentDidMount(){
@@ -59,7 +60,27 @@ class AddingConversation extends Component {
         })
     }
 
-    
+    sendConversation = () => {
+        axios({
+            method: 'post',
+            url: `http://localhost:3001/conversation/add`,
+            headers: {'Authorization': this.state.token},
+            data: {
+                participants: this.state.selectedFriends,
+                name: this.state.conversationName
+            }
+        })
+        .then((res)=>{
+            if(res.status===200){
+                
+                return;
+            }
+        })
+        .catch(error => {
+            console.log(error);
+        })
+    }
+
     filterSearchHandler = (option, string) => {
         if(string===""){
             this.setState({filterIn: option});
@@ -180,24 +201,6 @@ class AddingConversation extends Component {
             flash = <Flash close>{this.state.flashMessage}</Flash>
         }
 
-        // let friends = <Spinner />
-        // if(this.state.loading === false){
-        //     friends = this.state.friends.map((friend, index) => (
-        //         <div className={classes.friendsListItemOutline}>
-        //             <FriendsListItem
-        //                 friendNumber={index}
-        //                 key={index} 
-        //                 id={friend._id} 
-        //                 name={friend.name}
-        //                 nickname={friend.nickname}
-        //                 surname={friend.surname}
-        //                 photo={friend.photo}
-        //                 friendSelect
-        //             />
-        //         </div>
-        //     ))
-        // }
-
         let friends;
         if(this.state.friends.length===0){
             friends = (
@@ -219,9 +222,10 @@ class AddingConversation extends Component {
                 {
                     this.state.loading ? <Spinner /> : (
                         <div className={classes.addUserContainer}>
-                            <div className={classes.closeIcon} onClick={this.props.closeAddUser} onClick={this.props.closeAddConversation}>
+                            <div className={classes.closeIcon} onClick={this.props.closeAddConversation}>
                                 <AiOutlineCloseCircle size="2em" color="#0a42a4" />
                             </div>
+
                             <div>
                                 <div className={classes.centerInput}>
                                     <h1>Give the conversation a name:</h1>
@@ -232,6 +236,12 @@ class AddingConversation extends Component {
                                             onChange={(e)=>this.setState({conversationName: e.target.value})}
                                         />
                                     </div>
+                                    <button  
+                                        className={classes.nextBtn}
+                                        onClick={this.sendConversation}
+                                    >
+                                        NEXT
+                                    </button>
                                 </div>
                                 <hr />
                                 <div className={classes.addingUsers}>
