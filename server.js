@@ -13,6 +13,7 @@ app.use(require('./routes/notifications'));
 app.use(require('./routes/photos'));
 app.use(require('./routes/socialBoard'));
 app.use(require('./routes/getSocialNumbers'));
+app.use(require('./routes/conversations'));
 
 require("dotenv").config();
 

@@ -119,8 +119,8 @@
 }
 
 .nextBtn{
-    width: 100px;
-    height: 40px;
+    width: 200px;
+    height: 60px;
     background-color: #01b1b1;
     margin-left: 20%;
     animation: none;
@@ -129,6 +129,6 @@
 }
 .nextBtn:hover{
     animation: none;
-    font-size: 20px;
+    font-size: 15px;
     transform: scale(1.3);
 }

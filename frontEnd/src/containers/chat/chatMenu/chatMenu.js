@@ -12,6 +12,11 @@ class ChatMenu extends Component {
             converstaions: [],
         }
     }
+
+    componentDidMount(){
+        
+    }
+
     render() { 
         let conversations;
         if(this.state.converstaions.length === 0) conversations = (

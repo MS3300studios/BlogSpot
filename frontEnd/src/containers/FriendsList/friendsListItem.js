@@ -31,7 +31,7 @@ const FriendsListItem = (props) => {
                             type="checkbox" 
                             className={classes.inputCheckbox} 
                             onChange={()=>{
-                                props.friendWasSelected({_id: props.id, name: props.name}, !checked)
+                                props.friendWasSelected({userId: props.id, name: props.name}, !checked)
                                 setchecked(!checked)
                             }}
                             checked={checked}

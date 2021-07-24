@@ -12,6 +12,7 @@ import SearchBar from '../../../components/UI/searchBar';
 import Button from '../../../components/UI/button';
 
 import Flash from '../../../components/UI/flash';
+import { Redirect } from 'react-router-dom';
 
 class AddingConversation extends Component {
     constructor(props) {
@@ -32,7 +33,9 @@ class AddingConversation extends Component {
             flashMessage: "",
             flashNotClosed: true,
             filterBy: "",
-            filterIn: ""
+            filterIn: "",
+            redirect: false,
+            redirectId: ""
         }
 
         this.flash.bind(this);
@@ -61,18 +64,27 @@ class AddingConversation extends Component {
     }
 
     sendConversation = () => {
+        let participants = this.state.selectedFriends;
+        participants.push({
+            name: this.state.userData.name,
+            userId: this.state.userData._id
+        })
+
         axios({
             method: 'post',
-            url: `http://localhost:3001/conversation/add`,
+            url: `http://localhost:3001/conversations/new`,
             headers: {'Authorization': this.state.token},
             data: {
-                participants: this.state.selectedFriends,
+                participants: participants,
                 name: this.state.conversationName
             }
         })
         .then((res)=>{
-            if(res.status===200){
-                
+            if(res.status===201){
+                this.setState({
+                    redirect: true,
+                    redirectId: res.data.conversation._id
+                });
                 return;
             }
         })
@@ -107,11 +119,11 @@ class AddingConversation extends Component {
     }    
 
     addFriendSelect = (friend, adding) => {
-        // console.log(friend.name, friend.id)
+        console.log(friend.name, friend.userId)
         let temp = this.state.selectedFriends;
         if(adding === true) temp.push(friend);
         else if(adding === false){
-            let temp2 = temp.filter(user => user._id !== friend._id)
+            let temp2 = temp.filter(user => user.userId !== friend.userId)
             temp = temp2;
         }
         this.setState({selectedFriends: temp});
@@ -240,7 +252,7 @@ class AddingConversation extends Component {
                                         className={classes.nextBtn}
                                         onClick={this.sendConversation}
                                     >
-                                        NEXT
+                                        ADD CONVERSATION
                                     </button>
                                 </div>
                                 <hr />
@@ -280,6 +292,9 @@ class AddingConversation extends Component {
                 }
                 {flash}
                 <button style={{backgroundColor: "black"}} onClick={()=>console.log(this.state.selectedFriends)}>log selected friends</button>
+                {
+                    this.state.redirect ? <Redirect to={"/conversation/?id="+this.state.redirectId}/> : null
+                }
             </div>
         );
     }
