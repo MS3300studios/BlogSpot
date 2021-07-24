@@ -9,6 +9,7 @@ import getUserData from '../../../getUserData';
 import getToken from '../../../getToken';
 import Spinner from '../../../components/UI/spinner';
 import SearchBar from '../../../components/UI/searchBar';
+import Button from '../../../components/UI/button';
 
 import Flash from '../../../components/UI/flash';
 
@@ -28,9 +29,13 @@ class AddingConversation extends Component {
             friends: [],
             flashMessage: "",
             flashNotClosed: true,
+            filterBy: "",
+            filterIn: ""
         }
 
         this.flash.bind(this);
+        this.filterSearchHandler.bind(this);
+        this.filterFriends.bind(this);
     }
 
     componentDidMount(){
@@ -51,6 +56,16 @@ class AddingConversation extends Component {
         })
     }
 
+    
+    filterSearchHandler = (option, string) => {
+        if(string===""){
+            this.setState({filterIn: option});
+        }
+        else{
+            this.setState({filterIn: option, filterBy: string});
+        }
+    }
+
     flash = (message) => {
         this.setState({flashMessage: message});
         
@@ -67,6 +82,79 @@ class AddingConversation extends Component {
         }, 3000);
     }    
 
+    filterFriends = (filterIn, filterBy) => {
+        let friendsJSX = []; //temporary array of all jsx friends, to be filtered and converted to friendsRdy
+        let friendsRdy = [];
+    
+        friendsJSX = this.state.friends.map((friend, index)=>{
+            return (
+                <FriendsListItem 
+                    friendNumber={index}
+                    id={friend._id} 
+                    name={friend.name}
+                    nickname={friend.nickname}
+                    surname={friend.surname}
+                    photo={friend.photo}
+                    friendSelect
+                />
+            )
+        });
+
+        if(filterBy==="" || filterIn===""){
+            friendsRdy = friendsJSX;
+        }
+        else{
+            switch(filterIn){
+                case "nickname":
+                    friendsRdy = friendsJSX.filter((friend)=>{
+                        if(friend.props.nickname.includes(filterBy)){
+                            return true;
+                        }
+                        else return false;
+                    });
+                    break;
+                case "name":
+                    friendsRdy = friendsJSX.filter((friend)=>{
+                        if(friend.props.name.includes(filterBy)){
+                            return true;
+                        }
+                        else return false;
+                    }); 
+                    break;
+                case "surname": 
+                    friendsRdy = friendsJSX.filter((friend)=>{
+                        if(friend.props.surname.includes(filterBy)){
+                            return true;
+                        }
+                        else return false;
+                    })
+                    break;
+                default: friendsRdy = friendsJSX;
+                    break;
+            } 
+        }
+
+        if(friendsRdy.length === 0){
+            friendsRdy = (
+                <React.Fragment>
+                    <h1>Ooops, you don't have a friend with that {this.state.filterIn}!</h1>
+                    <hr />
+                    <p>Click here to add new friends: <Button clicked={()=>this.setState({showAddFriendCoponent: true})}>Search users</Button></p>
+                </React.Fragment>
+            );
+        }
+
+        let wrappedFriends = friendsRdy.map((friend, index) => {
+            return (
+                <div className={classes.friendsListItemOutline} key={index}>
+                    {friend}
+                </div>
+            )
+        })
+
+        return wrappedFriends;
+    } 
+
     render() { 
         let flash = null;
         if(this.state.flashMessage && this.state.flashNotClosed){
@@ -76,64 +164,85 @@ class AddingConversation extends Component {
             flash = <Flash close>{this.state.flashMessage}</Flash>
         }
 
-        let friends = <Spinner />
-        if(this.state.loading === false){
-            friends = this.state.friends.map((friend, index) => (
-                <div className={classes.friendsListItemOutline}>
-                    <FriendsListItem
-                        friendNumber={index}
-                        key={index} 
-                        id={friend._id} 
-                        name={friend.name}
-                        nickname={friend.nickname}
-                        surname={friend.surname}
-                        photo={friend.photo}
-                        friendSelect
-                    />
+        // let friends = <Spinner />
+        // if(this.state.loading === false){
+        //     friends = this.state.friends.map((friend, index) => (
+        //         <div className={classes.friendsListItemOutline}>
+        //             <FriendsListItem
+        //                 friendNumber={index}
+        //                 key={index} 
+        //                 id={friend._id} 
+        //                 name={friend.name}
+        //                 nickname={friend.nickname}
+        //                 surname={friend.surname}
+        //                 photo={friend.photo}
+        //                 friendSelect
+        //             />
+        //         </div>
+        //     ))
+        // }
+
+        let friends;
+        if(this.state.friends.length===0){
+            friends = (
+                <div className={classes.nameListContainer}>
+                    <h1>You don't have any friends yet!</h1>
                 </div>
-            ))
+            );
+        }
+        else{
+            friends = (
+                <div className={classes.nameListContainer}>
+                    {this.filterFriends(this.state.filterIn, this.state.filterBy)}
+                </div>
+            );
         }
 
         return (
             <div className={classes.backDrop}>
-                <div className={classes.addUserContainer}>
-                    <div className={classes.closeIcon} onClick={this.props.closeAddUser} onClick={this.props.closeAddConversation}>
-                        <AiOutlineCloseCircle size="2em" color="#0a42a4" />
-                    </div>
-                    <div>
-                        <div className={classes.centerInput}>
-                            <h1>Give the conversation a name:</h1>
+                {
+                    this.state.loading ? <Spinner /> : (
+                        <div className={classes.addUserContainer}>
+                            <div className={classes.closeIcon} onClick={this.props.closeAddUser} onClick={this.props.closeAddConversation}>
+                                <AiOutlineCloseCircle size="2em" color="#0a42a4" />
+                            </div>
                             <div>
-                                <input 
-                                    className={classes.Input}
-                                    type="text" 
-                                    onChange={(e)=>this.setState({conversationName: e.target.value})}
-                                />
-                            </div>
-                        </div>
-                        <hr />
-                        <div className={classes.addingUsers}>
-                            <h1>Add users to the conversation: </h1>
-                            <SearchBar 
-                                placeholder="search posts in..."
-                                clicked={this.filterSearchHandler}
-                                resetFilter={()=>{this.setState({filterIn: "none", filterBy: "none"})}}
-                                selectValues={["title", "content"]}
-                            />
-                            <div className={classes.selectAllContainer}>
-                                <div className={classes.selectAllContainerInner}>
-                                    <p>select all</p>
-                                    <input type="checkbox"/>
+                                <div className={classes.centerInput}>
+                                    <h1>Give the conversation a name:</h1>
+                                    <div>
+                                        <input 
+                                            className={classes.Input}
+                                            type="text" 
+                                            onChange={(e)=>this.setState({conversationName: e.target.value})}
+                                        />
+                                    </div>
+                                </div>
+                                <hr />
+                                <div className={classes.addingUsers}>
+                                    <h1>Add users to the conversation: </h1>
+                                    <SearchBar 
+                                        placeholder="search friends in..."
+                                        clicked={this.filterSearchHandler}
+                                        resetFilter={()=>{this.setState({filterIn: "", filterBy: ""})}}
+                                        selectValues={["nickname", "name", "surname", "id"]}
+                                        selectedOption={this.filterSearchHandler}
+                                    />
+                                    <div className={classes.selectAllContainer}>
+                                        <div className={classes.selectAllContainerInner}>
+                                            <p>select all</p>
+                                            <input type="checkbox"/>
+                                        </div>
+                                    </div>
+                                    <div className={classes.center}>
+                                        <div className={classes.friendsList}>
+                                            { friends }
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div className={classes.center}>
-                                <div className={classes.friendsList}>
-                                    { friends }
-                                </div>
-                            </div>
                         </div>
-                    </div>
-                </div>
+                    )
+                }
                 {flash}
             </div>
         );
@@ -141,8 +250,3 @@ class AddingConversation extends Component {
 }
  
 export default AddingConversation;
-
-/*
-    
-
-*/
