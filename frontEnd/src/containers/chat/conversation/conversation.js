@@ -4,6 +4,7 @@ import classes from './conversation.module.css';
 import Button from '../../../components/UI/button';
 import getUserData from '../../../getUserData';
 import io from 'socket.io-client';
+import { withRouter } from 'react-router';
 
 class Conversation extends Component {
     constructor(props) {
@@ -115,4 +116,4 @@ class Conversation extends Component {
     }
 }
  
-export default Conversation;
+export default withRouter(Conversation);

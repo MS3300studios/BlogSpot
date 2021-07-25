@@ -4,3 +4,6 @@
     display: flex;
     justify-content: center;
 }
+.mainPanel{
+    width: 80%;
+}

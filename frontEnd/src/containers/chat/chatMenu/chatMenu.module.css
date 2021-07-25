@@ -1,16 +1,12 @@
+.center{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
 .chatMenu{
     width: 40%;
     border-right: black 3px solid;
-}
-.converstaion{
-    width: 90%;
-    background-color: cadetblue;
-    height: 70px;
-    border: 5px solid lightblue;
-    border-radius: 20px;
-    margin: 10px;
-    margin-left: 4px;
-    padding: 10px;
 }
 .noConversationsContainer{
     margin: 20px auto;
@@ -40,6 +36,26 @@
     transition: 0.2s ease-out;
 }
 
+.addConversationIconSmall{
+    margin-top: 10px;
+    height: 50px;
+    width: 40%;
+    background-color: #279a27;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-radius: 10px;
+    cursor: pointer;
+    color: white;
+    font-size: 15px;
+    font-weight: 500;
+    transition: 0.2s ease-out;
+}
+
+.addConversationIconSmall:hover{
+    transform: scale(1.2);
+}
+
 .addConversationIcon:hover{
     transform: scale(1.2);
 }
@@ -47,4 +63,42 @@
 .addConversationIcon p{
     font-size: 18px;
     font-weight: 550;
+}
+
+.conversationContainer{
+    height: 98%;
+    overflow-y: auto;
+    padding-left: 5%;
+}
+
+.conversation{
+    width: 90%;
+    height: 15%;
+    background-color: #53c253;
+    border-radius: 20px;
+    margin: 10px;
+    margin-top: 20px;
+    padding: 10px;
+    cursor: pointer;
+    transition: 0.5s ease-out;
+}
+
+
+.conversation:hover{
+    box-shadow: 10px 10px 29px -1px rgba(0,0,0,0.55);
+}
+
+.conversation h1{
+    margin: 0;
+    margin-left: 10px;
+    color: #04255f;
+}
+
+.participantContainer{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    font-size: 20px;
+    font-weight: 550;
+    overflow-x: auto;
 }

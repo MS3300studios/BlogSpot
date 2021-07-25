@@ -58,16 +58,30 @@ class ChatMenu extends Component {
         else {
             conversations = this.state.conversations.map((el, index) => {
                 return (
-                    <div className={classes.converstaion} onClick={()=>this.props.selectChat(index)} key={index}>
-                        <h1>{el.user}</h1>
-                        <p>{el.message}</p>
+                    <div className={classes.conversation} onClick={()=>this.props.selectChat(index)} key={index}>
+                        <h1>{el.name}</h1>
+                        <div className={classes.participantContainer}>
+                            {
+                                el.participants.map(participant => (
+                                    <p>{participant.name}</p>
+                                ))
+                            }
+                        </div>
                     </div>
                 )
             })
         } 
         return (
             <div className={classes.chatMenu}>
-                {conversations}
+                <div className={classes.conversationContainer}>
+                    {conversations}
+                    <div className={classes.center}>
+                        <div className={classes.addConversationIconSmall} onClick={()=>this.setState({addingConversation: true})}>
+                            <BsPlusSquareFill size="2em" color="#53c253"/>
+                            <p>Add a conversation</p>
+                        </div>
+                    </div>
+                </div>
                 {
                     this.state.addingConversation ? 
                     <AddingConversation 

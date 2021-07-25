@@ -1,26 +1,28 @@
 import React, { Component } from 'react';
 import ChatMenu from './chatMenu/chatMenu';
 import classes from './chat.module.css';
-import MainPanel from './mainPanel/mainPanel';
+import Conversation from './conversation/conversation';
 
 class Chat extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            selectedChat: 0
+            selectedConversation: null
         }
-        this.selectChat.bind(this);
+        this.selectConversation.bind(this);
     }
 
-    selectChat = (chatId) => {
-        this.setState({selectedChat: chatId});
+    selectConversation = (conversation) => {
+        this.setState({selectedConversation: conversation});
     }
 
     render() { 
         return (
             <div className={classes.container}>
-                <ChatMenu selectChat={this.selectChat}/>
-                <MainPanel chatId={this.state.selectedChat}/>
+                <ChatMenu selectChat={this.selectConversation}/>
+                <div className={classes.mainPanel}>
+                    <Conversation conversation={this.state.selectedConversation}/>
+                </div>
             </div>
         );
     }
