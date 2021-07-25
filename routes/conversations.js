@@ -27,7 +27,11 @@ router.post('/conversations/new', auth, (req, res) => {
 
 //get multiple conversations that have the userId as one of the users in participants array
 router.get('/conversations/', auth, (req, res) => {
-
+    Conversation.find({ "participants.userId": req.userData.userId }).exec().then(conversations => {
+        res.json({
+            conversations: conversations
+        })
+    })
 })
 
 //get one conversation by it's own ID
