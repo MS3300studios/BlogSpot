@@ -64,33 +64,42 @@ class AddingConversation extends Component {
     }
 
     sendConversation = () => {
-        let participants = this.state.selectedFriends;
-        participants.push({
-            name: this.state.userData.name,
-            userId: this.state.userData._id
-        })
+        if(this.state.selectedFriends.length >= 1 && this.state.conversationName !== ""){
+            //adding the user himself to the conversation participants array
+            let participants = this.state.selectedFriends;
+            participants.push({
+                name: this.state.userData.name,
+                userId: this.state.userData._id
+            })
 
-        axios({
-            method: 'post',
-            url: `http://localhost:3001/conversations/new`,
-            headers: {'Authorization': this.state.token},
-            data: {
-                participants: participants,
-                name: this.state.conversationName
-            }
-        })
-        .then((res)=>{
-            if(res.status===201){
-                this.setState({
-                    redirect: true,
-                    redirectId: res.data.conversation._id
-                });
-                return;
-            }
-        })
-        .catch(error => {
-            console.log(error);
-        })
+            axios({
+                method: 'post',
+                url: `http://localhost:3001/conversations/new`,
+                headers: {'Authorization': this.state.token},
+                data: {
+                    participants: participants,
+                    name: this.state.conversationName
+                }
+            })
+            .then((res)=>{
+                if(res.status===201){
+                    this.setState({
+                        redirect: true,
+                        redirectId: res.data.conversation._id
+                    });
+                    return;
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            })
+        }
+        else if(this.state.conversationName === ""){
+            this.flash("the conversation has to have a name!");
+        }
+        else if(this.state.selectedFriends.length === 0){
+            this.flash("you need to select at least one user!");
+        }
     }
 
     filterSearchHandler = (option, string) => {
@@ -291,7 +300,6 @@ class AddingConversation extends Component {
                     )
                 }
                 {flash}
-                <button style={{backgroundColor: "black"}} onClick={()=>console.log(this.state.selectedFriends)}>log selected friends</button>
                 {
                     this.state.redirect ? <Redirect to={"/conversation/?id="+this.state.redirectId}/> : null
                 }
