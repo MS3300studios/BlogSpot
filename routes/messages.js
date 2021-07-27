@@ -6,28 +6,28 @@ const Message = require('../models/message');
 
 router.use(express.json());
 
-router.get('/messages/:conversationId', auth, (req, res) => {
-    
+router.get('/messages/:conversationId/:skip', auth, (req, res) => {
+    Message.find({conversationId: req.params.conversationId})
+        .skip(req.params.skip)
+        .limit(5)
+        .exec()
+        .then(messages => {
+            res.json({
+                messages: messages
+            });
+        })
 })
 
-router.post('/socialBoard/init', auth, (req, res) => {
-    Blog.find().skip(req.body.skipPosts).limit(4).exec().then(blogs => {
-        Photo.find().skip(req.body.skipPhotos).limit(4).exec().then(photos=>{
-            let newArr = blogs.concat(photos);
-            newArr.sort((a, b) => {
-                let c = new Date(a.createdAt);
-                let d = new Date(b.createdAt);
-                return c-d
-            })
+router.post('/messages/add', auth, (req, res) => {
+    const message = new Message({
+        authorId: req.body.authorId,
+        content: req.body.content,
+        conversationId: req.body.conversationId,
+        hour: req.body.hour
+    });
 
-            newArr.forEach(el => {
-                const formatted = new Date(el.createdAt).toLocaleDateString();
-            })
-
-            res.status(200).json({
-                elements: newArr
-            })
-        })
+    message.save().then(resp => {
+        res.sendStatus(201);
     })
 })
 
