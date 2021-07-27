@@ -102,25 +102,12 @@ class Conversation extends Component {
             let time = `${hour}:${minute}`
 
             this.socket.emit('sendMessage', {
-                conversationId: this.props.conversation._id, 
+                authorId: this.state.user._id,
                 authorName: this.state.user.name, 
                 content: this.state.message, 
+                conversationId: this.props.conversation._id, 
                 hour: time 
             });
-
-
-            axios({
-                method: 'post',
-                url: `http://localhost:3001/messages/add`,
-                headers: {'Authorization': this.state.token},
-                data: {
-                    authorId: this.state.user._id,
-                    authorName: this.state.user.name,
-                    content: this.state.message,
-                    conversationId: this.props.conversation._id,
-                    hour: time
-                }
-            })
         }
         this.setState({message: ""});
     }

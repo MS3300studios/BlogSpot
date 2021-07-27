@@ -18,6 +18,7 @@ router.post('/messages/:conversationId', auth, (req, res) => {
         })
 })
 
+//redundant: messages are saved directly during sending the message to the websocket 
 router.post('/messages/add', auth, (req, res) => {
     const message = new Message({
         authorId: req.body.authorId,

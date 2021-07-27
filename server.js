@@ -31,6 +31,8 @@ const io = socket(server, corsOptions);
 
 let users = []; //here are sockets that are in a room, active sockets that are not in a room aren't stored in this array
 
+const Message = require('./models/message');
+
 io.on('connection', (socket) => {    
     socket.on('join', ({userId, name, conversationId}) => {
         console.log(`${name} joined room nr: ${conversationId}`)
@@ -40,6 +42,15 @@ io.on('connection', (socket) => {
 
     socket.on('sendMessage', (message) => {
         io.to(message.conversationId).emit('message', message);
+        const msg = new Message({
+            authorId: message.authorId,
+            authorName: message.authorName,
+            content: message.content,
+            conversationId: message.conversationId,
+            hour: message.hour
+        });
+    
+        msg.save();
     })
 
     socket.on('allUsers', () => {
