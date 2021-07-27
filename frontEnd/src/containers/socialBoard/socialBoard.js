@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import {Link} from 'react-router-dom';
 
 import classes from './socialBoard.module.css';
 import axios from 'axios';

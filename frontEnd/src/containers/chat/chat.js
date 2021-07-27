@@ -20,9 +20,20 @@ class Chat extends Component {
         return (
             <div className={classes.container}>
                 <ChatMenu selectChat={this.selectConversation}/>
-                <div className={classes.mainPanel}>
-                    <Conversation conversation={this.state.selectedConversation}/>
-                </div>
+                {
+                    this.state.selectedConversation ? (
+                        <div className={classes.mainPanel}>
+                            <Conversation conversation={this.state.selectedConversation}/>
+                        </div>
+                    ) : (
+                        <div className={classes.mainPanel}>
+                            <div className={classes.centerHeader}>
+                                <h1 className={classes.noConversationSelectedHeader}>Select a conversation from the left side panel</h1>
+                            </div>
+                        </div>
+                    )
+                }
+                
             </div>
         );
     }

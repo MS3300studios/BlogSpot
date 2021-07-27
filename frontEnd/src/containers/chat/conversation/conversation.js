@@ -10,8 +10,14 @@ class Conversation extends Component {
     constructor(props) {
         let userData = getUserData();
 
-        let queryParams = new URLSearchParams(props.location.search);
-        let id = queryParams.get('id'); 
+        let id;
+        if(props.conversation){
+            id = props.conversation._id
+        }
+        else{
+            let queryParams = new URLSearchParams(props.location.search);
+            id = queryParams.get('id'); 
+        }
 
         super(props);
         this.state = {
@@ -28,27 +34,28 @@ class Conversation extends Component {
     }
 
     componentDidMount(){
-        this.socket.emit('join', { name: this.state.user.name, conversationId: this.state.conversationId })
-        this.socket.emit('askForUsers', this.state.conversationId);
-
+        this.socket.emit('join', {name: this.state.user.name, conversationId: this.props.conversation._id })
         this.socket.on('message', message => {
             let prevMessages = this.state.messages;
             prevMessages.push(message)
             this.setState({messages: prevMessages})
         })
-        this.socket.on('usersInConversation', users => {
-            this.setState({conversationUsers: users})
-        })
     }   
 
-    componentDidUpdate(){
+    componentDidUpdate(prevProps, prevState){
         if(this.state.message === ""){
             this.messagesEnd.scrollIntoView({ behavior: "smooth" });
         }
+
+        if(prevProps.conversation._id !== this.props.conversation._id){
+            this.socket.emit('leaveConversation', {conversationId: prevProps.conversation._id}) //leaving old conversation
+            this.socket.emit('join', {name: this.state.user.name, conversationId: this.props.conversation._id }); //joining new conversation
+        }
+
     }
 
     componentWillUnmount(){
-        this.socket.emit('leaveConversation', this.state.conversationId)
+        this.socket.emit('leaveConversation', {conversationId: this.props.conversation._id})
     }
 
     sendMessage = (e) => {
@@ -56,11 +63,16 @@ class Conversation extends Component {
         if(this.state.message === "") return null
         else {
             let hour = new Date().getHours();
-            if(hour<10) hour = "0 "+hour;
+            if(hour<10) hour = "0"+hour;
             let minute = new Date().getMinutes()
-            if(minute<10) minute = "0 "+minute;
+            if(minute<10) minute = "0"+minute;
             let time = `${hour}:${minute}`
-            this.socket.emit('sendMessage', { authorName: this.state.user.name, content: this.state.message, hour: time});
+            this.socket.emit('sendMessage', {
+                conversationId: this.props.conversation._id, 
+                authorName: this.state.user.name, 
+                content: this.state.message, 
+                hour: time 
+            });
         }
         this.setState({message: ""});
     }
@@ -69,10 +81,7 @@ class Conversation extends Component {
         return (
             <>
             <div className={classes.conversationBanner}>
-                {this.state.conversationUsers.map((user, index) => {
-                    if(index===this.state.conversationUsers.length-1) return <h1 key={index}>{user.name}</h1>
-                    else return <React.Fragment key={index}><h1>{user.name}</h1><h1>+</h1></React.Fragment>
-                })}
+                <h1>{this.props.conversation.name}</h1>
             </div>
             <div className={classes.center}>
                 <div className={classes.mainContainer}>
@@ -109,6 +118,7 @@ class Conversation extends Component {
                         onKeyPress={event => event.key === 'Enter' ? this.sendMessage(event) : null}
                         />
                     <Button clicked={this.sendMessage}>Send</Button>
+                    <Button clicked={()=>this.socket.emit('allUsers')}>Users</Button>
                 </div>
             </div>
             </>

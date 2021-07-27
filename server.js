@@ -28,51 +28,35 @@ const corsOptions = {
 }
 const io = socket(server, corsOptions);
 
-let users = [];
+let users = []; //here are sockets that are in a room, active sockets that are not in a room aren't stored in this array
 
-io.on('connection', (socket) => {
-    socket.on('join', ({name, conversationId}) => {
-        console.log(`${name} joined the conversation nr ${conversationId}`)
-        let user = {
-            id: socket.id,
-            name: name,
-            conversationId: conversationId
-        }
-        users.push(user);
-        socket.join(conversationId) //user is joining a specific room
-        io.to(conversationId).emit('message', {authorName: 'Admin', content: `${name} joined the server`, hour: '00:00'})
+io.on('connection', (socket) => {    
+    socket.on('join', ({userId, name, conversationId}) => {
+        console.log(`${name} joined room nr: ${conversationId}`)
+        socket.join(conversationId); //user is joining a specific room
+        users.push({id: socket.id, name: name, conversationId: conversationId});
     })
 
-    socket.on('sendMessage', message => {
-        let currentUser = users.find(user => user.id === socket.id)
-        io.to(currentUser.conversationId).emit('message', message);
+    socket.on('sendMessage', (message) => {
+        io.to(message.conversationId).emit('message', message);
     })
 
-    socket.on('askForUsers', conversationId => {
-        let usersInConversation = users.filter(user => user.conversationId === conversationId);
-        io.to(conversationId).emit('usersInConversation', usersInConversation);
+    socket.on('allUsers', () => {
+        console.log(users)
     })
 
-    socket.on('leaveConversation', conversationId => {
-        // let currentUser = users.find(user => user.id === socket.id)
-        // let usersInConversation = users.filter(user => user.conversationId === currentUser.conversationId);
-        // io.to(currentUser.conversationId).emit('usersInConversation', usersInConversation);
-        users.forEach((user, index) => {
-            if(user.id === socket.id){
-                users.splice(index, 1);
-            }
-        })
+    socket.on('leaveConversation', ({conversationId}) => {
+        console.log('user left the conversation: '+conversationId)
+        socket.leave(conversationId); //unsubscribing to socket 
+        let newUsers = users.filter(user => user.id !== socket.id);
+        users = newUsers;
+        console.log('new users:');
+        console.log(users);
     })
 
     socket.on('disconnect', ()=>{
-        // let currentUser = users.find(user => user.id === socket.id)
-        // let usersInConversation = users.filter(user => user.conversationId === currentUser.conversationId);
-        // io.to(currentUser.conversationId).emit('usersInConversation', usersInConversation);
-        users.forEach((user, index) => {
-            if(user.id === socket.id){
-                users.splice(index, 1);
-            }
-        })
-        console.log("user disconnected")
+        console.log("user disconnected");
+        let newUsers = users.filter(user => user.id !== socket.id);
+        users = newUsers;
     })
 });

@@ -6,4 +6,16 @@
 }
 .mainPanel{
     width: 80%;
+    position: relative;
+}
+.centerHeader{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.noConversationSelectedHeader{
+    color: #04255f;
+    font-size: 45px;
 }

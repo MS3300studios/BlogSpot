@@ -58,12 +58,12 @@ class ChatMenu extends Component {
         else {
             conversations = this.state.conversations.map((el, index) => {
                 return (
-                    <div className={classes.conversation} onClick={()=>this.props.selectChat(index)} key={index}>
+                    <div className={classes.conversation} onClick={()=>this.props.selectChat(el)} key={index}>
                         <h1>{el.name}</h1>
                         <div className={classes.participantContainer}>
                             {
-                                el.participants.map(participant => (
-                                    <p>{participant.name}</p>
+                                el.participants.map((participant, index) => (
+                                    <p key={index}>{participant.name}</p>
                                 ))
                             }
                         </div>
