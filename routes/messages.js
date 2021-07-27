@@ -6,12 +6,13 @@ const Message = require('../models/message');
 
 router.use(express.json());
 
-router.get('/messages/:conversationId/:skip', auth, (req, res) => {
+router.post('/messages/:conversationId', auth, (req, res) => {
     Message.find({conversationId: req.params.conversationId})
-        .skip(req.params.skip)
+        .skip(req.body.skip)
         .limit(5)
         .exec()
         .then(messages => {
+            console.log('sending messages')
             res.json({
                 messages: messages
             });
