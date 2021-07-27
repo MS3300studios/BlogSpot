@@ -21,6 +21,7 @@ router.post('/messages/:conversationId', auth, (req, res) => {
 router.post('/messages/add', auth, (req, res) => {
     const message = new Message({
         authorId: req.body.authorId,
+        authorName: req.body.authorName,
         content: req.body.content,
         conversationId: req.body.conversationId,
         hour: req.body.hour

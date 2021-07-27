@@ -115,6 +115,7 @@ class Conversation extends Component {
                 headers: {'Authorization': this.state.token},
                 data: {
                     authorId: this.state.user._id,
+                    authorName: this.state.user.name,
                     content: this.state.message,
                     conversationId: this.props.conversation._id,
                     hour: time
