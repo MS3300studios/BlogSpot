@@ -12,7 +12,6 @@ router.post('/messages/:conversationId', auth, (req, res) => {
         .limit(5)
         .exec()
         .then(messages => {
-            console.log('sending messages')
             res.json({
                 messages: messages
             });
