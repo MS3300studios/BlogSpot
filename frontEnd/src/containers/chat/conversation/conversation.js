@@ -7,6 +7,8 @@ import io from 'socket.io-client';
 import { withRouter } from 'react-router';
 import axios from 'axios';
 
+import { IoIosArrowDown } from 'react-icons/io';
+import { IoIosArrowUp } from 'react-icons/io';
 import { FiUserPlus } from 'react-icons/fi';
 import { ImExit } from 'react-icons/im';
 import { BsPencil } from 'react-icons/bs';
@@ -43,7 +45,8 @@ class Conversation extends Component {
             infoOpened: true,
             editConversationName: false,
             newConversationName: props.conversation.name,
-            addingUser: false
+            addingUser: false,
+            showParticipants: false
         }
         this.messagesEnd = null;
         this.sendMessage.bind(this);
@@ -274,18 +277,32 @@ class Conversation extends Component {
                                 </div>
                             </div>
                             <hr />
-                            {
-                                this.props.conversation.participants.map((el, index) => {
-                                    return (
-                                        <a href={"/user/profile/?id="+el.userId} key={index} className={classes.participantLink}>
-                                            <div className={classes.participantListItem}>
-                                                <UserPhoto userId={el.userId} />
-                                                <p>{el.name}</p>
-                                            </div>
-                                        </a>
-                                    )
-                                })
-                            }
+                            <div className={classes.collapsibleParticipants}>
+                                <div className={classes.collapsiblePanel} onClick={()=>this.setState((prevState)=>({showParticipants: !prevState.showParticipants}))}> 
+                                    {
+                                        this.state.showParticipants ? <IoIosArrowUp size="2em" color="#fff"/> : <IoIosArrowDown size="2em" color="#fff"/>
+                                    }
+                                    <p>participants</p>
+                                </div>
+                                {
+                                    this.state.showParticipants ? (
+                                        <div>
+                                            {
+                                                this.props.conversation.participants.map((el, index) => {
+                                                    return (
+                                                        <a href={"/user/profile/?id="+el.userId} key={index} className={classes.participantLink}>
+                                                            <div className={classes.participantListItem}>
+                                                                <UserPhoto userId={el.userId} />
+                                                                <p>{el.name}</p>
+                                                            </div>
+                                                        </a>
+                                                    )
+                                                })
+                                            }
+                                        </div>
+                                    ) : null
+                                }
+                            </div>
                         </div>
                     ) : null
                 }
