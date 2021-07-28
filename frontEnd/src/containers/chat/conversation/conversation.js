@@ -42,7 +42,7 @@ class Conversation extends Component {
             conversationUsers: [],
             skip: 0,
             loading: true,
-            infoOpened: true,
+            infoOpened: false,
             editConversationName: false,
             newConversationName: props.conversation.name,
             addingUser: false,
@@ -55,6 +55,7 @@ class Conversation extends Component {
         this.fetchMessages.bind(this);
         this.addUser.bind(this);
         this.leaveConversation.bind(this);
+        this.filterParticipants.bind(this);
         this.socket = io('http://localhost:3001');
     }
 

@@ -6,6 +6,8 @@ import axios from 'axios';
 import { BsPlusSquareFill } from 'react-icons/bs';
 import getToken from '../../../getToken';
 import Spinner from '../../../components/UI/spinner';
+import SearchBar from '../../../components/UI/searchBar';
+import ConversationListItem from './conversationListItem';
 
 class ChatMenu extends Component {
     constructor(props) {
@@ -18,7 +20,12 @@ class ChatMenu extends Component {
             loading: true,
             addingConversation: false,
             conversations: [],
+            filterIn: "",
+            filterBy: ""
         }
+
+        this.filterConversations.bind(this);
+        this.filterSearchHandler.bind(this);
     }
 
     componentDidMount(){
@@ -36,6 +43,64 @@ class ChatMenu extends Component {
             console.log(error);
         })
     }
+
+    filterSearchHandler = (option, string) => {
+        if(string===""){
+            this.setState({filterIn: option});
+        }
+        else{
+            this.setState({filterIn: option, filterBy: string});
+        }
+    }
+
+    filterConversations = () => {
+        let conversationsJSX = []; //temporary array of all jsx friends, to be filtered and converted to conversationsRdy
+        let conversationsRdy = [];
+    
+        conversationsJSX = this.state.conversations.map((el, index) => {
+            return (
+                <ConversationListItem 
+                    selectChat={this.props.selectChat}
+                    el={el}
+                    key={index}
+                />
+            )
+        });
+
+        if(this.state.filterBy===""){
+            conversationsRdy = conversationsJSX;
+        }
+        else{
+            switch(this.state.filterIn){
+                case "name":
+                    conversationsRdy = conversationsJSX.filter((conversation)=>{
+                        if(conversation.props.el.name.includes(this.state.filterBy)){
+                            return true;
+                        }
+                        else return false;
+                    });
+                    break;
+                case "id":
+                    conversationsRdy = conversationsJSX.filter((conversation)=>{
+                        if(conversation.props.el._id.includes(this.state.filterBy)){
+                            return true;
+                        }
+                        else return false;
+                    }); 
+                    break;
+                default: conversationsRdy = conversationsJSX;
+                    break;
+            }
+        }
+
+        if(conversationsRdy.length === 0){
+            conversationsRdy = (
+                <h1>No conversation with this {this.state.filterIn} was found!</h1>
+            );
+        }
+
+        return conversationsRdy;
+    } 
 
     render() { 
         let conversations;
@@ -56,24 +121,18 @@ class ChatMenu extends Component {
             )
         }
         else {
-            conversations = this.state.conversations.map((el, index) => {
-                return (
-                    <div className={classes.conversation} onClick={()=>this.props.selectChat(el)} key={index}>
-                        <h1>{el.name}</h1>
-                        <div className={classes.participantContainer}>
-                            {
-                                el.participants.map((participant, index) => (
-                                    <p key={index}>{participant.name}</p>
-                                ))
-                            }
-                        </div>
-                    </div>
-                )
-            })
+            conversations = this.filterConversations();
         } 
         return (
             <div className={classes.chatMenu}>
                 <div className={classes.conversationContainer}>
+                    <SearchBar 
+                        placeholder="search conversations in..."
+                        clicked={this.filterSearchHandler}
+                        selectedOption={this.filterSearchHandler}
+                        resetFilter={()=>{this.setState({filterIn: "", filterBy: ""})}}
+                        selectValues={["name", "id"]}
+                    />
                     {conversations}
                     <div className={classes.center}>
                         <div className={classes.addConversationIconSmall} onClick={()=>this.setState({addingConversation: true})}>
