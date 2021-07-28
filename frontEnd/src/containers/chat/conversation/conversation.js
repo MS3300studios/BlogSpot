@@ -228,6 +228,25 @@ class Conversation extends Component {
                     ) : null
                 }
             </div>
+            <Button clicked={()=>{
+                axios({
+                    method: 'post',
+                    url: `http://localhost:3001/conversation/edit/name/610139d5b4602b220007992d`,
+                    headers: {'Authorization': this.state.token},
+                    data: {
+                        newName: "hahahahahahNEWNAME"
+                    }
+                })
+                .then((res)=>{
+                    if(res.status===200){
+                        
+                        return;
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+            }}>test POST</Button>
             </>
         );
     }

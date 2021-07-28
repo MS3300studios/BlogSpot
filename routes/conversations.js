@@ -43,5 +43,20 @@ router.get('/conversation/:id', auth, (req, res) => {
     })
 })
 
+router.post('/conversation/edit/name/:id', auth, (req, res) => {
+    Conversation.findById(req.params.id).then(conversation => {
+        let isParticipant = false;
+        conversation.participants.forEach(participant => {
+            if(participant.userId === req.userData.userId) isParticipant = true;
+        })
+
+        if(isParticipant === true){
+            console.log('changing name')
+        }
+        else{
+            res.sendStatus(401) //if user is not a participant of a conversation, he cannot change its name 
+        }
+    })
+})
 
 module.exports = router;
