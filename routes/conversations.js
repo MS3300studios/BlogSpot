@@ -51,7 +51,12 @@ router.post('/conversation/edit/name/:id', auth, (req, res) => {
         })
 
         if(isParticipant === true){
-            console.log('changing name')
+            conversation.name = req.body.newName;
+            conversation.save().then(resp => {
+                res.status(200).json({
+                    conversation: resp
+                })
+            })
         }
         else{
             res.sendStatus(401) //if user is not a participant of a conversation, he cannot change its name 

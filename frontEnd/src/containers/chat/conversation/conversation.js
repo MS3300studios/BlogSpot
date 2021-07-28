@@ -120,7 +120,28 @@ class Conversation extends Component {
     }
 
     sendConversationName = () => {
-        console.log(this.state.newConversationName);
+        if(this.state.newConversationName !== ""){
+            axios({
+                method: 'post',
+                url: `http://localhost:3001/conversation/edit/name/${this.props.conversation._id}`,
+                headers: {'Authorization': this.state.token},
+                data: {
+                    newName: this.state.newConversationName
+                }
+            })
+            .then((res)=>{
+                if(res.status===200){
+                    
+                    return;
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            })
+        }
+        else{
+            console.log('conversation name cannot be empty');
+        }
     }
 
     render() { 
@@ -228,25 +249,6 @@ class Conversation extends Component {
                     ) : null
                 }
             </div>
-            <Button clicked={()=>{
-                axios({
-                    method: 'post',
-                    url: `http://localhost:3001/conversation/edit/name/610139d5b4602b220007992d`,
-                    headers: {'Authorization': this.state.token},
-                    data: {
-                        newName: "hahahahahahNEWNAME"
-                    }
-                })
-                .then((res)=>{
-                    if(res.status===200){
-                        
-                        return;
-                    }
-                })
-                .catch(error => {
-                    console.log(error);
-                })
-            }}>test POST</Button>
             </>
         );
     }
