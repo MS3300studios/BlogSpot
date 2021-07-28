@@ -38,7 +38,7 @@ class Conversation extends Component {
             conversationUsers: [],
             skip: 0,
             loading: true,
-            infoOpened: false,
+            infoOpened: true,
             editConversationName: false,
             newConversationName: props.conversation.name,
         }
@@ -46,6 +46,7 @@ class Conversation extends Component {
         this.sendMessage.bind(this);
         this.sendConversationName.bind(this);
         this.fetchMessages.bind(this);
+        this.leaveConversation.bind(this);
         this.socket = io('http://localhost:3001');
     }
 
@@ -144,6 +145,23 @@ class Conversation extends Component {
         }
     }
 
+    leaveConversation = () => {
+        axios({
+            method: 'get',
+            url: `http://localhost:3001/conversation/leave/${this.props.conversation._id}`,
+            headers: {"Authorization": this.state.token}
+        })
+        .then((res)=>{
+            if(res.status===200){
+                this.props.history.go(0);
+                return;
+            }
+        })
+        .catch(error => {
+            console.log(error);
+        })
+    }
+
     render() { 
         let messages;
         if(this.state.loading === true){
@@ -223,14 +241,21 @@ class Conversation extends Component {
                                         </div>
                                     )
                                      : ( 
-                                    <div className={classes.conversationName}>
-                                        <h1>{this.props.conversation.name}</h1>
-                                        <BsPencil 
-                                            size="2em" 
-                                            color="#0a42a4" 
-                                            onClick={()=>this.setState({editConversationName: true})}/>
-                                    </div>)
+                                        <div className={classes.conversationName}>
+                                            <h1>{this.props.conversation.name}</h1>
+                                            <div className={classes.pencilContainer}>
+                                                <BsPencil 
+                                                    size="2em" 
+                                                    color="#0a42a4" 
+                                                    onClick={()=>this.setState({editConversationName: true})}/>
+                                            </div>
+                                        </div>
+                                    )
                                 }
+                            <hr />
+                            <div className={classes.center}>
+                                <button className={classes.leave} onClick={this.leaveConversation}>Leave conversation</button>
+                            </div>
                             <hr />
                             {
                                 this.props.conversation.participants.map((el, index) => {

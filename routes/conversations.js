@@ -64,4 +64,24 @@ router.post('/conversation/edit/name/:id', auth, (req, res) => {
     })
 })
 
+router.get('/conversation/leave/:id', auth, (req, res) => {
+    Conversation.findById(req.params.id).then(conversation => {
+        let isParticipant = false;
+        conversation.participants.forEach(participant => {
+            if(participant.userId === req.userData.userId) isParticipant = true;
+        })
+
+        if(isParticipant === true){
+            let newParticipants = conversation.participants.filter(participant => participant.userId !== req.userData.userId);
+            conversation.participants = newParticipants;
+            conversation.save().then(()=>{
+                res.sendStatus(200);
+            }).catch(err => console.log(err))
+        }
+        else{
+            res.sendStatus(401) //if user is not a participant of a conversation, he cannot change its name 
+        }
+    })
+})
+
 module.exports = router;

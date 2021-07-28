@@ -129,8 +129,25 @@ background: #555;
     color: unset;
 }
 
+.participantListItem p{
+    font-size: 25px;
+    font-weight: 500;
+    margin-left: -40px;
+}
 .participantListItem{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 80%;
+    border: green solid 3px;
+    border-radius: 20px;
+    margin: 10px auto;
+    transition: 0.3s ease-out;
+}
 
+.participantListItem:hover{
+    background-color: green;
+    color: white;
 }
 
 .conversationName{
@@ -162,4 +179,24 @@ background: #555;
 .editingContainer{
     margin-top: 30px;
     margin-bottom: 30px;
+}
+
+.pencilContainer{
+    font-size: 14px;
+}
+
+.leave{
+    width: 150px;
+    height: 50px;
+    margin: 10px;
+    transition: 0.3s all ease;
+    font-size: 18px;
+    background-color: darkred;
+    animation: none;
+}
+
+.leave:hover{
+    animation: none !important;
+    transform: scale(1.3);
+    cursor: pointer;
 }
