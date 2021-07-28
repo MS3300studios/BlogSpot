@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import classes from './chatMenu.module.css';
-import AddingConversation from '../addingConversation/addingConversation';
 import SelectPanel from '../addingConversation/selectPanel';
 import axios from 'axios';
 

@@ -35,7 +35,8 @@ class AddingConversation extends Component {
             filterBy: "",
             filterIn: "",
             redirect: false,
-            redirectId: ""
+            redirectId: "",
+            redirectChat: false
         }
 
         this.flash.bind(this);
@@ -243,7 +244,7 @@ class AddingConversation extends Component {
                 {
                     this.state.loading ? <Spinner /> : (
                         <div className={classes.addUserContainer}>
-                            <div className={classes.closeIcon} onClick={this.props.closeAddConversation}>
+                            <div className={classes.closeIcon} onClick={()=>this.setState({redirectChat: true})}>
                                 <AiOutlineCloseCircle size="2em" color="#0a42a4" />
                             </div>
 
@@ -302,6 +303,9 @@ class AddingConversation extends Component {
                 {flash}
                 {
                     this.state.redirect ? <Redirect to={"/conversation/?id="+this.state.redirectId}/> : null
+                }
+                {
+                    this.state.redirectChat ? <Redirect to="/chat/" /> : null
                 }
             </div>
         );

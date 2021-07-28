@@ -22,6 +22,7 @@ import SocialBoard from './containers/socialBoard/socialBoard';
 import ScrollListener from './components/scrollListener/scrollListener';
 import EditUserProfile from './containers/userProfile/editUserProfile/editUserProfile';
 import Conversation from './containers/chat/conversation/conversation';
+import AddingConversation from './containers/chat/addingConversation/addingConversation';
 
 class App extends Component {
   constructor(props){
@@ -52,6 +53,7 @@ class App extends Component {
             <Menu />
             <Switch>
               <Route path="/conversation/" component={Conversation} />
+              <Route path="/addConversation/" component={AddingConversation} />
               <Route path="/editProfile" exact component={EditUserProfile} />
               <Route path="/photo/view" exact component={PhotoView} />
               <Route path="/photo/add" exact component={PhotoForm} />
