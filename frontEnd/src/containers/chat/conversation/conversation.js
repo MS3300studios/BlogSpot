@@ -30,7 +30,6 @@ class Conversation extends Component {
         super(props);
         this.state = {
             messages: [],
-            conversationName: props.conversation.name,
             message: "",
             partner: null,
             user: userData,
@@ -68,7 +67,7 @@ class Conversation extends Component {
         if(prevProps.conversation._id !== this.props.conversation._id){
             this.socket.emit('leaveConversation', {conversationId: prevProps.conversation._id}) //leaving old conversation
             this.socket.emit('join', {name: this.state.user.name, conversationId: this.props.conversation._id }); //joining new conversation
-            this.setState({skip: 0, conversationName: this.props.conversation.name, newConversationName: this.props.conversation.name}, () => {
+            this.setState({skip: 0}, () => {
                 this.fetchMessages();
             })
         }
@@ -179,7 +178,7 @@ class Conversation extends Component {
         return (
             <>
             <div className={classes.conversationBanner}>
-                <h1>{this.state.conversationName}</h1>
+                <h1>{this.props.conversation.name}</h1>
                 <div className={classes.infoCircle} onClick={()=>this.setState((prevState)=>({infoOpened: !prevState.infoOpened}))}>
                     {
                         this.state.infoOpened ? <BsInfoCircleFill size="2em" color="#04255f"/> : <BsInfoCircle size="2em" color="#04255f"/>
@@ -225,7 +224,7 @@ class Conversation extends Component {
                                     )
                                      : ( 
                                     <div className={classes.conversationName}>
-                                        <h1>{this.state.conversationName}</h1>
+                                        <h1>{this.props.conversation.name}</h1>
                                         <BsPencil 
                                             size="2em" 
                                             color="#0a42a4" 
