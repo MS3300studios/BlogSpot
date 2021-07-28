@@ -15,7 +15,7 @@ import { BsPencil } from 'react-icons/bs';
 import {BsInfoCircle, BsInfoCircleFill} from 'react-icons/bs';
 import Button from '../../../components/UI/button';
 import Spinner from '../../../components/UI/spinner';
-import UserPhoto from '../../../components/UI/userphoto';
+import Participant from './participant';
 
 class Conversation extends Component {
     constructor(props) {
@@ -290,12 +290,7 @@ class Conversation extends Component {
                                             {
                                                 this.props.conversation.participants.map((el, index) => {
                                                     return (
-                                                        <a href={"/user/profile/?id="+el.userId} key={index} className={classes.participantLink}>
-                                                            <div className={classes.participantListItem}>
-                                                                <UserPhoto userId={el.userId} />
-                                                                <p>{el.name}</p>
-                                                            </div>
-                                                        </a>
+                                                        <Participant el={el} key={index} />
                                                     )
                                                 })
                                             }
