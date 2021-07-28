@@ -46,7 +46,8 @@ class Conversation extends Component {
             editConversationName: false,
             newConversationName: props.conversation.name,
             addingUser: false,
-            showParticipants: false
+            showParticipants: false,
+            filterParticipantsString: ""
         }
         this.messagesEnd = null;
         this.sendMessage.bind(this);
@@ -173,6 +174,37 @@ class Conversation extends Component {
         this.setState({addingUser: true});
     }
 
+    filterParticipants = () => {
+        let participantsJSX = []; //temporary array of all jsx friends, to be filtered and converted to friendsRdy
+        let participantsRdy = [];
+    
+        participantsJSX = this.props.conversation.participants.map((el, index) => {
+            return (
+                <Participant el={el} key={index} />
+            )
+        });
+
+        if(this.state.filterParticipantsString===""){
+            participantsRdy = participantsJSX;
+        }
+        else{
+            participantsRdy = participantsJSX.filter((participant)=>{
+                if(participant.props.el.name.includes(this.state.filterParticipantsString)){
+                    return true;
+                }
+                else return false;
+            })
+        }
+
+        if(participantsRdy.length === 0){
+            participantsRdy = (
+                <h1>There is no user with this name in this conversation</h1>
+            );
+        }
+
+        return participantsRdy;
+    } 
+
     render() { 
         let messages;
         if(this.state.loading === true){
@@ -287,13 +319,13 @@ class Conversation extends Component {
                                 {
                                     this.state.showParticipants ? (
                                         <div>
-                                            {
-                                                this.props.conversation.participants.map((el, index) => {
-                                                    return (
-                                                        <Participant el={el} key={index} />
-                                                    )
-                                                })
-                                            }
+                                            <input 
+                                                type="text" 
+                                                placeholder="search participants by name"
+                                                className={classes.input}
+                                                onChange={(e)=>this.setState({filterParticipantsString: e.target.value})}
+                                            />
+                                            {this.filterParticipants()}
                                         </div>
                                     ) : null
                                 }
