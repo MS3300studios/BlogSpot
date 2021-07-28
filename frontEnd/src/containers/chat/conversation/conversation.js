@@ -7,6 +7,8 @@ import io from 'socket.io-client';
 import { withRouter } from 'react-router';
 import axios from 'axios';
 
+import { FiUserPlus } from 'react-icons/fi';
+import { ImExit } from 'react-icons/im';
 import { BsPencil } from 'react-icons/bs';
 import {BsInfoCircle, BsInfoCircleFill} from 'react-icons/bs';
 import Button from '../../../components/UI/button';
@@ -41,11 +43,13 @@ class Conversation extends Component {
             infoOpened: true,
             editConversationName: false,
             newConversationName: props.conversation.name,
+            addingUser: false
         }
         this.messagesEnd = null;
         this.sendMessage.bind(this);
         this.sendConversationName.bind(this);
         this.fetchMessages.bind(this);
+        this.addUser.bind(this);
         this.leaveConversation.bind(this);
         this.socket = io('http://localhost:3001');
     }
@@ -162,6 +166,10 @@ class Conversation extends Component {
         })
     }
 
+    addUser = () => {
+        this.setState({addingUser: true});
+    }
+
     render() { 
         let messages;
         if(this.state.loading === true){
@@ -254,7 +262,16 @@ class Conversation extends Component {
                                 }
                             <hr />
                             <div className={classes.center}>
-                                <button className={classes.leave} onClick={this.leaveConversation}>Leave conversation</button>
+                                <div className={[classes.operationButton,classes.leave].join(" ")} onClick={this.leaveConversation}>
+                                    <ImExit size="2em" color="#fff"/>
+                                    <p>Leave conversation</p>
+                                </div>
+                            </div>
+                            <div className={classes.center}>
+                                <div className={[classes.operationButton,classes.addUser].join(" ")} onClick={this.addUser}>
+                                    <FiUserPlus size="1.7em" color="#fff"/>
+                                    <p>Add a user</p>
+                                </div>
                             </div>
                             <hr />
                             {
