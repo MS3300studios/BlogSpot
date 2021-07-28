@@ -84,10 +84,11 @@ class AddingConversation extends Component {
             })
             .then((res)=>{
                 if(res.status===201){
-                    this.setState({
-                        redirect: true,
-                        redirectId: res.data.conversation._id
-                    });
+                    this.setState({redirectChat: true});
+                    // this.setState({
+                    //     redirect: true,
+                    //     redirectId: res.data.conversation._id
+                    // });
                     return;
                 }
             })
