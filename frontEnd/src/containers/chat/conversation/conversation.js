@@ -7,8 +7,11 @@ import io from 'socket.io-client';
 import { withRouter } from 'react-router';
 import axios from 'axios';
 
+import { BsPencil } from 'react-icons/bs';
+import {BsInfoCircle, BsInfoCircleFill} from 'react-icons/bs';
 import Button from '../../../components/UI/button';
 import Spinner from '../../../components/UI/spinner';
+import UserPhoto from '../../../components/UI/userphoto';
 
 class Conversation extends Component {
     constructor(props) {
@@ -34,10 +37,14 @@ class Conversation extends Component {
             conversationId: id,
             conversationUsers: [],
             skip: 0,
-            loading: true
+            loading: true,
+            infoOpened: true,
+            editConversationName: true,
+            newConversationName: props.conversation.name,
         }
         this.messagesEnd = null;
         this.sendMessage.bind(this);
+        this.sendConversationName.bind(this);
         this.fetchMessages.bind(this);
         this.socket = io('http://localhost:3001');
     }
@@ -112,6 +119,10 @@ class Conversation extends Component {
         this.setState({message: ""});
     }
 
+    sendConversationName = () => {
+        console.log(this.state.newConversationName);
+    }
+
     render() { 
         let messages;
         if(this.state.loading === true){
@@ -147,6 +158,11 @@ class Conversation extends Component {
             <>
             <div className={classes.conversationBanner}>
                 <h1>{this.props.conversation.name}</h1>
+                <div className={classes.infoCircle} onClick={()=>this.setState((prevState)=>({infoOpened: !prevState.infoOpened}))}>
+                    {
+                        this.state.infoOpened ? <BsInfoCircleFill size="2em" color="#04255f"/> : <BsInfoCircle size="2em" color="#04255f"/>
+                    }
+                </div>
             </div>
             <div className={classes.center}>
                 <div className={classes.mainContainer}>
@@ -164,8 +180,53 @@ class Conversation extends Component {
                         onKeyPress={event => event.key === 'Enter' ? this.sendMessage(event) : null}
                         />
                     <Button clicked={this.sendMessage}>Send</Button>
-                    <Button clicked={()=>this.socket.emit('allUsers')}>Users</Button>
                 </div>
+                {
+                    this.state.infoOpened ? (
+                        <div className={classes.sidePanel}>
+                                {
+                                    this.state.editConversationName ? (
+                                        <div className={classes.editingContainer}>
+                                            <div className={classes.inputContainer}>
+                                                <input 
+                                                    type="text" 
+                                                    className={classes.editConversationNameInput}
+                                                    value={this.state.newConversationName}
+                                                    onChange={(e)=>this.setState({newConversationName: e.target.value})}
+                                                />
+                                            </div>
+                                            <div className={classes.btnContainer}>
+                                                <Button btnType="Continue" clicked={this.sendConversationName}>Continue</Button>
+                                                <Button btnType="Cancel" clicked={()=>this.setState({editConversationName: false})}>Cancel</Button>
+                                            </div>
+                                        </div>
+                                    )
+                                     : ( 
+                                    <div className={classes.conversationName}>
+                                        <h1>This is a normal conversation name hahaha</h1>
+                                        {/* <h1>{this.props.conversation.name}aaaaaaaaaaaaaa</h1> */}
+                                        <BsPencil 
+                                            size="3em" 
+                                            color="#0a42a4" 
+                                            onClick={()=>this.setState({editConversationName: true})}/>
+                                    </div>)
+                                }
+                            <hr />
+                            {
+                                this.props.conversation.participants.map((el, index) => {
+                                    return (
+                                        <a href={"/user/profile/?id="+el.userId} key={index} className={classes.participantLink}>
+                                            <div className={classes.participantListItem}>
+                                                <UserPhoto userId={el.userId} />
+                                                <p>{el.name}</p>
+                                            </div>
+                                        </a>
+                                    )
+                                })
+                            }
+                        </div>
+                    ) : null
+                }
             </div>
             </>
         );
