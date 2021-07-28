@@ -30,6 +30,7 @@ class Conversation extends Component {
         super(props);
         this.state = {
             messages: [],
+            conversationName: props.conversation.name,
             message: "",
             partner: null,
             user: userData,
@@ -38,8 +39,8 @@ class Conversation extends Component {
             conversationUsers: [],
             skip: 0,
             loading: true,
-            infoOpened: true,
-            editConversationName: true,
+            infoOpened: false,
+            editConversationName: false,
             newConversationName: props.conversation.name,
         }
         this.messagesEnd = null;
@@ -67,7 +68,7 @@ class Conversation extends Component {
         if(prevProps.conversation._id !== this.props.conversation._id){
             this.socket.emit('leaveConversation', {conversationId: prevProps.conversation._id}) //leaving old conversation
             this.socket.emit('join', {name: this.state.user.name, conversationId: this.props.conversation._id }); //joining new conversation
-            this.setState({skip: 0}, () => {
+            this.setState({skip: 0, conversationName: this.props.conversation.name, newConversationName: this.props.conversation.name}, () => {
                 this.fetchMessages();
             })
         }
@@ -131,7 +132,7 @@ class Conversation extends Component {
             })
             .then((res)=>{
                 if(res.status===200){
-                    
+                    this.props.history.go(0);
                     return;
                 }
             })
@@ -178,7 +179,7 @@ class Conversation extends Component {
         return (
             <>
             <div className={classes.conversationBanner}>
-                <h1>{this.props.conversation.name}</h1>
+                <h1>{this.state.conversationName}</h1>
                 <div className={classes.infoCircle} onClick={()=>this.setState((prevState)=>({infoOpened: !prevState.infoOpened}))}>
                     {
                         this.state.infoOpened ? <BsInfoCircleFill size="2em" color="#04255f"/> : <BsInfoCircle size="2em" color="#04255f"/>
@@ -224,10 +225,9 @@ class Conversation extends Component {
                                     )
                                      : ( 
                                     <div className={classes.conversationName}>
-                                        <h1>This is a normal conversation name hahaha</h1>
-                                        {/* <h1>{this.props.conversation.name}aaaaaaaaaaaaaa</h1> */}
+                                        <h1>{this.state.conversationName}</h1>
                                         <BsPencil 
-                                            size="3em" 
+                                            size="2em" 
                                             color="#0a42a4" 
                                             onClick={()=>this.setState({editConversationName: true})}/>
                                     </div>)
