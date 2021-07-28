@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import classes from './chatMenu.module.css';
 import AddingConversation from '../addingConversation/addingConversation';
+import SelectPanel from '../addingConversation/selectPanel';
 import axios from 'axios';
 
 import { BsPlusSquareFill } from 'react-icons/bs';
@@ -84,7 +85,7 @@ class ChatMenu extends Component {
                 </div>
                 {
                     this.state.addingConversation ? 
-                    <AddingConversation 
+                    <SelectPanel 
                         closeAddConversation={()=>this.setState({addingConversation: false})}
                     /> 
                     : null

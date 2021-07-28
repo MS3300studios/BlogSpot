@@ -1,0 +1,39 @@
+.cardsContainer{
+    width: 100%;
+    height: 40%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.optionCard{
+    width: 300px;
+    height: 300px;
+    margin-bottom: 40px;
+    background-color: #368813;
+    padding: 10px;
+    border-radius: 4px;
+    transition: 0.3s ease-out;
+    cursor: pointer;
+}
+.optionCard:hover{
+    transform: scale(1.2);
+}
+
+.optionCard h1{
+    color: white;
+    font-size: 20px;
+}
+
+.centerIcon{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80%;
+}
+
+.center{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
