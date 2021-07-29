@@ -66,9 +66,12 @@ class JoiningConversation extends Component {
         else{
             axios({
                 method: 'post',
-                url: `http://localhost:3001/`,
+                url: `http://localhost:3001/conversations/search`,
                 headers: {'Authorization': this.state.token},
-                data: {}
+                data: {
+                    field: this.state.filterIn,
+                    searchString: this.state.filterBy
+                }
             })
             .then((res)=>{
                 if(res.status===200){
@@ -96,6 +99,10 @@ class JoiningConversation extends Component {
                 <div className={classes2.addUserContainer}>
                     <div className={classes2.closeIcon} onClick={()=>this.setState({redirectChat: true})}>
                         <AiOutlineCloseCircle size="2em" color="#0a42a4" />
+                    </div>
+                    <div>
+                        <h1>field: {this.state.filterIn}</h1>
+                        <h1>searchString: {this.state.filterBy}</h1>
                     </div>
                     <div className={classes.searchingContainer}>
                         <SearchBar 

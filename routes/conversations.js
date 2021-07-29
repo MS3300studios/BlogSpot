@@ -44,7 +44,12 @@ router.get('/conversation/:id', auth, (req, res) => {
 })
 
 router.post('/conversations/search', auth, (req, res) => {
-    
+    if(req.body.field === "name"){
+        Conversation.find({ "name": {"$regex": req.body.searchString, "$options": "i"}}, (err, conversations)=>{
+            if(err) console.log(err)
+            else console.log(conversations)
+        })
+    }
 })
 
 router.post('/conversation/edit/name/:id', auth, (req, res) => {
