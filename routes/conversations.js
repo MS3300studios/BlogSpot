@@ -47,7 +47,29 @@ router.post('/conversations/search', auth, (req, res) => {
     if(req.body.field === "name"){
         Conversation.find({ "name": {"$regex": req.body.searchString, "$options": "i"}}, (err, conversations)=>{
             if(err) console.log(err)
-            else console.log(conversations)
+            else res.json({conversations: conversations});
+        })
+    }
+    else if(req.body.field === "id"){
+        Conversation.findById(req.body.searchString, (err, conversation)=>{
+            if(err){
+                if(err.message === `Cast to ObjectId failed for value "${req.body.searchString}" at path "_id" for model "Conversation"`){
+                    res.json({
+                        conversation: "the id you submitted is either too big or too small"
+                    })
+                }
+                else console.log(err.message);
+            } 
+            else if(conversation){
+                res.json({
+                    conversation: conversation
+                })
+            }
+            else{
+                res.json({
+                    conversation: "no conversation was found matching this id"
+                })
+            }
         })
     }
 })

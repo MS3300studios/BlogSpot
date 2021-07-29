@@ -77,7 +77,7 @@ class Conversation extends Component {
         if(prevProps.conversation._id !== this.props.conversation._id){
             this.socket.emit('leaveConversation', {conversationId: prevProps.conversation._id}) //leaving old conversation
             this.socket.emit('join', {name: this.state.user.name, conversationId: this.props.conversation._id }); //joining new conversation
-            this.setState({skip: 0}, () => {
+            this.setState({skip: 0, infoOpened: false}, () => {
                 this.fetchMessages();
             })
         }
