@@ -2,7 +2,9 @@ const express = require('express');
 const router = express();
 const auth = require('../middleware/authorization');
 
-const Conversation = require('../models/conversation');
+const convModels = require('../models/conversation');
+const Conversation = convModels.Conversation;
+const Participant = convModels.Participant;
 
 router.use(express.json());
 
@@ -101,7 +103,33 @@ router.get('/conversation/leave/:id', auth, (req, res) => {
             }).catch(err => console.log(err))
         }
         else{
-            res.sendStatus(401) //if user is not a participant of a conversation, he cannot change its name 
+            res.sendStatus(401) //if user is not a participant of a conversation, he cannot leave it 
+        }
+    })
+})
+
+router.post('/conversation/join/:id', auth, (req, res) => {
+    Conversation.findById(req.params.id).then(conversation => {
+        let isParticipant = false;
+        conversation.participants.forEach(participant => {
+            if(participant.userId === req.userData.userId) isParticipant = true;
+        })
+
+        if(isParticipant === false){
+            let newParticipants = conversation.participants;
+            const newParticipant = new Participant({
+                name: req.body.name,
+                userId: req.userData.userId
+            })
+
+            newParticipants.push(newParticipant);
+            conversation.participants = newParticipants;
+            conversation.save().then(()=>{
+                res.sendStatus(200);
+            }).catch(err => console.log(err))
+        }
+        else{
+            res.sendStatus(401) //if user is already a participant of a conversation, he cannot join it again
         }
     })
 })

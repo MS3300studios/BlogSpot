@@ -14,5 +14,10 @@ const schema = new db.Schema({
   });
 
 const Conversation = db.model("Conversation", schema);
+const Participant = db.model("Participant", participantSchema);
 
-module.exports = Conversation;
+module.exports = {
+  Conversation: Conversation,
+  Participant: Participant
+}
+

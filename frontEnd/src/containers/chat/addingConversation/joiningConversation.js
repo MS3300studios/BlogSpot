@@ -13,6 +13,7 @@ import Spinner from '../../../components/UI/spinner';
 import Button from '../../../components/UI/button';
 import Flash from '../../../components/UI/flash';
 import getToken from '../../../getToken';
+import getUserData from '../../../getUserData';
 import ConversationListItem from '../chatMenu/conversationListItem';
 
 class JoiningConversation extends Component {
@@ -20,9 +21,11 @@ class JoiningConversation extends Component {
         super(props);
 
         let token = getToken();
+        let userData = getUserData();
 
         this.state = {
             token: token,
+            userData: userData,
             redirectChat: false,
             filterIn: "name",
             filterBy: "",
@@ -115,7 +118,21 @@ class JoiningConversation extends Component {
     }
 
     join = (id) => {
-        console.log(id)
+        axios({
+            method: 'post',
+            url: `http://localhost:3001/conversation/join/${id}`,
+            headers: {'Authorization': this.state.token},
+            data: { name: this.state.userData.name }
+        })
+        .then((res)=>{
+            if(res.status===200){
+                this.flash("you joined the conversation!")
+                return;
+            }
+        })
+        .catch(error => {
+            console.log(error);
+        })
     }
 
     render() { 
