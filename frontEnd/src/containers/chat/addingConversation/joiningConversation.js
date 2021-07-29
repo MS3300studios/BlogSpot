@@ -126,7 +126,11 @@ class JoiningConversation extends Component {
         if(this.state.loading === true) conversations = <Spinner darkgreen/>
         else{
             if(this.state.conversations.length === 0){
-                conversations = <h1>No conversations with the matching {this.state.filterIn} were found</h1>
+                conversations = (
+                    <div className={classes.center}>
+                        <h1 className={classes.infoHeader}>No conversations with the matching {this.state.filterIn} were found</h1>
+                    </div>
+                )
             }
             else{
                 conversations = this.state.conversations.map((conversation, index) => (
@@ -173,7 +177,11 @@ class JoiningConversation extends Component {
                                 <div>
                                     {conversations}
                                 </div>
-                            ) : <h1>write something in the searchbar and click search</h1>
+                            ) : (
+                                <div className={classes.center}>
+                                    <h1 className={classes.infoHeader}>write something in the searchbar and click search</h1>
+                                </div>
+                            ) 
                         }
                     </div>
                 </div>

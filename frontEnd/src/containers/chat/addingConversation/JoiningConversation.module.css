@@ -3,5 +3,15 @@
     width: 35%;
     display: flex;
     justify-content: space-around;
-    /* border: darkred dashed 3px; */
+}
+
+.center{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.infoHeader{
+    color: #04255f;
 }
