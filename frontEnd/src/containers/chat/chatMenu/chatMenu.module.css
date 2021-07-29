@@ -102,3 +102,33 @@
     font-weight: 550;
     overflow-x: auto;
 }
+
+.joinButtonContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.joinButton{
+    background-color: #82ca66;
+    transition: 0.4s all ease-out;
+    font-size: 20px;
+    font-weight: 550;
+    width: 15%;
+    height: 10%;
+    cursor: pointer;
+    margin: 0 auto;
+    border-radius: 20px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+}
+
+.joinButton:hover{
+    transform: scale(1.7);
+}

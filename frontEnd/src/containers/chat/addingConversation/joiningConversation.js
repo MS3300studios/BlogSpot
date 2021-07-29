@@ -34,6 +34,7 @@ class JoiningConversation extends Component {
         }
         this.filterSearchHandler.bind(this);
         this.searchNewConversation.bind(this);
+        this.join.bind(this);
         this.flash.bind(this);
     }
 
@@ -113,6 +114,10 @@ class JoiningConversation extends Component {
         }
     }
 
+    join = (id) => {
+        console.log(id)
+    }
+
     render() { 
         let flash = null;
         if(this.state.flashMessage && this.state.flashNotClosed){
@@ -137,6 +142,7 @@ class JoiningConversation extends Component {
                     <ConversationListItem 
                         key={index}
                         el={conversation}
+                        join={this.join}
                     />
                 ))
             }
