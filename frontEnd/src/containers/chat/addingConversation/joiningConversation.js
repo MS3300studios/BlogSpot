@@ -13,6 +13,7 @@ import Spinner from '../../../components/UI/spinner';
 import Button from '../../../components/UI/button';
 import Flash from '../../../components/UI/flash';
 import getToken from '../../../getToken';
+import ConversationListItem from '../chatMenu/conversationListItem';
 
 class JoiningConversation extends Component {
     constructor(props) {
@@ -28,6 +29,8 @@ class JoiningConversation extends Component {
             loading: false,
             flashMessage: "",
             flashNotClosed: true,
+            conversations: [],
+            hasSearched: false
         }
         this.filterSearchHandler.bind(this);
         this.searchNewConversation.bind(this);
@@ -64,23 +67,31 @@ class JoiningConversation extends Component {
             this.flash('you need to write the name or Id of the conversation in the searchbar');
         }
         else{
-            axios({
-                method: 'post',
-                url: `http://localhost:3001/conversations/search`,
-                headers: {'Authorization': this.state.token},
-                data: {
-                    field: this.state.filterIn,
-                    searchString: this.state.filterBy
-                }
-            })
-            .then((res)=>{
-                if(res.status===200){
-                    
-                    return;
-                }
-            })
-            .catch(error => {
-                console.log(error);
+            this.setState({loading: true, hasSearched: true}, () => {
+                axios({
+                    method: 'post',
+                    url: `http://localhost:3001/conversations/search`,
+                    headers: {'Authorization': this.state.token},
+                    data: {
+                        field: this.state.filterIn,
+                        searchString: this.state.filterBy
+                    }
+                })
+                .then((res)=>{
+                    if(res.status===200){
+                        console.log(res.data)
+                        if(res.data.error){
+                            this.flash(res.data.error)
+                        }
+                        else{
+                            this.setState({loading: false, conversations: res.data.conversations})
+                        }
+                        return;
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                })
             })
         }
     }
@@ -94,22 +105,34 @@ class JoiningConversation extends Component {
             flash = <Flash close>{this.state.flashMessage}</Flash>
         }
 
+        let conversations = null; 
+        if(this.state.loading === true) conversations = <Spinner />
+        else{
+            if(this.state.conversations.length === 0){
+                conversations = <h1>No conversations with the matching name were found</h1>
+            }
+            else{
+                conversations = this.state.conversations.map((conversation, index) => (
+                    <ConversationListItem 
+                        key={index}
+                        el={conversation}
+                    />
+                ))
+            }
+        }
+
         return (
             <div className={classes2.backDrop}>
                 <div className={classes2.addUserContainer}>
                     <div className={classes2.closeIcon} onClick={()=>this.setState({redirectChat: true})}>
                         <AiOutlineCloseCircle size="2em" color="#0a42a4" />
                     </div>
-                    <div>
-                        <h1>field: {this.state.filterIn}</h1>
-                        <h1>searchString: {this.state.filterBy}</h1>
-                    </div>
                     <div className={classes.searchingContainer}>
                         <SearchBar 
                             placeholder="search conversations in..."
                             clicked={this.filterSearchHandler}
                             selectedOption={this.filterSearchHandler}
-                            resetFilter={()=>{this.setState({filterIn: "name", filterBy: ""})}}
+                            resetFilter={()=>{this.setState({filterIn: "name", filterBy: "", hasSearched: false})}}
                             selectValues={["name", "id"]}
                         />
                         <div className={classes3.buttonMinifier}>
@@ -127,8 +150,15 @@ class JoiningConversation extends Component {
                             </Button>
                         </div>
                     </div>
-
-
+                    <div>
+                        {
+                            this.state.hasSearched ? (
+                                <div>
+                                    {conversations}
+                                </div>
+                            ) : <h1>write something in the searchbar and click search</h1>
+                        }
+                    </div>
                 </div>
             {this.state.redirectChat ? <Redirect to="/chat/" /> : null}
             {flash}
