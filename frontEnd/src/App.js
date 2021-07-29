@@ -23,6 +23,7 @@ import ScrollListener from './components/scrollListener/scrollListener';
 import EditUserProfile from './containers/userProfile/editUserProfile/editUserProfile';
 import Conversation from './containers/chat/conversation/conversation';
 import AddingConversation from './containers/chat/addingConversation/addingConversation';
+import JoiningConversation from './containers/chat/addingConversation/joiningConversation';
 
 class App extends Component {
   constructor(props){
@@ -54,6 +55,7 @@ class App extends Component {
             <Switch>
               <Route path="/conversation/" component={Conversation} />
               <Route path="/addConversation/" component={AddingConversation} />
+              <Route path="/joinConversation/" component={JoiningConversation} />
               <Route path="/editProfile" exact component={EditUserProfile} />
               <Route path="/photo/view" exact component={PhotoView} />
               <Route path="/photo/add" exact component={PhotoForm} />

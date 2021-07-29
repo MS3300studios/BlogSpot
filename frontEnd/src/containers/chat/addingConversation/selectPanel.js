@@ -23,7 +23,7 @@ const SelectPanel = (props) => {
                     <AiOutlineCloseCircle size="2em" color="#0a42a4" />
                 </div>
                 <div className={classes.cardsContainer}>
-                    <div className={classes.optionCard}>
+                    <div className={classes.optionCard} onClick={()=>setredirect("join")}>
                         <div className={classes.centerIcon}>
                             <ImEnter size="7em" color="#fff"/>
                         </div>

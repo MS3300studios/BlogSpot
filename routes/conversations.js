@@ -43,6 +43,10 @@ router.get('/conversation/:id', auth, (req, res) => {
     })
 })
 
+router.post('/conversations/search', auth, (req, res) => {
+    
+})
+
 router.post('/conversation/edit/name/:id', auth, (req, res) => {
     Conversation.findById(req.params.id).then(conversation => {
         let isParticipant = false;

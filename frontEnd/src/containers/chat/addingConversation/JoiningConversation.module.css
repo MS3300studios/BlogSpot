@@ -1,0 +1,7 @@
+.searchingContainer{
+    margin: 0 auto;
+    width: 35%;
+    display: flex;
+    justify-content: space-around;
+    /* border: darkred dashed 3px; */
+}
