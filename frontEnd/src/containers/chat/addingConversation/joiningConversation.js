@@ -68,30 +68,40 @@ class JoiningConversation extends Component {
         }
         else{
             this.setState({loading: true, hasSearched: true}, () => {
-                axios({
-                    method: 'post',
-                    url: `http://localhost:3001/conversations/search`,
-                    headers: {'Authorization': this.state.token},
-                    data: {
-                        field: this.state.filterIn,
-                        searchString: this.state.filterBy
-                    }
-                })
-                .then((res)=>{
-                    if(res.status===200){
-                        console.log(res.data)
-                        if(res.data.error){
-                            this.flash(res.data.error)
+                if(this.state.filterIn === "name"){
+                    axios({
+                        method: 'post',
+                        url: `http://localhost:3001/conversations/search`,
+                        headers: {'Authorization': this.state.token},
+                        data: {
+                            searchString: this.state.filterBy
                         }
-                        else{
+                    })
+                    .then((res)=>{
+                        if(res.status===200){
                             this.setState({loading: false, conversations: res.data.conversations})
                         }
-                        return;
-                    }
-                })
-                .catch(error => {
-                    console.log(error);
-                })
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    })
+                }
+                else if(this.state.filterIn === "id"){
+                    axios({
+                        method: 'get',
+                        url: `http://localhost:3001/conversation/${this.state.filterBy}`,
+                        headers: {'Authorization': this.state.token},
+                    })
+                    .then((res)=>{
+                        if(res.status===200){
+                            let newConversations = [res.data.conversation];
+                            this.setState({loading: false, conversations: newConversations})
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    })
+                }
             })
         }
     }
@@ -109,7 +119,7 @@ class JoiningConversation extends Component {
         if(this.state.loading === true) conversations = <Spinner />
         else{
             if(this.state.conversations.length === 0){
-                conversations = <h1>No conversations with the matching name were found</h1>
+                conversations = <h1>No conversations with the matching {this.state.filterIn} were found</h1>
             }
             else{
                 conversations = this.state.conversations.map((conversation, index) => (
@@ -132,7 +142,7 @@ class JoiningConversation extends Component {
                             placeholder="search conversations in..."
                             clicked={this.filterSearchHandler}
                             selectedOption={this.filterSearchHandler}
-                            resetFilter={()=>{this.setState({filterIn: "name", filterBy: "", hasSearched: false})}}
+                            resetFilter={()=>{this.setState({filterIn: "name", filterBy: "", hasSearched: false, loading: false})}}
                             selectValues={["name", "id"]}
                         />
                         <div className={classes3.buttonMinifier}>

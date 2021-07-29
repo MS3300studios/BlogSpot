@@ -37,44 +37,22 @@ router.get('/conversations/', auth, (req, res) => {
 //get one conversation by it's own ID
 router.get('/conversation/:id', auth, (req, res) => {
     Conversation.findById(req.params.id).then(conversation => {
+        console.log(conversation)
         res.json({
             conversation: conversation
         })
     })
 })
 
+//search conversations matching name
 router.post('/conversations/search', auth, (req, res) => {
-    if(req.body.field === "name"){
-        Conversation.find({ 
-                "name": {"$regex": req.body.searchString, "$options": "i"},
-            }, (err, conversations)=>{
-                if(err) console.log(err)
-                else res.json({conversations: conversations});
-            }
-        )
-    }
-    else if(req.body.field === "id"){
-        Conversation.findById(req.body.searchString, (err, conversation)=>{
-            if(err){
-                if(err.message === `Cast to ObjectId failed for value "${req.body.searchString}" at path "_id" for model "Conversation"`){
-                    res.json({
-                        error: "the id you submitted is either too big or too small"
-                    })
-                }
-                else console.log(err.message);
-            } 
-            else if(conversation){
-                res.json({
-                    conversation: conversation
-                })
-            }
-            else{
-                res.json({
-                    error: "no conversation was found matching this id"
-                })
-            }
-        })
-    }
+    Conversation.find({ 
+            "name": {"$regex": req.body.searchString, "$options": "i"},
+        }, (err, conversations)=>{
+            if(err) console.log(err)
+            else res.json({conversations: conversations});
+        }
+    )
 })
 
 router.post('/conversation/edit/name/:id', auth, (req, res) => {
