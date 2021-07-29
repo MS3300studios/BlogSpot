@@ -36,12 +36,22 @@ router.get('/conversations/', auth, (req, res) => {
 
 //get one conversation by it's own ID
 router.get('/conversation/:id', auth, (req, res) => {
-    Conversation.findById(req.params.id).then(conversation => {
+    Conversation.findById(req.params.id).then((conversation) => {
         console.log(conversation)
-        res.json({
-            conversation: conversation
-        })
-    })
+
+        if(!conversation){
+            res.status(200).json({
+                error: "no conversation with this ID was found"
+            })
+        }
+        else{
+            res.status(200).json({
+                conversation: conversation
+            })
+        }
+    }).catch(error => res.json({
+        error: "This is not a valid ID"
+    }))
 })
 
 //search conversations matching name

@@ -94,12 +94,19 @@ class JoiningConversation extends Component {
                     })
                     .then((res)=>{
                         if(res.status===200){
-                            let newConversations = [res.data.conversation];
-                            this.setState({loading: false, conversations: newConversations})
+                            if(res.data.error){
+                                this.setState({loading: false}, ()=>{
+                                    this.flash(res.data.error)
+                                })
+                            }
+                            else{
+                                let newConversations = [res.data.conversation];
+                                this.setState({loading: false, conversations: newConversations})
+                            }
                         }
                     })
                     .catch(error => {
-                        console.log(error);
+                        this.flash(error.message)
                     })
                 }
             })
@@ -116,7 +123,7 @@ class JoiningConversation extends Component {
         }
 
         let conversations = null; 
-        if(this.state.loading === true) conversations = <Spinner />
+        if(this.state.loading === true) conversations = <Spinner darkgreen/>
         else{
             if(this.state.conversations.length === 0){
                 conversations = <h1>No conversations with the matching {this.state.filterIn} were found</h1>
