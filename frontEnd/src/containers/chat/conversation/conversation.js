@@ -48,7 +48,7 @@ class Conversation extends Component {
             addingUser: false,
             showParticipants: false,
             loadingNewMessages: false,
-            filterParticipantsString: ""
+            filterParticipantsString: "",
         }
         this.sendMessage.bind(this);
         this.sendConversationName.bind(this);
@@ -58,9 +58,10 @@ class Conversation extends Component {
         this.filterParticipants.bind(this);
         this.handleScroll.bind(this);
         
+        this.scrollPosition = React.createRef();
+        this.scrollPosition.current = 201;
         this.messagesEnd = null;
         this.socket = io('http://localhost:3001');
-        this.scrollPosition = 500; //that value is not important as long as it is higher than 200 
     }
 
     componentDidMount(){
@@ -69,19 +70,23 @@ class Conversation extends Component {
             let prevMessages = this.state.messages;
             prevMessages.push(message);
             this.setState({messages: prevMessages});
+
         })
+
         this.fetchMessages();
+        this.messagesEnd.scrollIntoView({ behavior: "smooth" });
     }   
 
     componentDidUpdate(prevProps, prevState){
-        if(this.state.message === "" && this.scrollPosition > 200){
+        if(this.state.message === "" && this.scrollPosition.current > 200){
             this.messagesEnd.scrollIntoView({ behavior: "smooth" });
         }
 
         if(prevProps.conversation._id !== this.props.conversation._id){
             this.socket.emit('leaveConversation', {conversationId: prevProps.conversation._id}) //leaving old conversation
             this.socket.emit('join', {name: this.state.user.name, conversationId: this.props.conversation._id }); //joining new conversation
-            this.setState({skip: 0, infoOpened: false}, () => {
+            this.setState({skip: 0, infoOpened: false, loadingNewMessages: false}, () => {
+                this.scrollPosition.current = 201;
                 this.fetchMessages();
             })
         }
@@ -93,26 +98,14 @@ class Conversation extends Component {
     }
 
     handleScroll = (e) => {
-        console.log(e.target.scrollTop)
-        if(e.target.scrollTop === 0 && this.state.loadingNewMessages !== true){
-            this.scrollPosition = e.target.value;
+        // this.scrollPosition = e.target.scrollTop;
+        // console.log("before assignment: "+this.scrollPosition.current)
+        this.scrollPosition.current = e.target.scrollTop;
+        // console.log("after assignment: "+this.scrollPosition.current)
+
+        if(e.target.scrollTop === 0 && this.state.loadingNewMessages !== true && this.state.messages.length >= 10){
             this.setState({loadingNewMessages: true}, ()=> {
-                // axios({
-                //     method: 'post',
-                //     url: `http://localhost:3001/`,
-                //     headers: {},
-                //     data: {}
-                // })
-                // .then((res)=>{
-                //     if(res.status===200){
-                        
-                //         return;
-                //     }
-                // })
-                // .catch(error => {
-                //     console.log(error);
-                // })
-                return null;
+                //handling API call for more messages
             })
         }
     }
@@ -154,6 +147,8 @@ class Conversation extends Component {
                 conversationId: this.props.conversation._id, 
                 hour: time 
             });
+
+            this.messagesEnd.scrollIntoView({ behavior: "smooth" });
         }
         this.setState({message: ""});
     }
@@ -270,6 +265,7 @@ class Conversation extends Component {
             <>
             <div className={classes.conversationBanner}>
                 <h1>{this.props.conversation.name}</h1>
+                <h1>{this.scrollPosition.current}</h1>
                 <div className={classes.infoCircle} onClick={()=>this.setState((prevState)=>({infoOpened: !prevState.infoOpened}))}>
                     {
                         this.state.infoOpened ? <BsInfoCircleFill size="2em" color="#04255f"/> : <BsInfoCircle size="2em" color="#04255f"/>
@@ -282,9 +278,7 @@ class Conversation extends Component {
                         {
                             this.state.loadingNewMessages ? <Spinner small/> : <div style={{border: "2px solid black"}} ref={this.top}></div>
                         }
-                        {
-                            messages
-                        }
+                        {messages}
                         <div style={{visibility: "none"}} ref={el => this.messagesEnd = el}></div>
                     </div>
                     <input 
