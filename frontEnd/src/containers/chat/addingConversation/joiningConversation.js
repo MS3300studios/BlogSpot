@@ -83,7 +83,15 @@ class JoiningConversation extends Component {
                     })
                     .then((res)=>{
                         if(res.status===200){
-                            this.setState({loading: false, conversations: res.data.conversations})
+                            let newConversations = res.data.conversations.filter((conversation) => {
+                                let isParticipant = false;
+                                conversation.participants.forEach(participant => {
+                                    if(participant.userId === this.state.userData._id) isParticipant = true
+                                })
+                                if(isParticipant === true) return false
+                                else return true
+                            })
+                            this.setState({loading: false, conversations: newConversations})
                         }
                     })
                     .catch(error => {
@@ -126,7 +134,7 @@ class JoiningConversation extends Component {
         })
         .then((res)=>{
             if(res.status===200){
-                this.flash("you joined the conversation!")
+                this.setState({redirectChat: true})
                 return;
             }
         })

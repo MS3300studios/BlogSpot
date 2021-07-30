@@ -59,10 +59,12 @@ router.get('/conversation/:id', auth, (req, res) => {
 //search conversations matching name
 router.post('/conversations/search', auth, (req, res) => {
     Conversation.find({ 
-            "name": {"$regex": req.body.searchString, "$options": "i"},
+            "name": {"$regex": req.body.searchString, "$options": "i"}
         }, (err, conversations)=>{
             if(err) console.log(err)
-            else res.json({conversations: conversations});
+            else {
+                res.json({conversations: conversations});
+            }
         }
     )
 })
