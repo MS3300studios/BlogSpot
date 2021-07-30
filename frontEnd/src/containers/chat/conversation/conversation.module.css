@@ -182,6 +182,7 @@ background: #555;
 
 .pencilContainer{
     font-size: 14px;
+    cursor: pointer;
 }
 
 .operationButton {

@@ -47,30 +47,34 @@ class Conversation extends Component {
             newConversationName: props.conversation.name,
             addingUser: false,
             showParticipants: false,
+            loadingNewMessages: false,
             filterParticipantsString: ""
         }
-        this.messagesEnd = null;
         this.sendMessage.bind(this);
         this.sendConversationName.bind(this);
         this.fetchMessages.bind(this);
         this.addUser.bind(this);
         this.leaveConversation.bind(this);
         this.filterParticipants.bind(this);
+        this.handleScroll.bind(this);
+        
+        this.messagesEnd = null;
         this.socket = io('http://localhost:3001');
+        this.scrollPosition = 500; //that value is not important as long as it is higher than 200 
     }
 
     componentDidMount(){
         this.socket.emit('join', {name: this.state.user.name, conversationId: this.props.conversation._id })
         this.socket.on('message', message => {
             let prevMessages = this.state.messages;
-            prevMessages.push(message)
-            this.setState({messages: prevMessages})
+            prevMessages.push(message);
+            this.setState({messages: prevMessages});
         })
         this.fetchMessages();
     }   
 
     componentDidUpdate(prevProps, prevState){
-        if(this.state.message === ""){
+        if(this.state.message === "" && this.scrollPosition > 200){
             this.messagesEnd.scrollIntoView({ behavior: "smooth" });
         }
 
@@ -85,7 +89,32 @@ class Conversation extends Component {
     }
 
     componentWillUnmount(){
-        this.socket.emit('leaveConversation', {conversationId: this.props.conversation._id})
+        this.socket.emit('leaveConversation', {conversationId: this.props.conversation._id});
+    }
+
+    handleScroll = (e) => {
+        console.log(e.target.scrollTop)
+        if(e.target.scrollTop === 0 && this.state.loadingNewMessages !== true){
+            this.scrollPosition = e.target.value;
+            this.setState({loadingNewMessages: true}, ()=> {
+                // axios({
+                //     method: 'post',
+                //     url: `http://localhost:3001/`,
+                //     headers: {},
+                //     data: {}
+                // })
+                // .then((res)=>{
+                //     if(res.status===200){
+                        
+                //         return;
+                //     }
+                // })
+                // .catch(error => {
+                //     console.log(error);
+                // })
+                return null;
+            })
+        }
     }
 
     fetchMessages = () => {
@@ -97,7 +126,7 @@ class Conversation extends Component {
         })
         .then((res)=>{
             if(res.status===200){
-                let newSkip = this.state.skip+5;
+                let newSkip = this.state.skip+10;
                 this.setState({messages: res.data.messages, skip: newSkip, loading: false});
                 return;
             }
@@ -249,7 +278,10 @@ class Conversation extends Component {
             </div>
             <div className={classes.center}>
                 <div className={classes.mainContainer}>
-                    <div className={classes.messages}>
+                    <div className={classes.messages} onScroll={this.handleScroll}>
+                        {
+                            this.state.loadingNewMessages ? <Spinner small/> : <div style={{border: "2px solid black"}} ref={this.top}></div>
+                        }
                         {
                             messages
                         }
@@ -335,6 +367,9 @@ class Conversation extends Component {
                     ) : null
                 }
             </div>
+            {/* <button onClick={()=>this.setState({skip: 10}, ()=>this.fetchMessages())}>
+                fetch
+            </button> */}
             </>
         );
     }

@@ -9,7 +9,7 @@ router.use(express.json());
 router.post('/messages/:conversationId', auth, (req, res) => {
     Message.find({conversationId: req.params.conversationId})
         .skip(req.body.skip)
-        .limit(5)
+        .limit(10)
         .exec()
         .then(messages => {
             res.json({
