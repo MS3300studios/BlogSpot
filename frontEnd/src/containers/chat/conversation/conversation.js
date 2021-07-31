@@ -88,6 +88,7 @@ class Conversation extends Component {
             this.setState({skip: 0, infoOpened: false, loadingNewMessages: false}, () => {
                 this.scrollPosition.current = 201;
                 this.fetchMessages();
+                this.messagesEnd.scrollIntoView({ behavior: "smooth" });
             })
         }
 
@@ -98,13 +99,11 @@ class Conversation extends Component {
     }
 
     handleScroll = (e) => {
-        // this.scrollPosition = e.target.scrollTop;
-        // console.log("before assignment: "+this.scrollPosition.current)
         this.scrollPosition.current = e.target.scrollTop;
-        // console.log("after assignment: "+this.scrollPosition.current)
 
         if(e.target.scrollTop === 0 && this.state.loadingNewMessages !== true && this.state.messages.length >= 10){
             this.setState({loadingNewMessages: true}, ()=> {
+                
                 //handling API call for more messages
             })
         }

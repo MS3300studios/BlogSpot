@@ -8,12 +8,13 @@ router.use(express.json());
 
 router.post('/messages/:conversationId', auth, (req, res) => {
     Message.find({conversationId: req.params.conversationId})
+        .sort({ createdAt: -1})
         .skip(req.body.skip)
         .limit(10)
-        .exec()
-        .then(messages => {
+        .exec((err, messages) => {
+            let msgsRdy = messages.reverse()
             res.json({
-                messages: messages
+                messages: msgsRdy
             });
         })
 })
