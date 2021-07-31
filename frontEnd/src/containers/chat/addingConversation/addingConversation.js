@@ -130,7 +130,6 @@ class AddingConversation extends Component {
     }    
 
     addFriendSelect = (friend, adding) => {
-        console.log(friend.name, friend.userId)
         let temp = this.state.selectedFriends;
         if(adding === true) temp.push(friend);
         else if(adding === false){

@@ -49,6 +49,7 @@ class Conversation extends Component {
             showParticipants: false,
             loadingNewMessages: false,
             filterParticipantsString: "",
+            lastScrollPosition: null
         }
         this.sendMessage.bind(this);
         this.sendConversationName.bind(this);
@@ -85,7 +86,7 @@ class Conversation extends Component {
         if(prevProps.conversation._id !== this.props.conversation._id){
             this.socket.emit('leaveConversation', {conversationId: prevProps.conversation._id}) //leaving old conversation
             this.socket.emit('join', {name: this.state.user.name, conversationId: this.props.conversation._id }); //joining new conversation
-            this.setState({skip: 0, infoOpened: false, loadingNewMessages: false}, () => {
+            this.setState({skip: 0, infoOpened: false, loadingNewMessages: false, messages: []}, () => {
                 this.scrollPosition.current = 201;
                 this.fetchMessages();
                 this.messagesEnd.scrollIntoView({ behavior: "smooth" });
@@ -102,14 +103,13 @@ class Conversation extends Component {
         this.scrollPosition.current = e.target.scrollTop;
 
         if(e.target.scrollTop === 0 && this.state.loadingNewMessages !== true && this.state.messages.length >= 10){
-            this.setState({loadingNewMessages: true}, ()=> {
-                
-                //handling API call for more messages
+            this.setState({loadingNewMessages: true, lastScrollPosition: e.target.scrollTop}, ()=> {
+                this.fetchMessages(true);
             })
         }
     }
 
-    fetchMessages = () => {
+    fetchMessages = (scrollToPosition) => {
         axios({
             method: 'post',
             url: `http://localhost:3001/messages/${this.props.conversation._id}`,
@@ -119,7 +119,15 @@ class Conversation extends Component {
         .then((res)=>{
             if(res.status===200){
                 let newSkip = this.state.skip+10;
-                this.setState({messages: res.data.messages, skip: newSkip, loading: false});
+                let newMessages = res.data.messages.concat(this.state.messages);
+                this.setState({messages: newMessages, skip: newSkip, loading: false, loadingNewMessages: false}, () => {
+                    if(scrollToPosition) {
+                        // this.messagesEnd.scrollIntoView();
+                        // npm i --save react-scroll, and use: 
+                        // import Scroll from 'react-scroll';
+                        // scroll.scrollTo(100);
+                    }
+                });
                 return;
             }
         })
@@ -264,7 +272,6 @@ class Conversation extends Component {
             <>
             <div className={classes.conversationBanner}>
                 <h1>{this.props.conversation.name}</h1>
-                <h1>{this.scrollPosition.current}</h1>
                 <div className={classes.infoCircle} onClick={()=>this.setState((prevState)=>({infoOpened: !prevState.infoOpened}))}>
                     {
                         this.state.infoOpened ? <BsInfoCircleFill size="2em" color="#04255f"/> : <BsInfoCircle size="2em" color="#04255f"/>

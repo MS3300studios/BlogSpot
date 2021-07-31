@@ -12,9 +12,9 @@ router.post('/messages/:conversationId', auth, (req, res) => {
         .skip(req.body.skip)
         .limit(10)
         .exec((err, messages) => {
-            let msgsRdy = messages.reverse()
+            messages.reverse();
             res.json({
-                messages: msgsRdy
+                messages: messages
             });
         })
 })
