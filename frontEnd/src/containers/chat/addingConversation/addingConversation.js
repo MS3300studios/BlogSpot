@@ -36,7 +36,8 @@ class AddingConversation extends Component {
             filterIn: "",
             redirect: false,
             redirectId: "",
-            redirectChat: false
+            redirectChat: false,
+            hideSelectAll: false
         }
 
         this.flash.bind(this);
@@ -44,6 +45,7 @@ class AddingConversation extends Component {
         this.filterFriends.bind(this);
         this.addFriendSelect.bind(this);
         this.sendConversation.bind(this);
+        this.checkFriendsParticipants.bind(this);
     }
 
     componentDidMount(){
@@ -55,6 +57,29 @@ class AddingConversation extends Component {
         })
         .then((res)=>{
             if(res.status===200){
+                let hideSelectAll = false;
+
+                // if(this.props.addingUsers){
+                //     let newFriends = [];
+
+                //     for(let i=0; i<this.state.friends.length; i++){
+                //         let flag = false;
+                //         for(let j=0; j<this.props.participants.length; j++){
+                //             if(this.state.friends[i]._id === this.props.participants[j].userId) flag = true;
+                //         }
+                //         if(flag === false) newFriends.push(this.state.friends[i]);
+                //     }
+
+                //     if(newFriends.length === 0) hideSelectAll = true;
+
+                //     this.setState({friends: newFriends, loading: false, hideSelectAll: hideSelectAll});
+                // }
+
+                // else{
+                // }
+                
+                this.checkFriendsParticipants();
+
                 this.setState({friends: res.data.friends, loading: false});
                 return;
             }
@@ -167,6 +192,21 @@ class AddingConversation extends Component {
         this.setState({selectedFriends: temp});
     }
 
+    checkFriendsParticipants = () => {
+        let newFriends = [];
+
+        for(let i=0; i<this.state.friends.length; i++){
+            let flag = false;
+            for(let j=0; j<this.props.participants.length; j++){
+                if(this.state.friends[i]._id === this.props.participants[j].userId) flag = true;
+            }
+            if(flag === false) newFriends.push(this.state.friends[i]);
+        }
+
+        let hide = newFriends.length === 0;
+        this.setState({hideSelectAll: hide})
+    }
+
     filterFriends = (filterIn, filterBy) => {
         let friendsJSX = []; //temporary array of all jsx friends, to be filtered and converted to friendsRdy
         let friendsRdy = [];
@@ -271,7 +311,6 @@ class AddingConversation extends Component {
             })
         }
 
-
         return wrappedFriends;
     } 
 
@@ -355,21 +394,25 @@ class AddingConversation extends Component {
                                         selectValues={["nickname", "name", "surname", "id"]}
                                         selectedOption={this.filterSearchHandler}
                                     />
-                                    <div className={classes.selectAllContainer}>
-                                        <div className={classes.selectAllContainerInner}>
-                                            <p>select all</p>
-                                            <input 
-                                                type="checkbox" 
-                                                onClick={()=>this.setState(prevState => {
-                                                    let temp = prevState.friends.map(friend => ({name: friend.name, _id: friend._id}));
-                                                    if(prevState.selectAll === true) temp = [];
-                                                    return(
-                                                        {selectAll: !prevState.selectAll, selectedFriends: temp}
-                                                    )
-                                                })}
-                                            />
-                                        </div>
-                                    </div>
+                                    {
+                                        this.state.hideSelectAll ? null : (
+                                            <div className={classes.selectAllContainer}>
+                                                <div className={classes.selectAllContainerInner}>
+                                                    <p>select all</p>
+                                                    <input 
+                                                        type="checkbox" 
+                                                        onClick={()=>this.setState(prevState => {
+                                                            let temp = prevState.friends.map(friend => ({name: friend.name, _id: friend._id}));
+                                                            if(prevState.selectAll === true) temp = [];
+                                                            return(
+                                                                {selectAll: !prevState.selectAll, selectedFriends: temp}
+                                                            )
+                                                        })}
+                                                    />
+                                                </div>
+                                            </div>
+                                        )
+                                    }
                                     <div className={classes.center}>
                                         <div className={classes.friendsList}>
                                             { friends }
