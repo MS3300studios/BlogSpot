@@ -49,7 +49,6 @@ class Conversation extends Component {
             showParticipants: false,
             loadingNewMessages: false,
             filterParticipantsString: "",
-            lastScrollPosition: null
         }
         this.sendMessage.bind(this);
         this.sendConversationName.bind(this);
@@ -62,6 +61,7 @@ class Conversation extends Component {
         this.scrollPosition = React.createRef();
         this.scrollPosition.current = 201;
         this.messagesEnd = null;
+        this.lastCurrentMessage = null;
         this.socket = io('http://localhost:3001');
     }
 
@@ -103,7 +103,7 @@ class Conversation extends Component {
         this.scrollPosition.current = e.target.scrollTop;
 
         if(e.target.scrollTop === 0 && this.state.loadingNewMessages !== true && this.state.messages.length >= 10){
-            this.setState({loadingNewMessages: true, lastScrollPosition: e.target.scrollTop}, ()=> {
+            this.setState({loadingNewMessages: true}, ()=> {
                 this.fetchMessages(true);
             })
         }
@@ -119,13 +119,14 @@ class Conversation extends Component {
         .then((res)=>{
             if(res.status===200){
                 let newSkip = this.state.skip+10;
-                let newMessages = res.data.messages.concat(this.state.messages);
-                this.setState({messages: newMessages, skip: newSkip, loading: false, loadingNewMessages: false}, () => {
+                let newState = {messages: res.data.messages.concat(this.state.messages), skip: newSkip, loading: false, loadingNewMessages: false}
+                if(res.data.messages.length === 0){
+                    newState = {skip: newSkip, loading: false, loadingNewMessages: false}
+                }
+                this.setState(newState, () => {
                     if(scrollToPosition) {
-                        // this.messagesEnd.scrollIntoView();
-                        // npm i --save react-scroll, and use: 
-                        // import Scroll from 'react-scroll';
-                        // scroll.scrollTo(100);
+                        if(res.data.messages.length === 0) return null; //if no more messages are available, do nothing
+                        else this.lastCurrentMessage.scrollIntoView();
                     }
                 });
                 return;
@@ -250,9 +251,13 @@ class Conversation extends Component {
                 let messageClassNames = [classes.message, classes.partnerColor].join(" ");
                 if(message.authorName === this.state.user.name) messageClassNames = [classes.message, classes.userLoggedColor].join(" ");
                 else if(message.authorName === "Admin") messageClassNames = [classes.message, classes.adminColor].join(" ");
+                
                 return (
                     <div className={classes.elongateMessage} key={index}>
-                        <div className={messageClassNames}>
+                        <div className={messageClassNames} ref={el => {
+                            if(index === 9) this.lastCurrentMessage = el //if index is 9 a ref is overwritten, else do nothing
+                            else return null
+                        }}>
                             {
                                 message.authorName !== "Admin" ? (
                                     <div className={classes.centerAuthorData}>
@@ -267,7 +272,6 @@ class Conversation extends Component {
                 )
             })
         }
-
         return (
             <>
             <div className={classes.conversationBanner}>
