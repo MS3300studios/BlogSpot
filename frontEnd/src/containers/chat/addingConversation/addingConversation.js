@@ -250,6 +250,8 @@ class AddingConversation extends Component {
             } 
         }
 
+        let wrappedFriends = <h1>You don't have any friends to add to this conversation</h1>;
+
         if(friendsRdy.length === 0){
             friendsRdy = (
                 <React.Fragment>
@@ -259,14 +261,16 @@ class AddingConversation extends Component {
                 </React.Fragment>
             );
         }
+        else{
+            wrappedFriends = friendsRdy.map((friend, index) => {
+                return (
+                    <div className={classes.friendsListItemOutline} key={index}>
+                        {friend}
+                    </div>
+                )
+            })
+        }
 
-        let wrappedFriends = friendsRdy.map((friend, index) => {
-            return (
-                <div className={classes.friendsListItemOutline} key={index}>
-                    {friend}
-                </div>
-            )
-        })
 
         return wrappedFriends;
     } 
