@@ -244,28 +244,38 @@ class AddingConversation extends Component {
                 {
                     this.state.loading ? <Spinner /> : (
                         <div className={classes.addUserContainer}>
-                            <div className={classes.closeIcon} onClick={()=>this.setState({redirectChat: true})}>
+                            <div className={classes.closeIcon} onClick={()=>{
+                                if(this.props.closeWindow) this.props.closeWindow();
+                                else this.setState({redirectChat: true})
+                            }}>
                                 <AiOutlineCloseCircle size="2em" color="#0a42a4" />
                             </div>
 
                             <div>
-                                <div className={classes.centerInput}>
-                                    <h1>Give the conversation a name:</h1>
-                                    <div>
-                                        <input 
-                                            className={classes.Input}
-                                            type="text" 
-                                            onChange={(e)=>this.setState({conversationName: e.target.value})}
-                                        />
-                                    </div>
-                                    <button  
-                                        className={classes.nextBtn}
-                                        onClick={this.sendConversation}
-                                    >
-                                        ADD CONVERSATION
-                                    </button>
-                                </div>
-                                <hr />
+                                {
+                                    this.props.addingUsers ? null : (
+                                        <>
+                                        <div className={classes.centerInput}>
+                                        <h1>Give the conversation a name:</h1>
+                                        <div>
+                                            <input 
+                                                className={classes.Input}
+                                                type="text" 
+                                                onChange={(e)=>this.setState({conversationName: e.target.value})}
+                                            />
+                                        </div>
+                                        <button  
+                                            className={classes.nextBtn}
+                                            onClick={this.sendConversation}
+                                        >
+                                            ADD CONVERSATION
+                                        </button>
+                                        </div>
+                                        <hr />
+                                        </>
+                                    )
+                                }
+
                                 <div className={classes.addingUsers}>
                                     <h1>Add users to the conversation: </h1>
                                     <SearchBar 

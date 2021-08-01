@@ -16,6 +16,7 @@ import {BsInfoCircle, BsInfoCircleFill} from 'react-icons/bs';
 import Button from '../../../components/UI/button';
 import Spinner from '../../../components/UI/spinner';
 import Participant from './participant';
+import AddingConversation from '../addingConversation/addingConversation';
 
 class Conversation extends Component {
     constructor(props) {
@@ -370,10 +371,16 @@ class Conversation extends Component {
                         </div>
                     ) : null
                 }
+                {
+                    this.state.addingUser ? (
+                        <AddingConversation 
+                            addingUsers
+                            closeWindow={()=>this.setState({addingUser: false})}
+                        />
+                    )
+                    : null
+                }
             </div>
-            {/* <button onClick={()=>this.setState({skip: 10}, ()=>this.fetchMessages())}>
-                fetch
-            </button> */}
             </>
         );
     }
