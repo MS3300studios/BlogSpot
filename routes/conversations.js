@@ -90,6 +90,29 @@ router.post('/conversation/edit/name/:id', auth, (req, res) => {
     })
 })
 
+router.post('/conversation/edit/participants/add/:id', auth, (req, res) => {
+    Conversation.findById(req.params.id).then(conversation => {
+        let isParticipant = false;
+        conversation.participants.forEach(participant => {
+            if(participant.userId === req.userData.userId) isParticipant = true;
+        })
+
+        if(isParticipant === true){
+            let newParticipants = conversation.participants;
+            newParticipants.push(req.body.participantsToAdd);
+            conversation.participants = newParticipants;
+            conversation.save().then(resp => {
+                res.status(200).json({
+                    conversation: resp
+                })
+            })
+        }
+        else{
+            res.sendStatus(401) //if user is not a participant of a conversation, he cannot change its name 
+        }
+    })
+});
+
 router.get('/conversation/leave/:id', auth, (req, res) => {
     Conversation.findById(req.params.id).then(conversation => {
         let isParticipant = false;

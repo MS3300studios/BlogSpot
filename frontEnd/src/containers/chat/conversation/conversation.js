@@ -376,6 +376,8 @@ class Conversation extends Component {
                         <AddingConversation 
                             addingUsers
                             closeWindow={()=>this.setState({addingUser: false})}
+                            participants={this.props.conversation.participants}
+                            conversationId={this.props.conversationId}
                         />
                     )
                     : null

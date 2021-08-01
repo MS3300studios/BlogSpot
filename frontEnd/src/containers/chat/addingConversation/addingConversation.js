@@ -65,42 +65,73 @@ class AddingConversation extends Component {
     }
 
     sendConversation = () => {
-        if(this.state.selectedFriends.length >= 1 && this.state.conversationName !== ""){
-            //adding the user himself to the conversation participants array
-            let participants = this.state.selectedFriends;
-            participants.push({
-                name: this.state.userData.name,
-                userId: this.state.userData._id
-            })
-
-            axios({
-                method: 'post',
-                url: `http://localhost:3001/conversations/new`,
-                headers: {'Authorization': this.state.token},
-                data: {
-                    participants: participants,
-                    name: this.state.conversationName
-                }
-            })
-            .then((res)=>{
-                if(res.status===201){
-                    this.setState({redirectChat: true});
-                    // this.setState({
-                    //     redirect: true,
-                    //     redirectId: res.data.conversation._id
-                    // });
-                    return;
-                }
-            })
-            .catch(error => {
-                console.log(error);
-            })
+        if(this.props.addingUsers){
+            if(this.state.selectedFriends.length >= 1){
+                let participantsToAdd = this.state.selectedFriends;
+                participantsToAdd.push({
+                    name: this.state.userData.name,
+                    userId: this.state.userData._id
+                })
+                axios({
+                    method: 'post',
+                    url: `http://localhost:3001/conversation/edit/participants/add/${this.props.conversationId}`,
+                    headers: {'Authorization': this.state.token},
+                    data: {
+                        participantsToAdd: participantsToAdd
+                    }
+                })
+                .then((res)=>{
+                    if(res.status===200){
+                        this.setState({redirectChat: true});
+                        return;
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+            }
+            else if(this.state.selectedFriends.length === 0){
+                this.flash("you need to select at least one user!");
+            }
         }
-        else if(this.state.conversationName === ""){
-            this.flash("the conversation has to have a name!");
-        }
-        else if(this.state.selectedFriends.length === 0){
-            this.flash("you need to select at least one user!");
+        else{
+            if(this.state.selectedFriends.length >= 1 && this.state.conversationName !== ""){
+                //adding the user himself to the conversation participants array
+                let participants = this.state.selectedFriends;
+                participants.push({
+                    name: this.state.userData.name,
+                    userId: this.state.userData._id
+                })
+    
+                axios({
+                    method: 'post',
+                    url: `http://localhost:3001/conversations/new`,
+                    headers: {'Authorization': this.state.token},
+                    data: {
+                        participants: participants,
+                        name: this.state.conversationName
+                    }
+                })
+                .then((res)=>{
+                    if(res.status===201){
+                        this.setState({redirectChat: true});
+                        // this.setState({
+                        //     redirect: true,
+                        //     redirectId: res.data.conversation._id
+                        // });
+                        return;
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+            }
+            else if(this.state.conversationName === ""){
+                this.flash("the conversation has to have a name!");
+            }
+            else if(this.state.selectedFriends.length === 0){
+                this.flash("you need to select at least one user!");
+            }
         }
     }
 
@@ -142,22 +173,51 @@ class AddingConversation extends Component {
     filterFriends = (filterIn, filterBy) => {
         let friendsJSX = []; //temporary array of all jsx friends, to be filtered and converted to friendsRdy
         let friendsRdy = [];
-    
-        friendsJSX = this.state.friends.map((friend, index)=>{
-            return (
-                <FriendsListItem 
-                    friendNumber={index}
-                    id={friend._id} 
-                    name={friend.name}
-                    nickname={friend.nickname}
-                    surname={friend.surname}
-                    photo={friend.photo}
-                    friendSelect
-                    selectAll={this.state.selectAll}
-                    friendWasSelected={this.addFriendSelect}
-                />
-            )
-        });
+        
+        if(this.props.addingUsers === true){
+            let newFriends = [];
+
+            for(let i=0; i<this.state.friends.length; i++){
+                let flag = false;
+                for(let j=0; j<this.props.participants.length; j++){
+                    if(this.state.friends[i]._id === this.props.participants[j].userId) flag = true;
+                }
+                if(flag === false) newFriends.push(this.state.friends[i]);
+            }
+
+            friendsJSX = newFriends.map((friend, index)=>{
+                return (
+                    <FriendsListItem 
+                        friendNumber={index}
+                        id={friend._id} 
+                        name={friend.name}
+                        nickname={friend.nickname}
+                        surname={friend.surname}
+                        photo={friend.photo}
+                        friendSelect
+                        selectAll={this.state.selectAll}
+                        friendWasSelected={this.addFriendSelect}
+                    />
+                )
+            });
+        }
+        else{
+            friendsJSX = this.state.friends.map((friend, index)=>{
+                return (
+                    <FriendsListItem 
+                        friendNumber={index}
+                        id={friend._id} 
+                        name={friend.name}
+                        nickname={friend.nickname}
+                        surname={friend.surname}
+                        photo={friend.photo}
+                        friendSelect
+                        selectAll={this.state.selectAll}
+                        friendWasSelected={this.addFriendSelect}
+                    />
+                )
+            });
+        }
 
         if(filterBy==="" || filterIn===""){
             friendsRdy = friendsJSX;
@@ -253,7 +313,16 @@ class AddingConversation extends Component {
 
                             <div>
                                 {
-                                    this.props.addingUsers ? null : (
+                                    this.props.addingUsers ? (
+                                        <div className={classes.floatRightNextButton}>
+                                            <button  
+                                                className={classes.nextBtn}
+                                                onClick={this.sendConversation}
+                                            >
+                                                CONTINUE
+                                            </button>
+                                        </div>
+                                    ) : (
                                         <>
                                         <div className={classes.centerInput}>
                                         <h1>Give the conversation a name:</h1>
