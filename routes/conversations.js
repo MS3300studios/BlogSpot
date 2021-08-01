@@ -99,7 +99,9 @@ router.post('/conversation/edit/participants/add/:id', auth, (req, res) => {
 
         if(isParticipant === true){
             let newParticipants = conversation.participants;
-            newParticipants.push(req.body.participantsToAdd);
+            for(let i=0; i<req.body.participantsToAdd.length; i++){
+                newParticipants.push(req.body.participantsToAdd[i]);
+            }
             conversation.participants = newParticipants;
             conversation.save().then(resp => {
                 res.status(200).json({

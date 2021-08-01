@@ -251,3 +251,7 @@ background: #555;
     width: 90%;
     margin: 0 auto;
 }
+.participantsContainer{
+    overflow-y: auto;
+    height: 300px;
+}

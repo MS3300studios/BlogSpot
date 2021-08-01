@@ -67,23 +67,20 @@ class AddingConversation extends Component {
     sendConversation = () => {
         if(this.props.addingUsers){
             if(this.state.selectedFriends.length >= 1){
-                let participantsToAdd = this.state.selectedFriends;
-                participantsToAdd.push({
-                    name: this.state.userData.name,
-                    userId: this.state.userData._id
-                })
                 axios({
                     method: 'post',
                     url: `http://localhost:3001/conversation/edit/participants/add/${this.props.conversationId}`,
                     headers: {'Authorization': this.state.token},
                     data: {
-                        participantsToAdd: participantsToAdd
+                        participantsToAdd: this.state.selectedFriends
                     }
                 })
                 .then((res)=>{
                     if(res.status===200){
                         this.setState({redirectChat: true});
-                        return;
+                    }
+                    else{
+                        this.flash('there has been some kind of an error. Please reload the page');
                     }
                 })
                 .catch(error => {

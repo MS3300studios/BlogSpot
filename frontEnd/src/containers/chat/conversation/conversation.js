@@ -363,7 +363,9 @@ class Conversation extends Component {
                                                 className={classes.input}
                                                 onChange={(e)=>this.setState({filterParticipantsString: e.target.value})}
                                             />
-                                            {this.filterParticipants()}
+                                            <div className={classes.participantsContainer}>
+                                                {this.filterParticipants()}
+                                            </div>
                                         </div>
                                     ) : null
                                 }
@@ -377,7 +379,7 @@ class Conversation extends Component {
                             addingUsers
                             closeWindow={()=>this.setState({addingUser: false})}
                             participants={this.props.conversation.participants}
-                            conversationId={this.props.conversationId}
+                            conversationId={this.props.conversation._id}
                         />
                     )
                     : null
