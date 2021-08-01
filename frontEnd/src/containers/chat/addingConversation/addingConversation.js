@@ -56,30 +56,8 @@ class AddingConversation extends Component {
             headers: {'Authorization': this.state.token},
         })
         .then((res)=>{
-            if(res.status===200){
-                let hideSelectAll = false;
-
-                // if(this.props.addingUsers){
-                //     let newFriends = [];
-
-                //     for(let i=0; i<this.state.friends.length; i++){
-                //         let flag = false;
-                //         for(let j=0; j<this.props.participants.length; j++){
-                //             if(this.state.friends[i]._id === this.props.participants[j].userId) flag = true;
-                //         }
-                //         if(flag === false) newFriends.push(this.state.friends[i]);
-                //     }
-
-                //     if(newFriends.length === 0) hideSelectAll = true;
-
-                //     this.setState({friends: newFriends, loading: false, hideSelectAll: hideSelectAll});
-                // }
-
-                // else{
-                // }
-                
-                this.checkFriendsParticipants();
-
+            if(res.status===200){                
+                this.checkFriendsParticipants(true);
                 this.setState({friends: res.data.friends, loading: false});
                 return;
             }
@@ -192,7 +170,7 @@ class AddingConversation extends Component {
         this.setState({selectedFriends: temp});
     }
 
-    checkFriendsParticipants = () => {
+    checkFriendsParticipants = (manipulateState) => {
         let newFriends = [];
 
         for(let i=0; i<this.state.friends.length; i++){
@@ -203,8 +181,11 @@ class AddingConversation extends Component {
             if(flag === false) newFriends.push(this.state.friends[i]);
         }
 
-        let hide = newFriends.length === 0;
-        this.setState({hideSelectAll: hide})
+        if(manipulateState === true){
+            let hide = newFriends.length === 0;
+            this.setState({hideSelectAll: hide})
+        }
+        else return newFriends;
     }
 
     filterFriends = (filterIn, filterBy) => {
@@ -212,15 +193,16 @@ class AddingConversation extends Component {
         let friendsRdy = [];
         
         if(this.props.addingUsers === true){
-            let newFriends = [];
+            let newFriends = this.checkFriendsParticipants(false);
+            // let newFriends = [];
 
-            for(let i=0; i<this.state.friends.length; i++){
-                let flag = false;
-                for(let j=0; j<this.props.participants.length; j++){
-                    if(this.state.friends[i]._id === this.props.participants[j].userId) flag = true;
-                }
-                if(flag === false) newFriends.push(this.state.friends[i]);
-            }
+            // for(let i=0; i<this.state.friends.length; i++){
+            //     let flag = false;
+            //     for(let j=0; j<this.props.participants.length; j++){
+            //         if(this.state.friends[i]._id === this.props.participants[j].userId) flag = true;
+            //     }
+            //     if(flag === false) newFriends.push(this.state.friends[i]);
+            // }
 
             friendsJSX = newFriends.map((friend, index)=>{
                 return (
