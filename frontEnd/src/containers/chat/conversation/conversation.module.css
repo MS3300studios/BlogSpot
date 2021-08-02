@@ -255,3 +255,9 @@ background: #555;
     overflow-y: auto;
     height: 300px;
 }
+.messagesTopDiv{
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

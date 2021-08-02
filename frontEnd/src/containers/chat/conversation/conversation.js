@@ -50,6 +50,7 @@ class Conversation extends Component {
             showParticipants: false,
             loadingNewMessages: false,
             filterParticipantsString: "",
+            conversationStartReached: false
         }
         this.sendMessage.bind(this);
         this.sendConversationName.bind(this);
@@ -87,7 +88,7 @@ class Conversation extends Component {
         if(prevProps.conversation._id !== this.props.conversation._id){
             this.socket.emit('leaveConversation', {conversationId: prevProps.conversation._id}) //leaving old conversation
             this.socket.emit('join', {name: this.state.user.name, conversationId: this.props.conversation._id }); //joining new conversation
-            this.setState({skip: 0, infoOpened: false, loadingNewMessages: false, messages: []}, () => {
+            this.setState({skip: 0, infoOpened: false, loadingNewMessages: false, messages: [], conversationStartReached: false}, () => {
                 this.scrollPosition.current = 201;
                 this.fetchMessages();
                 this.messagesEnd.scrollIntoView({ behavior: "smooth" });
@@ -111,31 +112,34 @@ class Conversation extends Component {
     }
 
     fetchMessages = (scrollToPosition) => {
-        axios({
-            method: 'post',
-            url: `http://localhost:3001/messages/${this.props.conversation._id}`,
-            headers: {'Authorization': this.state.token},
-            data: {skip: this.state.skip}
-        })
-        .then((res)=>{
-            if(res.status===200){
-                let newSkip = this.state.skip+10;
-                let newState = {messages: res.data.messages.concat(this.state.messages), skip: newSkip, loading: false, loadingNewMessages: false}
-                if(res.data.messages.length === 0){
-                    newState = {skip: newSkip, loading: false, loadingNewMessages: false}
-                }
-                this.setState(newState, () => {
-                    if(scrollToPosition) {
-                        if(res.data.messages.length === 0) return null; //if no more messages are available, do nothing
-                        else this.lastCurrentMessage.scrollIntoView();
+        if(this.state.conversationStartReached === true) this.setState({loading: false, loadingNewMessages: false});
+        else{
+            axios({
+                method: 'post',
+                url: `http://localhost:3001/messages/${this.props.conversation._id}`,
+                headers: {'Authorization': this.state.token},
+                data: {skip: this.state.skip}
+            })
+            .then((res)=>{
+                if(res.status===200){
+                    let newSkip = this.state.skip+10;
+                    let newState = {messages: res.data.messages.concat(this.state.messages), skip: newSkip, loading: false, loadingNewMessages: false}
+                    if(res.data.messages.length === 0){
+                        newState = {skip: newSkip, loading: false, loadingNewMessages: false, conversationStartReached: true }
                     }
-                });
-                return;
-            }
-        })
-        .catch(error => {
-            console.log(error);
-        })
+                    this.setState(newState, () => {
+                        if(scrollToPosition) {
+                            if(res.data.messages.length < 10) return null; //if no more messages are available, do nothing
+                            else this.lastCurrentMessage.scrollIntoView();
+                        }
+                    });
+                    return;
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            })
+        }
     }
 
     sendMessage = (e) => {
@@ -287,7 +291,11 @@ class Conversation extends Component {
                 <div className={classes.mainContainer}>
                     <div className={classes.messages} onScroll={this.handleScroll}>
                         {
-                            this.state.loadingNewMessages ? <Spinner small/> : <div style={{border: "2px solid black"}} ref={this.top}></div>
+                            this.state.loadingNewMessages ? <Spinner small/> : (
+                                <div ref={this.top} className={classes.messagesTopDiv}>
+                                    {this.state.conversationStartReached ? <h1>You've reached the start of the conversation</h1> : null}
+                                </div>
+                            )
                         }
                         {messages}
                         <div style={{visibility: "none"}} ref={el => this.messagesEnd = el}></div>
