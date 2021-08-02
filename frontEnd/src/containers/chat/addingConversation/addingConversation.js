@@ -58,23 +58,6 @@ class AddingConversation extends Component {
         .then((res)=>{
             if(res.status===200){                
                 this.checkFriendsParticipants(true, res.data.friends);
-                // this.setState({friends: res.data.friends, loading: false});
-                // return;
-
-
-                /*let newFriends = [];
-
-                for(let i=0; i<res.data.friends; i++){
-                    let flag = false;
-                    for(let j=0; j<this.props.participants.length; j++){
-                        if(res.data.friends[i]._id === this.props.participants[j].userId){
-                            flag = true;
-                        }
-                    }
-                    if(flag === false) newFriends.push(res.data.friends[i]);
-                }
-
-                this.setState({hideSelectAll: newFriends.length === 0, friends: newFriends, loading: false});*/
             }
         })
         .catch(error => {
@@ -196,8 +179,6 @@ class AddingConversation extends Component {
             if(flag === false) newFriends.push(allfriends[i]);
         }
 
-        console.log(newFriends)
-
         if(manipulateState === true){
             let hide = newFriends.length === 0;
             this.setState({hideSelectAll: hide, friends: newFriends, loading: false});
@@ -210,17 +191,6 @@ class AddingConversation extends Component {
         let friendsRdy = [];
         
         if(this.props.addingUsers === true){
-            //let newFriends = this.checkFriendsParticipants(false, this.state.friends);
-            // let newFriends = [];
-
-            // for(let i=0; i<this.state.friends.length; i++){
-            //     let flag = false;
-            //     for(let j=0; j<this.props.participants.length; j++){
-            //         if(this.state.friends[i]._id === this.props.participants[j].userId) flag = true;
-            //     }
-            //     if(flag === false) newFriends.push(this.state.friends[i]);
-            // }
-
             friendsJSX = this.state.friends.map((friend, index)=>{
                 return (
                     <FriendsListItem 
