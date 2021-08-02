@@ -46,6 +46,7 @@ class AddingConversation extends Component {
         this.addFriendSelect.bind(this);
         this.sendConversation.bind(this);
         this.checkFriendsParticipants.bind(this);
+        this.selectAllFriends.bind(this);
     }
 
     componentDidMount(){
@@ -62,6 +63,16 @@ class AddingConversation extends Component {
         })
         .catch(error => {
             console.log(error);
+        })
+    }
+
+    selectAllFriends = () => {
+        this.setState(prevState => {
+            let temp = prevState.friends.map(friend => ({name: friend.name, userId: friend._id}));
+            if(prevState.selectAll === true) temp = [];
+            return(
+                {selectAll: !prevState.selectAll, selectedFriends: temp}
+            )
         })
     }
 
@@ -370,13 +381,7 @@ class AddingConversation extends Component {
                                                     <p>select all</p>
                                                     <input 
                                                         type="checkbox" 
-                                                        onClick={()=>this.setState(prevState => {
-                                                            let temp = prevState.friends.map(friend => ({name: friend.name, _id: friend._id}));
-                                                            if(prevState.selectAll === true) temp = [];
-                                                            return(
-                                                                {selectAll: !prevState.selectAll, selectedFriends: temp}
-                                                            )
-                                                        })}
+                                                        onClick={this.selectAllFriends}
                                                     />
                                                 </div>
                                             </div>
