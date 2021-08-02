@@ -36,7 +36,6 @@ class AddingConversation extends Component {
             filterIn: "",
             redirect: false,
             redirectId: "",
-            redirectChat: false,
             hideSelectAll: false
         }
 
@@ -89,7 +88,7 @@ class AddingConversation extends Component {
                 })
                 .then((res)=>{
                     if(res.status===200){
-                        this.setState({redirectChat: true});
+                        window.location.reload();
                     }
                     else{
                         this.flash('there has been some kind of an error. Please reload the page');
@@ -123,7 +122,7 @@ class AddingConversation extends Component {
                 })
                 .then((res)=>{
                     if(res.status===201){
-                        this.setState({redirectChat: true});
+                        window.location.reload();
                         // this.setState({
                         //     redirect: true,
                         //     redirectId: res.data.conversation._id
@@ -307,7 +306,7 @@ class AddingConversation extends Component {
         if(this.state.friends.length===0){
             friends = (
                 <div className={classes.nameListContainer}>
-                    <h1>You don't have any friends yet!</h1>
+                    <h1>There are no more people to add to this conversation. If you want to add someone it has to be a friend.</h1>
                 </div>
             );
         }
@@ -400,9 +399,6 @@ class AddingConversation extends Component {
                 {flash}
                 {
                     this.state.redirect ? <Redirect to={"/conversation/?id="+this.state.redirectId}/> : null
-                }
-                {
-                    this.state.redirectChat ? <Redirect to="/chat/" /> : null
                 }
             </div>
         );
