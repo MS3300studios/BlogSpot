@@ -21,3 +21,28 @@
   cursor: pointer;
   margin-left: 10px;
 }
+
+.terms_and_conditions_centerContainer button{
+  position: fixed;
+  top: 20px;
+  left: 20px;
+}
+
+.terms_and_conditions_centerContainer{
+  width: 70%;
+  margin: 0 auto;
+}
+
+.terms_and_conditions_centerContainer ul{
+  list-style-type: none;
+}
+
+.terms_and_conditions_centerContainer h1{
+  color: navy;
+}
+
+.terms_and_conditions_centerContainer p{
+  color: black;
+  font-weight: 550;
+  font-size: 20px;
+}

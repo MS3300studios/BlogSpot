@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 // import io from 'socket.io-client';
 
+import termsAndConditions from './termsAndConditions';
 import './App.css';
 
 import Menu from './components/menu/menu';
@@ -95,6 +96,7 @@ class App extends Component {
           <Switch>
             <Route path="/register" exact component={Registration} />
             <Route path="/login" exact component={Login} />
+            <Route path="/termsAndConditions" exact component={termsAndConditions} />
             <Route path="/" render={ () => <Gate /> } />
           </Switch>
         </React.Fragment>
