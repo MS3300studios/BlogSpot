@@ -29,11 +29,20 @@ import JoiningConversation from './containers/chat/addingConversation/joiningCon
 class App extends Component {
   constructor(props){
     super(props);
+
+    let showCookies = localStorage.getItem('showCookies');
+    if(showCookies === null){
+      localStorage.setItem('showCookies', true);
+      showCookies = true;
+    }
+
+
     this.state = {
       isLoggedIn: false,
-      cookiesBannerOpened: true
+      cookiesBannerOpened: showCookies
     }
     // const socket = io.connect('http://localhost:3001')
+    this.closeBanner.bind(this);
   }
   
 
@@ -44,6 +53,12 @@ class App extends Component {
       this.setState({isLoggedIn: true}); //user gets access to dashboard and posts views
     }
     
+  }
+
+  closeBanner = () => {
+    this.setState({cookiesBannerOpened: false}, () => {
+      localStorage.setItem('showCookies', false);
+    })
   }
 
   render() {
@@ -86,6 +101,21 @@ class App extends Component {
       )
     }
 
+    let cookiesBanner = null;
+    if(this.state.cookiesBannerOpened === true){
+      cookiesBanner = (
+        <div className="cookiesBanner">
+          <p>This website utilizes cookies to function properly. 
+            By closing this banner you consent to cookies being stored on your computer. 
+            If you don't agree with this, leave this site now.</p>
+            <div className="closeCookiesBannerIcon" onClick={this.closeBanner}>
+              <AiOutlineCloseCircle size="2em" color="#0a42a4" />
+            </div>
+        </div>
+      )
+    } 
+
+    console.log(this.state.cookiesBannerOpened)
     return ( 
       <React.Fragment>
         <Switch>
@@ -93,18 +123,7 @@ class App extends Component {
           {gate}
           <Route component={URLnotFound} />
         </Switch>
-        {
-          this.state.cookiesBannerOpened ? (
-            <div className="cookiesBanner">
-              <p>This website utilizes cookies to function properly. 
-                By closing this banner you consent to cookies being stored on your computer. 
-                If you don't agree with this, leave this site now.</p>
-                <div className="closeCookiesBannerIcon" onClick={()=>this.setState({cookiesBannerOpened: false})}>
-                  <AiOutlineCloseCircle size="2em" color="#0a42a4" />
-                </div>
-            </div>
-          ) : null 
-        }
+        {cookiesBanner}
       </React.Fragment>
     );
   }
