@@ -400,6 +400,9 @@ class AddingConversation extends Component {
                 {
                     this.state.redirect ? <Redirect to={"/conversation/?id="+this.state.redirectId}/> : null
                 }
+                {
+                    this.state.redirectChat ? <Redirect to="/chat"/> : null
+                }
             </div>
         );
     }

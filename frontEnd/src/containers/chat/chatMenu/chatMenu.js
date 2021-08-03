@@ -134,12 +134,16 @@ class ChatMenu extends Component {
                         selectValues={["name", "id"]}
                     />
                     {conversations}
-                    <div className={classes.center}>
-                        <div className={classes.addConversationIconSmall} onClick={()=>this.setState({addingConversation: true})}>
-                            <BsPlusSquareFill size="2em" color="#53c253"/>
-                            <p>Add a conversation</p>
-                        </div>
-                    </div>
+                    {
+                        (this.state.conversations.length === 0) ? null : (
+                            <div className={classes.center}>
+                                <div className={classes.addConversationIconSmall} onClick={()=>this.setState({addingConversation: true})}>
+                                    <BsPlusSquareFill size="2em" color="#53c253"/>
+                                    <p>Add a conversation</p>
+                                </div>
+                            </div>
+                        )
+                    }
                 </div>
                 {
                     this.state.addingConversation ? 

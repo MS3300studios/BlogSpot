@@ -222,11 +222,11 @@ class Registration extends Component {
                     <div className={classes.buttonContainer}>
                         <Button clicked={this.submitUser} disabled={!this.state.readyForSubmission}>Register</Button>
                     </div>
-                    <div>
+                    <div className={classes.consentContainer}>
                         <p>When you click register, you agree to the <Link to="/termsAndConditions">terms and conditions</Link> of BragSpot</p>
                     </div>
                 </form>
-                <label className={classes.labelLogin}>Alredy have an account?</label>
+                <label className={classes.labelLogin}>Already have an account?</label>
                 <Link to="/login" className={classes.loginLink}>Log in here</Link>
                 {this.state.redirectToLogin ? <Redirect to="/login" /> : null}
             </div> 

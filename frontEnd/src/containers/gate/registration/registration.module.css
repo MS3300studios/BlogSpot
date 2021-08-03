@@ -117,3 +117,8 @@
     border-bottom-color: #006def;
     color: #006def;
 }
+
+.consentContainer{
+    width: 60%;
+    margin: 0 auto;
+}
