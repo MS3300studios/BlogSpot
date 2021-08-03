@@ -1,9 +1,9 @@
 .RegistrationContainer{
     background-color: #82ca66;
     width: 500px;
-    height: 825px;
+    height: 865px;
     margin: 0 auto;
-    margin-top: 3%;
+    margin-top: 2%;
     position: relative;
     transition: 0.3s ease-in all;
 }
@@ -50,7 +50,7 @@
   
 .buttonContainer{
     position: absolute;
-    top: 686px;
+    top: 750px;
     left: 210px;
 }
 
@@ -99,7 +99,7 @@
 
 .labelLogin{
     position: absolute;
-    top: 725px;
+    top: 785px;
     left: 43px;
     color: teal;
     font-weight: 500;
@@ -108,7 +108,7 @@
 
 .loginLink{
     position: absolute;
-    top: 768px;
+    top: 820px;
     left: 43px;
     text-decoration: none;
     font-weight: 600;
