@@ -269,7 +269,6 @@ class photoView extends Component {
 
         return (
             <div className={classes.backdrop}>
-    <h1 style={{color: "white"}}>comments length: {this.state.comments.length}</h1>
                 <div className={classes.photoViewContainer}>
                     <Button className={classes.CloseButton} clicked={()=>this.props.closeBigPhoto(this.state.socialStateWasChanged)}>Close</Button>
                         <div className={classes.imgContainer}>

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Route, Switch} from 'react-router-dom';
 import { connect } from 'react-redux';
+import { AiOutlineCloseCircle } from 'react-icons/ai';
 // import io from 'socket.io-client';
 
 import './App.css';
@@ -29,7 +30,8 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state = {
-      isLoggedIn: false
+      isLoggedIn: false,
+      cookiesBannerOpened: true
     }
     // const socket = io.connect('http://localhost:3001')
   }
@@ -91,6 +93,18 @@ class App extends Component {
           {gate}
           <Route component={URLnotFound} />
         </Switch>
+        {
+          this.state.cookiesBannerOpened ? (
+            <div className="cookiesBanner">
+              <p>This website utilizes cookies to function properly. 
+                By closing this banner you consent to cookies being stored on your computer. 
+                If you don't agree with this, leave this site now.</p>
+                <div className="closeCookiesBannerIcon" onClick={()=>this.setState({cookiesBannerOpened: false})}>
+                  <AiOutlineCloseCircle size="2em" color="#0a42a4" />
+                </div>
+            </div>
+          ) : null 
+        }
       </React.Fragment>
     );
   }
