@@ -1,5 +1,6 @@
 let logout = () => {
-    localStorage.clear();
+    localStorage.removeItem('token');
+    localStorage.removeItem('userData');
     sessionStorage.clear();
     window.location.replace('http://localhost:3000/'); //redirect to gate
 }
