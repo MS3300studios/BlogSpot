@@ -8,6 +8,8 @@ import getToken from '../../getToken';
 import getUserData from '../../getUserData';
 import Spinner from './spinner';
 
+import io from 'socket.io-client';
+
 class UserPhoto extends Component {
     constructor(props){
         super(props);
@@ -29,9 +31,14 @@ class UserPhoto extends Component {
             photo: null,
             loading: false
         }
+
+        this.socket = io('http://localhost:3001');
     }
 
     componentDidMount() {
+        this.socket.emit("online", {userId: this.state.userData._id});
+
+
         this.setState({loading: true});
         let getData = new Promise((resolve, reject) => {
             axios({

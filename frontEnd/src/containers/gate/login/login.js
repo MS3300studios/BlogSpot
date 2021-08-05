@@ -144,6 +144,44 @@ class Login extends Component {
                 </div>
                 <label className={classes.labelNoAccount}>Don't have an account yet?</label>
                 <Link to="/register" className={classes.registerLink}>Register here</Link>
+                <button onClick={()=>{
+                    const loginData = {
+                        email: "jennysan@test.pl",
+                        password: "jennysan11111A"
+                    }
+                    // console.log(loginData);
+                    axios.post('http://localhost:3001/users/login', loginData)
+                        .then(res => {
+                            if(res.status===200){
+                                //this.props.redux_store_token(res.data.token); //saving to redux store 
+                                if(this.state.keepLoggedIn){
+                                    localStorage.setItem('token', res.data.token);
+                                    let userData = JSON.parse(res.data.userData);
+                                    userData.password = "";
+                                    let userDataJSON = JSON.stringify(userData)  
+                                    localStorage.setItem('userData', userDataJSON);
+                                }
+                                else{
+                                    sessionStorage.setItem('token', res.data.token);
+                                    let userData = JSON.parse(res.data.userData);
+                                    userData.password = "";
+                                    let userDataJSON = JSON.stringify(userData)                    
+                                    sessionStorage.setItem('userData', userDataJSON);
+                                }
+                                window.location.reload();
+                            }
+                            else{
+                                this.flash("An error ocurred, try again");
+                            }
+                        })
+                        .catch(error => {
+                            console.log(error);
+                            this.flash("wrong email or password");
+                        });
+                }}
+                style={{backgroundColor: "black"}}>
+                    auto login
+                </button>
             </div>
         );
     }

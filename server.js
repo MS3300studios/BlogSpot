@@ -30,10 +30,17 @@ const corsOptions = {
 const io = socket(server, corsOptions);
 
 let users = []; //here are sockets that are in a room, active sockets that are not in a room aren't stored in this array
+let onlineUsers = [];
+
 
 const Message = require('./models/message');
 
-io.on('connection', (socket) => {    
+io.on('connection', (socket) => {  
+    socket.on('online', ({userId}) => {
+        console.log(userId+' is online');
+        onlineUsers.push({userId: userId, socketId: socket.id});
+    })
+    
     socket.on('join', ({userId, name, conversationId}) => {
         console.log(`${name} joined room nr: ${conversationId}`)
         socket.join(conversationId); //user is joining a specific room
@@ -69,6 +76,10 @@ io.on('connection', (socket) => {
     socket.on('disconnect', ()=>{
         console.log("user disconnected");
         let newUsers = users.filter(user => user.id !== socket.id);
+        let newonlineUsers = onlineUsers.filter(user => user.socketId !== socket.id);
         users = newUsers;
+        onlineUsers = newonlineUsers;
+
+        console.log('new online users: ', onlineUsers)
     })
 });
