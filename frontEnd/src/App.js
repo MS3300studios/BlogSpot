@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Route, Switch} from 'react-router-dom';
 import { connect } from 'react-redux';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
-// import io from 'socket.io-client';
 
 import termsAndConditions from './termsAndConditions';
 import './App.css';
@@ -40,9 +39,8 @@ class App extends Component {
 
     this.state = {
       isLoggedIn: false,
-      cookiesBannerOpened: showCookies
+      cookiesBannerOpened: showCookies,
     }
-    // const socket = io.connect('http://localhost:3001')
     this.closeBanner.bind(this);
   }
   
@@ -117,7 +115,6 @@ class App extends Component {
       )
     } 
 
-    console.log(this.state.cookiesBannerOpened)
     return ( 
       <React.Fragment>
         <Switch>

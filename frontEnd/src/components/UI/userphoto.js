@@ -9,6 +9,7 @@ import getUserData from '../../getUserData';
 import Spinner from './spinner';
 
 import io from 'socket.io-client';
+import OnlineIcon from './onlineIcon';
 
 class UserPhoto extends Component {
     constructor(props){
@@ -29,14 +30,17 @@ class UserPhoto extends Component {
             nickname: userData.nickname,
             userId: userId,
             photo: null,
-            loading: false
+            loading: false,
+            isOnline: false
         }
 
         this.socket = io('http://localhost:3001');
     }
 
     componentDidMount() {
-        this.socket.emit("online", {userId: this.state.userData._id});
+        if(this.props.dropdown){ //only in the menu do we want to signal that the user is online
+            this.socket.emit("online", {userId: this.state.userData._id});
+        }
 
 
         this.setState({loading: true});
@@ -84,6 +88,7 @@ class UserPhoto extends Component {
         return (
             <div className={classes.dropdown}>
                 {this.state.loading ? <Spinner small darkgreen /> : <img alt="user" src={this.state.photo} className={userPhotoClasses}/>}
+                <OnlineIcon online={this.state.isOnline}/>
                 {dropdown}
             </div>
         );
