@@ -27,7 +27,7 @@ router.post('/blogs', auth, (req, res) => {
 router.post('/blogs/limited', auth, (req, res) => {
     let limit = req.body.limit;
     let authorId = req.body.authorId;
-    Blog.find({author: authorId}).sort({ createdAt: -1 }).limit(limit)
+    Blog.find({author: authorId}).skip(limit).sort({ createdAt: -1 }).limit(4)
         .exec()
         .then(blogs => {
             return res.status(200).json({

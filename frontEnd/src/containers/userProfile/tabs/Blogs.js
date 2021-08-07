@@ -21,7 +21,7 @@ class BlogsTab extends Component {
             userId: userId,
             token: token,
             blogs: [],
-            limit: 2,
+            limit: 0,
             showcomments: false,
             showComMessage: "show comments"
         }
@@ -43,12 +43,10 @@ class BlogsTab extends Component {
         })
         .then((res)=>{
             if(res.status===200){
-                let blogs = [];
-                res.data.blogs.forEach(element => {
-                    blogs.push(element);
-                });
-                this.setState({blogs: blogs})
-                return;
+                let blogs = this.state.blogs;
+                console.log(res.data.blogs)
+                let newBlogs = blogs.concat(res.data.blogs)
+                this.setState({blogs: newBlogs});
             }
         })
         .catch(error => {
