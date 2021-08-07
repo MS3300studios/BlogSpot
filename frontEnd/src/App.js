@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Route, Switch} from 'react-router-dom';
 import { connect } from 'react-redux';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
+import io from 'socket.io-client';
 
 import termsAndConditions from './termsAndConditions';
 import './App.css';
@@ -36,11 +37,12 @@ class App extends Component {
       showCookies = true;
     }
 
-
     this.state = {
       isLoggedIn: false,
       cookiesBannerOpened: showCookies,
     }
+
+    this.socket = io('http://localhost:3001');
     this.closeBanner.bind(this);
   }
   
@@ -123,6 +125,9 @@ class App extends Component {
           <Route component={URLnotFound} />
         </Switch>
         {cookiesBanner}
+        <button onClick={()=>{
+            this.socket.emit("logOnlineUsers");
+        }} style={{backgroundColor: "black", cursor: "pointer"}}>check users on server</button> 
       </React.Fragment>
     );
   }

@@ -51,8 +51,10 @@ io.on('connection', (socket) => {
         if(isOnline !== -1) socket.emit('userOnlineStatus', true); 
         else socket.emit('userOnlineStatus', false); 
     })
-
-    // socket.broadcast.emit('onlineUsers', onlineUsers); 
+    
+    socket.on('logOnlineUsers', () => {
+        console.log(onlineUsers)
+    })
     
     socket.on('join', ({userId, name, conversationId}) => {
         console.log(`${name} joined room nr: ${conversationId}`)
