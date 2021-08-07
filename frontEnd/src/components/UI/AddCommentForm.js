@@ -92,7 +92,7 @@ class AddCommentForm extends Component {
             <React.Fragment>
                 <div className={classes.mainContainer}>
                     <div className={classes.userPhotoDiv}>
-                        <UserPhoto userId={this.state.userData._id} smallPhotoCommentForm />
+                        <UserPhoto userId={this.state.userData._id} smallPhotoCommentForm hideOnlineIcon/>
                     </div>
                     <form className={smallClass}>
                         <input value={this.state.content} placeholder="write your comment here" onChange={(event)=>this.setState({content: event.target.value})}/>

@@ -113,7 +113,8 @@ class AddUser extends Component {
                                 })
                                 if(flag!==true){
                                     return (
-                                        <FriendsListItem 
+                                        <FriendsListItem
+                                            hideOnlineIcon 
                                             key={index}  
                                             id={user._id} 
                                             name={user.name}

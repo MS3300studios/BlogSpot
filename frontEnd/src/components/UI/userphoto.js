@@ -31,17 +31,12 @@ class UserPhoto extends Component {
             userId: userId,
             photo: null,
             loading: false,
-            isOnline: false
         }
 
         this.socket = io('http://localhost:3001');
     }
 
     componentDidMount() {
-        if((this.props.userId === this.state.userData._id) && this.props.dropdown){
-            this.setState({isOnline: true});
-        }
-
         if(this.props.dropdown){ //only in the menu do we want to signal that the user is online
             this.socket.emit("online", {userId: this.state.userData._id});
         }
@@ -93,7 +88,7 @@ class UserPhoto extends Component {
             <div className={classes.dropdown}>
                 {this.state.loading ? <Spinner small darkgreen /> : <img alt="user" src={this.state.photo} className={userPhotoClasses}/>}
                 <div className={classes.onlineIconPositioner}>
-                    <OnlineIcon online={this.state.userData._id}/>
+                    <OnlineIcon online={this.state.userData._id} hide={this.props.hideOnlineIcon}/>
                 </div>
                 {dropdown}
             </div>

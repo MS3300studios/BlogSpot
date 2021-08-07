@@ -443,7 +443,7 @@ class UserProfile extends Component {
                                     </div>
                                 ) : (
                                     <div className={classes.socialButtonsContainer}>
-                                        <button className={classes.follow}>Follow</button>
+                                        <button className={classes.follow} onClick={()=>this.flash('coming soon!')}>Follow</button>
                                         {this.state.friendBtnDataRdy ? (
                                             <FriendButton 
                                                 receivedRequest={this.state.receivedRequest}

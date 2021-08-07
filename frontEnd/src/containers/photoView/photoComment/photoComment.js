@@ -20,7 +20,7 @@ class PhotoComment extends Component {
                 <div className={photoCommentClasses.commentContainer}>
                     <div className={photoCommentClasses.topBar}>   
                         <div className={photoCommentClasses.userPhotoDiv}>
-                            <UserPhoto userId={this.props.comment.authorId} small />
+                            <UserPhoto userId={this.props.comment.authorId} small hideOnlineIcon/>
                         </div>
                         <p className={photoCommentClasses.nickName}>
                             <a href={"/user/profile/?id="+this.props.comment.authorId}>@{this.props.comment.authorNick}</a>

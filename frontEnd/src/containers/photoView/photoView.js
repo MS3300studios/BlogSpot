@@ -334,7 +334,7 @@ class photoView extends Component {
                                 <div className={classes.commentForm}>
                                 <div className={newCommentClasses.mainContainer}>
                                     <div className={newCommentClasses.userPhotoDiv}>
-                                        <UserPhoto userId={this.state.userData._id} smallPhotoCommentForm />
+                                        <UserPhoto userId={this.state.userData._id} smallPhotoCommentForm hideOnlineIcon/>
                                     </div>
                                     <form className={smallClass} style={{marginLeft: "-54px"}}>
                                         <input value={this.state.newCommentContent} placeholder="write your comment here" onChange={(event)=>this.setState({newCommentContent: event.target.value})}/>
@@ -359,7 +359,7 @@ class photoView extends Component {
                                                     <div className={photoCommentClasses.commentContainer}>
                                                         <div className={photoCommentClasses.topBar}>   
                                                             <div className={photoCommentClasses.userPhotoDiv}>
-                                                                <UserPhoto userId={comment.authorId} small />
+                                                                <UserPhoto userId={comment.authorId} small hideOnlineIcon/>
                                                             </div>
                                                             <p className={photoCommentClasses.nickName}>
                                                                 <a href={"/user/profile/?id="+comment.authorId}>@{comment.authorNick}</a>

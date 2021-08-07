@@ -21,7 +21,7 @@ const FriendsListItem = (props) => {
                         {
                             props.onlineIcon ? (
                                 <div className={classes.onlineIconPositioner}>
-                                    <OnlineIcon online={props.id}/>
+                                    <OnlineIcon online={props.id} hide={props.hideOnlineIcon}/>
                                 </div>
                             ) : null
                         }

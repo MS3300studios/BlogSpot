@@ -204,6 +204,7 @@ class AddingConversation extends Component {
             friendsJSX = this.state.friends.map((friend, index)=>{
                 return (
                     <FriendsListItem 
+                        hideOnlineIcon
                         friendNumber={index}
                         id={friend._id} 
                         name={friend.name}
@@ -221,6 +222,7 @@ class AddingConversation extends Component {
             friendsJSX = this.state.friends.map((friend, index)=>{
                 return (
                     <FriendsListItem 
+                        hideOnlineIcon
                         friendNumber={index}
                         id={friend._id} 
                         name={friend.name}

@@ -52,7 +52,7 @@ const Comment = (props) => {
                 <div className={classes.topBar}>   
                     <div className={classes.userPhotoDiv}>
                         <a href={"/user/profile/?id="+props.comment.author}>
-                            <UserPhoto userId={props.comment.author} small />
+                            <UserPhoto userId={props.comment.author} small hideOnlineIcon/>
                         </a>
                     </div>
                     <p className={props.authorClassArr}>
