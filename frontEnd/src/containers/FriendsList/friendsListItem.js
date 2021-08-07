@@ -3,6 +3,7 @@ import classes from './FriendsList.module.css';
 
 import { BiMessageDetail } from 'react-icons/bi';
 import {Link} from 'react-router-dom';
+import OnlineIcon from '../../components/UI/onlineIcon';
 
 const FriendsListItem = (props) => {
     const [checked, setchecked] = useState(props.selectAll)
@@ -17,6 +18,13 @@ const FriendsListItem = (props) => {
                 <div className={classes.listElement}>
                     <div className={classes.smallFaceContainer}>
                         <img src={props.photo} alt="friend's face"/>
+                        {
+                            props.onlineIcon ? (
+                                <div className={classes.onlineIconPositioner}>
+                                    <OnlineIcon online={props.id}/>
+                                </div>
+                            ) : null
+                        }
                     </div>
                     <div className={classes.namesContainer}>
                         <a href={"/user/profile/?id="+props.id} key={props.index} className={classes.containerLink}>

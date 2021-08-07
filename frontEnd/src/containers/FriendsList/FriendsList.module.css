@@ -146,3 +146,9 @@ input[type=checkbox]:checked:after {
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
 }
+
+.onlineIconPositioner{
+    position: relative;
+    margin-top: 60px;
+    margin-right: 30px;
+}

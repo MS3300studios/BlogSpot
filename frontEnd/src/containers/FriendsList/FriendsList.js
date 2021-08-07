@@ -10,18 +10,20 @@ import axios from 'axios';
 import AddUser from './addUser/addUser';
 import getUserData from '../../getUserData';
 import Spinner from '../../components/UI/spinner';
+// import io from 'socket.io-client';
 
 class FriendsList extends Component {
     constructor(props) {
         super(props);
 
         let token = getToken();
-        let userData = getUserData();
+        let userData = getUserData();        
 
         this.state = {
             token: token,
             userData: userData,
             friends: [],
+            usersOnline: [],
             filterIn: "",
             filterBy: "",
             showAddFriendCoponent: false,
@@ -31,6 +33,8 @@ class FriendsList extends Component {
         this.filterSearchHandler.bind(this);
         this.filterFriends.bind(this);
         this.resetFilter.bind(this);
+        // this.manageOnlineFriends.bind(this);
+        //this.socket = io('http://localhost:3001');
     }
 
     componentDidMount(){
@@ -38,7 +42,6 @@ class FriendsList extends Component {
         if(this.props.profileViewComponent){
             let temp = this.props.profileViewComponent;
             id = temp.substr(4, temp.length);
-            console.log(id)
         }
         axios({
             method: 'get',
@@ -54,7 +57,34 @@ class FriendsList extends Component {
         .catch(error => {
             console.log(error);
         })
+
+        //this.socket.emit('getOnlineUsers');
+
+        /*this.socket.on('onlineUsers', onlineUsers => {
+            let newFriends = this.state.friends.map(friend => {
+                for(let i=0; i<onlineUsers.length; i++){
+                    if(friend._id === onlineUsers[i].userId) friend.isOnline = true
+                    else friend.isOnline = false
+                }
+                return friend
+            });
+            this.setState({friends: newFriends});
+        })*/
     }
+
+    // manageOnlineFriends = () => {
+        // console.log(this.state.friends)
+        // console.log(this.state.usersOnline)
+        // let newFriends = this.state.friends.map(friend => {
+        //     for(let i=0; i<this.state.usersOnline.length; i++){
+        //         if(friend._id === this.state.usersOnline[i].userId) friend.isOnline = true
+        //         else friend.isOnline = false
+        //     }
+        //     return friend
+        // });
+
+        //return newFriends;
+    // }
 
     resetFilter = () => {
         this.setState({filterIn: "", filterBy: ""})
@@ -73,7 +103,8 @@ class FriendsList extends Component {
     filterFriends = (filterIn, filterBy) => {
         let friendsJSX = []; //temporary array of all jsx friends, to be filtered and converted to friendsRdy
         let friendsRdy = [];
-    
+        
+        //let initialFriends = this.manageOnlineFriends();
         friendsJSX = this.state.friends.map((friend, index)=>{
             return (
                 <FriendsListItem 
@@ -84,6 +115,8 @@ class FriendsList extends Component {
                     nickname={friend.nickname}
                     surname={friend.surname}
                     photo={friend.photo}
+                    onlineIcon
+                    isOnline={friend.isOnline}
                 />
             )
         });
@@ -188,6 +221,9 @@ class FriendsList extends Component {
                         </>
                     )
                 }
+                <button style={{backgroundColor: "black", cursor: "pointer"}} onClick={()=>{
+                    this.socket.emit('getOnlineUsers');
+                }}>TEST SOCKET</button>
             </div>
         );
     }

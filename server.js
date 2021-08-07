@@ -37,9 +37,22 @@ const Message = require('./models/message');
 
 io.on('connection', (socket) => {  
     socket.on('online', ({userId}) => {
-        console.log(userId+' is online');
         onlineUsers.push({userId: userId, socketId: socket.id});
+        console.log(onlineUsers)
+        socket.broadcast.emit('onlineUsers', onlineUsers); 
     })
+    
+    socket.on('getOnlineUsers', () => {
+        socket.broadcast.emit('onlineUsers', onlineUsers); 
+    })
+
+    socket.on('checkUserOnlineStatus', (userId) => {
+        let isOnline = onlineUsers.findIndex(user => user.userId === userId);
+        if(isOnline !== -1) socket.emit('userOnlineStatus', true); 
+        else socket.emit('userOnlineStatus', false); 
+    })
+
+    // socket.broadcast.emit('onlineUsers', onlineUsers); 
     
     socket.on('join', ({userId, name, conversationId}) => {
         console.log(`${name} joined room nr: ${conversationId}`)
@@ -79,7 +92,5 @@ io.on('connection', (socket) => {
         let newonlineUsers = onlineUsers.filter(user => user.socketId !== socket.id);
         users = newUsers;
         onlineUsers = newonlineUsers;
-
-        console.log('new online users: ', onlineUsers)
     })
 });

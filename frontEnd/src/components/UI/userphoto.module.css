@@ -101,3 +101,9 @@
     text-decoration: none;
     color: black;
 }
+
+.onlineIconPositioner{
+    position: absolute;
+    top: 48px;
+    left: 81px;
+}
