@@ -12,11 +12,7 @@ const OnlineIcon = (props) => {
         socket.on('userOnlineStatus', isOnline => {
             setStatus(isOnline);
         })
-    }, [])
-    // socket.emit('getOnlineUsers');
-    //     socket.on('onlineUsers', onlineUsers => {
-    //         setusers(onlineUsers);
-    //     })
+    }, [props.online, socket]);
 
     let classname = [classes.onlineIcon].join(" ");
     status ? classname = [classes.onlineIcon, classes.online].join(" ") 

@@ -14,6 +14,7 @@ import { GoPencil } from 'react-icons/go';
 import getUserData from '../../getUserData';
 import Spinner from '../../components/UI/spinner';
 import NumberInfoContainer from './numberInfoContainer/numberInfoContainer';
+import OnlineIcon from '../../components/UI/onlineIcon';
 
 class UserProfile extends Component {
     constructor(props){
@@ -412,7 +413,7 @@ class UserProfile extends Component {
                             {userImg}
                         </div>
                         <div className={classes.textInfoContainer}>
-                            <h1 className={classes.textNameH1}>{this.state.userData.name+" "+this.state.userData.surname}</h1>
+                            <h1 className={classes.textNameH1}><OnlineIcon online={this.state.userId} />{this.state.userData.name+" "+this.state.userData.surname}</h1>
                             <h2 className={classes.textNameH2}>@{this.state.userData.nickname}</h2>
                             <div className={classes.bio}>
                                 {
