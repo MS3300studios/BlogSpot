@@ -23,7 +23,8 @@ class BlogsTab extends Component {
             blogs: [],
             limit: 0,
             showcomments: false,
-            showComMessage: "show comments"
+            showComMessage: "show comments",
+            reachedBlogsEnd: false
         }
         this.getPosts.bind(this);
         this.getMorePosts.bind(this);
@@ -43,10 +44,14 @@ class BlogsTab extends Component {
         })
         .then((res)=>{
             if(res.status===200){
-                let blogs = this.state.blogs;
-                console.log(res.data.blogs)
-                let newBlogs = blogs.concat(res.data.blogs)
-                this.setState({blogs: newBlogs});
+                if(res.data.blogs.length === 0){
+                    this.setState({reachedBlogsEnd: true});
+                }
+                else{
+                    let blogs = this.state.blogs;
+                    let newBlogs = blogs.concat(res.data.blogs)
+                    this.setState({blogs: newBlogs});
+                }
             }
         })
         .catch(error => {
@@ -115,9 +120,13 @@ class BlogsTab extends Component {
         return (
             <React.Fragment>
                 {blogs}
-                <div className={[classes.center, classes.loadmorebtn].join(" ")}>
-                    <Button clicked={this.getMorePosts}>load 2 more</Button>
-                </div>
+                {
+                    this.state.reachedBlogsEnd ? <h1>There are no more blogs to load</h1> : (
+                        <div className={[classes.center, classes.loadmorebtn].join(" ")}>
+                            <Button clicked={this.getMorePosts}>load 2 more</Button>
+                        </div>
+                    )
+                }
             </React.Fragment>
         );
     }
