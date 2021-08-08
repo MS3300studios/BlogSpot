@@ -27,36 +27,66 @@ class FriendsList extends Component {
             filterIn: "",
             filterBy: "",
             showAddFriendCoponent: false,
-            loading: true
+            loading: true,
         }
 
         this.filterSearchHandler.bind(this);
         this.filterFriends.bind(this);
         this.resetFilter.bind(this);
-        // this.manageOnlineFriends.bind(this);
-        //this.socket = io('http://localhost:3001');
+        this.initialFetch.bind(this);
     }
 
     componentDidMount(){
-        let id = this.state.userData._id;
-        if(this.props.profileViewComponent){
-            let temp = this.props.profileViewComponent;
-            id = temp.substr(4, temp.length);
+        this.initialFetch();
+    }
+
+    initialFetch = (loadingAgain) => {
+        if(loadingAgain === true){
+            console.log('fetching!')
+            this.setState({loading: true, showSpinnerMessage: false}, () => {
+                let id = this.state.userData._id;
+                if(this.props.profileViewComponent){
+                    let temp = this.props.profileViewComponent;
+                    id = temp.substr(4, temp.length);
+                }
+                axios({
+                    method: 'get',
+                    url: `http://localhost:3001/friends/all/${id}`,
+                    headers: {'Authorization': this.state.token},
+                })
+                .then((res)=>{
+                    if(res.status===200){
+                        this.setState({friends: res.data.friends, loading: false});
+                        return;
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+            })
         }
-        axios({
-            method: 'get',
-            url: `http://localhost:3001/friends/all/${id}`,
-            headers: {'Authorization': this.state.token},
-        })
-        .then((res)=>{
-            if(res.status===200){
-                this.setState({friends: res.data.friends, loading: false});
-                return;
+        else{
+            let id = this.state.userData._id;
+            if(this.props.profileViewComponent){
+                let temp = this.props.profileViewComponent;
+                id = temp.substr(4, temp.length);
             }
-        })
-        .catch(error => {
-            console.log(error);
-        })
+            axios({
+                method: 'get',
+                url: `http://localhost:3001/friends/all/${id}`,
+                headers: {'Authorization': this.state.token},
+            })
+            .then((res)=>{
+                if(res.status===200){
+                    this.setState({friends: res.data.friends, loading: false});
+                    return;
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            })
+        }
+        
     }
 
     resetFilter = () => {
@@ -163,7 +193,7 @@ class FriendsList extends Component {
         return (
             <div className={classes.mainContainer}>
                 {
-                    this.state.loading ? <Spinner /> : (
+                    this.state.loading ? <Spinner tryAgain={()=>this.initialFetch(true)} show={this.state.showSpinnerMessage}/> : (
                         <>
                             <h1 className={classes.mainHeader}>{this.props.profileViewComponent ? null : "your friends"}</h1>
                             <div className={classes.upperContainer}>

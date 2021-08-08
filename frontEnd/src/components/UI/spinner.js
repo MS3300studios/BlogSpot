@@ -20,7 +20,7 @@ const Spinner = (props) => {
         <div className={classes.again}>
             <span>
                 <p>Loading error</p>
-                <Button>Try again</Button>
+                <Button clicked={()=>window.location.reload()}>Try again</Button>
             </span>
         </div>
     );
