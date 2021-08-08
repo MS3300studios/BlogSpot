@@ -58,7 +58,7 @@ router.post('/comments/getNumber', auth, (req, res) => {
 router.post('/comments/limited', auth, (req, res) => {
     let limit = req.body.limit;
     let blogId = req.body.blogId;
-    Comment.find({blogId: blogId}).sort({ createdAt: -1 }).limit(limit)
+    Comment.find({blogId: blogId}).skip(limit).sort({ createdAt: -1 }).limit(4)
         .exec()
         .then(comments => {
             return res.status(200).json({

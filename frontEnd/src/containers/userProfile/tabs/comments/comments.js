@@ -22,7 +22,7 @@ class Comments extends Component {
             test: '',
             token: token,
             userData: userData,
-            limit: 2,
+            limit: 0,
             blogId: props.blogId,
             comments: [],
         }
@@ -59,12 +59,10 @@ class Comments extends Component {
         })
         .then((res)=>{
             if(res.status===200){
-                let commentsRdy = [];
-                res.data.comments.forEach(element => {
-                    commentsRdy.push(element);
-                });
-                this.setState({comments: commentsRdy})
-                return;
+                let comments = this.state.comments;
+                let newComments = comments.concat(res.data.comments)
+                console.log(res.data.comments)
+                this.setState({comments: newComments})
             }
         })
         .catch(error => {

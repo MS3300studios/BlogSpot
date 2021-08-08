@@ -2,6 +2,8 @@ import React, {useEffect, useState} from 'react';
 
 import classes from './photo.module.css';
 import {BsArrowsAngleExpand} from 'react-icons/bs';
+import {AiOutlineDislike, AiOutlineLike} from 'react-icons/ai';
+import {BiComment} from 'react-icons/bi';
 import getToken from '../../getToken';
 import axios from 'axios';
 import Spinner from '../UI/spinner';
@@ -54,9 +56,9 @@ const Photo = (props) => {
                 <BsArrowsAngleExpand size="1.5em" color="white" />
             </div>
             <div className={classes.panel}>
-                <p>likes: {props.photo.likes.length}</p>
-                <p>dislikes: {props.photo.dislikes.length}</p>
-                <p>comments: {props.photo.comments.length}</p>
+                <p><AiOutlineLike />{props.photo.likes.length}</p>
+                <p><AiOutlineDislike />  {props.photo.dislikes.length}</p>
+                <p><BiComment /> {props.photo.comments.length}</p>
             </div>
         </div>
     );
