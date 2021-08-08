@@ -30,6 +30,8 @@ class SocialBoard extends Component {
             filterBy: "",
             flashMessage: "",
             flashNotClosed: true,
+            limitSearchedPhotos: 0,
+            limitSearchedPosts: 0,
         }
         this.getElements.bind(this);
         this.openBigPhoto.bind(this);
@@ -60,10 +62,39 @@ class SocialBoard extends Component {
     }
 
     searchActivity = () => {
-        console.log(this.state.filterBy)
-        console.log(this.state.filterIn)
         if(this.state.filterBy.length === 0){
             this.flash("you need to enter something in the searchbar first!");
+        }
+        else{
+            axios({
+                method: 'post',
+                url: `http://localhost:3001/socialBoard/search`,
+                headers: {'Authorization': this.state.token},
+                data: {
+                    filterIn: this.state.filterIn,
+                    filterBy: this.state.filterBy
+                    // skipPhotos: this.state.limitSearchedPhotos,
+                    // skipPosts: this.state.limitSearchedPosts                
+                }
+            })
+            .then((res)=>{
+                if(res.status===200){
+
+
+                    // if(join === true){
+                    //     let currElems = this.state.elements;
+                    //     let newElems = currElems.concat(res.data.elements);
+                    //     this.setState({elements: newElems, loading: false, limitPhotos: limitphotos+4, limitPosts: limitposts+4})
+                    // }
+                    // else{
+                    //     this.setState({elements: res.data.elements, loading: false, limitPhotos: limitphotos+4, limitPosts: limitposts+4})
+                    //     return;
+                    // }
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            })
         }
     }
 
@@ -161,8 +192,8 @@ class SocialBoard extends Component {
                     <SearchBar 
                         placeholder="browse activity in..."
                         clicked={this.filterSearchHandler}
-                        resetFilter={()=>{this.setState({filterIn: "", filterBy: ""})}}
-                        selectValues={["title", "author name", "id"]}
+                        resetFilter={()=>{this.setState({filterIn: "title", filterBy: ""})}}
+                        selectValues={["title", "author nickname", "id"]}
                         selectedOption={this.filterSearchHandler}
                     />
                     <div style={{height: "50px", marginTop: "37px"}}>
