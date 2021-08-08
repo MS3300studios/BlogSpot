@@ -4,6 +4,7 @@ import classes from './socialBoard.module.css';
 import axios from 'axios';
 import getToken from '../../getToken';
 
+import SearchBar from '../../components/UI/searchBar';
 import Photo from '../../components/photo/photo';
 import Spinner from '../../components/UI/spinner'; 
 import PhotoView from '../photoView/photoView';
@@ -23,10 +24,13 @@ class SocialBoard extends Component {
             bigPhoto: null,
             limitPhotos: 0,
             limitPosts: 0,
+            filterIn: "title",
+            filterBy: "",
         }
         this.getElements.bind(this);
         this.openBigPhoto.bind(this);
         this.bigPhotoWasClosed.bind(this);
+        this.filterSearchHandler.bind(this);
     }
 
     componentDidMount(){
@@ -76,6 +80,15 @@ class SocialBoard extends Component {
         }
     }
 
+    filterSearchHandler = (option, string) => {
+        if(string===""){
+            this.setState({filterIn: option});
+        }
+        else{
+            this.setState({filterIn: option, filterBy: string});
+        }
+    }
+
     render() { 
         let content;
         if(this.state.loading){
@@ -106,6 +119,13 @@ class SocialBoard extends Component {
         return (
             <>
                 <h1 className={classes.mainHeader}>Newest activity:</h1>
+                <SearchBar 
+                    placeholder="browse activity in..."
+                    clicked={this.filterSearchHandler}
+                    resetFilter={()=>{this.setState({filterIn: "", filterBy: ""})}}
+                    selectValues={["title", "author name", "id"]}
+                    selectedOption={this.filterSearchHandler}
+                />
                 <div className={classes.mainContainer}>
                     {content}
                     {this.state.bigPhoto ? <PhotoView photo={this.state.bigPhoto} closeBigPhoto={this.bigPhotoWasClosed}/> : null}
