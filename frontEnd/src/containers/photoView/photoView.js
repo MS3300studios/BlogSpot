@@ -282,7 +282,7 @@ class photoView extends Component {
                                 <div className={classes.authorInfoContainer}>
                                     <div className={classes.authorPhoto}>
                                         {
-                                            this.state.loading ? <Spinner darkgreen /> : <UserPhoto userId={this.state.photo.authorId} small />
+                                            this.state.loading ? <Spinner darkgreen /> : <UserPhoto userId={this.state.photo.authorId} small hideOnlineIcon/>
                                         }
                                     </div>
                                     <div className={classes.authorData}>
