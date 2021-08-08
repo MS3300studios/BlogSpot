@@ -56,8 +56,13 @@ class AddingConversation extends Component {
             headers: {'Authorization': this.state.token},
         })
         .then((res)=>{
-            if(res.status===200){                
-                this.checkFriendsParticipants(true, res.data.friends);
+            if(res.status===200){   
+                if(this.props.addingUsers){
+                    this.checkFriendsParticipants(true, res.data.friends);
+                }             
+                else{
+                    this.setState({loading: false, friends: res.data.friends});
+                }
             }
         })
         .catch(error => {
