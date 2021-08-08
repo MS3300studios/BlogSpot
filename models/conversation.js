@@ -18,6 +18,6 @@ const Participant = db.model("Participant", participantSchema);
 
 module.exports = {
   Conversation: Conversation,
-  Participant: Participant
+  Participant: Participant 
 }
 

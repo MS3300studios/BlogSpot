@@ -88,7 +88,7 @@ class UserPhoto extends Component {
             <div className={classes.dropdown}>
                 {this.state.loading ? <Spinner small darkgreen /> : <img alt="user" src={this.state.photo} className={userPhotoClasses}/>}
                 <div className={classes.onlineIconPositioner}>
-                    <OnlineIcon online={this.state.userData._id} hide={this.props.hideOnlineIcon}/>
+                    <OnlineIcon online={this.props.userId} hide={this.props.hideOnlineIcon}/>
                 </div>
                 {dropdown}
             </div>

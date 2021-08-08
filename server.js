@@ -84,7 +84,7 @@ io.on('connection', (socket) => {
         socket.leave(conversationId); //unsubscribing to socket 
         let newUsers = users.filter(user => user.id !== socket.id);
         users = newUsers;
-        console.log('new users:');
+        console.log('new users that are in conversations:');
         console.log(users);
     })
 
