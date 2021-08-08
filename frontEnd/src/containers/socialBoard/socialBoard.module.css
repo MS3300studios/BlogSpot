@@ -16,3 +16,16 @@
     font-size: 40px;
     color: yellow;
 }
+
+.searchButton{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.searchContainer{
+    display: flex;
+    justify-content: space-around;
+    width: 30%;
+    margin: 0 auto;
+}

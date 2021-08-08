@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { AiOutlineSearch } from 'react-icons/ai';
 
 import classes from './socialBoard.module.css';
 import axios from 'axios';
@@ -30,11 +31,20 @@ class SocialBoard extends Component {
         this.getElements.bind(this);
         this.openBigPhoto.bind(this);
         this.bigPhotoWasClosed.bind(this);
+        this.searchActivity.bind(this);
         this.filterSearchHandler.bind(this);
     }
 
     componentDidMount(){
         this.getElements(this.state.limitPhotos, this.state.limitPosts, false);
+    }
+
+    searchActivity = () => {
+        console.log(this.state.filterBy)
+        console.log(this.state.filterIn)
+        if(this.state.filterBy.length === 0){
+            // this.filterSearchHandler
+        }
     }
 
     getElements = (limitphotos, limitposts, join) => {
@@ -119,13 +129,25 @@ class SocialBoard extends Component {
         return (
             <>
                 <h1 className={classes.mainHeader}>Newest activity:</h1>
-                <SearchBar 
-                    placeholder="browse activity in..."
-                    clicked={this.filterSearchHandler}
-                    resetFilter={()=>{this.setState({filterIn: "", filterBy: ""})}}
-                    selectValues={["title", "author name", "id"]}
-                    selectedOption={this.filterSearchHandler}
-                />
+                <div className={classes.searchContainer}>
+                    <SearchBar 
+                        placeholder="browse activity in..."
+                        clicked={this.filterSearchHandler}
+                        resetFilter={()=>{this.setState({filterIn: "", filterBy: ""})}}
+                        selectValues={["title", "author name", "id"]}
+                        selectedOption={this.filterSearchHandler}
+                    />
+                    <div style={{height: "50px", marginTop: "37px"}}>
+                        <Button>
+                            <div 
+                                className={classes.searchButton}
+                                onClick={this.searchActivity}
+                            >
+                                search<AiOutlineSearch size="2em" color="#0a42a4" />
+                            </div>
+                        </Button>
+                    </div>
+                </div>
                 <div className={classes.mainContainer}>
                     {content}
                     {this.state.bigPhoto ? <PhotoView photo={this.state.bigPhoto} closeBigPhoto={this.bigPhotoWasClosed}/> : null}
