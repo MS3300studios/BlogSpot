@@ -11,6 +11,7 @@ import Spinner from '../../components/UI/spinner';
 import PhotoView from '../photoView/photoView';
 import Post from '../../components/post/post';
 import Button from '../../components/UI/button';
+import Flash from '../../components/UI/flash';
 
 class SocialBoard extends Component {
     constructor(props) {
@@ -27,23 +28,42 @@ class SocialBoard extends Component {
             limitPosts: 0,
             filterIn: "title",
             filterBy: "",
+            flashMessage: "",
+            flashNotClosed: true,
         }
         this.getElements.bind(this);
         this.openBigPhoto.bind(this);
         this.bigPhotoWasClosed.bind(this);
         this.searchActivity.bind(this);
         this.filterSearchHandler.bind(this);
+        this.flash.bind(this);
     }
 
     componentDidMount(){
         this.getElements(this.state.limitPhotos, this.state.limitPosts, false);
     }
 
+    flash = (message) => {
+        this.setState({flashMessage: message});
+        
+        setTimeout(()=>{
+            this.setState({flashNotClosed: false});
+        }, 2000)
+
+        setTimeout(()=>{
+            this.setState({flashMessage: ""});
+        }, 3000);
+    
+        setTimeout(()=>{
+            this.setState({flashNotClosed: true});
+        }, 3000);
+    }
+
     searchActivity = () => {
         console.log(this.state.filterBy)
         console.log(this.state.filterIn)
         if(this.state.filterBy.length === 0){
-            // this.filterSearchHandler
+            this.flash("you need to enter something in the searchbar first!");
         }
     }
 
@@ -126,6 +146,14 @@ class SocialBoard extends Component {
             })
         }
 
+        let flash = null;
+        if(this.state.flashMessage && this.state.flashNotClosed){
+            flash = <Flash>{this.state.flashMessage}</Flash>
+        }
+        else if(this.state.flashMessage && this.state.flashNotClosed === false){
+            flash = <Flash close>{this.state.flashMessage}</Flash>
+        }
+
         return (
             <>
                 <h1 className={classes.mainHeader}>Newest activity:</h1>
@@ -155,6 +183,7 @@ class SocialBoard extends Component {
                 <div className={[classes.center, classes.btnMore].join(" ")}>
                     <Button clicked={()=>this.getElements(this.state.limitPhotos, this.state.limitPosts, true)}>Load more</Button>
                 </div>
+                {flash}
             </>
         );
     }
