@@ -57,34 +57,7 @@ class FriendsList extends Component {
         .catch(error => {
             console.log(error);
         })
-
-        //this.socket.emit('getOnlineUsers');
-
-        /*this.socket.on('onlineUsers', onlineUsers => {
-            let newFriends = this.state.friends.map(friend => {
-                for(let i=0; i<onlineUsers.length; i++){
-                    if(friend._id === onlineUsers[i].userId) friend.isOnline = true
-                    else friend.isOnline = false
-                }
-                return friend
-            });
-            this.setState({friends: newFriends});
-        })*/
     }
-
-    // manageOnlineFriends = () => {
-        // console.log(this.state.friends)
-        // console.log(this.state.usersOnline)
-        // let newFriends = this.state.friends.map(friend => {
-        //     for(let i=0; i<this.state.usersOnline.length; i++){
-        //         if(friend._id === this.state.usersOnline[i].userId) friend.isOnline = true
-        //         else friend.isOnline = false
-        //     }
-        //     return friend
-        // });
-
-        //return newFriends;
-    // }
 
     resetFilter = () => {
         this.setState({filterIn: "", filterBy: ""})

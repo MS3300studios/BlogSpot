@@ -52,3 +52,16 @@
   border-bottom: 1.1em solid rgba(46,139,87, 0.2);
   border-left: 1.1em solid #2e8b57;
 }
+
+.again{
+  color: white;
+  font-size: 20px;
+  font-weight: 550;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.again span{
+  display: grid;
+}

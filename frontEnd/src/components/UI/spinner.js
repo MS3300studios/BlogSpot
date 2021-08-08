@@ -1,11 +1,11 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 
 import classes from './spinner.module.css';
-
+import Button from '../UI/button';
 //author of the spinner: Luke Haas  
 //https://twitter.com/lukehaas
 
-const spinner = (props) => {
+const Spinner = (props) => {
     let classNames = [classes.loader];
     
     if(props.darkgreen){
@@ -14,9 +14,32 @@ const spinner = (props) => {
     if(props.small){
         classNames.push(classes.small);
     }
+
+    let loader = <div className={classNames.join(" ")}></div>
+    let again = (
+        <div className={classes.again}>
+            <span>
+                <p>Loading error</p>
+                <Button>Try again</Button>
+            </span>
+        </div>
+    );
+
+    const [content, setContent] = useState(loader);
+
+    useEffect(() => {
+        if(props.tryAgain !== undefined){
+            setTimeout(()=>{
+                setContent(again);
+            }, 5000)
+        }
+    }, [])
+
     return (
-        <div className={classNames.join(" ")}></div>
+        <>
+            {content}
+        </>
     );
 }
  
-export default spinner;
+export default Spinner;
