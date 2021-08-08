@@ -23,7 +23,7 @@ import YourActivities from './components/activites/youractivities';
 import SocialBoard from './containers/socialBoard/socialBoard';
 import ScrollListener from './components/scrollListener/scrollListener';
 import EditUserProfile from './containers/userProfile/editUserProfile/editUserProfile';
-import Conversation from './containers/chat/conversation/conversation';
+import ConversationContainer from './containers/chat/conversation/conversationContainer/conversationContainer';
 import AddingConversation from './containers/chat/addingConversation/addingConversation';
 import JoiningConversation from './containers/chat/addingConversation/joiningConversation';
 
@@ -71,7 +71,7 @@ class App extends Component {
           <ScrollListener>
             <Menu />
             <Switch>
-              <Route path="/conversation/" component={Conversation} />
+              <Route path="/conversation/" component={ConversationContainer} />
               <Route path="/addConversation/" component={AddingConversation} />
               <Route path="/joinConversation/" component={JoiningConversation} />
               <Route path="/editProfile" exact component={EditUserProfile} />

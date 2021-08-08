@@ -10,7 +10,6 @@ import axios from 'axios';
 import AddUser from './addUser/addUser';
 import getUserData from '../../getUserData';
 import Spinner from '../../components/UI/spinner';
-// import io from 'socket.io-client';
 
 class FriendsList extends Component {
     constructor(props) {
