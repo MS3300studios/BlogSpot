@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import Conversation from '../conversation';
 import Spinner from '../../../../components/UI/spinner';
 import axios from 'axios';
+import getToken from '../../../../getToken';
+import getUserData from '../../../../getUserData';
 
 class ConversationContainer extends Component {
     constructor(props) {
@@ -9,14 +11,41 @@ class ConversationContainer extends Component {
         let queryParams = new URLSearchParams(props.location.search);
         let id = queryParams.get('id'); 
 
+        let token = getToken();
+        let userData = getUserData();
+
         this.state = {
             loading: true,
-            conversationId: id,
+            friendId: id,
+            token: token,
+            userData: userData,
+            conversation: null
         }
     }
     
     componentDidMount(){
         //axios call to fetch conversation data
+        axios({
+            method: 'post',
+            url: `http://localhost:3001/checkPrivateConversation`,
+            headers: {'Authorization': this.state.token},
+            data: {
+                userId: this.state.userData._id,
+                friendId: this.state.friendId
+            }
+        })
+        .then((res)=>{
+            if(res.status===200){
+                this.setState({
+                    loading: false,
+                    conversation: res.data.conversation
+                })
+                return;
+            }
+        })
+        .catch(error => {
+            console.log(error);
+        })
     }
 
     render() { 
