@@ -46,7 +46,7 @@ const FriendsListItem = (props) => {
                         />
                     ) : (
                         <div className={classes.chatIcon}>
-                            <Link to={`/conversation/?id=${props.friendNumber}`}>
+                            <Link to={`/conversation/?id=${props.id}`}>
                                 <BiMessageDetail size="2em" color="#0a42a4" />
                             </Link>
                         </div>

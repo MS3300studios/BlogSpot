@@ -192,7 +192,7 @@ class FriendsList extends Component {
         return (
             <div className={classes.mainContainer}>
                 {
-                    this.state.loading ? <Spinner tryAgain={()=>this.initialFetch(true)} show={this.state.showSpinnerMessage}/> : (
+                    this.state.loading ? <Spinner /> : (
                         <>
                             <h1 className={classes.mainHeader}>{this.props.profileViewComponent ? null : "your friends"}</h1>
                             <div className={classes.upperContainer}>

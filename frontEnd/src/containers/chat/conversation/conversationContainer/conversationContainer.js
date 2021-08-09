@@ -37,8 +37,8 @@ class ConversationContainer extends Component {
         .then((res)=>{
             if(res.status===200){
                 this.setState({
-                    loading: false,
-                    conversation: res.data.conversation
+                    conversation: res.data.conversation,
+                    loading: false
                 })
                 return;
             }
@@ -51,7 +51,9 @@ class ConversationContainer extends Component {
     render() { 
         return (
             <div>
-                <Conversation conversation/>
+                {
+                    this.state.loading ? <Spinner/> : <Conversation conversation={this.state.conversation}/>
+                }
             </div>
         );
     }
