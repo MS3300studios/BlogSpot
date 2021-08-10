@@ -27,7 +27,7 @@ class ConversationContainer extends Component {
         //axios call to fetch conversation data
         axios({
             method: 'post',
-            url: `http://localhost:3001/checkPrivateConversation`,
+            url: `http://localhost:3001/conversations/checkPrivate`,
             headers: {'Authorization': this.state.token},
             data: {
                 userId: this.state.userData._id,

@@ -7,6 +7,7 @@ const participantSchema = new db.Schema({
 
 const schema = new db.Schema({
     name: {type: String, require: true},
+    conversationType: {type: String, require: true},
     participants: [participantSchema]
   },
   {

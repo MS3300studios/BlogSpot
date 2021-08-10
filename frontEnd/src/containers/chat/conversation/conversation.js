@@ -249,7 +249,11 @@ class Conversation extends Component {
             messages = <Spinner />
         }
         else if(this.state.messages.length === 0){
-            messages = <h1>There are no messages in this conversation yet!</h1>
+            messages = (
+                <div style={{display: "flex", justifyContent: "center", width: "100%"}}>
+                    <h1 style={{margin: "0 auto", color: "white"}}>There are no messages in this conversation yet!</h1>
+                </div>
+            )
         }
         else{
             messages = this.state.messages.map((message, index) => {

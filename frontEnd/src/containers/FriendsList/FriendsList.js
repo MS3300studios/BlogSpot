@@ -224,8 +224,28 @@ class FriendsList extends Component {
                     )
                 }
                 <button style={{backgroundColor: "black", cursor: "pointer"}} onClick={()=>{
-                    this.socket.emit('getOnlineUsers');
-                }}>TEST SOCKET</button>
+                    axios({
+                        method: 'post',
+                        url: `http://localhost:3001/conversations/checkPrivate`,
+                        headers: {'Authorization': this.state.token},
+                        data: {
+                            userId: "609ce506f3927449a80fa09d",
+                            friendId: "609ce3e1f3927449a80fa096"
+                        }
+                    })
+                    .then((res)=>{
+                        // if(res.status===200){
+                        //     this.setState({
+                        //         conversation: res.data.conversation,
+                        //         loading: false
+                        //     })
+                        //     return;
+                        // }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    })
+                }}>test route</button>
             </div>
         );
     }
