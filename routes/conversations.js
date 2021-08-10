@@ -167,16 +167,6 @@ router.post('/conversation/join/:id', auth, (req, res) => {
     })
 })
 
-// method: 'post',
-//             url: `http://localhost:3001/checkPrivateConversation`,
-//             headers: {'Authorization': this.state.token},
-//             data: {
-//                 userId: this.state.userData._id,
-//                 friendId: this.state.friendId
-//             }
-//check for conversation matching: participants.length = 2, friendId, userId
-// Conversation.find({participants.length === 2})
-
 router.post('/conversations/checkPrivate', auth, (req, res) => {
     Conversation.find({ 
         conversationType: "private",

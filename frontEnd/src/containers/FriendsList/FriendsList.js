@@ -223,24 +223,6 @@ class FriendsList extends Component {
                         </>
                     )
                 }
-                <button style={{backgroundColor: "black", cursor: "pointer"}} onClick={()=>{
-                    axios({
-                        method: 'post',
-                        url: `http://localhost:3001/conversations/checkPrivate`,
-                        headers: {'Authorization': this.state.token},
-                        data: {
-                            userId: "609ce506f3927449a80fa09d",
-                            friendId: "609ce3e1f3927449a80fa096"
-                        }
-                    })
-                    .then((res)=>{
-                        console.log(res.status)
-                        console.log(res.data.conversation)
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    })
-                }}>test route</button>
             </div>
         );
     }

@@ -127,7 +127,15 @@ class App extends Component {
         {cookiesBanner}
         <button onClick={()=>{
             this.socket.emit("logOnlineUsers");
-        }} style={{backgroundColor: "black", cursor: "pointer"}}>check users on server</button> 
+        }} style={
+          {
+            backgroundColor: "black",
+            cursor: "pointer",
+            position: "fixed",
+            top: "10px",
+            left: "400px"
+          }
+        }>check users on server</button> 
       </React.Fragment>
     );
   }

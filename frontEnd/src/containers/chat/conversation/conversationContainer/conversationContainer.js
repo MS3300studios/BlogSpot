@@ -24,7 +24,6 @@ class ConversationContainer extends Component {
     }
     
     componentDidMount(){
-        //axios call to fetch conversation data
         axios({
             method: 'post',
             url: `http://localhost:3001/conversations/checkPrivate`,
@@ -35,7 +34,7 @@ class ConversationContainer extends Component {
             }
         })
         .then((res)=>{
-            if(res.status===200){
+            if(res.status===200 || res.status===201){
                 this.setState({
                     conversation: res.data.conversation,
                     loading: false
