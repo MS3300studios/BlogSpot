@@ -17,6 +17,7 @@ import Button from '../../../components/UI/button';
 import Spinner from '../../../components/UI/spinner';
 import Participant from './participant';
 import AddingConversation from '../addingConversation/addingConversation';
+import OnlineIcon from '../../../components/UI/onlineIcon';
 
 class Conversation extends Component {
     constructor(props) {
@@ -281,10 +282,28 @@ class Conversation extends Component {
                 )
             })
         }
+
+        let conversationName = <h1>{this.props.conversation.name}</h1>
+        if(this.props.conversation.conversationType === "private"){
+            let friendName, friendId;
+            this.props.conversation.participants.forEach(participant => {
+                if(participant.name !== this.state.user.name){
+                    friendName = participant.name;
+                    friendId = participant.userId;
+                }
+            });
+            conversationName = (
+                <div className={classes.conversationName}>
+                    <OnlineIcon online={friendId}/>
+                    <h1>{friendName}</h1>
+                </div>
+            )
+        }
+
         return (
             <>
             <div className={classes.conversationBanner}>
-                <h1>{this.props.conversation.name}</h1>
+                {conversationName}
                 <div className={classes.infoCircle} onClick={()=>this.setState((prevState)=>({infoOpened: !prevState.infoOpened}))}>
                     {
                         this.state.infoOpened ? <BsInfoCircleFill size="2em" color="#04255f"/> : <BsInfoCircle size="2em" color="#04255f"/>
