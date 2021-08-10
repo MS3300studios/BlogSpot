@@ -116,12 +116,29 @@ router.post('/conversation/edit/participants/add/:id', auth, (req, res) => {
     })
 });
 
+//only for private conversations
+router.get('/conversation/delete/:id', auth, (req, res) => {
+    Conversation.findById(req.params.id).then(conversation => {
+        let isParticipant = false;
+        conversation.participants.forEach(participant => {
+            if(participant.userId === req.userData.userId) isParticipant = true;
+        })
+
+        if(isParticipant === true){
+            Conversation.findByIdAndDelete(req.params.id).then(conversation => {
+                res.sendStatus(200);
+            })
+        }
+        else{
+            res.sendStatus(401) //if user is not a participant of a conversation, he cannot leave it 
+        }
+    })
+})
+
 router.get('/conversation/leave/:id', auth, (req, res) => {
     /*  
         TO BE DONE: check the length of the conversation, if the length is <=1 then delete the conversation.
     */
-
-
     Conversation.findById(req.params.id).then(conversation => {
         let isParticipant = false;
         conversation.participants.forEach(participant => {

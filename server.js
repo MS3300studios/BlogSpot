@@ -88,11 +88,19 @@ io.on('connection', (socket) => {
         console.log(users);
     })
 
-    socket.on('disconnect', ()=>{
+    socket.on('disconnect', async()=>{
         console.log("user disconnected");
-        let newUsers = users.filter(user => user.id !== socket.id);
+        let newUsers = users.filter(user => user.socketId !== socket.id);
+        
+        /*let userLeaving = await onlineUsers.filter(user => {
+            if(user.socketId === socket.id) return true;
+            else return false;
+        });*/
+        
         let newonlineUsers = onlineUsers.filter(user => user.socketId !== socket.id);
+        
         users = newUsers;
         onlineUsers = newonlineUsers;
+        //socket.broadcast.emit('userLeft', userLeaving[0]); 
     })
 });
