@@ -343,14 +343,16 @@ class Conversation extends Component {
                         {messages}
                         <div style={{visibility: "none"}} ref={el => this.messagesEnd = el}></div>
                     </div>
-                    <input 
-                        className={classes.input} 
-                        value={this.state.message} 
-                        type="text" 
-                        onChange={(ev)=>this.setState({message: ev.target.value})}
-                        onKeyPress={event => event.key === 'Enter' ? this.sendMessage(event) : null}
-                        />
-                    <Button clicked={this.sendMessage}>Send</Button>
+                    <div className={classes.inputAndButtonContainer}>
+                        <input 
+                            className={classes.input} 
+                            value={this.state.message} 
+                            type="text" 
+                            onChange={(ev)=>this.setState({message: ev.target.value})}
+                            onKeyPress={event => event.key === 'Enter' ? this.sendMessage(event) : null}
+                            />
+                        <button clicked={this.sendMessage} className={classes.glowOnHover}>Send</button>
+                    </div>
                 </div>
                 {
                     this.state.infoOpened ? (
