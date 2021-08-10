@@ -234,13 +234,8 @@ class FriendsList extends Component {
                         }
                     })
                     .then((res)=>{
-                        // if(res.status===200){
-                        //     this.setState({
-                        //         conversation: res.data.conversation,
-                        //         loading: false
-                        //     })
-                        //     return;
-                        // }
+                        console.log(res.status)
+                        console.log(res.data.conversation)
                     })
                     .catch(error => {
                         console.log(error);
