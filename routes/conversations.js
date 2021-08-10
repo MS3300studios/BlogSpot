@@ -116,6 +116,11 @@ router.post('/conversation/edit/participants/add/:id', auth, (req, res) => {
 });
 
 router.get('/conversation/leave/:id', auth, (req, res) => {
+    /*  
+        TO BE DONE: check the length of the conversation, if the length is <=1 then delete the conversation.
+    */
+
+
     Conversation.findById(req.params.id).then(conversation => {
         let isParticipant = false;
         conversation.participants.forEach(participant => {

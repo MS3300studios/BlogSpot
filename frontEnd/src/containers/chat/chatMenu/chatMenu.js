@@ -133,7 +133,6 @@ class ChatMenu extends Component {
                         resetFilter={()=>{this.setState({filterIn: "", filterBy: ""})}}
                         selectValues={["name", "id"]}
                     />
-                    {conversations}
                     {
                         (this.state.conversations.length === 0) ? null : (
                             <div className={classes.center}>
@@ -144,6 +143,7 @@ class ChatMenu extends Component {
                             </div>
                         )
                     }
+                    {conversations}
                 </div>
                 {
                     this.state.addingConversation ? 
