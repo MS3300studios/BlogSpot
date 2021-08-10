@@ -1,8 +1,44 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+import axios from 'axios';
 
 import classes from './chatMenu.module.css';
+import getToken from '../../../getToken';
+import Spinner from '../../../components/UI/spinner';
+import UserPhoto from '../../../components/UI/userphoto';
+import getUserData from '../../../getUserData';
 
-const conversationListItem = (props) => {
+const ConversationListItem = (props) => {
+    const [loading, setLoading] = useState(true);
+    const [user, setUser] = useState(null);
+
+    const userData = getUserData();
+    const token = getToken();
+
+    console.log(props.el)
+
+    useEffect(() => {
+        if(props.el.conversationType === 'private'){
+            let friend = props.el.participants.filter(participant => participant.userId !== userData._id)[0];
+
+            axios({
+                method: 'get',
+                url: `http://localhost:3001/users/getUser/${friend.userId}`,
+                headers: {'Authorization': token}
+            })
+            .then((res)=>{
+                if(res.status===200){
+                    console.log(res.data.user.surname)
+                    setUser(res.data.user);
+                    setLoading(false);
+                    return;
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            })        
+        }
+        else return;
+    }, [])
 
     let chatSelect = () => {
         if(!props.join){
@@ -11,8 +47,8 @@ const conversationListItem = (props) => {
         else return null
     }
 
-    return ( 
-        <div className={classes.conversation} onClick={chatSelect}>
+    let content = (
+        <>
             <h1>{props.el.name}</h1>
             <div className={classes.participantContainer}>
                 {
@@ -21,6 +57,21 @@ const conversationListItem = (props) => {
                     ))
                 }
             </div>
+        </>
+    );
+
+    if(props.el.conversationType === "private"){
+        loading ? content = <Spinner darkgreen/> : content = (
+            <div className={classes.userDataContainer}>
+                <UserPhoto userId={user._id}/>
+                <h1>{user.name} {user.surname}</h1>
+            </div>
+        )
+    }
+
+    return ( 
+        <div className={classes.conversation} onClick={chatSelect}>
+            {content}
             {
                 props.join ? (
                     <div className={classes.joinButtonContainer}>
@@ -32,4 +83,4 @@ const conversationListItem = (props) => {
     );
 }
  
-export default conversationListItem;
+export default ConversationListItem;

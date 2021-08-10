@@ -357,10 +357,12 @@ class Conversation extends Component {
                         <div className={classes.sidePanel}>
                             {
                                 (this.props.conversation.conversationType === "private") ? (
-                                    <div className={classes.center}>
-                                        <div className={[classes.operationButton,classes.leave].join(" ")} onClick={this.deleteConversation}>
-                                            <AiFillDelete size="2em" color="#fff"/>
-                                            <p>Delete conversation</p>
+                                    <div className={classes.centerTop}>
+                                        <div className={classes.center}>
+                                            <div className={[classes.operationButton,classes.leave].join(" ")} onClick={this.deleteConversation}>
+                                                <AiFillDelete size="2em" color="#fff"/>
+                                                <p>Delete conversation</p>
+                                            </div>
                                         </div>
                                     </div>
                                 ) : (

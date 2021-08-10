@@ -132,3 +132,10 @@
 .joinButton:hover{
     transform: scale(1.7);
 }
+
+.userDataContainer{
+    width: 70%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
