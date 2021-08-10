@@ -351,7 +351,7 @@ class Conversation extends Component {
                             onChange={(ev)=>this.setState({message: ev.target.value})}
                             onKeyPress={event => event.key === 'Enter' ? this.sendMessage(event) : null}
                             />
-                        <button clicked={this.sendMessage} className={classes.glowOnHover}>Send</button>
+                        <button onClick={this.sendMessage} className={classes.glowOnHover}>Send</button>
                     </div>
                 </div>
                 {

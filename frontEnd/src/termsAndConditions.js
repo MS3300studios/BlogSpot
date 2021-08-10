@@ -41,6 +41,14 @@ function termsAndConditions (){
                     <p>Spamming is strictly forbidden, and users who produce spam will be immediately removed from BragSpot. Spamming is defined as posting/sending large quantities of data in a short space of time. That includes sending more than 5 messages in a time period of maximum 3 seconds, or multiple (no less than 10) posts during the time period of one minute. That also refers to, but is not limited by likes, photos, and other means of sending data accessible on this website.</p>
                 </li>
             </ul>
+            <hr />
+            <h3>
+                Special thanks to these users for their solutions:
+            </h3>
+            <ul>
+                <li><b>Kosten</b>, for his glowing css animation for the send button in conversation: <a href="https://codepen.io/kocsten">codepen.io/Kosten</a> or <a href="http://zornet.ru/index/8-1">zornet.ru/Kosten</a></li>
+                <li><b>Luke Haas</b>, for his amazing spinner animation: <a href="https://twitter.com/lukehaas">twitter.com/lukehaas</a></li>
+            </ul>
         </div>
     )
 }

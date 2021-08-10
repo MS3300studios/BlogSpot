@@ -278,11 +278,8 @@ background: #555;
     height: 40px;
 }
 
-.inputAndButtonContainer button{
-    animation: unset;
-}
-
 .glowOnHover {
+    animation: none !important;
     width: 150px;
     height: 30px;
     border: none;
