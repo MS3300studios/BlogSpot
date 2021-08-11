@@ -2,6 +2,8 @@ import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 
 import classes from './chatMenu.module.css';
+import classes2 from './conversationListItem.module.css';
+
 import getToken from '../../../getToken';
 import Spinner from '../../../components/UI/spinner';
 import UserPhoto from '../../../components/UI/userphoto';
@@ -46,7 +48,11 @@ const ConversationListItem = (props) => {
         })
         .then((res)=>{
             if(res.status===200){
-                if(res.data.message === null) setlatestMessage({content: "no messages to display", authorName: ""});
+                console.log(res.data)
+                if(res.data === "none"){
+                    setlatestMessage({content: "no messages have been sent yet", authorName: ""});
+                    setLoadingLatestMessage(false);
+                }
                 else{
                     setlatestMessage(res.data);
                     setLoadingLatestMessage(false);
@@ -69,13 +75,13 @@ const ConversationListItem = (props) => {
     let content = (
         <>
             <h1>{props.el.name}</h1>
-            <div className={classes.participantContainer}>
+            {/* <div className={classes.participantContainer}>
                 {
                     props.el.participants.map((participant, index) => (
                         <p key={index}>{participant.name}</p>
                     ))
                 }
-            </div>
+            </div> */}
         </>
     );
 
@@ -88,10 +94,22 @@ const ConversationListItem = (props) => {
         )
     }
 
+
+    let latestMessageDisplay = null;
+    if(loadingLatestMessage === true) latestMessageDisplay = <Spinner small/>;
+    else{
+        latestMessageDisplay = (
+            <div className={classes2.latestMessageContainer}>
+                <p className={classes2.latestMessage}>{latestMessage.authorName} {latestMessage.content}</p>
+                <p>{latestMessage.hour}</p>
+            </div>
+        )
+    }
+
     return (<>
         <div className={classes.conversation} onClick={chatSelect}>
             {content}
-            {loadingLatestMessage ? <Spinner small/> : <p>{latestMessage.content}</p>}
+            {latestMessageDisplay}
             {
                 props.join ? (
                     <div className={classes.joinButtonContainer}>
