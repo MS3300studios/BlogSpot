@@ -85,7 +85,7 @@
 }
 .numberInfoContainer{
     margin-top: -20px;
-    margin-bottom: 50px;
+    margin-bottom: 70px;
     margin-left: -35px;
 }
 .numberInfoContainer p{
@@ -108,8 +108,8 @@
 }
 .socialButtonsContainer button{
     width: 150px;
-    height: 50px;
-    margin: 10px;
+    /* height: 50px; */
+    margin: 20px;
     margin-left: 0;
     transition: 0.3s all ease;
     font-size: 18px;
@@ -126,9 +126,18 @@
 }
 .addFriend{
     background-color: darkgoldenrod;
+    display: flex;
+    align-items: center;
+    padding: 10px;
 }
 .sendMessage{
     background-color: darkorchid !important;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+}
+.sendMessageLink{
+    text-decoration: none;
 }
 
 

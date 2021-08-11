@@ -3,6 +3,9 @@ import axios from 'axios';
 import classes from '../userProfile.module.css';
 import getToken from '../../../getToken';
 
+import { BsFillPersonCheckFill } from 'react-icons/bs';
+import { BsFillPersonDashFill } from 'react-icons/bs';
+
 import { connect } from 'react-redux';
 import * as actionTypes from '../../../store/actions';
 
@@ -89,12 +92,21 @@ class FriendButton extends Component {
     }
 
     render() { 
-        let btn = <button className={classes.addFriend} onClick={() => this.sendAction("none")}>{this.state.buttonText}</button>
+        let btn;
+        if(this.state.buttonText === 'Remove friend' || this.state.buttonText === 'Remove friend request') btn = <button className={classes.addFriend} onClick={() => this.sendAction("none")}><BsFillPersonDashFill size="2em"/>{this.state.buttonText}</button>
+        else if(this.state.buttonText === 'Send friend request') btn = <button className={classes.addFriend} onClick={() => this.sendAction("none")}><BsFillPersonCheckFill size="2em"/>{this.state.buttonText}</button>
+
         if(this.state.receivedRequest){
             btn = (
                 <React.Fragment>
-                    <button className={[classes.addFriend, classes.acceptRequest].join(" ")} onClick={() => this.sendAction('accept')}>Accept friend request</button>
-                    <button className={[classes.addFriend, classes.declineRequest].join(" ")} onClick={() => this.sendAction('decline')}>Decline friend request</button>
+                    <button className={[classes.addFriend, classes.acceptRequest].join(" ")} onClick={() => this.sendAction('accept')}>
+                        <BsFillPersonCheckFill size="2em"/>
+                        Accept friend request
+                    </button>
+                    <button className={[classes.addFriend, classes.declineRequest].join(" ")} onClick={() => this.sendAction('decline')}>
+                        <BsFillPersonDashFill size="2em"/>
+                        Decline friend request
+                    </button>
                 </React.Fragment>
             )
         }

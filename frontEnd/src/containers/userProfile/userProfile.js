@@ -10,6 +10,7 @@ import FriendButton from './friendButton/friendButton';
 import Button from '../../components/UI/button';
 
 import { BsPencil } from 'react-icons/bs';
+import { MdMessage } from 'react-icons/md';
 import { GoPencil } from 'react-icons/go';
 import getUserData from '../../getUserData';
 import Spinner from '../../components/UI/spinner';
@@ -443,7 +444,6 @@ class UserProfile extends Component {
                                     </div>
                                 ) : (
                                     <div className={classes.socialButtonsContainer}>
-                                        <button className={classes.follow} onClick={()=>this.flash('coming soon!')}>Follow</button>
                                         {this.state.friendBtnDataRdy ? (
                                             <FriendButton 
                                                 receivedRequest={this.state.receivedRequest}
@@ -453,7 +453,9 @@ class UserProfile extends Component {
                                             />
                                         ) : <Spinner darkgreen />}
                                         
-                                        <button className={classes.sendMessage}>Send Message</button>
+                                        <Link to={`/conversation/?id=${this.state.userId}`} className={classes.sendMessageLink}>
+                                            <button className={classes.sendMessage}><MdMessage size="1.5em" color="#FFF" /> Send Message</button>
+                                        </Link>
                                     </div>
                                 )
                             }
