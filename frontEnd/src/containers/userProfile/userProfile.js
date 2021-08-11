@@ -453,9 +453,13 @@ class UserProfile extends Component {
                                             />
                                         ) : <Spinner darkgreen />}
                                         
-                                        <Link to={`/conversation/?id=${this.state.userId}`} className={classes.sendMessageLink}>
-                                            <button className={classes.sendMessage}><MdMessage size="1.5em" color="#FFF" /> Send Message</button>
-                                        </Link>
+                                        {
+                                            this.state.isFriend ? (
+                                                <Link to={`/conversation/?id=${this.state.userId}`} className={classes.sendMessageLink}>
+                                                    <button className={classes.sendMessage}><MdMessage size="1.5em" color="#FFF" /> Send Message</button>
+                                                </Link>
+                                            ) : null
+                                        }
                                     </div>
                                 )
                             }

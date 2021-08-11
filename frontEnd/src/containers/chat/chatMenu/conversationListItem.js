@@ -9,12 +9,12 @@ import getUserData from '../../../getUserData';
 
 const ConversationListItem = (props) => {
     const [loading, setLoading] = useState(true);
+    const [loadingLatestMessage, setLoadingLatestMessage] = useState(true);
     const [user, setUser] = useState(null);
+    const [latestMessage, setlatestMessage] = useState();
 
     const userData = getUserData();
     const token = getToken();
-
-    console.log(props.el)
 
     useEffect(() => {
         if(props.el.conversationType === 'private'){
@@ -27,7 +27,6 @@ const ConversationListItem = (props) => {
             })
             .then((res)=>{
                 if(res.status===200){
-                    console.log(res.data.user.surname)
                     setUser(res.data.user);
                     setLoading(false);
                     return;
@@ -37,7 +36,27 @@ const ConversationListItem = (props) => {
                 console.log(error);
             })        
         }
-        else return;
+        
+        // props.el._id
+
+        axios({
+            method: 'get',
+            url: `http://localhost:3001/messages/latest/${props.el._id}`,
+            headers: {'Authorization': token}
+        })
+        .then((res)=>{
+            if(res.status===200){
+                if(res.data.message === null) setlatestMessage({content: "no messages to display", authorName: ""});
+                else{
+                    setlatestMessage(res.data);
+                    setLoadingLatestMessage(false);
+                }
+            }
+        })
+        .catch(error => {
+            console.log(error);
+        })
+
     }, [])
 
     let chatSelect = () => {
@@ -69,9 +88,10 @@ const ConversationListItem = (props) => {
         )
     }
 
-    return ( 
+    return (<>
         <div className={classes.conversation} onClick={chatSelect}>
             {content}
+            {loadingLatestMessage ? <Spinner small/> : <p>{latestMessage.content}</p>}
             {
                 props.join ? (
                     <div className={classes.joinButtonContainer}>
@@ -80,7 +100,7 @@ const ConversationListItem = (props) => {
                 ) : null
             }
         </div>
-    );
+    </>);
 }
  
 export default ConversationListItem;

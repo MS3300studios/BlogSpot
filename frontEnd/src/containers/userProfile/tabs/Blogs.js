@@ -121,7 +121,7 @@ class BlogsTab extends Component {
             <React.Fragment>
                 {blogs}
                 {
-                    this.state.reachedBlogsEnd ? <h1>There are no more blogs to load</h1> : (
+                    (this.state.reachedBlogsEnd) ? null : (
                         <div className={[classes.center, classes.loadmorebtn].join(" ")}>
                             <Button clicked={this.getMorePosts}>load 2 more</Button>
                         </div>

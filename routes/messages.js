@@ -34,4 +34,10 @@ router.post('/messages/add', auth, (req, res) => {
     })
 })
 
+router.get('/messages/latest/:conversationId', auth, (req, res) => {
+    Message.find({conversationId: req.params.conversationId}).sort({ createdAt: -1}).limit(1).exec((err, message) => {
+        res.json(message[0])
+    })
+})
+
 module.exports = router;
