@@ -50,7 +50,7 @@ const ConversationListItem = (props) => {
             if(res.status===200){
                 console.log(res.data)
                 if(res.data === "none"){
-                    setlatestMessage({content: "no messages have been sent yet", authorName: ""});
+                    setlatestMessage({content: "none", authorName: ""});
                     setLoadingLatestMessage(false);
                 }
                 else{
@@ -86,7 +86,7 @@ const ConversationListItem = (props) => {
     );
 
     if(props.el.conversationType === "private"){
-        loading ? content = <Spinner darkgreen/> : content = (
+        loading ? content = <Spinner small darkgreen/> : content = (
             <div className={classes.userDataContainer}>
                 <UserPhoto userId={user._id}/>
                 <h1>{user.name} {user.surname}</h1>
@@ -100,14 +100,18 @@ const ConversationListItem = (props) => {
     else{
         latestMessageDisplay = (
             <div className={classes2.latestMessageContainer}>
-                <p className={classes2.latestMessage}>{latestMessage.authorName} {latestMessage.content}</p>
-                <p>{latestMessage.hour}</p>
+                {
+                    (latestMessage.content === "none") ? 
+                    <p className={classes2.latestMessage}>no messages have been sent yet</p> :
+                    <p className={classes2.latestMessage}>{latestMessage.authorName}: {latestMessage.content}</p>
+                }
             </div>
         )
     }
 
     return (<>
         <div className={classes.conversation} onClick={chatSelect}>
+            {loadingLatestMessage ? null : <h3 className={classes2.latestMessageHour}>{latestMessage.hour}</h3>}
             {content}
             {latestMessageDisplay}
             {
