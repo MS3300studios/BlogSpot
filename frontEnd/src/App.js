@@ -145,17 +145,13 @@ class App extends Component {
         <button onClick={()=>{
             let token = getToken();
             axios({
-                method: 'post',
-                url: `http://localhost:3001/lastReadMessage/create`,
-                headers: {'Authorization': token},
-                data: {
-                  conversationId: "60fc2ad143515d2e8cc44be0",
-                  content: "testing small time!!"
-                }
+                method: 'get',
+                url: `http://localhost:3001/lastReadMessage/60fc2ad143515d2e8cc44be0`,
+                headers: {'Authorization': token}
             })
             .then((res)=>{
                 if(res.status===200){
-                    
+                    console.log(res.data);
                     return;
                 }
             })

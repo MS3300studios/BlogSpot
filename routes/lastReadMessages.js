@@ -18,7 +18,7 @@ router.post('/lastReadMessage/create', auth, (req, res) => {
         })
 
         if(isParticipant === true){
-            LastReadMessage.findByIdAndUpdate(req.body.conversationId, {content: req.body.content}, {upsert: true}, (err, msg) => {
+            LastReadMessage.findByIdAndUpdate(req.body.conversationId, {content: req.body.content, conversationId: req.body.conversationId, userId: req.userData.userId}, {upsert: true}, (err, msg) => {
                 if(err) console.log(err)
                 res.json({message: msg});
             })
@@ -30,26 +30,29 @@ router.post('/lastReadMessage/create', auth, (req, res) => {
     
 })
 
-router.post('/lastReadMessage/update', auth, (req, res) => {
-    
-})
+router.get('/lastReadMessage/:conversationId', auth, (req, res) => {
+    Conversation.findById(req.params.conversationId).then(conversation => {
+        let isParticipant = false;
+        conversation.participants.forEach(participant => {
+            if(participant.userId === req.userData.userId) isParticipant = true;
+        })
 
-router.post('/lastReadMessage/get', auth, (req, res) => {
-    console.log(req.body.conversationId);
-    console.log(req.userData.userId);
-    // Conversation.findById(req.body.conversationId).then(conversation => {
-    //     let isParticipant = false;
-    //     conversation.participants.forEach(participant => {
-    //         if(participant.userId === req.userData.userId) isParticipant = true;
-    //     })
-
-    //     if(isParticipant === true){
-            
-    //     }
-    //     else{
-    //         res.sendStatus(401) //if user is not a participant of a conversation, he cannot read it's last message
-    //     }
-    // })
+        if(isParticipant === true){
+            LastReadMessage.findOne({conversationId: req.params.conversationId, userId: req.userData.userId}).then(lastReadMessage => {
+                if(!lastReadMessage){
+                    res.json({
+                        error: "no message was found"
+                    });
+                }
+                else {
+                    res.json(lastReadMessage);
+                }
+            });
+        }
+        else{
+            res.sendStatus(401) //if user is not a participant of a conversation, he cannot read it's last message
+        }
+    })
 })
 
 module.exports = router;
