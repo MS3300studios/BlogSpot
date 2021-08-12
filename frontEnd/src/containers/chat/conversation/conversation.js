@@ -116,10 +116,7 @@ class Conversation extends Component {
                 conversationId: this.props.conversation._id,
                 content: content 
             }
-        })
-        .catch(error => {
-            console.log(error);
-        })
+        });
     }
 
     handleScroll = (e) => {
