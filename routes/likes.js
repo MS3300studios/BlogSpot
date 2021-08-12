@@ -5,7 +5,7 @@ const BlogLike = require('../models/BlogLike');
 const BlogDislike = require('../models/BlogDislike');
 const CommentLike = require('../models/CommentLike');
 const CommentDislike = require('../models/CommentDislike');
-const auth = require('../middleware/authorization');
+const auth = require('../middleware/authorization');        
 
 router.use(express.json());
 
