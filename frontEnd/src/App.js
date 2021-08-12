@@ -4,6 +4,12 @@ import { connect } from 'react-redux';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 import io from 'socket.io-client';
 
+//for debug only:
+import axios from 'axios';
+import getToken from './getToken';
+import getUserData from './getUserData';
+//end for debug only
+
 import termsAndConditions from './termsAndConditions';
 import './App.css';
 
@@ -136,6 +142,35 @@ class App extends Component {
             left: "400px"
           }
         }>check users on server</button> 
+        <button onClick={()=>{
+            let token = getToken();
+            axios({
+                method: 'post',
+                url: `http://localhost:3001/lastReadMessage/create`,
+                headers: {'Authorization': token},
+                data: {
+                  conversationId: "60fc2ad143515d2e8cc44be0",
+                  content: "testing small time!!"
+                }
+            })
+            .then((res)=>{
+                if(res.status===200){
+                    
+                    return;
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            })
+        }} style={
+          {
+            backgroundColor: "black",
+            cursor: "pointer",
+            position: "fixed",
+            top: "10px",
+            left: "600px"
+          }
+        }>test get lastReadMessage</button> 
       </React.Fragment>
     );
   }

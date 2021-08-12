@@ -1,7 +1,7 @@
 const db = require("../db");
 
 const schema = new db.Schema({
-    authorId: {type: String, require: true},
+    userId: {type: String, require: true},
     conversationId: {type: String, require: true},
     content: {type: String, require: true}
   },
