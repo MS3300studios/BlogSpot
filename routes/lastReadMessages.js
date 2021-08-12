@@ -18,10 +18,26 @@ router.post('/lastReadMessage/create', auth, (req, res) => {
         })
 
         if(isParticipant === true){
-            LastReadMessage.findByIdAndUpdate(req.body.conversationId, {content: req.body.content, conversationId: req.body.conversationId, userId: req.userData.userId}, {upsert: true}, (err, msg) => {
-                if(err) console.log(err)
-                res.json({message: msg});
+            LastReadMessage.findOne({conversationId: req.body.conversationId, userId: req.userData.userId}).exec().then(msg => {
+                if(!msg){
+                    console.log('creating message')
+                    const lastReadMessage = new LastReadMessage({
+                        conversationId: req.body.conversationId,
+                        userId: req.userData.userId,
+                        content: req.body.content
+                    })
+                    lastReadMessage.save();
+                }
+                else{
+                    msg.content = req.body.content;
+                    msg.save();
+                }
             })
+
+            // LastReadMessage.findByIdAndUpdate(req.body.conversationId, {content: req.body.content, conversationId: req.body.conversationId, userId: req.userData.userId}, {upsert: true}, (err, msg) => {
+            //     if(err) console.log(err)
+            //     res.json({message: msg});
+            // })
         }
         else{
             res.sendStatus(401) //if user is not a participant of a conversation, he cannot read it's last message

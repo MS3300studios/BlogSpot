@@ -64,6 +64,7 @@ class Conversation extends Component {
         this.filterParticipants.bind(this);
         this.handleScroll.bind(this);
         this.deleteConversation.bind(this);
+        this.sendLastReadMessage.bind(this);
         
         this.scrollPosition = React.createRef();
         this.scrollPosition.current = 201;
@@ -78,7 +79,7 @@ class Conversation extends Component {
             let prevMessages = this.state.messages;
             prevMessages.push(message);
             this.setState({messages: prevMessages});
-
+            this.sendLastReadMessage(message.content);
         })
 
         this.fetchMessages();
@@ -104,6 +105,21 @@ class Conversation extends Component {
 
     componentWillUnmount(){
         this.socket.emit('leaveConversation', {conversationId: this.props.conversation._id});
+    }
+
+    sendLastReadMessage = (content) => {
+        axios({
+            method: 'post',
+            url: `http://localhost:3001/lastReadMessage/create`,
+            headers: {'Authorization': this.state.token},
+            data: {
+                conversationId: this.props.conversation._id,
+                content: content 
+            }
+        })
+        .catch(error => {
+            console.log(error);
+        })
     }
 
     handleScroll = (e) => {
@@ -140,18 +156,7 @@ class Conversation extends Component {
                         else if(!scrollToPosition){
                             res.data.messages.forEach((el, index) => {
                                 if(index===res.data.messages.length-1){
-                                    axios({
-                                        method: 'post',
-                                        url: `http://localhost:3001/lastReadMessage/create`,
-                                        headers: {'Authorization': this.state.token},
-                                        data: {
-                                            conversationId: this.props.conversation._id,
-                                            content: el.content 
-                                        }
-                                    })
-                                    .catch(error => {
-                                        console.log(error);
-                                    })
+                                    this.sendLastReadMessage(el.content);
                                 }
                             })
                         }
@@ -199,7 +204,7 @@ class Conversation extends Component {
                 conversationId: this.props.conversation._id, 
                 hour: time 
             });
-
+            this.sendLastReadMessage(this.state.message);
             this.messagesEnd.scrollIntoView({ behavior: "smooth" });
         }
         this.setState({message: ""});
