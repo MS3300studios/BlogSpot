@@ -137,6 +137,24 @@ class Conversation extends Component {
                             if(res.data.messages.length < 10) return null; //if no more messages are available, do nothing
                             else this.lastCurrentMessage.scrollIntoView();
                         }
+                        else if(!scrollToPosition){
+                            res.data.messages.forEach((el, index) => {
+                                if(index===res.data.messages.length-1){
+                                    axios({
+                                        method: 'post',
+                                        url: `http://localhost:3001/lastReadMessage/create`,
+                                        headers: {'Authorization': this.state.token},
+                                        data: {
+                                            conversationId: this.props.conversation._id,
+                                            content: el.content 
+                                        }
+                                    })
+                                    .catch(error => {
+                                        console.log(error);
+                                    })
+                                }
+                            })
+                        }
                     });
                     return;
                 }
@@ -284,6 +302,7 @@ class Conversation extends Component {
                 
                 return (
                     <div className={classes.elongateMessage} key={index}>
+                        <p>{index}</p>
                         <div className={messageClassNames} ref={el => {
                             if(index === 9) this.lastCurrentMessage = el //if index is 9 a ref is overwritten, else do nothing
                             else return null
