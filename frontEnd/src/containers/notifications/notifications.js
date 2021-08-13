@@ -50,7 +50,7 @@ class Notifications extends Component {
     getNotifications = () => {
         this.setState({refreshing: true});
         axios({
-            method: 'post',
+            method: 'get',
             url: `http://localhost:3001/notifications/getFriendRequests`,
             headers: {'Authorization': this.state.token},
         })
