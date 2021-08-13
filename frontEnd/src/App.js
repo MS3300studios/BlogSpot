@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import { Route, Switch} from 'react-router-dom';
 import { connect } from 'react-redux';
-import { AiOutlineCloseCircle } from 'react-icons/ai';
 import io from 'socket.io-client';
 
 //for debug only:
 import axios from 'axios';
 import getToken from './getToken';
-import getUserData from './getUserData';
+// import getUserData from './getUserData';
 //end for debug only
 
 import termsAndConditions from './termsAndConditions';
@@ -22,6 +21,7 @@ import Gate from './containers/gate/gate';
 import Login from './containers/gate/login/login';
 import Registration from './containers/gate/registration/registration';
 import URLnotFound from './components/URLnotfound/404';
+import CookiesBanner from './components/UI/cookiesBanner';
 
 import PhotoForm from './containers/PhotoForm/photoForm';
 import PhotoView from './containers/photoView/photoView';
@@ -33,23 +33,30 @@ import ConversationContainer from './containers/chat/conversation/conversationCo
 import AddingConversation from './containers/chat/addingConversation/addingConversation';
 import JoiningConversation from './containers/chat/addingConversation/joiningConversation';
 
+
 class App extends Component {
   constructor(props){
     super(props);
 
     let showCookies = localStorage.getItem('showCookies');
+    let setConstrVal; 
+    if(showCookies === "true"){
+      setConstrVal = true;
+    }
+    else if(showCookies === "false"){
+      setConstrVal = false;
+    }
     if(showCookies === null){
       localStorage.setItem('showCookies', true);
-      showCookies = true;
+      setConstrVal = true;
     }
 
     this.state = {
       isLoggedIn: false,
-      cookiesBannerOpened: showCookies,
+      cookiesBannerOpened: setConstrVal,
     }
 
     this.socket = io('http://localhost:3001');
-    this.closeBanner.bind(this);
   }
   
 
@@ -60,12 +67,6 @@ class App extends Component {
       this.setState({isLoggedIn: true}); //user gets access to dashboard and posts views
     }
     
-  }
-
-  closeBanner = () => {
-    this.setState({cookiesBannerOpened: false}, () => {
-      localStorage.setItem('showCookies', false);
-    })
   }
 
   render() {
@@ -109,28 +110,14 @@ class App extends Component {
       )
     }
 
-    let cookiesBanner = null;
-    if(this.state.cookiesBannerOpened === true){
-      cookiesBanner = (
-        <div className="cookiesBanner">
-          <p>This website utilizes cookies to function properly. 
-            By closing this banner you consent to cookies being stored on your computer. 
-            If you don't agree with this, leave this site now.</p>
-            <div className="closeCookiesBannerIcon" onClick={this.closeBanner}>
-              <AiOutlineCloseCircle size="2em" color="#0a42a4" />
-            </div>
-        </div>
-      )
-    } 
-
     return ( 
       <React.Fragment>
+        <CookiesBanner show={this.state.cookiesBannerOpened} />
         <Switch>
           {content}
           {gate}
           <Route component={URLnotFound} />
         </Switch>
-        {cookiesBanner}
         <button onClick={()=>{
             this.socket.emit("logOnlineUsers");
         }} style={
