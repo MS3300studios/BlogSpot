@@ -414,24 +414,27 @@ class UserProfile extends Component {
                             {userImg}
                         </div>
                         <div className={classes.textInfoContainer}>
-                            <h1 className={classes.textNameH1}><OnlineIcon online={this.state.userId} />{this.state.userData.name+" "+this.state.userData.surname}</h1>
-                            <h2 className={classes.textNameH2}>@{this.state.userData.nickname}</h2>
-                            <div className={classes.bio}>
-                                {
-                                    this.state.editing ? (
-                                        <>
-                                            <textarea value={this.state.editBio} onChange={this.editBioHandle}/>
-                                        </>
-                                    ) : 
-                                    (<><p>{this.state.editBio}</p>{editIcon}</>)
-                                }
-                            </div>
-                            {this.state.editing ? (
-                                <div className={classes.editBioBtnsContainer}>
-                                    <Button btnType="Continue" clicked={this.sendEditedBio}>Continue</Button>
-                                    <Button btnType="Cancel" clicked={()=>this.setState({editing: false})}>Cancel</Button>
-                                </div>
-                                ): null}
+                            {
+                                this.state.editing ? (
+                                    <div className={classes.editingTextarea}>
+                                        <div className={classes.editBioBtnsContainer}>
+                                            <Button btnType="Continue" clicked={this.sendEditedBio}>Continue</Button>
+                                            <Button btnType="Cancel" clicked={()=>this.setState({editing: false})}>Cancel</Button>
+                                        </div>
+                                        <textarea value={this.state.editBio} onChange={this.editBioHandle}/>
+                                    </div>
+                                ) : 
+                                (
+                                    <>
+                                        <h1 className={classes.textNameH1}><OnlineIcon online={this.state.userId} />{this.state.userData.name+" "+this.state.userData.surname}</h1>
+                                        <h2 className={classes.textNameH2}>@{this.state.userData.nickname}</h2>
+                                        <div className={classes.bio}>
+                                            <p>{this.state.editBio}</p>
+                                            {editIcon}
+                                        </div>
+                                    </>
+                                )
+                            }
                         </div>
                         <div className={classes.rightPartInfoContainer}>
                             <NumberInfoContainer token={this.state.token} userId={this.state.userId} />

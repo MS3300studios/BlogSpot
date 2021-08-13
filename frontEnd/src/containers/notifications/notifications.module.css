@@ -1,5 +1,6 @@
 .dropdown:hover .dropdownContent{
     max-height: 600px;
+    overflow: auto;
 }
 .dropdownContent{
     background-color: antiquewhite;
