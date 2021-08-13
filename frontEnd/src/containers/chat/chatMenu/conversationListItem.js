@@ -14,6 +14,7 @@ const ConversationListItem = (props) => {
     const [loadingLatestMessage, setLoadingLatestMessage] = useState(true);
     const [user, setUser] = useState(null);
     const [latestMessage, setlatestMessage] = useState();
+    const [isNew, setIsNew] = useState(false);
 
     const userData = getUserData();
     const token = getToken();
@@ -38,23 +39,25 @@ const ConversationListItem = (props) => {
                 console.log(error);
             })        
         }
-        
-        // props.el._id
 
         axios({
-            method: 'get',
-            url: `http://localhost:3001/messages/latest/${props.el._id}`,
-            headers: {'Authorization': token}
+            method: 'post',
+            url: `http://localhost:3001/messages/latest`,
+            headers: {'Authorization': token},
+            data: {
+                conversationId: props.el._id
+            }
         })
         .then((res)=>{
             if(res.status===200){
-                console.log(res.data)
-                if(res.data === "none"){
+                if(res.data.message === "none"){
                     setlatestMessage({content: "none", authorName: ""});
+                    setIsNew(res.data.isNew);
                     setLoadingLatestMessage(false);
                 }
                 else{
-                    setlatestMessage(res.data);
+                    setlatestMessage(res.data.message);
+                    setIsNew(res.data.isNew);
                     setLoadingLatestMessage(false);
                 }
             }

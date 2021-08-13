@@ -133,7 +133,7 @@ class Conversation extends Component {
         if(this.state.conversationStartReached === true) this.setState({loading: false, loadingNewMessages: false});
         else{
             axios({
-                method: 'post',
+                method: 'get',
                 url: `http://localhost:3001/messages/${this.props.conversation._id}`,
                 headers: {'Authorization': this.state.token},
                 data: {skip: this.state.skip}

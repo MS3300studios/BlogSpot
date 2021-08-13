@@ -28,9 +28,16 @@ const Spinner = (props) => {
     const [content, setContent] = useState(loader);
 
     useEffect(() => {
-        setTimeout(()=>{
+        if(!props.small){
+            return
+        }
+        
+        const timer = setTimeout(()=>{
             setContent(again);
         }, 5000)
+        return () => {
+            clearTimeout(timer);
+        }
     }, [])
 
     return (

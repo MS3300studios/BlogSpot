@@ -3,10 +3,11 @@ const router = express();
 
 const auth = require('../middleware/authorization');
 const Message = require('../models/message');
+const LastReadMessage = require('../models/lastReadMessage');
 
 router.use(express.json());
 
-router.post('/messages/:conversationId', auth, (req, res) => {
+router.get('/messages/:conversationId', auth, (req, res) => {
     Message.find({conversationId: req.params.conversationId})
         .sort({ createdAt: -1})
         .skip(req.body.skip)
@@ -34,10 +35,53 @@ router.post('/messages/add', auth, (req, res) => {
     })
 })
 
-router.get('/messages/latest/:conversationId', auth, (req, res) => {
-    Message.find({conversationId: req.params.conversationId}).sort({ createdAt: -1}).limit(1).exec((err, message) => {
-        if(!message[0]) res.json("none");
-        else res.json(message[0])
+router.post('/messages/latest', auth, (req, res) => {
+    Message.findOne({conversationId: req.body.conversationId}).sort({ createdAt: -1}).limit(1).exec((err, message) => {
+        LastReadMessage.findOne({userId: req.userData.userId, conversationId: req.body.conversationId}).then(lrmsg => {
+            if(!lrmsg){
+                if(!message){
+                    console.log('no message, no lastRead message')
+                    res.json({
+                       message: "none",
+                       isNew: false
+                    });
+                }
+                else {
+                    console.log('message exists, but theres no lastRead message')
+                    res.json({
+                        message: message,
+                        isNew: false
+                    });
+                } 
+            }
+            else{
+                if(!message) {
+                    console.log('no message, but lastRead message exists')
+                    res.json({
+                        message: "none",
+                        isNew: false
+                    });
+                } 
+                else {
+                    console.log('message exists, and lastRead message exists')
+                    if(message.content === lrmsg.content){
+                        console.log('messages are the same')
+                        res.json({
+                            message: message,
+                            isNew: false
+                        });
+                    }
+                    else{
+                        console.log("messages are different")
+                        res.json({
+                            message: message,
+                            isNew: true
+                        });
+                    }
+                }
+            }
+        });
+
     })
 })
 
