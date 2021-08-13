@@ -70,23 +70,13 @@ const ConversationListItem = (props) => {
 
     let chatSelect = () => {
         if(!props.join){
-            props.selectChat(props.el)
+            props.selectChat(props.el);
+            setIsNew(false);
         }
         else return null
     }
 
-    let content = (
-        <>
-            <h1>{props.el.name}</h1>
-            {/* <div className={classes.participantContainer}>
-                {
-                    props.el.participants.map((participant, index) => (
-                        <p key={index}>{participant.name}</p>
-                    ))
-                }
-            </div> */}
-        </>
-    );
+    let content = <h1>{props.el.name}</h1>;
 
     if(props.el.conversationType === "private"){
         loading ? content = <Spinner small darkgreen/> : content = (
@@ -112,8 +102,11 @@ const ConversationListItem = (props) => {
         )
     }
 
+    let classNames;
+    isNew ? classNames = [classes.conversation, classes.conversationNewMessage].join(" ") : classNames = classes.conversation;
+
     return (<>
-        <div className={classes.conversation} onClick={chatSelect}>
+        <div className={classNames} onClick={chatSelect}>
             {loadingLatestMessage ? null : <h3 className={classes2.latestMessageHour}>{latestMessage.hour}</h3>}
             {content}
             {latestMessageDisplay}
