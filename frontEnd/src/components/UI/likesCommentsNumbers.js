@@ -7,17 +7,20 @@ import Like from '../UI/like';
 
 import classes from './likesCommentsNumbers.module.css';
 import getToken from '../../getToken';
+import getUserData from '../../getUserData';
 
 class LikesCommentsNumbers extends Component {
     constructor(props){
         super(props);
 
-        let token = getToken();
+        const token = getToken();
+        const userData = getUserData();
 
         this.state = {
             objectId: props.objectId,
             userId: props.userId,
             token: token,
+            userData: userData,
             numberOfComments: 0,
             DislikeCount: 0,
             LikeCount: 0,
@@ -309,11 +312,23 @@ class LikesCommentsNumbers extends Component {
             innerContainer = [classes.numberInfoInnerContainer, classes.small].join(" ");
         }
 
+        let objType;
+        this.props.objectIsBlog ? objType = "blog" : objType = "comment";
+
+        const sendNotificationData = {
+            receiverId: this.props.userId, //get requests will search in this field
+            senderId: this.state.userData._id, //id of the user respobsible for the action
+            senderNick: this.state.userData.nickname, //nickname of the user respobsible for the action
+            objectType: objType, //blog or comment
+            objectId: this.props.objectId, //id for link to object
+        }
+
         return (
             <div className={classes.numberInfoContainer}>
                 <div className={innerContainer}>
                     <div className={[classes.iconDataContainer, classes.likeIconPContainer].join(" ")}>
                         <Like
+                            sendNotificationData={sendNotificationData}    
                             sendAction={this.sendAction}
                             fill={this.state.LikeFill}
                             number={this.state.LikeCount}
@@ -323,6 +338,7 @@ class LikesCommentsNumbers extends Component {
                     </div>
                     <div className={dislikeclasses}>
                         <Like
+                            sendNotificationData={sendNotificationData}
                             dislike 
                             sendAction={this.sendAction}
                             fill={this.state.DislikeFill}

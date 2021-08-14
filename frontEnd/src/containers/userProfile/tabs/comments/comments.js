@@ -61,7 +61,6 @@ class Comments extends Component {
             if(res.status===200){
                 let comments = this.state.comments;
                 let newComments = comments.concat(res.data.comments)
-                console.log(res.data.comments)
                 this.setState({comments: newComments})
             }
         })

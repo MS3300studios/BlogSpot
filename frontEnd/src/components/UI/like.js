@@ -3,9 +3,15 @@ import classes from './like.module.css';
 import { AiOutlineLike, AiOutlineDislike, AiFillLike, AiFillDislike } from 'react-icons/ai';
 
 class Like extends Component {
+    componentDidMount(){
+        let data = this.props.sendNotificationData;
+        this.props.dislike ? data.actionType = "dislike" : data.actionType = "like"
+        console.log(data)
+    }
+
     render() { 
         let content;
-    
+
         if(this.props.dislike && this.props.fill){
             content = <AiFillDislike 
             size={this.props.size} 
