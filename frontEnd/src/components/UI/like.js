@@ -1,19 +1,15 @@
 import React, { Component } from 'react';
 import classes from './like.module.css';
-import { AiOutlineLike, AiOutlineDislike, AiFillLike, AiFillDislike } from 'react-icons/ai';
+import { AiOutlineLike, AiOutlineDislike, AiFillLike, AiFillDislike, AiOutlineConsoleSql } from 'react-icons/ai';
 import axios from 'axios';
 import getToken from '../../getToken';
 
 class Like extends Component {
     constructor(props){
         super(props);
-        let data = this.props.sendNotificationData;
-        this.props.dislike ? data.actionType = "dislike" : data.actionType = "like"
-
         let token = getToken();
 
         this.state = {
-            data: data,
             token: token
         }
 
@@ -21,7 +17,8 @@ class Like extends Component {
     }
 
     process = (arg, isDeleting) => {
-        let data = this.state.data;
+        let data = this.props.sendNotificationData;
+        this.props.dislike ? data.actionType = "dislike" : data.actionType = "like"
         data.isDeleting = isDeleting;
 
         axios({
