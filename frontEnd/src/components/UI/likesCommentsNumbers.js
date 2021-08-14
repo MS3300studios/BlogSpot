@@ -317,7 +317,6 @@ class LikesCommentsNumbers extends Component {
 
         const sendNotificationData = {
             receiverId: this.props.userId, //get requests will search in this field
-            senderId: this.state.userData._id, //id of the user respobsible for the action
             senderNick: this.state.userData.nickname, //nickname of the user respobsible for the action
             objectType: objType, //blog or comment
             objectId: this.props.objectId, //id for link to object

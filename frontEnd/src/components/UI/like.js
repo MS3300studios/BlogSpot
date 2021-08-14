@@ -1,12 +1,41 @@
 import React, { Component } from 'react';
 import classes from './like.module.css';
 import { AiOutlineLike, AiOutlineDislike, AiFillLike, AiFillDislike } from 'react-icons/ai';
+import axios from 'axios';
+import getToken from '../../getToken';
 
 class Like extends Component {
-    componentDidMount(){
+    constructor(props){
+        super(props);
         let data = this.props.sendNotificationData;
         this.props.dislike ? data.actionType = "dislike" : data.actionType = "like"
-        console.log(data)
+
+        let token = getToken();
+
+        this.state = {
+            data: data,
+            token: token
+        }
+
+        this.process.bind(this);
+    }
+
+    process = (arg) => {
+        axios({
+            method: 'post',
+            url: `http://localhost:3001/notifications/create`,
+            headers: {'Authorization': this.state.token},
+            data: this.state.data
+        })
+        .then((res)=>{
+            if(res.status===200 || res.status===201){
+                this.props.sendAction(arg);
+                return;
+            }
+        })
+        .catch(error => {
+            console.log(error);
+        })
     }
 
     render() { 
@@ -16,25 +45,25 @@ class Like extends Component {
             content = <AiFillDislike 
             size={this.props.size} 
             color={this.props.color} 
-            onClick={() => this.props.sendAction(false)}/>;
+            onClick={() => this.process(false)}/>;
         }
         else if(this.props.dislike && !this.props.fill){
             content = <AiOutlineDislike 
             size={this.props.size} 
             color={this.props.color} 
-            onClick={() => this.props.sendAction(false)}/>;
+            onClick={() => this.process(false)}/>;
         }
         else if(this.props.fill){
             content = <AiFillLike 
             size={this.props.size} 
             color={this.props.color} 
-            onClick={() => this.props.sendAction(true)}/>;
+            onClick={() => this.process(true)}/>;
         }
         else if(!this.props.fill){
             content = <AiOutlineLike 
             size={this.props.size} 
             color={this.props.color} 
-            onClick={() => this.props.sendAction(true)}/>;
+            onClick={() => this.process(true)}/>;
         }
 
         let classNames = [classes.likeP];

@@ -1,27 +1,33 @@
 const express = require('express');
 const router = express();
 
-// const User = require('../models/user');
-const FriendRequest = require('../models/friendRequest');
 const auth = require('../middleware/authorization');
+const FriendRequest = require('../models/friendRequest');
+const Notification = require('../models/notification');
 
 
 /*CREATING & DELETING*/
 
 router.post('/notifications/create', auth, (req, res) => {
-    const notification = new Notification({
-        receiverId: req.body.authorId, //get requests will search in this field
-        senderId: req.userData.userId, //id of the user respobsible for the action
-        senderNick: req.body.userNick, //nickname of the user respobsible for the action
-        objectType: req.body.objectType, //photo, comment or blog
-        objectId: req.body.objectId, //id for link to object
-        actionType: req.body.actionType //liked or disliked or commented
-    });
-
-    notification.save().then(notification => {
-        res.sendStatus(200);
-    });
-})
+    if(req.userData.userId === req.body.receiverId){
+        res.sendStatus(200); //if the user is making action on his own object, no notification needs to be sent
+    }
+    else{
+        const notification = new Notification({
+            receiverId: req.body.receiverId, //get requests will search in this field
+            senderId: req.userData.userId, //id of the user respobsible for the action
+            senderNick: req.body.senderNick, //nickname of the user respobsible for the action
+            objectType: req.body.objectType, //photo, comment or blog
+            objectId: req.body.objectId, //id for link to object
+            actionType: req.body.actionType //liked or disliked or commented
+        });
+    
+        notification.save().then(notification => {
+            console.log(notification);
+            res.sendStatus(201);
+        });
+    }
+});
 
 
 /*CHECKING*/

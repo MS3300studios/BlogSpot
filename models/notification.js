@@ -12,6 +12,6 @@ const schema = new db.Schema({
     timestamps: true
   });
 
-const Message = db.model("Message", schema);
+const Notification = db.model("Notification", schema);
 
-module.exports = Message;
+module.exports = Notification;
