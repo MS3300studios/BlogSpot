@@ -2,6 +2,7 @@ const express = require('express');
 const router = express();
 
 const Blog = require('../models/blog');
+const User = require('../models/user');
 const auth = require('../middleware/authorization');
 
 router.use(express.json());
@@ -48,9 +49,13 @@ router.get('/blogs/one/:blogId', auth, (req, res) => {
     Blog.findById({_id: req.params.blogId})
         .exec()
         .then(blog => {
-            return res.status(200).json({
-                blog: blog
+            User.findById(blog.author, (error, user) => {
+                res.json({
+                    blog: blog,
+                    authorData: user
+                })
             })
+
         })
         .catch(err => {
             return res.status(404).json({

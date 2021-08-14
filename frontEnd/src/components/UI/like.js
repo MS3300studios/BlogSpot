@@ -18,7 +18,7 @@ class Like extends Component {
 
     process = (arg, isDeleting) => {
         let data = this.props.sendNotificationData;
-        this.props.dislike ? data.actionType = "dislike" : data.actionType = "like"
+        this.props.dislike ? data.actionType = "disliked" : data.actionType = "liked"
         data.isDeleting = isDeleting;
 
         axios({

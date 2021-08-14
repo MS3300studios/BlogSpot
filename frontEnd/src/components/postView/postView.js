@@ -26,6 +26,7 @@ class PostView extends Component {
         this.state = {
             postId: postId,
             post: {},
+            authorData: null,
             redirect: false,
             loading: true,
             userData: userData,
@@ -44,16 +45,15 @@ class PostView extends Component {
             url: `http://localhost:3001/blogs/one/${this.state.postId}`,
             headers: {'Authorization': this.state.token},
         }).then((res) => {
-            this.setState({loading: false});
-            //modify blogs/one to give author nickname
+            console.log(res.data)
             const post = {
-                author: this.state.userData.nickname, //change this!
+                author: res.data.blog.author,
                 title: res.data.blog.title,
                 content: res.data.blog.content,
                 createdAt: res.data.blog.createdAt,
                 updatedAt: res.data.blog.updatedAt
             };
-            this.setState({post: post});
+            this.setState({loading: false, post: post, authorData: res.data.authorData});
         })
         .catch(error => {
             console.log(error);
@@ -99,12 +99,17 @@ class PostView extends Component {
             info = <Spinner />
         }
         else {
+            console.log(this.state.authorData)
+
             info = (
                 <div className={classes.blogCards}>
                     <div className={classes.blogFaceContainer}>
                         <div className={classes.blogFace}>
                             <p className={classes.postTitle}>{this.state.post.title}</p>
-                            <p className={classes.postAuthor}>@{this.state.post.author}</p>
+                            <img className={classes.userPhoto} src={this.state.authorData.photo} alt="users face"/>
+                            <a href={"/user/profile/?id="+this.state.userData._id} className={classes.userProfileLink}>
+                                <p className={classes.postAuthor}>@{this.state.authorData.nickname}</p>
+                            </a>
                             <p>started at: {formattedCurrentDate(this.state.post.createdAt)}</p>
                             <p>latest edit: {formattedCurrentDate(this.state.post.updatedAt)}</p>
                             <LikesCommentsNumbers objectId={this.state.postId} userId={this.state.userData._id} comments objectIsBlog />
