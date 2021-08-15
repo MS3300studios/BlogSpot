@@ -93,10 +93,11 @@ router.get('/comments/one/:commentId', auth, (req, res) => {
 });
 
 router.delete('/comments/delete/:commentId', auth, (req, res) => {
-    Comment.deleteOne({_id: req.params.commentId})
+    Comment.findByIdAndDelete(req.params.commentId)
         .exec()
         .then((response => {
-            res.sendStatus(200);
+            console.log(response)
+            res.json({comment: response})
         }))
         .catch(err => {
             console.log("deleting error: ", err);

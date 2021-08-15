@@ -36,8 +36,10 @@ class CommentOptions extends Component {
                     headers: {'Authorization': this.state.token}
                 })
                 .then((res)=>{
+                    console.log(res.status)
+                    console.log(res.data.comment)
                     if(res.status===200){
-                        this.props.flashProp("comment deleted");
+                        this.props.flashProp("comment deleted", res.data.comment);
                         return;
                     }
                 })

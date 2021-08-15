@@ -9,17 +9,17 @@ import UserPhoto from '../../../../components/UI/userphoto';
 import CommentOptions from './optionsContainer/CommentOptions';
 import Flash from '../../../../components/UI/flash';
 
-import { connect } from 'react-redux';
-import * as actionTypes from '../../../../store/actions';
-
 const Comment = (props) => {
     const [flashMessage, setflashMessage] = useState("");
     const [flashNotClosed, setflashNotClosed] = useState(true);
     const [editing, setediting] = useState(false)
 
-    let flashHandle = (message) => {
+    let flashHandle = (message, comment) => {
         setflashMessage(message);
-        props.getComments();
+        if(message === "comment deleted"){
+            console.log(comment)
+            props.afterDelete(comment, false); //false means that adding is false
+        }
         
         setTimeout(()=>{
             setflashNotClosed(false);
@@ -85,10 +85,4 @@ const Comment = (props) => {
     );
 }
  
-const mapDispatchToProps = dispatch => {
-    return {
-        redux_refresh_comments: () => dispatch({type: actionTypes.CHECK_STORE})
-    }
-}
-
-export default connect(null, mapDispatchToProps)(Comment);
+export default Comment;

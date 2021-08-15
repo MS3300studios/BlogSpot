@@ -50,7 +50,7 @@ class Comments extends Component {
             this.setState({comments: newComments});
         }
         else if(add === false){
-            let newComments = this.state.comments.filter(el => el._id === comment._id)
+            let newComments = this.state.comments.filter(el => el._id !== comment._id)
             this.setState({comments: newComments});
         }
     }
@@ -100,7 +100,7 @@ class Comments extends Component {
             return ( 
                 <Comment 
                     key={index}
-                    getComments={this.getComments}
+                    afterDelete={this.updateComments}
                     comment={comment}
                     authorClassArr={authorClassArr}
                     userId={this.state.userData._id}
