@@ -106,13 +106,17 @@ class PostView extends Component {
                     <div className={classes.blogFaceContainer}>
                         <div className={classes.blogFace}>
                             <p className={classes.postTitle}>{this.state.post.title}</p>
-                            <img className={classes.userPhoto} src={this.state.authorData.photo} alt="users face"/>
-                            <a href={"/user/profile/?id="+this.state.userData._id} className={classes.userProfileLink}>
-                                <p className={classes.postAuthor}>@{this.state.authorData.nickname}</p>
-                            </a>
+                            <div className={classes.userDataContainer}>
+                                <img className={classes.userPhoto} src={this.state.authorData.photo} alt="users face"/>
+                                <a href={"/user/profile/?id="+this.state.authorData._id} className={classes.userProfileLink}>
+                                    <p className={classes.postAuthor}>@{this.state.authorData.nickname}</p>
+                                </a>
+                            </div>
                             <p>started at: {formattedCurrentDate(this.state.post.createdAt)}</p>
                             <p>latest edit: {formattedCurrentDate(this.state.post.updatedAt)}</p>
-                            <LikesCommentsNumbers objectId={this.state.postId} userId={this.state.userData._id} comments objectIsBlog />
+                            <div className={classes.positionSocialData}>
+                                <LikesCommentsNumbers objectId={this.state.postId} userId={this.state.authorData._id} comments objectIsBlog />
+                            </div>
                             <div className={classes.btnsContainer}>
                                 <Button clicked={this.displayPostForm}>Edit</Button>
                                 <Button clicked={()=>this.deletePost(this.state.postId)}>Delete</Button>
