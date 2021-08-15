@@ -19,7 +19,9 @@ router.post('/comments/new', auth, (req, res) => {
 
     comment.save()
         .then(response => {
-            res.sendStatus(201);
+            res.json({
+                comment: response
+            })
         })
         .catch(err => {
             console.log(err);

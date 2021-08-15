@@ -29,6 +29,7 @@ class Comments extends Component {
 
         this.loadmorehandler.bind(this);
         this.getComments.bind(this);
+        this.updateComments.bind(this);
     }
 
     componentDidMount(){
@@ -38,6 +39,19 @@ class Comments extends Component {
     componentDidUpdate(prevProps){
         if(prevProps.refresh !== this.props.refresh){
             this.getComments();
+        }
+    }
+
+    updateComments = (comment, add) => {
+        if(add === true){
+            let newComments = this.state.comments;
+            newComments.push(comment);
+            newComments.reverse();
+            this.setState({comments: newComments});
+        }
+        else if(add === false){
+            let newComments = this.state.comments.filter(el => el._id === comment._id)
+            this.setState({comments: newComments});
         }
     }
 
@@ -97,10 +111,12 @@ class Comments extends Component {
 
         return (
             <div className={classes.commentsContainer}>
-                <AddCommentForm blogId={this.state.blogId} blogAuthorId={this.props.blogAuthorId} afterSend={()=>{
-                    this.getComments();
-                    // this.props.redux_refresh_comments();
-                }} small={setSmall}/>
+                <AddCommentForm 
+                    blogId={this.state.blogId} 
+                    blogAuthorId={this.props.blogAuthorId} 
+                    afterSend={this.updateComments} 
+                    small={setSmall}
+                />
                 {comments}
                 <Button clicked={this.loadmorehandler}>Load more comments</Button>
             </div>

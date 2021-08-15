@@ -70,6 +70,13 @@ class AddCommentForm extends Component {
             return;
         }
 
+        // this.props.afterSend({
+        //     content: content,
+        //     author: this.state.userData._id,
+        //     authorNick: this.state.userData.nickname,
+        //     blogId: this.props.blogId
+        // }, true);
+
         axios({
             method: 'post',
             url: `http://localhost:3001/comments/new`,
@@ -82,11 +89,11 @@ class AddCommentForm extends Component {
             }
         })
         .then((res)=>{
-            if(res.status===201){
+            if(res.status===200){
                 this.flash("you posted a comment!");
                 this.setState({content: ""});
                 this.sendNotification();
-                this.props.afterSend();
+                this.props.afterSend(res.data.comment, true);
             }
         })
         .catch(error => {
