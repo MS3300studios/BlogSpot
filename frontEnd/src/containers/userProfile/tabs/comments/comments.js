@@ -45,8 +45,7 @@ class Comments extends Component {
     updateComments = (comment, add) => {
         if(add === true){
             let newComments = this.state.comments;
-            newComments.push(comment);
-            newComments.reverse();
+            newComments.splice(0, 0, comment);
             this.setState({comments: newComments});
         }
         else if(add === false){
@@ -84,7 +83,7 @@ class Comments extends Component {
     }
 
     loadmorehandler = () => {
-        let newLimit = this.state.limit+2;
+        let newLimit = this.state.limit+4;
         this.getComments(newLimit);
     }
 
@@ -105,7 +104,7 @@ class Comments extends Component {
                     authorClassArr={authorClassArr}
                     userId={this.state.userData._id}
                     small={this.props.small}
-                />         
+                />    
             )
         })
 
