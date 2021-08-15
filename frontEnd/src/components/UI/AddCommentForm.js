@@ -64,8 +64,7 @@ class AddCommentForm extends Component {
         })
     }
 
-    sendComment = (e, content) => {
-        e.preventDefault();
+    sendComment = (content) => {
         if(content === ""){
             this.flash("you cannot send an empty comment");
             return;
@@ -115,13 +114,21 @@ class AddCommentForm extends Component {
                     <div className={classes.userPhotoDiv}>
                         <UserPhoto userId={this.state.userData._id} smallPhotoCommentForm hideOnlineIcon/>
                     </div>
-                    <form className={smallClass}>
-                        <input value={this.state.content} placeholder="write your comment here" onChange={(event)=>this.setState({content: event.target.value})}/>
-                    </form>
+                    <div className={smallClass}>
+                        <input 
+                            value={this.state.content} 
+                            placeholder="write your comment here" 
+                            onChange={ event =>this.setState({content: event.target.value})}
+                            onKeyDown={event =>{
+                                if(event.key === "Enter") this.sendComment(this.state.content);
+                                else return null
+                            }}
+                        />
+                    </div>
                     <div 
-                        onMouseDown={(e)=>{
+                        onMouseDown={()=>{
                             this.setState({sendPressed: true})
-                            this.sendComment(e, this.state.content)
+                            this.sendComment(this.state.content);
                         }}
                         onMouseUp={()=>{this.setState({sendPressed: false})}} 
                         className={classes.sendIcon}>

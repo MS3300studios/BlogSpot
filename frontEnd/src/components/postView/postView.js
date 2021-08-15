@@ -45,7 +45,6 @@ class PostView extends Component {
             url: `http://localhost:3001/blogs/one/${this.state.postId}`,
             headers: {'Authorization': this.state.token},
         }).then((res) => {
-            console.log(res.data)
             const post = {
                 author: res.data.blog.author,
                 title: res.data.blog.title,
@@ -99,8 +98,6 @@ class PostView extends Component {
             info = <Spinner />
         }
         else {
-            console.log(this.state.authorData)
-
             info = (
                 <div className={classes.blogCards}>
                     <div className={classes.blogFaceContainer}>
