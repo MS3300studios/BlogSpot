@@ -126,7 +126,7 @@ class PostView extends Component {
                             </div>
                         </div>
                         <div className={[classes.blogFace, classes.commentsContainer].join(" ")}>
-                            <Comments blogId={this.state.postId} small/>
+                            <Comments blogId={this.state.postId} blogAuthorId={this.state.authorData._id} small/>
                         </div>
                     </div>
                     <div className={classes.cardBig} >

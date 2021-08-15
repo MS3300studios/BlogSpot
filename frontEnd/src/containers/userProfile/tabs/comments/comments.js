@@ -97,7 +97,7 @@ class Comments extends Component {
 
         return (
             <div className={classes.commentsContainer}>
-                <AddCommentForm blogId={this.state.blogId} afterSend={()=>{
+                <AddCommentForm blogId={this.state.blogId} blogAuthorId={this.props.blogAuthorId} afterSend={()=>{
                     this.getComments();
                     // this.props.redux_refresh_comments();
                 }} small={setSmall}/>

@@ -11,7 +11,6 @@ class AddCommentForm extends Component {
     constructor(props){
         super(props);
         let token = getToken();
-
         let userData = getUserData();
         
         this.state = {
@@ -25,7 +24,7 @@ class AddCommentForm extends Component {
 
         this.flash.bind(this);
         this.sendComment.bind(this);
-
+        this.sendNotification.bind(this);
     }
     
     flash = (message) => {
@@ -42,6 +41,27 @@ class AddCommentForm extends Component {
         setTimeout(()=>{
             this.setState({flashNotClosed: true})
         }, 3000);
+    }
+
+    sendNotification = () => {
+        let data = {
+            receiverId: this.props.blogAuthorId,
+            senderId: this.state.userData._id,
+            senderNick: this.state.userData.nickname,
+            objectType: "created-comment",
+            objectId: this.props.blogId,
+            actionType: "commented",
+            isDeleting: false
+        };
+        axios({
+            method: 'post',
+            url: `http://localhost:3001/notifications/create`,
+            headers: {'Authorization': this.state.token},
+            data: data
+        })
+        .catch(error => {
+            console.log(error);
+        })
     }
 
     sendComment = (e, content) => {
@@ -66,6 +86,7 @@ class AddCommentForm extends Component {
             if(res.status===201){
                 this.flash("you posted a comment!");
                 this.setState({content: ""});
+                this.sendNotification();
                 this.props.afterSend();
             }
         })

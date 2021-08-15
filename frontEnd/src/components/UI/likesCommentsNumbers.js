@@ -313,7 +313,7 @@ class LikesCommentsNumbers extends Component {
         }
 
         let objType;
-        this.props.objectIsBlog ? objType = "blog" : objType = "comment";
+        this.props.objectIsBlog ? objType = "blog-like" : objType = "comment-like";
 
         const sendNotificationData = {
             receiverId: this.props.userId, //get requests will search in this field
