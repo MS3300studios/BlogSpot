@@ -232,7 +232,7 @@ class photoView extends Component {
             senderId: this.state.userData._id,
             senderNick: this.state.userData.nickname,
             objectType: "photo",
-            objectId: this.props.blogId,
+            objectId: this.state.photo._id,
             actionType: "commented",
             isDeleting: false
         };

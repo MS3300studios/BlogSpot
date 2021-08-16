@@ -108,7 +108,7 @@ class PhotosList extends Component {
                             }
                             <div className={classes.addPhoto}>
                                     <div className={classes.addPhotoContainer} onClick={this.showPostForm}>
-                                        <Link to="/photo/add">
+                                        <Link to="/addPhoto">
                                             <img alt="add a post" src={addPostImage}/>
                                         </Link>
                                     </div>

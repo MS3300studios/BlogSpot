@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Switch} from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import io from 'socket.io-client';
 
@@ -24,7 +24,6 @@ import URLnotFound from './components/URLnotfound/404';
 import CookiesBanner from './components/UI/cookiesBanner';
 
 import PhotoForm from './containers/PhotoForm/photoForm';
-import PhotoView from './containers/photoView/photoView';
 import YourActivities from './components/activites/youractivities';
 import SocialBoard from './containers/socialBoard/socialBoard';
 import ScrollListener from './components/scrollListener/scrollListener';
@@ -32,6 +31,7 @@ import EditUserProfile from './containers/userProfile/editUserProfile/editUserPr
 import ConversationContainer from './containers/chat/conversation/conversationContainer/conversationContainer';
 import AddingConversation from './containers/chat/addingConversation/addingConversation';
 import JoiningConversation from './containers/chat/addingConversation/joiningConversation';
+import SinglePhotoHOC from './containers/photoView/singlePhotoHOC/singlePhotoHOC';
 
 
 class App extends Component {
@@ -82,11 +82,11 @@ class App extends Component {
               <Route path="/addConversation/" component={AddingConversation} />
               <Route path="/joinConversation/" component={JoiningConversation} />
               <Route path="/editProfile" exact component={EditUserProfile} />
-              <Route path="/photo/" exact component={PhotoView} />
-              <Route path="/photo/add" exact component={PhotoForm} />
+              <Route path="/addPhoto" exact component={PhotoForm} />
               <Route path="/user/activity" exact component={YourActivities} />
               <Route path="/chat/" component={Chat} />
               <Route path="/post/" component={PostView} />
+              <Route path="/photo/" component={SinglePhotoHOC} />
               <Route path="/user/profile/" component={UserProfile} />
               <Route path="/user/friends/" component={FriendsList} />
               <Route path="/" render={()=><SocialBoard />} />

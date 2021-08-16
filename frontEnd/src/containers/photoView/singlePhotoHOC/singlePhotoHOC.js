@@ -40,7 +40,7 @@ const SinglePhotoHigherOrderComponent = (props) => {
                 loading ? <Spinner /> : <PhotoView photo={photo} closeBigPhoto={()=>setredirectMain(true)}/>
             }
             {
-                redirectMain ? null : <Redirect to="/" />
+                redirectMain ? <Redirect to="/" /> : null
             }
         </>
     );

@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import getToken from '../../../getToken';
 import axios from 'axios';
 import Spinner from '../../../components/UI/spinner';
+import { Link } from 'react-router-dom';
 
 class DropdownItem extends Component {
     constructor(props) {
@@ -59,13 +60,17 @@ class DropdownItem extends Component {
         }
         else if(this.state.user != null){
             let grammar = null;
-            if(this.props.data.actionType === "commented") grammar = "on";            
+            let link = null;
+            if(this.props.data.actionType === "commented") grammar = "on";    
+            if(this.props.data.objectType === "photo") link = `/photo/?id=${this.props.data.objectId}`
+            else link = `post/?id=${this.props.data.objectId}`
+            
             notification = (
                 <React.Fragment>
-                    <a href={"/user/profile/?id="+this.state.user._id} className={classes.notificationLink}>
+                    <Link to={link} className={classes.notificationLink}>
                         <img src={this.state.user.photo} alt="friend" className={classes.friendRequestPhoto}/>
                         <div><p className={classes.bold}>{`@${this.state.user.nickname}`}</p>{this.props.data.actionType} {grammar} your {this.props.data.objectType}</div> 
-                    </a>
+                    </Link>
                 </React.Fragment>
             )
         }
