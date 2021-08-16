@@ -54,6 +54,7 @@ class photoView extends Component {
         this.deletePhotoHandler.bind(this);
         this.editPhotoDescHandler.bind(this);
         this.sendEditedDesc.bind(this);
+        this.sendNotification.bind(this);
     }
 
     componentDidMount(){
@@ -225,6 +226,27 @@ class photoView extends Component {
         this.setState({comments: comments, commentsEditing: editingComments});
     }
 
+    sendNotification = () => {
+        let data = {
+            receiverId: this.state.photo.authorId,
+            senderId: this.state.userData._id,
+            senderNick: this.state.userData.nickname,
+            objectType: "photo",
+            objectId: this.props.blogId,
+            actionType: "commented",
+            isDeleting: false
+        };
+        axios({
+            method: 'post',
+            url: `http://localhost:3001/notifications/create`,
+            headers: {'Authorization': this.state.token},
+            data: data
+        })
+        .catch(error => {
+            console.log(error);
+        })
+    }
+
     sendComment = () => {
         if(this.state.newCommentContent !== ""){
             axios({
@@ -238,9 +260,9 @@ class photoView extends Component {
                 }
             })
             .then((res)=>{
-                console.log(res.data)
                 if(res.status===201){
                     this.indexComments();
+                    this.sendNotification();
                     this.setState({photo: res.data.photo, comments: res.data.photo.comments, newCommentContent: "", socialStateWasChanged: true})
                     return;
                 }
