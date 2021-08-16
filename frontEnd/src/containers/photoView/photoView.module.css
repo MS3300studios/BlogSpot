@@ -10,9 +10,9 @@
 
 .photoViewContainer{
     background-color: #82ca66;
-    width: 80%;
+    /* width: 80%; */
     margin: 0 auto;
-    margin-top: 3%;
+    /* margin-top: 3%; */
     position: relative;
     transition: 0.3s ease-in all;
     padding: 10px;
@@ -23,8 +23,8 @@
 
 .photoViewContainer button{
     position: absolute;
-    top: -30px;
-    right: -60px;
+    top: 5px;
+    left: 4px;
 }
 
 .centerPhoto{

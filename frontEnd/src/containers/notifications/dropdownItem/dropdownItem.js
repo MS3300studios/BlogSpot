@@ -12,25 +12,33 @@ class DropdownItem extends Component {
 
         this.state = {
             token: token,
-            friendRequestUser: null,
+            user: null,
         }
 
-        this.getFriendRequestUserData.bind(this);
+        this.getuserData.bind(this);
     }
 
     componentDidMount(){
-        this.getFriendRequestUserData();
+        let userToGetId;
+        if(this.props.data.senderId !== undefined){
+            userToGetId = this.props.data.senderId;
+        }
+        else{
+            userToGetId = this.props.data.userId;
+        }
+
+        console.log(userToGetId)
+        this.getuserData(userToGetId);
     }
 
-    getFriendRequestUserData = () => {
-        //it has to be data.userId because it is the user that submitted the request
+    getuserData = (userId) => {
         axios({
             method: 'get',
-            url: `http://localhost:3001/users/getUser/${this.props.data.userId}`,
+            url: `http://localhost:3001/users/getUser/${userId}`,
             headers: {'Authorization': this.state.token},
         })
         .then((res)=>{
-            this.setState({friendRequestUser: res.data.user});
+            this.setState({user: res.data.user});
         })
         .catch(error => {
             console.log(error);
@@ -39,12 +47,23 @@ class DropdownItem extends Component {
 
     render() { 
         let notification = <Spinner darkgreen />;
-        if(this.state.friendRequestUser != null){
+        if(this.state.user != null && this.props.data.senderId === undefined){
             notification = (
                 <React.Fragment>
-                    <a href={"/user/profile/?id="+this.state.friendRequestUser._id} className={classes.notificationLink}>
-                        <img src={this.state.friendRequestUser.photo} alt="this person wants to be your friend" className={classes.friendRequestPhoto}/>
-                        <div><p className={classes.bold}>{`@${this.state.friendRequestUser.nickname}`}</p> wants to be your friend</div> 
+                    <a href={"/user/profile/?id="+this.state.user._id} className={classes.notificationLink}>
+                        <img src={this.state.user.photo} alt="this person wants to be your friend" className={classes.friendRequestPhoto}/>
+                        <div><p className={classes.bold}>{`@${this.state.user.nickname}`}</p> wants to be your friend</div> 
+                    </a>
+                </React.Fragment>
+            )
+        }
+        else if(this.state.user != null){
+            notification = <p>notification</p>
+            notification = (
+                <React.Fragment>
+                    <a href={"/user/profile/?id="+this.state.user._id} className={classes.notificationLink}>
+                        <img src={this.state.user.photo} alt="friend" className={classes.friendRequestPhoto}/>
+                        <div><p className={classes.bold}>{`@${this.state.user.nickname}`}</p>{this.props.data.actionType} on your {this.props.data.objectType}</div> 
                     </a>
                 </React.Fragment>
             )

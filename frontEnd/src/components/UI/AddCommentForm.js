@@ -48,7 +48,7 @@ class AddCommentForm extends Component {
             receiverId: this.props.blogAuthorId,
             senderId: this.state.userData._id,
             senderNick: this.state.userData.nickname,
-            objectType: "created-comment",
+            objectType: "blog",
             objectId: this.props.blogId,
             actionType: "commented",
             isDeleting: false

@@ -21,6 +21,8 @@ class Like extends Component {
         this.props.dislike ? data.actionType = "disliked" : data.actionType = "liked"
         data.isDeleting = isDeleting;
 
+        console.log(data)
+
         axios({
             method: 'post',
             url: `http://localhost:3001/notifications/create`,

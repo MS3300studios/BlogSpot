@@ -303,6 +303,15 @@ class photoView extends Component {
                                 </div>
                                 <div className={classes.LikesCommentsNumbers}>
                                     <div className={classes.like}><Like
+                                        sendNotificationData={
+                                            {
+                                                receiverId: this.state.photo.authorId, 
+                                                senderId: this.state.userData._id, 
+                                                senderNick: this.state.userData.nickname, 
+                                                objectType: "photo",
+                                                objectId: this.state.photo._id,
+                                            }
+                                        }
                                         sendAction={()=>this.sendLikeAction(true)}
                                         fill={this.state.likeFill}
                                         number={this.state.photo.likes.length}
@@ -310,6 +319,15 @@ class photoView extends Component {
                                         color="#0a42a4" 
                                         photoView/></div>
                                     <div className={classes.dislike}><Like
+                                        sendNotificationData={
+                                            {
+                                                receiverId: this.state.photo.authorId, 
+                                                senderId: this.state.userData._id, 
+                                                senderNick: this.state.userData.nickname, 
+                                                objectType: "photo",
+                                                objectId: this.state.photo._id,
+                                            }
+                                        }
                                         dislike 
                                         sendAction={()=>this.sendLikeAction(false)}
                                         fill={this.state.dislikeFill}

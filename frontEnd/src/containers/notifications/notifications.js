@@ -51,15 +51,15 @@ class Notifications extends Component {
         this.setState({refreshing: true});
         axios({
             method: 'get',
-            url: `http://localhost:3001/notifications/getFriendRequests`,
+            url: `http://localhost:3001/notifications`,
             headers: {'Authorization': this.state.token},
         })
         .then((res)=>{
             let notifCount = 0;
-            let friendsRdy = res.data.requests.map((request, index) => {
-                notifCount++;
+            let friendsRdy = res.data.notifications.map((notification, index) => {
+                notifCount++
                 return (
-                    <DropdownItem friendRequest data={request} key={index}/>
+                    <DropdownItem data={notification} key={index}/>
                 )
             })
             this.setState({friendRequests: res.data.requests, friendRequestsJSX: friendsRdy, notificationsCount: notifCount});

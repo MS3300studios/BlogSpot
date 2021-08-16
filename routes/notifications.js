@@ -47,11 +47,15 @@ router.get('/notifications/getFriendRequests', auth, (req, res) => {
 //check mentions
 
 //check likes 
-router.get('/notifications/:userId', auth, (req, res) => {
-    Notifications.find({receiverId: req.userData.userId}).exec().then(notifications => {
-        res.json({
-            notifications: notifications
+router.get('/notifications', auth, (req, res) => {
+    Notification.find({receiverId: req.userData.userId}).exec().then(notifications => {
+        FriendRequest.find({friendId: req.userData.userId}).exec().then(requests => {
+            const returnArray = notifications.concat(requests);
+            res.json({
+                notifications: returnArray
+            });
         })
+        .catch(err => console.log(`error finding request: ${err}`));
     }).catch(err => console.log(err));
 })
 
