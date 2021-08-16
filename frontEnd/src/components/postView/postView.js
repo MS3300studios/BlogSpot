@@ -26,6 +26,7 @@ class PostView extends Component {
         this.state = {
             postId: postId,
             post: {},
+            error: null,
             authorData: null,
             redirect: false,
             loading: true,
@@ -45,6 +46,7 @@ class PostView extends Component {
             url: `http://localhost:3001/blogs/one/${this.state.postId}`,
             headers: {'Authorization': this.state.token},
         }).then((res) => {
+            console.log(res.data)
             const post = {
                 author: res.data.blog.author,
                 title: res.data.blog.title,
@@ -55,7 +57,8 @@ class PostView extends Component {
             this.setState({loading: false, post: post, authorData: res.data.authorData});
         })
         .catch(error => {
-            console.log(error);
+            console.log(error.message === "Request failed with status code 404");
+            this.setState({loading: false, error: error.message});
         }) 
     }
 
@@ -77,7 +80,6 @@ class PostView extends Component {
         }).then((res) => {
             if(res.status===200){
                 this.setState({redirect: true, deletePending: false});
-                // this.props.redux_remove_post(id);
             }
             else{
                 console.error('deleting error');
@@ -96,6 +98,9 @@ class PostView extends Component {
         let info;
         if(this.state.loading){
             info = <Spinner />
+        }
+        else if(this.state.error !== null){
+            info = <h1>{this.state.error}</h1>
         }
         else {
             info = (
