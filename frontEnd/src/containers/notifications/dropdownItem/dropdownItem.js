@@ -58,12 +58,13 @@ class DropdownItem extends Component {
             )
         }
         else if(this.state.user != null){
-            notification = <p>notification</p>
+            let grammar = null;
+            if(this.props.data.actionType === "commented") grammar = "on";            
             notification = (
                 <React.Fragment>
                     <a href={"/user/profile/?id="+this.state.user._id} className={classes.notificationLink}>
                         <img src={this.state.user.photo} alt="friend" className={classes.friendRequestPhoto}/>
-                        <div><p className={classes.bold}>{`@${this.state.user.nickname}`}</p>{this.props.data.actionType} on your {this.props.data.objectType}</div> 
+                        <div><p className={classes.bold}>{`@${this.state.user.nickname}`}</p>{this.props.data.actionType} {grammar} your {this.props.data.objectType}</div> 
                     </a>
                 </React.Fragment>
             )
