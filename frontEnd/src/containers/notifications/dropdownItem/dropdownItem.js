@@ -4,6 +4,7 @@ import getToken from '../../../getToken';
 import axios from 'axios';
 import Spinner from '../../../components/UI/spinner';
 import { Link } from 'react-router-dom';
+import { FaRegTrashAlt } from 'react-icons/fa';
 
 class DropdownItem extends Component {
     constructor(props) {
@@ -54,6 +55,9 @@ class DropdownItem extends Component {
                     <a href={"/user/profile/?id="+this.state.user._id} className={classes.notificationLink}>
                         <img src={this.state.user.photo} alt="this person wants to be your friend" className={classes.friendRequestPhoto}/>
                         <div><p className={classes.bold}>{`@${this.state.user.nickname}`}</p> wants to be your friend</div> 
+                        <div className={classes.notificationItemTrashIconPositionContainer}>
+                            <FaRegTrashAlt size="2em" color="#0a42a4"/>
+                        </div>
                     </a>
                 </React.Fragment>
             )
@@ -73,6 +77,9 @@ class DropdownItem extends Component {
                     <Link to={link} className={classes.notificationLink}>
                         <div><p className={classes.bold}>{`@${this.state.user.nickname}`}</p>{this.props.data.actionType} {grammar} your {this.props.data.objectType}</div> 
                     </Link>
+                    <div className={classes.notificationItemTrashIconPositionContainer}>
+                        <FaRegTrashAlt size="2em" color="#0a42a4"/>
+                    </div>
                 </div>
             )
         }

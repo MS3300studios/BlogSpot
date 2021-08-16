@@ -56,31 +56,6 @@
     font-weight: 700;
 }
 
-.refreshIconContainer{
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    top: 5px;
-    right: 5px;
-    cursor: pointer;
-}
-
-.refreshIconContainer :hover{
-    animation-name:             rotate; 
-    animation-duration:         0.7s; 
-    animation-iteration-count:  1;
-    animation-timing-function:  ease-out;
-}
-
-@keyframes rotate {
-    from{
-        transform: rotate(360deg);
-    }
-    to{
-        transform: rotate(0deg);
-    }
-}
-
 .notificationLink {
     text-decoration: none;
     color: black;
@@ -100,4 +75,62 @@
 
 .declineRequest {
     background-color: brown;    
+}
+
+.iconsContainer{
+    margin-top: 5px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.deleteAllIconContainer{
+    cursor: pointer;
+}
+
+.deleteAllIconContainer:hover{
+    animation: tiltTrash 0.5s 1;
+}
+
+@keyframes tiltTrash {
+    0%{
+        transform: rotate(0deg);
+    }
+    33%{
+        transform: rotate(15deg);
+    }
+    66%{
+        transform: rotate(-15deg);
+    }
+    100%{
+        transform: rotate(0deg);
+    }
+}
+
+.refreshIconContainer{
+    width: 40px;
+    height: 40px;
+    margin-left: 20px;
+    cursor: pointer;
+}
+
+.refreshIconContainer :hover{
+    animation-name:             rotate; 
+    animation-duration:         0.7s; 
+    animation-iteration-count:  1;
+    animation-timing-function:  ease-out;
+}
+
+@keyframes rotate {
+    from{
+        transform: rotate(360deg);
+    }
+    to{
+        transform: rotate(0deg);
+    }
+}
+
+.notificationItemTrashIconPositionContainer{
+    cursor: pointer;
+    position: absolute;
+    right: 15px;
 }

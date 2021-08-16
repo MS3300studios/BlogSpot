@@ -3,6 +3,7 @@ import axios from 'axios';
 import classes from './notifications.module.css';
 
 import { FiRefreshCcw } from 'react-icons/fi';
+import { FaRegTrashAlt } from 'react-icons/fa';
 import { IoNotifications } from 'react-icons/io5';
 import getToken from '../../getToken';
 import Spinner from '../../components/UI/spinner';
@@ -81,12 +82,21 @@ class Notifications extends Component {
                     )}
                 </div> 
                 <div className={classes.dropdownContent}>
-                    <div 
-                        onClick={this.getNotifications}
-                        className={classes.refreshIconContainer}
-                    >
-                        <FiRefreshCcw size="2em" color="#0a42a4" className={classes.refreshIcon}/>
+                    <div className={classes.iconsContainer}>
+                        <div
+                            onClick={()=>this.setState({friendRequestsJSX: [], notificationsCount: 0})} 
+                            className={classes.deleteAllIconContainer}
+                        >
+                            <FaRegTrashAlt size="2em" color="#0a42a4"/>
+                        </div>
+                        <div 
+                            onClick={this.getNotifications}
+                            className={classes.refreshIconContainer}
+                        >
+                            <FiRefreshCcw size="2em" color="#0a42a4" className={classes.refreshIcon}/>
+                        </div>
                     </div>
+                    <hr />
                     {this.state.refreshing ? <Spinner darkgreen /> : this.state.friendRequestsJSX}
                     {zeroNotifs}
                 </div>                    
