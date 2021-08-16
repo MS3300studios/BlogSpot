@@ -50,7 +50,9 @@ router.get('/notifications/getFriendRequests', auth, (req, res) => {
 router.get('/notifications', auth, (req, res) => {
     Notification.find({receiverId: req.userData.userId}).exec().then(notifications => {
         FriendRequest.find({friendId: req.userData.userId}).exec().then(requests => {
-            const returnArray = notifications.concat(requests);
+            let notifsReversed = notifications.reverse();
+            const returnArray = requests.concat(notifsReversed);
+            
             res.json({
                 notifications: returnArray
             });

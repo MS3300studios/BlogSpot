@@ -66,12 +66,14 @@ class DropdownItem extends Component {
             else link = `post/?id=${this.props.data.objectId}`
             
             notification = (
-                <React.Fragment>
-                    <Link to={link} className={classes.notificationLink}>
+                <div className={classes.notificationLink}>
+                    <a href={"/user/profile/?id="+this.state.user._id} style={{color: 'unset', textDecoration: "none"}}>
                         <img src={this.state.user.photo} alt="friend" className={classes.friendRequestPhoto}/>
+                    </a>
+                    <Link to={link} className={classes.notificationLink}>
                         <div><p className={classes.bold}>{`@${this.state.user.nickname}`}</p>{this.props.data.actionType} {grammar} your {this.props.data.objectType}</div> 
                     </Link>
-                </React.Fragment>
+                </div>
             )
         }
 

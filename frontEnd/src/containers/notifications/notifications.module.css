@@ -47,6 +47,10 @@
     transition: 0.3s all ease-out;
 }
 
+.friendRequestPhoto:hover{
+    transform: scale(1.2);
+}
+
 .bold{
     margin: 0;
     font-weight: 700;
