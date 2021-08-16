@@ -5,11 +5,13 @@ import PhotoView from "../photoView";
 import Spinner from '../../../components/UI/spinner';
 import { Redirect, withRouter } from 'react-router-dom';
 import getToken from '../../../getToken';
+import Button from '../../../components/UI/button';
 
 const SinglePhotoHigherOrderComponent = (props) => {
     const [loading, setloading] = useState(true);
     const [photo, setphoto] = useState(null);
     const [redirectMain, setredirectMain] = useState(false);
+    const [error, seterror] = useState(false);
 
     useEffect(() => {
         let token = getToken();
@@ -22,11 +24,14 @@ const SinglePhotoHigherOrderComponent = (props) => {
             headers: {'Authorization': token}
         })
         .then((res)=>{
-            if(res.status===200){
-                console.log(res.data.photo);
+            if(res.status===200 && res.data.photo !== undefined){
                 setphoto(res.data.photo);
                 setloading(false);
                 return;
+            }
+            else{
+                seterror(true);
+                setloading(false);
             }
         })
         .catch(error => {
@@ -37,7 +42,22 @@ const SinglePhotoHigherOrderComponent = (props) => {
     return (
         <>
             {
-                loading ? <Spinner /> : <PhotoView photo={photo} closeBigPhoto={()=>setredirectMain(true)}/>
+                loading ? <Spinner /> : (
+                    <>
+                        {
+                            error ? (
+                                <div style={{display: "flex", justifyContent: "center", width: "100%", alignItems: "center"}}>
+                                    <div>
+                                        <h1>There was an unexpected error</h1>
+                                        <div style={{display: "flex", justifyContent: "center", width: "100%", alignItems: "center"}}>
+                                            <Button clicked={()=>setredirectMain(true)}>Go back to the main page</Button>
+                                        </div>
+                                    </div>
+                                </div>
+                            ) : <PhotoView photo={photo} closeBigPhoto={()=>setredirectMain(true)}/>
+                        }
+                    </>
+                )
             }
             {
                 redirectMain ? <Redirect to="/" /> : null
