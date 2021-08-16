@@ -82,7 +82,7 @@ class App extends Component {
               <Route path="/addConversation/" component={AddingConversation} />
               <Route path="/joinConversation/" component={JoiningConversation} />
               <Route path="/editProfile" exact component={EditUserProfile} />
-              <Route path="/photo/view" exact component={PhotoView} />
+              <Route path="/photo/" exact component={PhotoView} />
               <Route path="/photo/add" exact component={PhotoForm} />
               <Route path="/user/activity" exact component={YourActivities} />
               <Route path="/chat/" component={Chat} />

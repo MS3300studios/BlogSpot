@@ -33,17 +33,6 @@ class Notifications extends Component {
     componentDidUpdate(prevProps){
         if(prevProps.idToDrop !== this.props.idToDrop){
             this.getNotifications();
-            // console.log(this.state.friendRequests)
-            // let notifCount = 0;
-            // let requestsTrimmed = this.state.friendRequests.filter(el => el.userId !== this.props.idToDrop);
-            // console.log(requestsTrimmed[0])
-            // let friendsRdy = requestsTrimmed.map((request, index) => {
-            //     notifCount++;
-            //     return (
-            //         <DropdownItem friendRequest data={request} key={index}/>
-            //     )
-            // })
-            // this.setState({friendRequestsJSX: friendsRdy, notificationsCount: notifCount});
         }
     }
 

@@ -15,10 +15,7 @@
 }
 
 .dropdownContent .dropdownItem{
-    margin: 10px 0 10px 0;
-    display: flex;
-    margin-right: 30px;
-    justify-content: center;
+    margin: 10px 0 10px 25px;
 }
 .center{
     display: flex;
@@ -61,6 +58,7 @@
     height: 40px;
     top: 5px;
     right: 5px;
+    cursor: pointer;
 }
 
 .refreshIconContainer :hover{
