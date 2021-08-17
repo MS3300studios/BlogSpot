@@ -1,6 +1,7 @@
 .dropdown:hover .dropdownContent{
     max-height: 600px;
-    overflow: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 .dropdownContent{
     background-color: antiquewhite;
@@ -12,6 +13,7 @@
     transition: 0.8s max-height ease;
     z-index: 1000;
     position: relative;
+    overflow-y: hidden;
 }
 
 .dropdownContent .dropdownItem{
@@ -61,6 +63,7 @@
     color: black;
     display: flex;
     vertical-align: middle;
+    border: dashed 3px black;
 }
 .notificationLink div{
     margin-top: 17px;
@@ -133,4 +136,22 @@
     cursor: pointer;
     position: absolute;
     right: 15px;
+}
+
+.notificationItemTrashIconPositionContainer:hover{
+    animation: tiltTrash 0.5s 1;
+}
+
+.moveRight{
+    border: dashed 3px black;
+    animation: moveRight 0.5s 1;
+}
+
+@keyframes moveRight{
+    from{
+        transform: translateX(0px);
+    }
+    to{
+        transform: translateX(300px);
+    }
 }

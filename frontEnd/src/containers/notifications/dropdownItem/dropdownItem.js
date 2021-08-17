@@ -15,6 +15,7 @@ class DropdownItem extends Component {
         this.state = {
             token: token,
             user: null,
+            mainClassNames: [classes.dropdownItem] 
         }
 
         this.getuserData.bind(this);
@@ -77,7 +78,17 @@ class DropdownItem extends Component {
                     <Link to={link} className={classes.notificationLink}>
                         <div><p className={classes.bold}>{`@${this.state.user.nickname}`}</p>{this.props.data.actionType} {grammar} your {this.props.data.objectType}</div> 
                     </Link>
-                    <div className={classes.notificationItemTrashIconPositionContainer}>
+                    <div 
+                        className={classes.notificationItemTrashIconPositionContainer}
+                        onClick={()=>this.setState(prevState => {
+                            let temp = prevState.mainClassNames;
+                            temp.push(classes.moveRight)
+                            return {
+                                ...prevState,
+                                mainClassNames: temp
+                            }
+                        })}
+                    >
                         <FaRegTrashAlt size="2em" color="#0a42a4"/>
                     </div>
                 </div>
@@ -86,7 +97,7 @@ class DropdownItem extends Component {
 
         return (
             <React.Fragment>
-                <div className={classes.dropdownItem}>
+                <div className={this.state.mainClassNames.join(" ")}>
                     {notification}
                 </div>
                 <hr />
