@@ -63,7 +63,6 @@
     color: black;
     display: flex;
     vertical-align: middle;
-    border: dashed 3px black;
 }
 .notificationLink div{
     margin-top: 17px;
@@ -143,8 +142,7 @@
 }
 
 .moveRight{
-    border: dashed 3px black;
-    animation: moveRight 0.5s 1;
+    animation: moveRight 1s cubic-bezier(.37,.94,.84,.29);
 }
 
 @keyframes moveRight{
@@ -152,6 +150,10 @@
         transform: translateX(0px);
     }
     to{
-        transform: translateX(300px);
+        transform: translateX(1200px);
     }
+}
+
+.hide{
+    display: none;
 }

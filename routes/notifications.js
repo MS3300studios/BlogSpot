@@ -32,6 +32,25 @@ router.post('/notifications/create', auth, (req, res) => {
 });
 
 
+router.post('/notifications/delete/all', auth, (req, res) => {
+    // Notification.find
+});
+
+router.post('/notifications/delete/one', auth, (req, res) => {
+    Notification.findOneAndDelete({
+        objectId: req.body.data.objectId,
+        actionType: req.body.data.actionType,
+        receiverId: req.body.data.receiverId,
+        senderId: req.userData.userId 
+    }, (err, notification) => {
+        if(err) console.log(err)
+        else{
+            console.log(notification);
+            res.sendStatus(200);
+        }
+    })
+})
+
 /*CHECKING*/
 
 //check friend requests for the logged in user
@@ -44,9 +63,6 @@ router.get('/notifications/getFriendRequests', auth, (req, res) => {
     .catch(err => console.log(`error finding request: ${err}`));
 })
 
-//check mentions
-
-//check likes 
 router.get('/notifications', auth, (req, res) => {
     Notification.find({receiverId: req.userData.userId}).exec().then(notifications => {
         FriendRequest.find({friendId: req.userData.userId}).exec().then(requests => {
@@ -60,7 +76,5 @@ router.get('/notifications', auth, (req, res) => {
         .catch(err => console.log(`error finding request: ${err}`));
     }).catch(err => console.log(err));
 })
-
-//check comments 
 
 module.exports = router;

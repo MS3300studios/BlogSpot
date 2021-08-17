@@ -9,8 +9,6 @@ import getToken from '../../getToken';
 import Spinner from '../../components/UI/spinner';
 import DropdownItem from './dropdownItem/dropdownItem';
 
-import { connect } from 'react-redux';
-
 class Notifications extends Component {
     constructor(props) {
         super(props);
@@ -25,6 +23,7 @@ class Notifications extends Component {
             notificationsCount: 0
         }
         this.getNotifications.bind(this);
+        this.removeNotifs.bind(this);
     }
 
     componentDidMount(){
@@ -34,6 +33,38 @@ class Notifications extends Component {
     componentDidUpdate(prevProps){
         if(prevProps.idToDrop !== this.props.idToDrop){
             this.getNotifications();
+        }
+    }
+
+    removeNotifs = (friendRequest, all, data) => {
+        if(all){    
+            this.setState({friendRequestsJSX: [], notificationsCount: 0});
+            //axios call to delete all notifications (incl friend requests)
+            console.log('deleting all notifications with recieverId taken from Token')
+        }
+        else if(friendRequest){
+            setTimeout(()=>{
+                this.setState(prevState => {
+                    let count = prevState.notificationsCount-1;
+                    return {
+                        ...prevState,
+                        notificationsCount: count,
+                    };
+                })
+            }, 600); //wait 600ms for the closing animation to finish
+            console.log("deleting friend request");
+        }
+        else{
+            setTimeout(()=>{
+                this.setState(prevState => {
+                    let count = prevState.notificationsCount-1;
+                    return {
+                        ...prevState,
+                        notificationsCount: count,
+                    };
+                })
+            }, 600); //wait 600ms for the closing animation to finish
+            console.log("deleting notification")
         }
     }
 
@@ -49,7 +80,7 @@ class Notifications extends Component {
             let friendsRdy = res.data.notifications.map((notification, index) => {
                 notifCount++
                 return (
-                    <DropdownItem data={notification} key={index}/>
+                    <DropdownItem data={notification} key={index} elKey={index} deleteNotif={this.removeNotifs}/>
                 )
             })
             this.setState({friendRequests: res.data.requests, friendRequestsJSX: friendsRdy, notificationsCount: notifCount});
@@ -84,7 +115,7 @@ class Notifications extends Component {
                 <div className={classes.dropdownContent}>
                     <div className={classes.iconsContainer}>
                         <div
-                            onClick={()=>this.setState({friendRequestsJSX: [], notificationsCount: 0})} 
+                            onClick={()=>this.removeNotifs(false, true)} 
                             className={classes.deleteAllIconContainer}
                         >
                             <FaRegTrashAlt size="2em" color="#0a42a4"/>
@@ -105,10 +136,45 @@ class Notifications extends Component {
     }
 }
  
-const mapStateToProps = state => {
-    return {
-        idToDrop: state.friendReqIdToBeRemoved
-    };
-}
+export default Notifications;
 
-export default connect(mapStateToProps)(Notifications);
+/*
+deleting one notification mechanism for later
+this.setState(prevState => {
+    let newNotifications = prevState.friendRequests.filter(notif => notif.objectId === data.id && notif.actionType === data.action)
+    let count = 0;
+    let newNotifsJSX = newNotifications.map((notif, index) => {
+        count++
+        return (
+            <DropdownItem data={notif} key={index} deleteNotif={this.removeNotifs}/>
+        )
+    })
+    return {
+        ...prevState,
+        friendRequests: newNotifications,
+        friendRequestsJSX: newNotifsJSX,
+        notificationsCount: count
+    }
+})
+*/
+
+
+/*
+    axios({
+        method: 'post',
+        url: `http://localhost:3001/notifications/delete/one`,
+        headers: {'Authorization': this.state.token},
+        data: {
+            data: data
+        }
+    })
+    .then((res)=>{
+        if(res.status===200){
+            //this.getNotifications();
+            return;
+        }
+    })
+    .catch(error => {
+        console.log(error);
+    })
+*/

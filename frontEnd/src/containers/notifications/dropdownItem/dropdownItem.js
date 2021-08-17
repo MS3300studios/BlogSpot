@@ -15,7 +15,8 @@ class DropdownItem extends Component {
         this.state = {
             token: token,
             user: null,
-            mainClassNames: [classes.dropdownItem] 
+            mainClassNames: [classes.dropdownItem],
+            hide: false
         }
 
         this.getuserData.bind(this);
@@ -29,8 +30,6 @@ class DropdownItem extends Component {
         else{
             userToGetId = this.props.data.userId;
         }
-
-        console.log(userToGetId)
         this.getuserData(userToGetId);
     }
 
@@ -53,13 +52,31 @@ class DropdownItem extends Component {
         if(this.state.user != null && this.props.data.senderId === undefined){
             notification = (
                 <React.Fragment>
-                    <a href={"/user/profile/?id="+this.state.user._id} className={classes.notificationLink}>
-                        <img src={this.state.user.photo} alt="this person wants to be your friend" className={classes.friendRequestPhoto}/>
-                        <div><p className={classes.bold}>{`@${this.state.user.nickname}`}</p> wants to be your friend</div> 
-                        <div className={classes.notificationItemTrashIconPositionContainer}>
+                    <div className={classes.notificationLink}>
+                        <a href={"/user/profile/?id="+this.state.user._id} className={classes.notificationLink}>
+                            <img src={this.state.user.photo} alt="this person wants to be your friend" className={classes.friendRequestPhoto}/>
+                            <div><p className={classes.bold}>{`@${this.state.user.nickname}`}</p> wants to be your friend</div> 
+                        </a>
+                        <div 
+                            className={classes.notificationItemTrashIconPositionContainer}
+                            onClick={()=>this.setState(prevState => {
+                                setTimeout(()=>{
+                                    this.setState({hide: true});
+                                },600);
+
+                                this.props.deleteNotif(true, false, {}); //TODO: fill data object with data required for identification of friendReq to deleted
+
+                                let temp = prevState.mainClassNames;
+                                temp.push(classes.moveRight)
+                                return {
+                                    ...prevState,
+                                    mainClassNames: temp
+                                }
+                            })}
+                        >
                             <FaRegTrashAlt size="2em" color="#0a42a4"/>
                         </div>
-                    </a>
+                    </div>
                 </React.Fragment>
             )
         }
@@ -80,14 +97,29 @@ class DropdownItem extends Component {
                     </Link>
                     <div 
                         className={classes.notificationItemTrashIconPositionContainer}
-                        onClick={()=>this.setState(prevState => {
-                            let temp = prevState.mainClassNames;
-                            temp.push(classes.moveRight)
-                            return {
-                                ...prevState,
-                                mainClassNames: temp
-                            }
-                        })}
+                        onClick={()=>{
+                            setTimeout(()=>{
+                                this.setState({hide: true});
+                            },600);
+
+                            this.setState(prevState => {
+
+                                this.props.deleteNotif(false, false, {
+                                    objectId: this.props.data.objectId,
+                                    actionType: this.props.data.actionType,
+                                    receiverId: this.props.data.receiverId,
+                                    senderId: this.props.data.senderId
+                                }, this.props.elKey); 
+
+                                let temp = prevState.mainClassNames;
+                                temp.push(classes.moveRight);
+
+                                return {
+                                    ...prevState,
+                                    mainClassNames: temp
+                                }
+                            })
+                        }}
                     >
                         <FaRegTrashAlt size="2em" color="#0a42a4"/>
                     </div>
@@ -97,10 +129,12 @@ class DropdownItem extends Component {
 
         return (
             <React.Fragment>
-                <div className={this.state.mainClassNames.join(" ")}>
-                    {notification}
+                <div className={this.state.hide ? classes.hide : null}>
+                    <div className={this.state.mainClassNames.join(" ")}>
+                        {notification}
+                    </div>
+                    <hr />
                 </div>
-                <hr />
             </React.Fragment>
         );
     }
