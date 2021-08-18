@@ -46,7 +46,6 @@ class PostView extends Component {
             url: `http://localhost:3001/blogs/one/${this.state.postId}`,
             headers: {'Authorization': this.state.token},
         }).then((res) => {
-            console.log(res.data)
             const post = {
                 author: res.data.blog.author,
                 title: res.data.blog.title,

@@ -78,7 +78,22 @@ class Notifications extends Component {
                     };
                 })
             }, 600); //wait 600ms for the closing animation to finish
-            console.log("deleting notification")
+
+            axios({
+                method: 'post',
+                url: `http://localhost:3001/notifications/delete/one`,
+                headers: {'Authorization': this.state.token},
+                data: {data}
+            })
+            .then((res)=>{
+                if(res.status===200){
+                    
+                    return;
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            })
         }
     }
 

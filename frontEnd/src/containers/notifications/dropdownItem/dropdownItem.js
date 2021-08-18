@@ -106,12 +106,7 @@ class DropdownItem extends Component {
 
                             this.setState(prevState => {
 
-                                this.props.deleteNotif(false, false, {
-                                    objectId: this.props.data.objectId,
-                                    actionType: this.props.data.actionType,
-                                    receiverId: this.props.data.receiverId,
-                                    senderId: this.props.data.senderId
-                                }, this.props.elKey); 
+                                this.props.deleteNotif(false, false, {notificationId: this.props.data._id}, this.props.elKey); 
 
                                 let temp = prevState.mainClassNames;
                                 temp.push(classes.moveRight);

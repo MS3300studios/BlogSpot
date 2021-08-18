@@ -37,19 +37,11 @@ router.post('/notifications/delete/all', auth, (req, res) => {
 });
 
 router.post('/notifications/delete/one', auth, (req, res) => {
-    Notification.findOneAndDelete({
-        objectId: req.body.data.objectId,
-        actionType: req.body.data.actionType,
-        receiverId: req.body.data.receiverId,
-        senderId: req.userData.userId 
-    }, (err, notification) => {
-        if(err) console.log(err)
-        else{
-            console.log(notification);
-            res.sendStatus(200);
-        }
-    })
-})
+    console.log(req.body.data.notificationId)
+    Notification.findByIdAndDelete(req.body.data.notificationId, (err, doc) => {
+        res.sendStatus(200);
+    });
+});
 
 /*CHECKING*/
 
