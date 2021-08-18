@@ -64,7 +64,9 @@ class DropdownItem extends Component {
                                     this.setState({hide: true});
                                 },600);
 
-                                this.props.deleteNotif(true, false, {}); //TODO: fill data object with data required for identification of friendReq to deleted
+                                this.props.deleteNotif(true, false, {
+                                    friendReqId: this.props.data._id
+                                }); //TODO: fill data object with data required for identification of friendReq to deleted
 
                                 let temp = prevState.mainClassNames;
                                 temp.push(classes.moveRight)

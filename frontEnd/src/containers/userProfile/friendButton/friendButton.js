@@ -6,8 +6,8 @@ import getToken from '../../../getToken';
 import { BsFillPersonCheckFill } from 'react-icons/bs';
 import { BsFillPersonDashFill } from 'react-icons/bs';
 
-import { connect } from 'react-redux';
-import * as actionTypes from '../../../store/actions';
+// import { connect } from 'react-redux';
+// import * as actionTypes from '../../../store/actions';
 
 class FriendButton extends Component {
     constructor(props) {
@@ -68,13 +68,13 @@ class FriendButton extends Component {
                 if(acceptRequest==="accept"){
                     //user accepts the request
                     this.setState({receivedRequest: false, isFriend: true, buttonText: "Remove from Friends"});
-                    this.props.redux_remove_friendReq_notif(this.props.friendId); 
+                    // this.props.redux_remove_friendReq_notif(this.props.friendId); 
                     this.props.pressAction("acceptFriendRequest")
                 }
                 else if(acceptRequest==="decline"){
                     //user declines the request
                     this.setState({receivedRequest: false, buttonText: "Send friend request"});
-                    this.props.redux_remove_friendReq_notif(this.props.friendId); 
+                    // this.props.redux_remove_friendReq_notif(this.props.friendId); 
                     this.props.pressAction("declineFriendRequest")
                 }
             }
@@ -119,9 +119,11 @@ class FriendButton extends Component {
     }
 }
 
-const mapDispatchToProps = dispatch => {
-    return {
-        redux_remove_friendReq_notif: (requestDetails) => dispatch({type: actionTypes.REMOVE_NOTIF_FRIENDREQ, data: requestDetails})
-    }
-}
-export default connect(null ,mapDispatchToProps)(FriendButton);
+// const mapDispatchToProps = dispatch => {
+//     return {
+//         redux_remove_friendReq_notif: (requestDetails) => dispatch({type: actionTypes.REMOVE_NOTIF_FRIENDREQ, data: requestDetails})
+//     }
+// }
+
+export default FriendButton;
+// export default connect(null ,mapDispatchToProps)(FriendButton);

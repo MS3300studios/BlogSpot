@@ -66,6 +66,14 @@ router.post('/revokeRequest', auth, (req, res) => {
         .catch(err => console.log(err));
 })
 
+router.post('/revokeRequestById', auth, (req, res) => {
+    FriendRequest.findByIdAndDelete(req.body.friendReqId).exec()
+        .then(response => {
+            res.send('deletion successful');
+        })
+        .catch(err => console.log(err)); 
+})
+
 //managing request (decline or accept)
 router.post('/anwserRequest', auth, (req, res) => {
     if(req.body.accept === true){

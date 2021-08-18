@@ -52,7 +52,21 @@ class Notifications extends Component {
                     };
                 })
             }, 600); //wait 600ms for the closing animation to finish
-            console.log("deleting friend request");
+            axios({
+                method: 'post',
+                url: `http://localhost:3001/revokeRequestById`,
+                headers: {'Authorization': this.state.token},
+                data: {friendReqId: data.friendReqId}
+            })
+            .then((res)=>{
+                if(res.status===200){
+                    
+                    return;
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            })
         }
         else{
             setTimeout(()=>{

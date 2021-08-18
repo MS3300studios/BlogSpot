@@ -212,7 +212,6 @@ class UserProfile extends Component {
     friendButtonAction = (option) => {
         switch (option) {
             case "removeFriend":
-                console.log('remove friend')
                 axios({
                     method: 'post',
                     url: `http://localhost:3001/deleteFriend`,
@@ -231,7 +230,6 @@ class UserProfile extends Component {
                 })
                 break;
             case "removeRequest":
-                console.log('remove request')
                 axios({
                     method: 'post',
                     url: `http://localhost:3001/revokeRequest`,
@@ -250,7 +248,6 @@ class UserProfile extends Component {
                 })
                 break;
             case "addRequest":
-                console.log('add request')
                 axios({
                     method: 'post',
                     url: `http://localhost:3001/createRequest`,
@@ -270,7 +267,6 @@ class UserProfile extends Component {
                 break;
             case "acceptFriendRequest":
                 //redux remove notif
-                console.log('accept friend request');       
                 axios({
                     method: 'post',
                     url: `http://localhost:3001/anwserRequest`,
