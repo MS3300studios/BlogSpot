@@ -37,70 +37,72 @@ class Notifications extends Component {
     }
 
     removeNotifs = (friendRequest, all, data) => {
-        if(all){    
-            this.setState({friendRequestsJSX: [], notificationsCount: 0});
-            //axios call to delete all notifications (incl friend requests)
-            axios({
-                method: 'get',
-                url: `http://localhost:3001/notifications/delete/all`,
-                headers: {'Authorization': this.state.token}
-            })
-            .catch(error => {
-                console.log(error);
-            })
-        }
-        else if(friendRequest){
-            setTimeout(()=>{
-                this.setState(prevState => {
-                    let count = prevState.notificationsCount-1;
-                    return {
-                        ...prevState,
-                        notificationsCount: count,
-                    };
+        if(this.state.notificationsCount!==0){
+            if(all){
+                this.setState({friendRequestsJSX: [], notificationsCount: 0});
+                //axios call to delete all notifications (incl friend requests)
+                axios({
+                    method: 'get',
+                    url: `http://localhost:3001/notifications/delete/all`,
+                    headers: {'Authorization': this.state.token}
                 })
-            }, 600); //wait 600ms for the closing animation to finish
-            axios({
-                method: 'post',
-                url: `http://localhost:3001/revokeRequestById`,
-                headers: {'Authorization': this.state.token},
-                data: {friendReqId: data.friendReqId}
-            })
-            .then((res)=>{
-                if(res.status===200){
-                    
-                    return;
-                }
-            })
-            .catch(error => {
-                console.log(error);
-            })
-        }
-        else{
-            setTimeout(()=>{
-                this.setState(prevState => {
-                    let count = prevState.notificationsCount-1;
-                    return {
-                        ...prevState,
-                        notificationsCount: count,
-                    };
+                .catch(error => {
+                    console.log(error);
                 })
-            }, 600); //wait 600ms for the closing animation to finish
-
-            axios({
-                method: 'post',
-                url: `http://localhost:3001/notifications/delete/one`,
-                headers: {'Authorization': this.state.token},
-                data: {data}
-            })
-            .then((res)=>{
-                if(res.status===200){
-                    
-                    return;
-                }
-            })
-            .catch(error => {
-                console.log(error);
-            })
+            }
+            else if(friendRequest){
+                setTimeout(()=>{
+                    this.setState(prevState => {
+                        let count = prevState.notificationsCount-1;
+                        return {
+                            ...prevState,
+                            notificationsCount: count,
+                        };
+                    })
+                }, 600); //wait 600ms for the closing animation to finish
+                axios({
+                    method: 'post',
+                    url: `http://localhost:3001/revokeRequestById`,
+                    headers: {'Authorization': this.state.token},
+                    data: {friendReqId: data.friendReqId}
+                })
+                .then((res)=>{
+                    if(res.status===200){
+                        
+                        return;
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+            }
+            else{
+                setTimeout(()=>{
+                    this.setState(prevState => {
+                        let count = prevState.notificationsCount-1;
+                        return {
+                            ...prevState,
+                            notificationsCount: count,
+                        };
+                    })
+                }, 600); //wait 600ms for the closing animation to finish
+    
+                axios({
+                    method: 'post',
+                    url: `http://localhost:3001/notifications/delete/one`,
+                    headers: {'Authorization': this.state.token},
+                    data: {data}
+                })
+                .then((res)=>{
+                    if(res.status===200){
+                        
+                        return;
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+            }
         }
     }
 
