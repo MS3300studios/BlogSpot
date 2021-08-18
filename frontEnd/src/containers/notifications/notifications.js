@@ -40,7 +40,14 @@ class Notifications extends Component {
         if(all){    
             this.setState({friendRequestsJSX: [], notificationsCount: 0});
             //axios call to delete all notifications (incl friend requests)
-            console.log('deleting all notifications with recieverId taken from Token')
+            axios({
+                method: 'get',
+                url: `http://localhost:3001/notifications/delete/all`,
+                headers: {'Authorization': this.state.token}
+            })
+            .catch(error => {
+                console.log(error);
+            })
         }
         else if(friendRequest){
             setTimeout(()=>{

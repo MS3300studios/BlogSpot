@@ -32,8 +32,10 @@ router.post('/notifications/create', auth, (req, res) => {
 });
 
 
-router.post('/notifications/delete/all', auth, (req, res) => {
-    // Notification.find
+router.get('/notifications/delete/all', auth, (req, res) => {
+    Notification.deleteMany({receiverId: req.userData.userId}).then(()=>{
+        res.sendStatus(200);
+    }).catch(err => console.log(err));
 });
 
 router.post('/notifications/delete/one', auth, (req, res) => {
