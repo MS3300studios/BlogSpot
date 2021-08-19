@@ -24,6 +24,7 @@ class Notifications extends Component {
         }
         this.getNotifications.bind(this);
         this.removeNotifs.bind(this);
+        this.decrementCounter.bind(this);
     }
 
     componentDidMount(){
@@ -36,8 +37,18 @@ class Notifications extends Component {
         }
     }
 
+    decrementCounter = () => {
+        this.setState(prevState => {
+            let count = prevState.notificationsCount-1;
+            return {
+                ...prevState,
+                notificationsCount: count,
+            };
+        })
+    }
+
     removeNotifs = (friendRequest, all, data) => {
-        if(this.state.notificationsCount!==0){
+        if(this.state.friendRequestsJSX.length!==0){
             if(all){
                 this.setState({friendRequestsJSX: [], notificationsCount: 0});
                 //axios call to delete all notifications (incl friend requests)
@@ -116,9 +127,9 @@ class Notifications extends Component {
         .then((res)=>{
             let notifCount = 0;
             let friendsRdy = res.data.notifications.map((notification, index) => {
-                notifCount++
+                if(notification.wasSeen === false) notifCount++;
                 return (
-                    <DropdownItem data={notification} key={index} elKey={index} deleteNotif={this.removeNotifs}/>
+                    <DropdownItem data={notification} key={index} elKey={index} deleteNotif={this.removeNotifs} decrementCounter={this.decrementCounter} />
                 )
             })
             this.setState({friendRequests: res.data.requests, friendRequestsJSX: friendsRdy, notificationsCount: notifCount});
@@ -134,7 +145,7 @@ class Notifications extends Component {
 
     render() {
         let zeroNotifs;
-        (this.state.notificationsCount<1) ? zeroNotifs = (
+        (this.state.friendRequestsJSX.length<1) ? zeroNotifs = (
             <React.Fragment>
                 <div className={classes.dropdownItem}>
                     <p>no notifications</p>

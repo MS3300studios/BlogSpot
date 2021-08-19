@@ -11,14 +11,13 @@ class DropdownItem extends Component {
         super(props);
 
         let token = getToken();
-        // let wasSeen = null;
-        // this.props.data.wasSeen ? wasSeen = classes.newNotif : wasSeen = null;
 
         this.state = {
             token: token,
             user: null,
             mainClassNames: [classes.dropdownItem],
-            hide: false
+            hide: false,
+            wasSeen: this.props.data.wasSeen
         }
 
         this.getuserData.bind(this);
@@ -51,7 +50,7 @@ class DropdownItem extends Component {
     }
 
     setSeen = () => {
-        if(this.props.data.wasSeen === false){
+        if(this.state.wasSeen === false){
             axios({
                 method: 'get',
                 url: `http://localhost:3001/notifications/setSeen/${this.props.data._id}`,
@@ -59,8 +58,10 @@ class DropdownItem extends Component {
             })
             .then((res)=>{
                 if(res.status===200){
-                    console.log(res.data)
-                    return;
+                    if(res.data.wasSeen === true){
+                        this.setState({wasSeen: true});
+                        this.props.decrementCounter();
+                    } 
                 }
             })
             .catch(error => {
@@ -115,7 +116,7 @@ class DropdownItem extends Component {
                 <div className={classes.notificationLink}>
                     <div style={{height: "100%", display: "flex", alignItems: "center", marginRight: "25px"}}>
                         {
-                            this.props.data.wasSeen ? null : (
+                            this.state.wasSeen ? null : (
                                 <div className={classes.newIcon}></div>
                             )
                         }
