@@ -115,10 +115,10 @@ class SocialBoard extends Component {
                 if(join === true){
                     let currElems = this.state.elements;
                     let newElems = currElems.concat(res.data.elements);
-                    this.setState({elements: newElems, loading: false, limitPhotos: limitphotos+4, limitPosts: limitposts+4})
+                    this.setState({elements: newElems, loading: false, limitPhotos: limitphotos+6, limitPosts: limitposts+6})
                 }
                 else{
-                    this.setState({elements: res.data.elements, loading: false, limitPhotos: limitphotos+4, limitPosts: limitposts+4})
+                    this.setState({elements: res.data.elements, loading: false, limitPhotos: limitphotos+6, limitPosts: limitposts+6})
                     return;
                 }
             }
@@ -195,6 +195,7 @@ class SocialBoard extends Component {
                         resetFilter={()=>{this.setState({filterIn: "title", filterBy: ""})}}
                         selectValues={["title", "author nickname", "id"]}
                         selectedOption={this.filterSearchHandler}
+                        sendSearch={this.searchActivity}
                     />
                     <div style={{height: "50px", marginTop: "37px"}}>
                         <Button>

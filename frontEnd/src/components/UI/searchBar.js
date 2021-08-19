@@ -25,8 +25,11 @@ const SearchBar = (props) => {
         sendSearch(optionSelected, e.target.value)
     }
     
-    let sendSearch = (option, string) => {
+    let sendSearch = (option, string, sendSearch) => {
         props.clicked(option, string);
+        if(sendSearch === true){
+            props.sendSearch();
+        }
     }
     
 
@@ -51,7 +54,7 @@ const SearchBar = (props) => {
                     className={classes.Input} 
                     placeholder={props.placeholder} 
                     onChange={searchHandler}
-                    onKeyPress={(ev)=>{if(ev.key === "Enter") sendSearch(optionSelected, searchString)}}
+                    onKeyPress={(ev)=>{if(ev.key === "Enter") sendSearch(optionSelected, searchString, true)}}
                 />
                 <img 
                     alt="search icon" 

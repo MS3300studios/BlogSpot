@@ -10,8 +10,8 @@ const Blog = require('../models/blog');
 router.use(express.json());
 
 router.post('/socialBoard/init', auth, (req, res) => {
-    Blog.find().skip(req.body.skipPosts).limit(4).exec().then(blogs => {
-        Photo.find().skip(req.body.skipPhotos).limit(4).exec().then(photos=>{
+    Blog.find().skip(req.body.skipPosts).limit(6).exec().then(blogs => {
+        Photo.find().skip(req.body.skipPhotos).limit(6).exec().then(photos=>{
             let newArr = blogs.concat(photos);
             newArr.sort((a, b) => {
                 let c = new Date(a.createdAt);
