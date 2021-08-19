@@ -56,7 +56,6 @@ class PostView extends Component {
     }
 
     getBlogOnInit = (postId) => {
-        console.log('kookokokoko')
         axios({
             method: 'get',
             url: `http://localhost:3001/blogs/one/${postId}`,

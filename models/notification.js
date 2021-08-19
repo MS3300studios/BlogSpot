@@ -6,7 +6,8 @@ const schema = new db.Schema({
     senderNick: {type: String, require: true},
     objectType: {type: String, require: true},
     objectId: {type: String, require: true},
-    actionType: {type: String, require: true}
+    actionType: {type: String, require: true},
+    wasSeen: {type: Boolean, require: true}
   },
   {
     timestamps: true

@@ -63,7 +63,9 @@
     color: black;
     display: flex;
     vertical-align: middle;
+    position: relative;
 }
+
 .notificationLink div{
     margin-top: 17px;
 }
@@ -156,4 +158,13 @@
 
 .hide{
     display: none;
+}
+
+.newIcon{
+    width: 20px;
+    height: 20px;
+    background-color: navy;
+    border-radius: 50%;
+    margin-left: -15px;
+    margin-right: -10px;
 }

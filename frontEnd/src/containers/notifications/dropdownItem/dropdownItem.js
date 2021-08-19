@@ -11,6 +11,8 @@ class DropdownItem extends Component {
         super(props);
 
         let token = getToken();
+        // let wasSeen = null;
+        // this.props.data.wasSeen ? wasSeen = classes.newNotif : wasSeen = null;
 
         this.state = {
             token: token,
@@ -20,6 +22,7 @@ class DropdownItem extends Component {
         }
 
         this.getuserData.bind(this);
+        this.setSeen.bind(this);
     }
 
     componentDidMount(){
@@ -45,6 +48,25 @@ class DropdownItem extends Component {
         .catch(error => {
             console.log(error);
         })
+    }
+
+    setSeen = () => {
+        if(this.props.data.wasSeen === false){
+            axios({
+                method: 'get',
+                url: `http://localhost:3001/notifications/setSeen/${this.props.data._id}`,
+                headers: {'Authorization': this.state.token}
+            })
+            .then((res)=>{
+                if(res.status===200){
+                    console.log(res.data)
+                    return;
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            })
+        }
     }
 
     render() { 
@@ -91,6 +113,13 @@ class DropdownItem extends Component {
             
             notification = (
                 <div className={classes.notificationLink}>
+                    <div style={{height: "100%", display: "flex", alignItems: "center", marginRight: "25px"}}>
+                        {
+                            this.props.data.wasSeen ? null : (
+                                <div className={classes.newIcon}></div>
+                            )
+                        }
+                    </div>
                     <a href={"/user/profile/?id="+this.state.user._id} style={{color: 'unset', textDecoration: "none"}}>
                         <img src={this.state.user.photo} alt="friend" className={classes.friendRequestPhoto}/>
                     </a>
@@ -126,7 +155,7 @@ class DropdownItem extends Component {
 
         return (
             <React.Fragment>
-                <div className={this.state.hide ? classes.hide : null}>
+                <div className={this.state.hide ? classes.hide : null} onClick={this.setSeen}>
                     <div className={this.state.mainClassNames.join(" ")}>
                         {notification}
                     </div>
