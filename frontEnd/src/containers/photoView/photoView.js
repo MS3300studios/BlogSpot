@@ -61,6 +61,13 @@ class photoView extends Component {
         this.getPhoto();
     }
 
+    componentDidUpdate(prevProps, prevState){
+        if(this.props.location.search !== prevProps.location.search){
+            this.getPhoto();
+            // window.location.reload();
+        }
+    }
+
     deletePhotoHandler = () => {
         axios({
             method: 'delete',

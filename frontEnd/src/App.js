@@ -81,9 +81,9 @@ class App extends Component {
               <Route path="/conversation/" component={ConversationContainer} />
               <Route path="/addConversation/" component={AddingConversation} />
               <Route path="/joinConversation/" component={JoiningConversation} />
-              <Route path="/editProfile" exact component={EditUserProfile} />
-              <Route path="/addPhoto" exact component={PhotoForm} />
-              <Route path="/user/activity" exact component={YourActivities} />
+              <Route path="/editProfile/" exact component={EditUserProfile} />
+              <Route path="/addPhoto/" exact component={PhotoForm} />
+              <Route path="/user/activity/" exact component={YourActivities} />
               <Route path="/chat/" component={Chat} />
               <Route path="/post/" component={PostView} />
               <Route path="/photo/" component={SinglePhotoHOC} />

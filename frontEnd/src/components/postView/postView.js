@@ -38,12 +38,27 @@ class PostView extends Component {
         this.deletePost.bind(this);
         this.displayPostForm.bind(this);
         this.cleanUpEditSucc.bind(this);
+        this.getBlogOnInit.bind(this);
     }
 
     componentDidMount(){
+        this.getBlogOnInit(this.state.postId);
+    }
+
+    componentDidUpdate(prevProps, prevState){
+        if(this.props.location.search !== prevProps.location.search){
+            let queryParams = new URLSearchParams(this.props.location.search);
+            let postId = queryParams.get('id'); 
+            this.setState({postId: postId});
+            this.getBlogOnInit(postId);
+        }
+    }
+
+    getBlogOnInit = (postId) => {
+        console.log('kookokokoko')
         axios({
             method: 'get',
-            url: `http://localhost:3001/blogs/one/${this.state.postId}`,
+            url: `http://localhost:3001/blogs/one/${postId}`,
             headers: {'Authorization': this.state.token},
         }).then((res) => {
             const post = {
