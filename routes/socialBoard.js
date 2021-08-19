@@ -39,14 +39,18 @@ router.post('/socialBoard/search', auth, (req, res) => {
     console.log(req.body.filterBy)
 
     let searching = (findData) => {
-        Blog.find(findData, (err, blogs) => {
+        Blog.find(findData).sort({createdAt: -1}).exec((err, blogs) => {
+            if(err) console.log(err)
+
+            Photo.find(findData).sort({createdAt: -1}).exec((err, photos) => {
                 if(err) console.log(err)
-                else {
-                    console.log(blogs);
-                    // res.json({blogs: blogs});
-                }
-            }
-        )
+
+                let resultArr = blogs.concat(photos);
+
+                console.log(resultArr);
+            })
+
+        })
     }
 
     let data = {};
@@ -60,7 +64,7 @@ router.post('/socialBoard/search', auth, (req, res) => {
             break;
         case "author nickname":
             data = {
-                "nickname": {"$regex": req.body.filterBy, "$options": "i"}
+                "authorNickname": {"$regex": req.body.filterBy, "$options": "i"}
             };
             searching(data);
             break;
