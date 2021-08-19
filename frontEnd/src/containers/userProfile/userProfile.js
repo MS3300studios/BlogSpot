@@ -421,14 +421,17 @@ class UserProfile extends Component {
                                     </div>
                                 ) : 
                                 (
-                                    <>
-                                        <h1 className={classes.textNameH1}><OnlineIcon online={this.state.userId} />{this.state.userData.name+" "+this.state.userData.surname}</h1>
+                                    <div>
+                                        <div className={classes.textNameH1}>
+                                            <OnlineIcon online={this.state.userId} />
+                                            <h1>{this.state.userData.name+" "+this.state.userData.surname}</h1>
+                                        </div>
                                         <h2 className={classes.textNameH2}>@{this.state.userData.nickname}</h2>
                                         <div className={classes.bio}>
                                             <p>{this.state.editBio}</p>
                                             {editIcon}
                                         </div>
-                                    </>
+                                    </div>
                                 )
                             }
                         </div>

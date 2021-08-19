@@ -63,8 +63,8 @@ class photoView extends Component {
 
     componentDidUpdate(prevProps, prevState){
         if(this.props.location.search !== prevProps.location.search){
-            this.getPhoto();
-            // window.location.reload();
+            // this.getPhoto();
+            window.location.reload();
         }
     }
 
