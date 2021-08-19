@@ -31,6 +31,10 @@ const Post = (props) => {
         }
     }, [props.socialBoard, props.author, token])
 
+    //if in socialBoard then author prop is an ID, and has to be adjusted.
+    let tempCompareVal = userLoggedData.nickname;
+    if(props.socialBoard) tempCompareVal = userLoggedData._id;
+
     return (
         <div className={classes.Card}>
             <div className={classes.contentWrapperSmaller}>
@@ -58,7 +62,7 @@ const Post = (props) => {
             </div>
             <p>(see the full blog to read further)</p>
             {
-                (props.author===userLoggedData._id) ? (
+                (props.author===tempCompareVal) ? (
                     <div className={classes.btnWrapper}>
                         <Button clicked={()=>props.edit(props.id)}>Edit</Button>
                         <Button clicked={()=>props.delete(props.id)}>Delete</Button>
