@@ -38,16 +38,43 @@ router.post('/socialBoard/search', auth, (req, res) => {
     console.log(req.body.filterIn)
     console.log(req.body.filterBy)
 
+    let searching = (findData) => {
+        Blog.find(findData, (err, blogs) => {
+                if(err) console.log(err)
+                else {
+                    console.log(blogs);
+                    // res.json({blogs: blogs});
+                }
+            }
+        )
+    }
+
+    let data = {};
+
     switch (req.body.filterIn) {
-        case "name":
-            console.log('name hahahaha')
+        case "title":
+            data = {
+                "title": {"$regex": req.body.filterBy, "$options": "i"}
+            };
+            searching(data);
             break;
-        case "surname":
-            console.log('surname hahahaha')
+        case "author nickname":
+            data = {
+                "nickname": {"$regex": req.body.filterBy, "$options": "i"}
+            };
+            searching(data);
+            break;
+        case "id":
+            data = {
+                "_id": {"$regex": req.body.filterBy, "$options": "i"}
+            };
+            searching(data);
             break;
         default:
             break;
     }
+
+
 
     /*
     Blog.find({ 

@@ -66,20 +66,25 @@ router.get('/blogs/one/:blogId', auth, (req, res) => {
 });
 
 router.post('/blogs/new', auth, (req, res) => {
-    const blog = new Blog({
-        title: req.body.title,
-        content: req.body.content,
-        author: req.userData.userId
-    });
+    User.findById(req.userData.userId, (err, user) => {
+        console.log(user.nickname)
 
-    blog.save()
-        .then(response => {
-            res.sendStatus(201);
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({error: err});
+        const blog = new Blog({
+            title: req.body.title,
+            content: req.body.content,
+            author: req.userData.userId,
+            authorNickname: user.nickname
         });
+    
+        blog.save()
+            .then(response => {
+                res.sendStatus(201);
+            })
+            .catch(err => {
+                console.log(err);
+                res.status(500).json({error: err});
+            });
+    })
 });
 
 router.delete('/blogs/delete/:blogId', auth, (req, res) => {
