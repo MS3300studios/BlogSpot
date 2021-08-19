@@ -28,7 +28,7 @@ const SearchBar = (props) => {
     let sendSearch = (option, string, sendSearch) => {
         props.clicked(option, string);
         if(sendSearch === true){
-            props.sendSearch();
+            if(props.sendSearch) props.sendSearch();
         }
     }
     

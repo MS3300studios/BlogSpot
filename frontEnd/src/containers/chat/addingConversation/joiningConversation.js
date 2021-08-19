@@ -186,6 +186,7 @@ class JoiningConversation extends Component {
                             selectedOption={this.filterSearchHandler}
                             resetFilter={()=>{this.setState({filterIn: "name", filterBy: "", hasSearched: false, loading: false})}}
                             selectValues={["name", "id"]}
+                            sendSearch={this.searchNewConversation}
                         />
                         <div className={classes3.buttonMinifier}>
                             <Button className={classes3.SearchBtnAddUser}>

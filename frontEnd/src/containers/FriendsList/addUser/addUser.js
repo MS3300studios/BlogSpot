@@ -153,6 +153,7 @@ class AddUser extends Component {
                         clicked={this.filterSearchHandler}
                         selectValues={["nickname", "name", "surname", "id"]} 
                         resetFilter={()=>{this.setState({filterIn: "none", filterBy: "none", users: [], searched: false})}}
+                        sendSearch={this.searchNewUser}
                     >
                         <div className={classes.buttonMinifier}>
                             <Button className={classes.SearchBtnAddUser}>

@@ -37,6 +37,31 @@ router.post('/socialBoard/init', auth, (req, res) => {
 router.post('/socialBoard/search', auth, (req, res) => {
     console.log(req.body.filterIn)
     console.log(req.body.filterBy)
+
+    switch (req.body.filterIn) {
+        case "name":
+            console.log('name hahahaha')
+            break;
+        case "surname":
+            console.log('surname hahahaha')
+            break;
+        default:
+            break;
+    }
+
+    /*
+    Blog.find({ 
+            "name": {"$regex": req.body.searchString, "$options": "i"}
+        }, (err, conversations)=>{
+            if(err) console.log(err)
+            else {
+                res.json({conversations: conversations});
+            }
+        }
+    )
+    */
+
+
     /*Blog.find({
         
     }).skip(req.body.skipPosts).limit(4).exec().then(blogs => {
