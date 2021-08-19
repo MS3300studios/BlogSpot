@@ -10,7 +10,6 @@ const Notification = require('../models/notification');
 
 router.post('/notifications/create', auth, (req, res) => {
     if(req.userData.userId === req.body.receiverId || req.body.isDeleting === true || req.body.actionType === 'disliked'){
-        console.log('I didnt create the notification')
         res.sendStatus(200); //if the user is making action on his own object, no notification needs to be sent
     }
     else{
@@ -25,7 +24,6 @@ router.post('/notifications/create', auth, (req, res) => {
         });
     
         notification.save().then(notification => {
-            console.log(notification);
             res.sendStatus(201);
         });
     }
@@ -49,7 +47,6 @@ router.get('/notifications/setSeen/:id', auth, (req, res) => {
     Notification.findByIdAndUpdate(req.params.id, {wasSeen: true}, {new: true}, (err, doc) => {
         if(err) console.log(err)
         else{
-            console.log(doc)
             res.json(doc);
         }
     })

@@ -11,7 +11,7 @@ const SearchBar = (props) => {
     let resetState = () => {
         setsearchString("");
         setoptionSelected(props.selectValues[0]);
-        props.resetFilter()
+        props.resetFilter();
     }
 
     let selectOptionHandler = (option) => {
@@ -20,6 +20,7 @@ const SearchBar = (props) => {
     }
 
     let searchHandler = (e) => {
+        if(e.target.value === "") resetState();
         setsearchString(e.target.value);
         sendSearch(optionSelected, e.target.value)
     }

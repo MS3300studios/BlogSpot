@@ -81,12 +81,17 @@
     position: absolute;
     left: 69%;
     top: 29%;
-    background-color: blue;
+    background-color: #04255f;
     border-radius: 50%;
     padding: 1px;
     padding-top: 3px;
     padding-left: 3px;
     padding-right: 3px;
+    transition: 0.3s linear all;
+}
+
+.editIconContainer:hover{
+    background-color: #0b58de;
 }
 
 .editIcon{

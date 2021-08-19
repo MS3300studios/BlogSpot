@@ -187,7 +187,7 @@ class SocialBoard extends Component {
 
         return (
             <>
-                <h1 className={classes.mainHeader}>Newest activity:</h1>
+                <h1 className={classes.mainHeader}>Latest activity:</h1>
                 <div className={classes.searchContainer}>
                     <SearchBar 
                         placeholder="browse activity in..."
