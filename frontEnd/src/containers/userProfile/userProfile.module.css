@@ -79,11 +79,14 @@
 
 .editIconContainer{
     position: absolute;
-    /* top: 83%;
-    margin-left: 89%; */
-    border: dashed black 3px;
+    left: 69%;
+    top: 29%;
+    background-color: blue;
     border-radius: 50%;
-    padding: 4px;
+    padding: 1px;
+    padding-top: 3px;
+    padding-left: 3px;
+    padding-right: 3px;
 }
 
 .editIcon{

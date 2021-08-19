@@ -383,7 +383,7 @@ class UserProfile extends Component {
                         }}
                         onMouseUp={()=>{this.setState({editPressed: false})}} 
                     >
-                        {this.state.editPressed ? <GoPencil size="1.5em" color="#0a42a4" /> : <BsPencil size="1.5em" color="#0a42a4" /> } 
+                        {this.state.editPressed ? <GoPencil size="1.5em" color="#fff" /> : <BsPencil size="1.5em" color="#fff" /> } 
                     </div>
                 </div>
             );
@@ -409,6 +409,7 @@ class UserProfile extends Component {
                         <div className={classes.imgContainer}>
                             {userImg}
                         </div>
+                        {editIcon}
                         <div className={classes.textInfoContainer}>
                             {
                                 this.state.editing ? (
@@ -429,7 +430,6 @@ class UserProfile extends Component {
                                         <h2 className={classes.textNameH2}>@{this.state.userData.nickname}</h2>
                                         <div className={classes.bio}>
                                             <p>{this.state.editBio}</p>
-                                            {editIcon}
                                         </div>
                                     </div>
                                 )
