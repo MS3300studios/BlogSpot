@@ -16,6 +16,7 @@ app.use(require('./routes/getSocialNumbers'));
 app.use(require('./routes/conversations'));
 app.use(require('./routes/messages'));
 app.use(require('./routes/lastReadMessages'));
+app.use(require('./routes/blockingUsers'));
 
 require("dotenv").config();
 

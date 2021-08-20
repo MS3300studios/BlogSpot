@@ -170,6 +170,21 @@ class Conversation extends Component {
 
     deleteConversation = (block) => {
         axios({
+            method: 'post',
+            url: `http://localhost:3001/blocking/addBlock`,
+            headers: {'Authorization': this.state.token},
+            data: {userToBeBlockedId: '22222'}
+        })
+        .then((res)=>{
+            if(res.status===200){
+                
+                return;
+            }
+        })
+        .catch(error => {
+            console.log(error);
+        })
+        /*axios({
             method: 'get',
             url: `http://localhost:3001/conversation/delete/${this.props.conversation._id}`,
             headers: {'Authorization': this.state.token}
@@ -201,7 +216,7 @@ class Conversation extends Component {
         })
         .catch(error => {
             console.log(error);
-        })
+        }) */
     }
 
     sendMessage = (e) => {
