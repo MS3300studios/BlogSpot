@@ -1,0 +1,71 @@
+.coloursContainer{
+    margin-top: 150px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.coloursContainer h1{
+    color: white;
+    margin-top: 2%;
+    margin: 0 auto;
+}
+
+.screenshotsContainer{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.screenshotsContainer img{
+    width: 330px;
+    height: 200px;
+    border: black 3px solid;
+}
+
+.imgContainer{
+    margin: 30px 30px 10px 30px;
+}
+
+.inputContainer{
+    margin-top: -10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.inputContainer p{
+    color: white;
+    font-size: 25px;
+    font-weight: 550;
+    margin-left: 15px;
+}
+
+.inputContainer input[type='radio']:after {
+    width: 15px;
+    height: 15px;
+    border-radius: 15px;
+    top: -2px;
+    left: -1px;
+    position: relative;
+    background-color: #d1d3d1;
+    content: '';
+    display: inline-block;
+    visibility: visible;
+    border: 2px solid white;
+}
+
+.inputContainer input[type='radio']:checked:after {
+    width: 15px;
+    height: 15px;
+    border-radius: 15px;
+    top: -2px;
+    left: -1px;
+    position: relative;
+    background-color: #01b1b1;
+    content: '';
+    display: inline-block;
+    visibility: visible;
+    border: 2px solid white;
+}
