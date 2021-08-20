@@ -41,10 +41,16 @@ router.post('/socialBoard/search', auth, (req, res) => {
 
     let searching = (findData) => {
         Blog.find(findData).sort({createdAt: -1}).exec((err, blogs) => {
-            if(err) console.log(err)
-
+            if(err){
+                console.log(err)
+                return res.sendStatus(400)
+            }
+            
             Photo.find(findData).sort({createdAt: -1}).exec((err, photos) => {
-                if(err) console.log(err)
+                if(err){
+                    console.log(err)
+                    return res.sendStatus(400)
+                }
 
                 let resultArr = blogs.concat(photos);
 
@@ -85,7 +91,7 @@ router.post('/socialBoard/search', auth, (req, res) => {
             break;
         case "id":
             data = {
-                "_id": {"$regex": req.body.filterBy, "$options": "i"}
+                _id: req.body.filterBy
             };
             searching(data);
             break;

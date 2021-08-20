@@ -78,20 +78,10 @@ class SocialBoard extends Component {
             .then((res)=>{
                 if(res.status===200){
                     this.setState({elements: res.data.elements})
-
-                    // if(join === true){
-                    //     let currElems = this.state.elements;
-                    //     let newElems = currElems.concat(res.data.elements);
-                    //     this.setState({elements: newElems, loading: false, limitPhotos: limitphotos+4, limitPosts: limitposts+4})
-                    // }
-                    // else{
-                    //     this.setState({elements: res.data.elements, loading: false, limitPhotos: limitphotos+4, limitPosts: limitposts+4})
-                    //     return;
-                    // }
                 }
             })
             .catch(error => {
-                console.log(error);
+                if(error.message === "Request failed with status code 400") this.flash("this is not a valid ID")
             })
         }
     }
@@ -190,7 +180,7 @@ class SocialBoard extends Component {
                     <SearchBar 
                         placeholder="browse activity in..."
                         clicked={this.filterSearchHandler}
-                        resetFilter={()=>{this.setState({filterIn: "title", filterBy: ""})}}
+                        resetFilter={()=>{this.setState({filterIn: "title", filterBy: ""}, ()=>this.getElements(0,0,false))}}
                         selectValues={["title", "author nickname", "id"]}
                         selectedOption={this.filterSearchHandler}
                         sendSearch={this.searchActivity}
