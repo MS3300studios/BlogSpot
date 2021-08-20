@@ -72,14 +72,12 @@ class SocialBoard extends Component {
                 headers: {'Authorization': this.state.token},
                 data: {
                     filterIn: this.state.filterIn,
-                    filterBy: this.state.filterBy
-                    // skipPhotos: this.state.limitSearchedPhotos,
-                    // skipPosts: this.state.limitSearchedPosts                
+                    filterBy: this.state.filterBy,              
                 }
             })
             .then((res)=>{
                 if(res.status===200){
-
+                    this.setState({elements: res.data.elements})
 
                     // if(join === true){
                     //     let currElems = this.state.elements;
@@ -115,10 +113,10 @@ class SocialBoard extends Component {
                 if(join === true){
                     let currElems = this.state.elements;
                     let newElems = currElems.concat(res.data.elements);
-                    this.setState({elements: newElems, loading: false, limitPhotos: limitphotos+6, limitPosts: limitposts+6})
+                    this.setState({elements: newElems, loading: false, limitPhotos: newElems.length , limitPosts:newElems.length })
                 }
                 else{
-                    this.setState({elements: res.data.elements, loading: false, limitPhotos: limitphotos+6, limitPosts: limitposts+6})
+                    this.setState({elements: res.data.elements, loading: false, limitPhotos: res.data.elements.length , limitPosts: res.data.elements.length })
                     return;
                 }
             }

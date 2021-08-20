@@ -35,8 +35,9 @@ router.post('/socialBoard/init', auth, (req, res) => {
     
 
 router.post('/socialBoard/search', auth, (req, res) => {
-    console.log(req.body.filterIn)
-    console.log(req.body.filterBy)
+
+    /*console.log(req.body.filterIn)
+    console.log(req.body.filterBy)*/
 
     let searching = (findData) => {
         Blog.find(findData).sort({createdAt: -1}).exec((err, blogs) => {
@@ -47,7 +48,21 @@ router.post('/socialBoard/search', auth, (req, res) => {
 
                 let resultArr = blogs.concat(photos);
 
-                console.log(resultArr);
+                /*resultArr.forEach((el, index) => {
+                    console.log(index+')')
+                    if(el.title === undefined) console.log('photo')
+                    else console.log('blog')
+                    console.log(el.authorNickname)
+                    const formatted = new Date(el.createdAt).getMinutes();
+                    const formatted2 = new Date(el.createdAt).getHours();
+                    console.log(formatted2+":"+formatted)
+                    if(index === resultArr.length-1) console.log('======================')
+                    else console.log('---------------')
+                })*/
+
+                res.json({
+                    elements: resultArr
+                })
             })
 
         })
