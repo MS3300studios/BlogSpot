@@ -32,7 +32,7 @@ import ConversationContainer from './containers/chat/conversation/conversationCo
 import AddingConversation from './containers/chat/addingConversation/addingConversation';
 import JoiningConversation from './containers/chat/addingConversation/joiningConversation';
 import SinglePhotoHOC from './containers/photoView/singlePhotoHOC/singlePhotoHOC';
-
+import Settings from './components/settings/settings';
 
 class App extends Component {
   constructor(props){
@@ -83,6 +83,7 @@ class App extends Component {
               <Route path="/joinConversation/" component={JoiningConversation} />
               <Route path="/editProfile/" exact component={EditUserProfile} />
               <Route path="/addPhoto/" exact component={PhotoForm} />
+              <Route path="/settings/" exact component={Settings} />
               <Route path="/user/activity/" exact component={YourActivities} />
               <Route path="/chat/" component={Chat} />
               <Route path="/post/" component={PostView} />

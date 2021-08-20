@@ -1,0 +1,45 @@
+.settingsContainer{
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    top: 80px;
+    height: 100vh;
+    width: 100vw;
+}
+
+.optionsContainer{
+    width: 20%;
+    background-color: #82ca66;
+    min-width: 256px;
+}
+
+.rightHandContainer{
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.option{
+    display: flex;
+    justify-content: center;
+    width: 90%;
+    margin: 10px auto;
+    cursor: pointer;
+    transition: 0.2s ease-in all;
+    border-radius: 30px;
+}
+
+.option:hover{
+    background-color: #53c253;
+    color: white;
+}
+
+.option p{
+    font-weight: 550;
+    font-size: 30px;
+}
+
+.delete{
+    color: red;
+}
