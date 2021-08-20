@@ -21,9 +21,10 @@ class PhotosList extends Component {
         this.state = {
             token: token,
             userData: userData,
-            limit: 3,
+            limit: 10,
             photos: [],
-            bigPhotoId: null
+            bigPhotoId: null,
+            loading: true
         }
         this.setLimit.bind(this);
         this.getPhotos.bind(this);
@@ -32,11 +33,10 @@ class PhotosList extends Component {
     }
 
     componentDidMount(){
-        this.getPhotos(3);
+        this.getPhotos(10);
     }
 
     getPhotos = (limit) => {
-        this.setState({loading: true});
         axios({
             method: 'post',
             url: `http://localhost:3001/photos/user/limited`,
@@ -58,7 +58,7 @@ class PhotosList extends Component {
     }
 
     setLimit = () => {
-        let newLimit = this.state.limit+2;
+        let newLimit = this.state.limit+5;
         this.setState({limit: newLimit});
         this.getPhotos(newLimit);
     }

@@ -22,7 +22,7 @@ class SocialBoard extends Component {
         this.state = {
             token: token,
             elements: [],
-            loading: false,
+            loading: true,
             bigPhoto: null,
             limitPhotos: 0,
             limitPosts: 0,
@@ -87,8 +87,6 @@ class SocialBoard extends Component {
     }
 
     getElements = (limitphotos, limitposts, join) => {
-        this.setState({loading: true})
-
         axios({
             method: 'post',
             url: `http://localhost:3001/socialBoard/init`,
