@@ -1,0 +1,15 @@
+.deleteAccountContainer{
+    color: white;
+}
+
+.buttonsContainer{
+    margin: 40px auto;
+    width: 50%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.buttonsContainer button{
+    font-size: 30px;
+    font-weight: 550;
+}

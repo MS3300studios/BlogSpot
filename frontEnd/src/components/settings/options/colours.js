@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 
 import classes from './colours.module.css';
 
+import Button from '../../UI/button';
 import classicGreen from '../../../assets/gfx/classicGreen.png'
 import modernBlue from '../../../assets/gfx/modernBlue.png'
 import vibrantRed from '../../../assets/gfx/vibrantRed.png'
@@ -35,6 +36,9 @@ const ColoursSettingsOption = () => {
                             <p>vibrant red</p>
                         </div>
                     </div>
+                </div>
+                <div className={classes.saveButtonContainer}>
+                    <Button>Save</Button>
                 </div>
             </div>
         </div>
