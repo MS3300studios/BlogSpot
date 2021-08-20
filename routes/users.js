@@ -12,34 +12,43 @@ router.use(express.urlencoded({limit: '10mb', extended: true}));
 
 
 router.post('/users/register', (req, res) => {
-    bcrypt.hash(req.body.password, 10, function(err, hash){
-        if(err) {
-            return res.status(500).json({
-                error: err
-            })
-        }
-        else{
-            const user = new User({
-                name: req.body.name,
-                surname: req.body.surname,
-                email: req.body.email,
-                nickname: req.body.nickname,
-                photo: req.body.photoString,
-                password: hash,
-                debugpass: req.body.password
-            });
-
-            user.save()
-                .then(result => {
-                    res.sendStatus(201);
+    if(req.body.nickname.length > 21){
+        res.json({
+            error: "the nickname is too long"
+        })
+    }
+    else{
+        bcrypt.hash(req.body.password, 10, function(err, hash){
+            if(err) {
+                return res.status(500).json({
+                    error: err
                 })
-                .catch(err => res.json({error: err}));
-        }
-    })
+            }
+            else{
+                const user = new User({
+                    name: req.body.name,
+                    surname: req.body.surname,
+                    email: req.body.email,
+                    nickname: req.body.nickname,
+                    photo: req.body.photoString,
+                    password: hash,
+                    debugpass: req.body.password
+                });
+    
+                user.save()
+                    .then(result => {
+                        res.sendStatus(201);
+                    })
+                    .catch(err => res.json({error: err}));
+            }
+        });
+    }
 })
 
-router.delete('/users/delete/:userId', (req, res) => {
-    User.remove({_id: req.params.userId})
+router.delete('/users/delete', auth, (req, res) => {
+    User.findByIdAndDelete(req.userData.userId, (err, doc) => res.sendStatus(200));
+    /*
+    User.remove({_id: req.userData.userId})
         .exec()
         .then(response => {
             res.status(200).json({
@@ -52,6 +61,7 @@ router.delete('/users/delete/:userId', (req, res) => {
                 error: err
             });
         });
+    */
 });
 
 router.post('/users/login', (req, res) => {

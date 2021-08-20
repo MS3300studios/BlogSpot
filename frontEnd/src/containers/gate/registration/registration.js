@@ -124,7 +124,11 @@ class Registration extends Component {
 
     submitUser = (e) => {
         e.preventDefault();
-        // let check =
+
+        if(this.state.nickname.length > 21){
+            this.flash("The nickname should be no longer than 21 characters")
+        }
+
         if(this.PasswordCorrect(this.state.password)===false || this.EmailCorrect(this.state.email)===false){
             this.flash("the password should have at least 8 characters, have one digit and upper case letter in it");
         }
