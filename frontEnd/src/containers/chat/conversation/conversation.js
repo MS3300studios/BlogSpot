@@ -169,6 +169,10 @@ class Conversation extends Component {
     }
 
     deleteConversation = (block) => {
+
+
+        /*
+
         axios({
             method: 'post',
             url: `http://localhost:3001/blocking/addBlock`,
@@ -184,6 +188,9 @@ class Conversation extends Component {
         .catch(error => {
             console.log(error);
         })
+
+        */
+
         /*axios({
             method: 'get',
             url: `http://localhost:3001/conversation/delete/${this.props.conversation._id}`,
@@ -361,13 +368,19 @@ class Conversation extends Component {
 
         let conversationName = <h1>{this.props.conversation.name}</h1>
         if(this.props.conversation.conversationType === "private"){
-            let friendName, friendId;
+            let friendName = null;
+            let friendId = null;
             this.props.conversation.participants.forEach(participant => {
                 if(participant.name !== this.state.user.name){
                     friendName = participant.name;
                     friendId = participant.userId;
                 }
             });
+            //if User and private participant have the same name
+            if(friendName === null && friendId === null){
+                friendName = this.state.user.name;
+                friendId = this.state.user._id;
+            }
             conversationName = (
                 <div className={classes.conversationName}>
                     <OnlineIcon online={friendId}/>
