@@ -3,6 +3,10 @@ import React, {useState} from 'react';
 import classes from './settings.module.css';
 
 import Colours from './options/colours';
+import UnblockUsers from './options/unblockUsers';
+import Language from './options/language';
+import YourData from './options/yourData';
+import DeleteAccount from './options/DeleteAccount';
 
 const Settings = () => {
     const defaultText = <h1 style={{color: "#fff"}}>Select options from the menu on the left</h1>
@@ -12,6 +16,22 @@ const Settings = () => {
         switch (option) {
             case "colours":
                 setSelectedOption(<Colours />)
+                break;
+
+            case "unblock users":
+                setSelectedOption(<UnblockUsers />)
+                break;
+
+            case "language":
+                setSelectedOption(<Language />)
+                break;
+        
+            case "your data":
+                setSelectedOption(<YourData />)
+                break;
+
+            case "delete account":
+                setSelectedOption(<DeleteAccount />)
                 break;
         
             default:
