@@ -129,71 +129,77 @@ class EditUserProfile extends Component {
         if(this.state.userData.nickname !== this.state.newNickname) whatWasChanged.nickname = true;
         if(this.state.userData.bio !== this.state.newBio) whatWasChanged.bio = true;
 
-        if(
-            this.state.newName !== "" &&
-            this.state.newSurname !== "" &&
-            this.state.newNickname !== "" &&
-            this.state.newBio !== "" 
-        ){  
-            axios({
-                method: 'post',
-                url: `http://localhost:3001/users/edit/all`,
-                headers: {'Authorization': this.state.token},
-                data: {
-                    wasChanged: whatWasChanged,
-                    name: this.state.newName,
-                    surname: this.state.newSurname,
-                    nickname: this.state.newNickname,
-                    bio: this.state.newBio,
-                    photo: this.state.photo,
-                }
-            })
-            .then((res)=>{
-                this.setState({loadingSave: false});
-
-                this.flash("changes were saved, redirecting...")
-                let newUserData = {
-                    bio: this.state.newBio,
-                    createdAt: this.state.userData.createdAt,
-                    debugpass: this.state.userData.debugpass,
-                    email: this.state.userData.email,
-                    name: this.state.newName,
-                    nickname: this.state.newNickname,
-                    password: this.state.userData.password,
-                    photo: this.state.userData.photo,
-                    surname: this.state.newSurname,
-                    updatedAt: this.state.userData.updatedAt,
-                    __v: this.state.userData.__v,
-                    _id: this.state.userData._id
-                }
-
-                let jsonData = JSON.stringify(newUserData);
-
-                let local = localStorage.getItem('userData')
-                if(local){
-                    console.log('clearing local')
-                    localStorage.clear();
-                    sessionStorage.clear();
-                    localStorage.setItem('token', this.state.token);
-                    localStorage.setItem('userData', jsonData);
-                }
-                else{
-                    localStorage.clear();
-                    sessionStorage.clear();
-                    sessionStorage.setItem('token', this.state.token);
-                    sessionStorage.setItem('userData', jsonData);
-                }
-
-                setTimeout(()=>{
-                    this.setState({redirectToDashboard: true})
-                }, 1500)
-            })
-            .catch(error => {
-                console.log(error);
-            })
+        if(this.state.newNickname.length > 21){
+            this.flash('Your nickname cannot be longer than 21 characters');
+            this.setState({loadingSave: false});
         }
         else{
-            this.flash("you need to fill every input!");
+            if(
+                this.state.newName !== "" &&
+                this.state.newSurname !== "" &&
+                this.state.newNickname !== "" &&
+                this.state.newBio !== "" 
+            ){  
+                axios({
+                    method: 'post',
+                    url: `http://localhost:3001/users/edit/all`,
+                    headers: {'Authorization': this.state.token},
+                    data: {
+                        wasChanged: whatWasChanged,
+                        name: this.state.newName,
+                        surname: this.state.newSurname,
+                        nickname: this.state.newNickname,
+                        bio: this.state.newBio,
+                        photo: this.state.photo,
+                    }
+                })
+                .then((res)=>{
+                    this.setState({loadingSave: false});
+    
+                    this.flash("changes were saved, redirecting...")
+                    let newUserData = {
+                        bio: this.state.newBio,
+                        createdAt: this.state.userData.createdAt,
+                        debugpass: this.state.userData.debugpass,
+                        email: this.state.userData.email,
+                        name: this.state.newName,
+                        nickname: this.state.newNickname,
+                        password: this.state.userData.password,
+                        photo: this.state.userData.photo,
+                        surname: this.state.newSurname,
+                        updatedAt: this.state.userData.updatedAt,
+                        __v: this.state.userData.__v,
+                        _id: this.state.userData._id
+                    }
+    
+                    let jsonData = JSON.stringify(newUserData);
+    
+                    let local = localStorage.getItem('userData')
+                    if(local){
+                        console.log('clearing local')
+                        localStorage.clear();
+                        sessionStorage.clear();
+                        localStorage.setItem('token', this.state.token);
+                        localStorage.setItem('userData', jsonData);
+                    }
+                    else{
+                        localStorage.clear();
+                        sessionStorage.clear();
+                        sessionStorage.setItem('token', this.state.token);
+                        sessionStorage.setItem('userData', jsonData);
+                    }
+    
+                    setTimeout(()=>{
+                        this.setState({redirectToDashboard: true})
+                    }, 1500)
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+            }
+            else{
+                this.flash("you need to fill every input!");
+            }
         }
     }
 
@@ -263,7 +269,7 @@ class EditUserProfile extends Component {
                 <Link to='/'>
                     <button className={classes.cancelBtn}>cancel</button>
                 </Link>
-                <button onClick={this.saveChangedData}>{this.state.loadingSave ? <Spinner darkgreen/> : "save changes"}</button>
+                <button onClick={this.saveChangedData}>{this.state.loadingSave ? <Spinner small darkgreen/> : "save changes"}</button>
             </div>
             {flash}
             {this.state.redirectToDashboard ? <Redirect to={"/user/profile/?id="+this.state.userData._id} /> : null}

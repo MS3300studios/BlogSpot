@@ -172,29 +172,33 @@ router.post('/users/find', auth, (req, res) => {
 
 
 router.post('/users/edit/all', auth, (req, res) => { //newdata, userid, userphoto
-    if(
-        req.body.name !== "" &&
-        req.body.surname !== "" &&
-        req.body.nickname !== "" &&
-        req.body.bio !== "" &&
-        req.body.photo !== "" 
-    ){
-        let update = {photo: req.body.photo}
-        if(req.body.wasChanged.name === true) update.name = req.body.name
-        if(req.body.wasChanged.surname === true) update.surname = req.body.surname
-        if(req.body.wasChanged.nickname === true) update.nickname = req.body.nickname
-        if(req.body.wasChanged.bio === true) update.bio = req.body.bio
-    
-        User.findByIdAndUpdate(req.userData.userId, update, {new: true}).then(user => {
-            res.json({
-                user: user
-            })
-        })
+    if(req.body.nickname.length > 21){
+        res.sendStatus(400)
     }
     else{
-        res.status(403)
+        if(
+            req.body.name !== "" &&
+            req.body.surname !== "" &&
+            req.body.nickname !== "" &&
+            req.body.bio !== "" &&
+            req.body.photo !== "" 
+        ){
+            let update = {photo: req.body.photo}
+            if(req.body.wasChanged.name === true) update.name = req.body.name
+            if(req.body.wasChanged.surname === true) update.surname = req.body.surname
+            if(req.body.wasChanged.nickname === true) update.nickname = req.body.nickname
+            if(req.body.wasChanged.bio === true) update.bio = req.body.bio
+        
+            User.findByIdAndUpdate(req.userData.userId, update, {new: true}).then(user => {
+                res.json({
+                    user: user
+                })
+            })
+        }
+        else{
+            res.status(403)
+        }
     }
-
 })
 
 router.post('/users/edit/bio', auth, (req, res) => {
