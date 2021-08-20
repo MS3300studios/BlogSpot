@@ -20,6 +20,7 @@ import Spinner from '../../../components/UI/spinner';
 import Participant from './participant';
 import AddingConversation from '../addingConversation/addingConversation';
 import OnlineIcon from '../../../components/UI/onlineIcon';
+import { BiBlock } from 'react-icons/bi';
 
 class Conversation extends Component {
     constructor(props) {
@@ -167,7 +168,7 @@ class Conversation extends Component {
         }
     }
 
-    deleteConversation = () => {
+    deleteConversation = (block) => {
         axios({
             method: 'get',
             url: `http://localhost:3001/conversation/delete/${this.props.conversation._id}`,
@@ -175,7 +176,27 @@ class Conversation extends Component {
         })
         .then((res)=>{
             if(res.status===200){
-                this.setState({redirectToChat: true});
+                if(block === true){
+                    //call api to add user to blocked users list
+                    axios({
+                        method: 'post',
+                        url: `http://localhost:3001/blocking/addBlock`,
+                        headers: {'Authorization': this.state.token},
+                        data: {userToBeBlockedId: '22222'}
+                    })
+                    .then((res)=>{
+                        if(res.status===200){
+                            
+                            return;
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    })
+                }
+                else{
+                    this.setState({redirectToChat: true});
+                }
             }
         })
         .catch(error => {
@@ -304,7 +325,6 @@ class Conversation extends Component {
                 
                 return (
                     <div className={classes.elongateMessage} key={index}>
-                        <p>{index}</p>
                         <div className={messageClassNames} ref={el => {
                             if(index === 9) this.lastCurrentMessage = el //if index is 9 a ref is overwritten, else do nothing
                             else return null
@@ -381,10 +401,15 @@ class Conversation extends Component {
                             {
                                 (this.props.conversation.conversationType === "private") ? (
                                     <div className={classes.centerTop}>
-                                        <div className={classes.center}>
-                                            <div className={[classes.operationButton,classes.leave].join(" ")} onClick={this.deleteConversation}>
+                                        <div style={{margin: "0 auto"}}>
+                                            <div className={[classes.operationButton,classes.leave].join(" ")} onClick={()=>this.deleteConversation(false)}>
                                                 <AiFillDelete size="2em" color="#fff"/>
                                                 <p>Delete conversation</p>
+                                            </div>
+                                            <br />
+                                            <div className={[classes.operationButton,classes.leave].join(" ")} onClick={()=>this.deleteConversation(true)}>
+                                                <BiBlock size="2em" color="#fff"/>
+                                                <p>Block user</p>
                                             </div>
                                         </div>
                                     </div>

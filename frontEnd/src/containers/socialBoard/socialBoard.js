@@ -23,6 +23,7 @@ class SocialBoard extends Component {
             token: token,
             elements: [],
             loading: true,
+            loadingMore: false,
             bigPhoto: null,
             limitPhotos: 0,
             limitPosts: 0,
@@ -87,6 +88,8 @@ class SocialBoard extends Component {
     }
 
     getElements = (limitphotos, limitposts, join) => {
+        if(join === true) this.setState({loadingMore: true});
+
         axios({
             method: 'post',
             url: `http://localhost:3001/socialBoard/init`,
@@ -101,7 +104,7 @@ class SocialBoard extends Component {
                 if(join === true){
                     let currElems = this.state.elements;
                     let newElems = currElems.concat(res.data.elements);
-                    this.setState({elements: newElems, loading: false, limitPhotos: newElems.length , limitPosts:newElems.length })
+                    this.setState({elements: newElems, loadingMore: false, limitPhotos: newElems.length , limitPosts:newElems.length })
                 }
                 else{
                     this.setState({elements: res.data.elements, loading: false, limitPhotos: res.data.elements.length , limitPosts: res.data.elements.length })
@@ -198,9 +201,13 @@ class SocialBoard extends Component {
                     {content}
                     {this.state.bigPhoto ? <PhotoView photo={this.state.bigPhoto} closeBigPhoto={this.bigPhotoWasClosed}/> : null}
                 </div>
-                <div className={[classes.center, classes.btnMore].join(" ")}>
-                    <Button clicked={()=>this.getElements(this.state.limitPhotos, this.state.limitPosts, true)}>Load more</Button>
-                </div>
+                {
+                    this.state.loadingMore ? <Spinner small/> : (
+                        <div className={[classes.center, classes.btnMore].join(" ")}>
+                            <Button clicked={()=>this.getElements(this.state.limitPhotos, this.state.limitPosts, true)}>Load more</Button>
+                        </div>
+                    )
+                }
                 {flash}
             </>
         );
