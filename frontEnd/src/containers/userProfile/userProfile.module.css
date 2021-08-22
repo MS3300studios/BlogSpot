@@ -161,7 +161,12 @@
 .sendMessageLink{
     text-decoration: none;
 }
-
+.unblockUser{
+    background-color: brown !important;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+}
 
 /* SECOND SECTION */
 .userProfileMenu{

@@ -15,12 +15,12 @@ import { ImExit } from 'react-icons/im';
 import { BsPencil } from 'react-icons/bs';
 import { AiFillDelete } from 'react-icons/ai';
 import {BsInfoCircle, BsInfoCircleFill} from 'react-icons/bs';
+import { BiBlock } from 'react-icons/bi';
 import Button from '../../../components/UI/button';
 import Spinner from '../../../components/UI/spinner';
 import Participant from './participant';
 import AddingConversation from '../addingConversation/addingConversation';
 import OnlineIcon from '../../../components/UI/onlineIcon';
-import { BiBlock } from 'react-icons/bi';
 
 class Conversation extends Component {
     constructor(props) {

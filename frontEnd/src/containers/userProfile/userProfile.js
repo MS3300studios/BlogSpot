@@ -12,6 +12,7 @@ import Button from '../../components/UI/button';
 import { BsPencil } from 'react-icons/bs';
 import { MdMessage } from 'react-icons/md';
 import { GoPencil } from 'react-icons/go';
+import { BiBlock } from 'react-icons/bi';
 import getUserData from '../../getUserData';
 import Spinner from '../../components/UI/spinner';
 import NumberInfoContainer from './numberInfoContainer/numberInfoContainer';
@@ -380,6 +381,7 @@ class UserProfile extends Component {
         .then((res)=>{
             if(res.status===200){
                 this.setState({isBlocked: false});
+                this.flash('user was removed from your blocked users list (see it go to settings -> blocked users)')
                 return;
             }
         })
@@ -431,7 +433,7 @@ class UserProfile extends Component {
         }
         else if(this.state.isFriend && this.state.isBlocked === true){
             sendMessageButton = (
-                <button className={classes.sendMessage} onClick={this.removeBlock}>Unblock user</button>
+                <button className={classes.unblockUser} onClick={this.removeBlock}><BiBlock size="1.5em" color="#FFF" /> Unblock user</button>
             );
         }
 
