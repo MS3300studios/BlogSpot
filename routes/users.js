@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
 const User = require('../models/user');
+const { BlockedUsers } = require('../models/blockedUsers');
 const auth = require('../middleware/authorization');
 
 router.use(cors());
@@ -111,8 +112,27 @@ router.get('/users/getUser/:userId', auth, (req, res) => {
     User.findById(req.params.userId)
         .exec()
         .then(user => {
-            res.json({
-                user: user
+            BlockedUsers.findOne({forUser: req.userData.userId}, (err, blockList) => {
+                if(!blockList) res.json({blocked: false});
+                else{
+                    let isInList = blockList.blockedUsers.filter(el => {
+                        if(el.blockedUserId === req.params.userId) return true
+                        else return false
+                    })
+                    
+                    if(isInList.length === 0){
+                        res.json({
+                            user: user,
+                            blocked: false
+                        });
+                    }
+                    else{
+                        res.json({
+                            user: user,
+                            blocked: true
+                        });
+                    }
+                }
             });
         })
         .catch(error => {

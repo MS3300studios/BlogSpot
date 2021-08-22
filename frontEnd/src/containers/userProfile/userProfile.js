@@ -50,6 +50,7 @@ class UserProfile extends Component {
             editPressed: false,
             editing: false,
             isFriend: false,
+            isBlocked: false,
             requestActive: false,
             receivedRequest: false,
             friendBtnDataRdy: false,
@@ -402,6 +403,15 @@ class UserProfile extends Component {
             flash = <Flash close>{this.state.flashMessage}</Flash>
         }
 
+        let sendMessageButton = null;
+        if(this.state.isFriend){
+            sendMessageButton = (
+                <Link to={`/conversation/?id=${this.state.userId}`} className={classes.sendMessageLink}>
+                    <button className={classes.sendMessage}><MdMessage size="1.5em" color="#FFF" /> Send Message</button>
+                </Link>
+            );
+        }
+
         return ( 
             <React.Fragment>
                 <div className={classes.flexContainer}>
@@ -455,13 +465,7 @@ class UserProfile extends Component {
                                             />
                                         ) : <Spinner darkgreen />}
                                         
-                                        {
-                                            this.state.isFriend ? (
-                                                <Link to={`/conversation/?id=${this.state.userId}`} className={classes.sendMessageLink}>
-                                                    <button className={classes.sendMessage}><MdMessage size="1.5em" color="#FFF" /> Send Message</button>
-                                                </Link>
-                                            ) : null
-                                        }
+                                        { sendMessageButton }
                                     </div>
                                 )
                             }
