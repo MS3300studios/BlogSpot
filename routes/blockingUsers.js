@@ -3,17 +3,40 @@ const router = express();
 
 const { BlockedUser } = require('../models/blockedUsers');
 const { BlockedUsers } = require('../models/blockedUsers');
+const User = require('../models/user');
 
 const auth = require('../middleware/authorization');
 
 router.use(express.json());
 
-router.get('/blocking/blockedUsers', auth, (req, res) => {
+router.post('/blocking/blockedUsers', auth, (req, res) => {
     BlockedUsers.find({forUser: req.userData.userId}, (err, blockedUsers) => {
-        console.log(blockedUsers)
-        res.json({
-            users: blockedUsers
-        })
+        if(req.body.getFullData === false){
+            res.json({
+                users: blockedUsers
+            })
+        }
+        else if(req.body.getFullData === true){
+            let getUser = (el) => {
+                return new Promise((resolve, reject) => {
+                    User.findById(el).then(user => resolve(user)).catch(error => reject(error));
+                })
+            }
+
+            let fullUsers = [];
+            let loop = async (el, index) => {
+                for(let i=0; i<blockedUsers.length; i++){
+                    // console.log(blockedUsers[0].blockedUsers[i])
+                    let fullUser = await getUser(blockedUsers[0].blockedUsers[i].blockedUserId);
+                    fullUsers.push(fullUser);
+                }
+                res.json({
+                    users: fullUsers
+                })
+            }
+
+            loop();
+        }
     })
 })
 
