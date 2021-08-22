@@ -9,8 +9,11 @@ const auth = require('../middleware/authorization');
 router.use(express.json());
 
 router.get('/blocking/blockedUsers', auth, (req, res) => {
-    BlockedUsers.findById(req.userData.userId, (err, doc) => {
-        console.log(doc)
+    BlockedUsers.find({forUser: req.userData.userId}, (err, blockedUsers) => {
+        console.log(blockedUsers)
+        res.json({
+            users: blockedUsers
+        })
     })
 })
 
@@ -19,6 +22,7 @@ router.get('/blocking/checkBlock/:userToBeChecked', auth, (req, res) => {
     
     //req.userData.userId
     //req.params.userToBeChecked
+    
 })
 
 router.post('/blocking/addBlock', auth, (req, res) => {
@@ -55,7 +59,6 @@ router.post('/blocking/addBlock', auth, (req, res) => {
                 list.push(blockedUser);
                 doc.blockedUsers = list;
                 doc.save().then(response => {
-                    console.log(response);
                     res.sendStatus(200);
                 })
             }

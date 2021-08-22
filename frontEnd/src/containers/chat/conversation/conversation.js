@@ -55,7 +55,7 @@ class Conversation extends Component {
             loadingNewMessages: false,
             filterParticipantsString: "",
             conversationStartReached: false,
-            redirectToChat: false
+            redirectToDashboard: false
         }
         this.sendMessage.bind(this);
         this.sendConversationName.bind(this);
@@ -177,22 +177,6 @@ class Conversation extends Component {
         });
 
         axios({
-            method: 'post',
-            url: `http://localhost:3001/blocking/addBlock`,
-            headers: {'Authorization': this.state.token},
-            data: {userToBeBlockedId: friendId}
-        })
-        .then((res)=>{
-            if(res.status===200){
-                
-                return;
-            }
-        })
-        .catch(error => {
-            console.log(error);
-        })
-
-        /*axios({
             method: 'get',
             url: `http://localhost:3001/conversation/delete/${this.props.conversation._id}`,
             headers: {'Authorization': this.state.token}
@@ -205,12 +189,11 @@ class Conversation extends Component {
                         method: 'post',
                         url: `http://localhost:3001/blocking/addBlock`,
                         headers: {'Authorization': this.state.token},
-                        data: {userToBeBlockedId: '22222'}
+                        data: {userToBeBlockedId: friendId}
                     })
                     .then((res)=>{
                         if(res.status===200){
-                            
-                            return;
+                            this.setState({redirectToDashboard: true});
                         }
                     })
                     .catch(error => {
@@ -218,13 +201,13 @@ class Conversation extends Component {
                     })
                 }
                 else{
-                    this.setState({redirectToChat: true});
+                    this.setState({redirectToDashboard: true});
                 }
             }
         })
         .catch(error => {
             console.log(error);
-        }) */
+        }) 
     }
 
     sendMessage = (e) => {
@@ -529,7 +512,7 @@ class Conversation extends Component {
                 }
             </div>
             {
-                this.state.redirectToChat ? <Redirect to="/chat"/> : null
+                this.state.redirectToDashboard ? <Redirect to="/"/> : null
             }
             </>
         );
