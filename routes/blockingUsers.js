@@ -82,7 +82,23 @@ router.post('/blocking/addBlock', auth, (req, res) => {
 })
 
 router.post('/blocking/removeBlock', auth, (req, res) => {
+    BlockedUsers.findOne({forUser: req.userData.userId}, (err, doc) => {
+        if(!doc){
+            //the user doesn't have a blockList res.404
+            res.json({err: 'user does not have a block list'});
+        }
+        else{
+            let filteredList = doc.blockedUsers.filter(el => {
+                if(el.blockedUserId === req.body.blockedUserId) return false
+                else return true
+            });
 
+            doc.blockedUsers = filteredList;
+            doc.save().then(()=>{
+                res.sendStatus(200);
+            })
+        }
+    })
 })
 
 module.exports = router;

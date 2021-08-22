@@ -81,7 +81,7 @@ class UserProfile extends Component {
                     bio: res.data.user.bio,
                     createdAt: res.data.user.createdAt
                 };
-                this.setState({userData: user, editBio: user.bio});
+                this.setState({userData: user, editBio: user.bio, isBlocked: res.data.blocked});
             })
             .catch(error => {
                 console.log(error);
@@ -370,6 +370,24 @@ class UserProfile extends Component {
         }
     }
 
+    removeBlock = () => {
+        axios({
+            method: 'post',
+            url: `http://localhost:3001/blocking/removeBlock`,
+            headers: {'Authorization': this.state.token},
+            data: {blockedUserId: this.state.userId}
+        })
+        .then((res)=>{
+            if(res.status===200){
+                this.setState({isBlocked: false});
+                return;
+            }
+        })
+        .catch(error => {
+            console.log(error);
+        })
+    }
+
     render() { 
 
         let editIcon = null;
@@ -404,11 +422,16 @@ class UserProfile extends Component {
         }
 
         let sendMessageButton = null;
-        if(this.state.isFriend){
+        if(this.state.isFriend && this.state.isBlocked === false){
             sendMessageButton = (
                 <Link to={`/conversation/?id=${this.state.userId}`} className={classes.sendMessageLink}>
                     <button className={classes.sendMessage}><MdMessage size="1.5em" color="#FFF" /> Send Message</button>
                 </Link>
+            );
+        }
+        else if(this.state.isFriend && this.state.isBlocked === true){
+            sendMessageButton = (
+                <button className={classes.sendMessage} onClick={this.removeBlock}>Unblock user</button>
             );
         }
 
