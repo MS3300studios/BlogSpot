@@ -7,8 +7,8 @@ const LastReadMessage = require('../models/lastReadMessage');
 
 router.use(express.json());
 
-router.get('/messages/:conversationId', auth, (req, res) => {
-    Message.find({conversationId: req.params.conversationId})
+router.post('/messages', auth, (req, res) => {
+    Message.find({conversationId: req.body.conversationId})
         .sort({ createdAt: -1})
         .skip(req.body.skip)
         .limit(10)
