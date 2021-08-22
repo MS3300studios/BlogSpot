@@ -169,15 +169,18 @@ class Conversation extends Component {
     }
 
     deleteConversation = (block) => {
-
-
-        /*
+        let friendId = null;
+        this.props.conversation.participants.forEach(participant => {
+            if(participant.userId !== this.state.user._id){
+                friendId = participant.userId;
+            }
+        });
 
         axios({
             method: 'post',
             url: `http://localhost:3001/blocking/addBlock`,
             headers: {'Authorization': this.state.token},
-            data: {userToBeBlockedId: '22222'}
+            data: {userToBeBlockedId: friendId}
         })
         .then((res)=>{
             if(res.status===200){
@@ -188,8 +191,6 @@ class Conversation extends Component {
         .catch(error => {
             console.log(error);
         })
-
-        */
 
         /*axios({
             method: 'get',

@@ -23,34 +23,46 @@ router.get('/blocking/checkBlock/:userToBeChecked', auth, (req, res) => {
 
 router.post('/blocking/addBlock', auth, (req, res) => {
     BlockedUsers.findOne({forUser: req.userData.userId}, (err, doc) => {
-        console.log(doc)
         if(!doc){
             //the user doesn't have a block list yet, creating list:
-            const BlockedUser = new BlockedUser({
+            const blockedUser = new BlockedUser({
                 blockedUserId: req.body.userToBeBlockedId
             })
 
-            const BlockedUsers = new BlockedUsers({
+            const blockedUsers = new BlockedUsers({
                 forUser: req.userData.userId,
-                blockedUsers: [BlockedUser]
+                blockedUsers: [blockedUser]
             })
 
-            BlockedUsers.save().then(response => {
+            blockedUsers.save().then(response => {
                 console.log(response);
                 res.sendStatus(200);
             })
         }
         else{
             let list = doc.blockedUsers;
-            const BlockedUser = new BlockedUser({
-                blockedUserId: req.body.userToBeBlockedId
-            });
-            list.push(BlockedUser);
-            doc.blockedUsers = list;
-            doc.save().then(response => {
-                console.log(response);
-                res.sendStatus(200);
+            // checking if user's blocklist includes the user to be blocked
+            let isInList = list.filter(el => {
+                if(el.blockedUserId === req.body.userToBeBlockedId) return true
+                else return false
             })
+
+            //user is not in blocked list, so server is adding him to it 
+            if(isInList.length === 0){
+                const blockedUser = new BlockedUser({
+                    blockedUserId: req.body.userToBeBlockedId
+                });
+                list.push(blockedUser);
+                doc.blockedUsers = list;
+                doc.save().then(response => {
+                    console.log(response);
+                    res.sendStatus(200);
+                })
+            }
+            else{
+                res.send("user is already blocked");
+            }
+
         }
     })
 })
