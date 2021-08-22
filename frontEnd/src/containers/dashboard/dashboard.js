@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import * as actionTypes from '../../store/actions';
+// import { connect } from 'react-redux';
+// import * as actionTypes from '../../store/actions';
 
 import classes from './dashboard.module.css';
 

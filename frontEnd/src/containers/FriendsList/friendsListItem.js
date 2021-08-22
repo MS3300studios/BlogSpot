@@ -2,15 +2,65 @@ import React, { useState, useEffect } from 'react';
 import classes from './FriendsList.module.css';
 
 import { BiMessageDetail } from 'react-icons/bi';
-import {Link} from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import OnlineIcon from '../../components/UI/onlineIcon';
+import axios from 'axios';
+import getToken from '../../getToken';
+import Flash from '../../components/UI/flash';
 
 const FriendsListItem = (props) => {
     const [checked, setchecked] = useState(props.selectAll)
+    const [redirectToConversation, setRedirectToConversation] = useState(false)
+
+    //flash
+    const [flashMessage, setflashMessage] = useState("");
+    const [flashNotClosed, setflashNotClosed] = useState(true);
 
     useEffect(() => {
         setchecked(props.selectAll)
     }, [props.selectAll])
+
+    let flash = (message) => {
+        setflashMessage(message);
+        
+        setTimeout(()=>{
+            setflashNotClosed(false);
+        }, 2000)
+        
+        setTimeout(()=>{
+            setflashMessage("");
+        }, 3000);
+        
+        setTimeout(()=>{
+            setflashNotClosed(true);
+        }, 3000);
+    }
+
+    let checkIfBlocked = () => {
+        const token = getToken();
+        axios({
+            method: 'get',
+            url: `http://localhost:3001/blocking/checkBlock/${props.id}`,
+            headers: {'Authorization': token}
+        })
+        .then((res)=>{
+            if(res.status===200){
+                if(res.data.blocked === true) flash("this user is blocked, to unblock, go to settings -> unblock users");
+                else setRedirectToConversation(true);
+            }
+        })
+        .catch(error => {
+            console.log(error);
+        })
+    }
+
+    let flashContent = null;
+    if(flashMessage && flashNotClosed){
+        flashContent = <Flash>{flashMessage}</Flash>
+    }
+    else if(flashMessage && flashNotClosed === false){
+        flashContent = <Flash close>{flashMessage}</Flash>
+    }
 
     return (
         <>
@@ -45,10 +95,8 @@ const FriendsListItem = (props) => {
                             checked={checked}
                         />
                     ) : (
-                        <div className={classes.chatIcon}>
-                            <Link to={`/conversation/?id=${props.id}`}>
-                                <BiMessageDetail size="2em" color="#0a42a4" />
-                            </Link>
+                        <div className={classes.chatIcon} onClick={checkIfBlocked}>
+                            <BiMessageDetail size="2em" color="#0a42a4" />
                         </div>
                     )
                 }
@@ -56,6 +104,10 @@ const FriendsListItem = (props) => {
             {
                 props.friendSelect ? null : <hr />
             }
+            {
+                redirectToConversation ? <Redirect to={`/conversation/?id=${props.id}`} /> : null
+            }
+            {flashContent}
         </>
     );
 }

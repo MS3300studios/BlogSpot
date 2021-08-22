@@ -17,12 +17,23 @@ router.get('/blocking/blockedUsers', auth, (req, res) => {
     })
 })
 
-router.get('/blocking/checkBlock/:userToBeChecked', auth, (req, res) => {
-    //checking if user's blockedUsersList contains ID given in params
-    
-    //req.userData.userId
-    //req.params.userToBeChecked
-    
+router.get('/blocking/checkBlock/:userToCheck', auth, (req, res) => {
+    BlockedUsers.findOne({forUser: req.userData.userId}, (err, blockList) => {
+        if(!blockList) res.json({blocked: false});
+        else{
+            let isInList = blockList.blockedUsers.filter(el => {
+                if(el.blockedUserId === req.params.userToCheck) return true
+                else return false
+            })
+            
+            if(isInList.length === 0){
+                res.json({blocked: false});
+            }
+            else{
+                res.json({blocked: true});
+            }
+        }
+    })
 })
 
 router.post('/blocking/addBlock', auth, (req, res) => {
