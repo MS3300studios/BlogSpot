@@ -56,7 +56,7 @@ class Conversation extends Component {
             filterParticipantsString: "",
             conversationStartReached: false,
             redirectToDashboard: false,
-            otherUserIsBlocked: false
+            loadingBlocked: true,
         }
         this.sendMessage.bind(this);
         this.sendConversationName.bind(this);
@@ -67,7 +67,6 @@ class Conversation extends Component {
         this.handleScroll.bind(this);
         this.deleteConversation.bind(this);
         this.sendLastReadMessage.bind(this);
-        this.checkIfOtherUserBlocked.bind(this);
         this.getOtherUserNameAndId.bind(this);
         
         this.scrollPosition = React.createRef();
@@ -78,21 +77,16 @@ class Conversation extends Component {
     }
 
     componentDidMount(){
-        // if(this.props.conversation.conversationType === "private"){
-        //     this.checkIfOtherUserBlocked();
-        // }
-        // else{
-            this.socket.emit('join', {name: this.state.user.name, conversationId: this.props.conversation._id })
-            this.socket.on('message', message => {
-                let prevMessages = this.state.messages;
-                prevMessages.push(message);
-                this.setState({messages: prevMessages});
-                this.sendLastReadMessage(message.content);
-            })
-    
-            this.fetchMessages();
-            this.messagesEnd.scrollIntoView({ behavior: "smooth" });
-        // }
+        this.socket.emit('join', {name: this.state.user.name, conversationId: this.props.conversation._id })
+        this.socket.on('message', message => {
+            let prevMessages = this.state.messages;
+            prevMessages.push(message);
+            this.setState({messages: prevMessages});
+            this.sendLastReadMessage(message.content);
+        })
+
+        this.fetchMessages();
+        this.messagesEnd.scrollIntoView({ behavior: "smooth" });
     }   
 
     componentDidUpdate(prevProps, prevState){
@@ -109,29 +103,10 @@ class Conversation extends Component {
                 this.messagesEnd.scrollIntoView({ behavior: "smooth" });
             })
         }
-
     }
 
     componentWillUnmount(){
         this.socket.emit('leaveConversation', {conversationId: this.props.conversation._id});
-    }
-
-    checkIfOtherUserBlocked = () => {
-        //will return bool
-        // axios({
-        //     method: 'get',
-        //     url: `http://localhost:3001/blocking/checkBlock/${}`,
-        //     headers: {'Authorization': this.state.token}
-        // })
-        // .then((res)=>{
-        //     if(res.status===200){
-                
-        //         return;
-        //     }
-        // })
-        // .catch(error => {
-        //     console.log(error);
-        // })
     }
 
     sendLastReadMessage = (content) => {
