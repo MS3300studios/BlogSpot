@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import classes from './FriendsList.module.css';
 
 import { BiMessageDetail } from 'react-icons/bi';
+import { BiBlock } from 'react-icons/bi';
 import { Redirect } from 'react-router-dom';
 import OnlineIcon from '../../components/UI/onlineIcon';
 import axios from 'axios';
@@ -95,9 +96,20 @@ const FriendsListItem = (props) => {
                             checked={checked}
                         />
                     ) : (
-                        <div className={classes.chatIcon} onClick={checkIfBlocked}>
-                            <BiMessageDetail size="2em" color="#0a42a4" />
-                        </div>
+                        <>
+                            {
+                                props.unblock ? (
+                                    <button className={classes.unblockUser} onClick={()=>props.unblock(props.id)}>
+                                        <BiBlock size="1.5em" color="#FFF" />
+                                        Unblock user
+                                    </button>
+                                ) : (
+                                    <div className={classes.chatIcon} onClick={checkIfBlocked}>
+                                        <BiMessageDetail size="2em" color="#0a42a4" />
+                                    </div>
+                                )
+                            }
+                        </>
                     )
                 }
             </div>

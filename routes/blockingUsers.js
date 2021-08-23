@@ -10,34 +10,69 @@ const auth = require('../middleware/authorization');
 router.use(express.json());
 
 router.post('/blocking/blockedUsers', auth, (req, res) => {
-    BlockedUsers.find({forUser: req.userData.userId}, (err, blockedUsers) => {
+    BlockedUsers.findOne({forUser: req.userData.userId}).exec().then(blockedUsers => {
+
         if(req.body.getFullData === false){
             res.json({
                 users: blockedUsers
             })
         }
         else if(req.body.getFullData === true){
-            let getUser = (el) => {
+
+            let friendsData = blockedUsers.blockedUsers;
+
+            function getter(id){
+                return new Promise((resolve, reject) => {
+                    User.findById(id)
+                        .exec()
+                        .then(user => {
+                            resolve(user);
+                        }) 
+                        .catch(error => {
+                            reject(error.code);
+                        })
+                })
+            }
+
+            let fullFriendsArr = [];
+
+            async function looper(){
+                for(let i=0; i<friendsData.length; i++){
+                    let fullFriend = await getter(friendsData[i].blockedUserId);
+                    fullFriendsArr.push(fullFriend)
+                }
+
+                res.status(200).json({
+                    friends: fullFriendsArr
+                }) 
+            }
+
+
+            looper();
+
+
+            /*let getUser = (el) => {
                 return new Promise((resolve, reject) => {
                     User.findById(el).then(user => resolve(user)).catch(error => reject(error));
                 })
             }
 
-            let fullUsers = [];
-            let loop = async (el, index) => {
+            let loop = async () => {
+                let fullUsers = [];
                 for(let i=0; i<blockedUsers.length; i++){
-                    // console.log(blockedUsers[0].blockedUsers[i])
-                    let fullUser = await getUser(blockedUsers[0].blockedUsers[i].blockedUserId);
+                    console.log(blockedUsers)
+                    let fullUser = await getUser(blockedUsers.blockedUsers[i].blockedUserId);
                     fullUsers.push(fullUser);
                 }
-                res.json({
-                    users: fullUsers
-                })
+
+                return fullUsers
             }
 
-            loop();
+            loop().then((fullUsers)=>{
+                console.log('full ahaha'+fullUsers);
+            })*/
         }
-    })
+    }).catch(err => console.log(err))
 })
 
 router.get('/blocking/checkBlock/:userToCheck', auth, (req, res) => {

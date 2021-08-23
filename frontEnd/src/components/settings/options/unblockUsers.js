@@ -10,8 +10,26 @@ const UnblockUsers = () => {
     const token = getToken();
     const [blockedUsers, setBlockedUsers] = useState([]);
     const [loading, setLoading] = useState(true);
+    
+    let unblock = (userId) => {
+        axios({
+            method: 'post',
+            url: `http://localhost:3001/blocking/removeBlock`,
+            headers: {'Authorization': token},
+            data: {blockedUserId: userId}
+        })
+        .then((res)=>{
+            if(res.status===200){
+                getBlockedUsers();
+                return;
+            }
+        })
+        .catch(error => {
+            console.log(error);
+        })
+    }
 
-    useEffect(() => {
+    let getBlockedUsers = () => {
         axios({
             method: 'post',
             url: `http://localhost:3001/blocking/blockedUsers`,
@@ -22,19 +40,23 @@ const UnblockUsers = () => {
         })
         .then((res)=>{
             if(res.status===200){
-                let blockedUsers = res.data.users.map((user, index) => {
-                    return (
-                            <h1>FRIEND</h1>
+                let blockedUsers = null;
+                if(res.data.friends.length === 0) blockedUsers = <h1>You don't have any blocked users, to block a user go to their profile and press the block button there</h1>
+                else {
+                    blockedUsers = res.data.friends.map((user, index) => {
+                        return (
+                            <FriendsListItem 
+                                key={index}
+                                id={user._id} 
+                                name={user.name}
+                                nickname={user.nickname}
+                                surname={user.surname}
+                                photo={user.photo}
+                                unblock={unblock}
+                            />
                         )
-                    })                
-                    // <FriendsListItem 
-                    //     key={index} 
-                    //     id={user._id} 
-                    //     name={user.name}
-                    //     nickname={user.nickname}
-                    //     surname={user.surname}
-                    //     photo={user.photo}
-                    // />
+                    });                
+                }
                 setBlockedUsers(blockedUsers);
                 setLoading(false);
                 return;
@@ -43,12 +65,16 @@ const UnblockUsers = () => {
         .catch(error => {
             console.log(error);
         })
+    }
+
+    useEffect(() => {
+        getBlockedUsers();
     }, [])
 
     return (
         <div className={classes.center}>
             {
-                loading ? <Spinner /> : <>{blockedUsers}</>
+                loading ? <Spinner /> : <div className={classes.userContainer}>{blockedUsers}</div>
             }
         </div>
     );
