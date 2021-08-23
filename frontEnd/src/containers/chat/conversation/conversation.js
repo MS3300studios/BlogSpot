@@ -55,7 +55,8 @@ class Conversation extends Component {
             loadingNewMessages: false,
             filterParticipantsString: "",
             conversationStartReached: false,
-            redirectToDashboard: false
+            redirectToDashboard: false,
+            otherUserIsBlocked: false
         }
         this.sendMessage.bind(this);
         this.sendConversationName.bind(this);
@@ -66,6 +67,8 @@ class Conversation extends Component {
         this.handleScroll.bind(this);
         this.deleteConversation.bind(this);
         this.sendLastReadMessage.bind(this);
+        this.checkIfOtherUserBlocked.bind(this);
+        this.getOtherUserNameAndId.bind(this);
         
         this.scrollPosition = React.createRef();
         this.scrollPosition.current = 201;
@@ -75,16 +78,21 @@ class Conversation extends Component {
     }
 
     componentDidMount(){
-        this.socket.emit('join', {name: this.state.user.name, conversationId: this.props.conversation._id })
-        this.socket.on('message', message => {
-            let prevMessages = this.state.messages;
-            prevMessages.push(message);
-            this.setState({messages: prevMessages});
-            this.sendLastReadMessage(message.content);
-        })
-
-        this.fetchMessages();
-        this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+        // if(this.props.conversation.conversationType === "private"){
+        //     this.checkIfOtherUserBlocked();
+        // }
+        // else{
+            this.socket.emit('join', {name: this.state.user.name, conversationId: this.props.conversation._id })
+            this.socket.on('message', message => {
+                let prevMessages = this.state.messages;
+                prevMessages.push(message);
+                this.setState({messages: prevMessages});
+                this.sendLastReadMessage(message.content);
+            })
+    
+            this.fetchMessages();
+            this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+        // }
     }   
 
     componentDidUpdate(prevProps, prevState){
@@ -106,6 +114,24 @@ class Conversation extends Component {
 
     componentWillUnmount(){
         this.socket.emit('leaveConversation', {conversationId: this.props.conversation._id});
+    }
+
+    checkIfOtherUserBlocked = () => {
+        //will return bool
+        // axios({
+        //     method: 'get',
+        //     url: `http://localhost:3001/blocking/checkBlock/${}`,
+        //     headers: {'Authorization': this.state.token}
+        // })
+        // .then((res)=>{
+        //     if(res.status===200){
+                
+        //         return;
+        //     }
+        // })
+        // .catch(error => {
+        //     console.log(error);
+        // })
     }
 
     sendLastReadMessage = (content) => {
@@ -228,6 +254,7 @@ class Conversation extends Component {
                 conversationId: this.props.conversation._id, 
                 hour: time 
             });
+
             this.sendLastReadMessage(this.state.message);
             this.messagesEnd.scrollIntoView({ behavior: "smooth" });
         }
@@ -311,6 +338,24 @@ class Conversation extends Component {
         return participantsRdy;
     } 
 
+    getOtherUserNameAndId = () => {
+        let friendName = null;
+        let friendId = null;
+        this.props.conversation.participants.forEach(participant => {
+            if(participant.name !== this.state.user.name){
+                friendName = participant.name;
+                friendId = participant.userId;
+            }
+        });
+        //if User and private participant have the same name
+        if(friendName === null && friendId === null){
+            friendName = this.state.user.name;
+            friendId = this.state.user._id;
+        }
+
+        return ({friendName: friendName, friendId: friendId})
+    }
+
     render() { 
         let messages;
         if(this.state.loading === true){
@@ -352,23 +397,11 @@ class Conversation extends Component {
 
         let conversationName = <h1>{this.props.conversation.name}</h1>
         if(this.props.conversation.conversationType === "private"){
-            let friendName = null;
-            let friendId = null;
-            this.props.conversation.participants.forEach(participant => {
-                if(participant.name !== this.state.user.name){
-                    friendName = participant.name;
-                    friendId = participant.userId;
-                }
-            });
-            //if User and private participant have the same name
-            if(friendName === null && friendId === null){
-                friendName = this.state.user.name;
-                friendId = this.state.user._id;
-            }
+            const data = this.getOtherUserNameAndId();
             conversationName = (
                 <div className={classes.conversationName}>
-                    <OnlineIcon online={friendId}/>
-                    <h1>{friendName}</h1>
+                    <OnlineIcon online={data.friendId}/>
+                    <h1>{data.friendName}</h1>
                 </div>
             )
         }
