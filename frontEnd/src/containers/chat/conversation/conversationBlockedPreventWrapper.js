@@ -39,7 +39,11 @@ const BlockedUserPrevent = (props) => {
                     setloading(false);
                 }
                 else{
-                    setcontent(<h1>This user is blocked, to unblock them, go to settings, blocked users</h1>);
+                    setcontent(
+                        <div style={{display: "flex", justifyContent: "center", width: "100%", height: "100%", alignItems: "center"}}>
+                            <h1 style={{color: "white"}}>This user is blocked, to unblock them, go to settings - blocked users</h1>
+                        </div>
+                    );
                     setloading(false);
                 }
             }
