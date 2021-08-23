@@ -65,6 +65,8 @@ class UserProfile extends Component {
         this.friendButtonAction.bind(this);
         this.editBioHandle.bind(this);
         this.sendEditedBio.bind(this);
+        this.blockUser.bind(this);
+        this.removeBlock.bind(this);
     }
 
     componentDidMount () {
@@ -390,8 +392,24 @@ class UserProfile extends Component {
         })
     }
 
-    render() { 
+    blockUser = (userId) => {
+        axios({
+            method: 'post',
+            url: `http://localhost:3001/blocking/addBlock`,
+            headers: {'Authorization': this.state.token},
+            data: {userToBeBlockedId: userId}
+        })
+        .then((res)=>{
+            if(res.status===200){
+                this.setState({isBlocked: true});
+            }
+        })
+        .catch(error => {
+            console.log(error);
+        })
+    }
 
+    render() { 
         let editIcon = null;
         if(this.state.userLogged){
             editIcon = (
@@ -491,6 +509,15 @@ class UserProfile extends Component {
                                         ) : <Spinner darkgreen />}
                                         
                                         { sendMessageButton }
+
+                                        {
+                                            this.state.isBlocked ? null : (
+                                                <button className={classes.unblockUser} onClick={()=>this.blockUser(this.state.userId)}>
+                                                    <BiBlock size="1.5em" color="#FFF" style={{marginRight: "14px"}}/>
+                                                    Block user
+                                                </button>
+                                            )
+                                        }
                                     </div>
                                 )
                             }
