@@ -317,17 +317,12 @@ class Conversation extends Component {
         let friendName = null;
         let friendId = null;
         this.props.conversation.participants.forEach(participant => {
-            if(participant.name !== this.state.user.name){
+            if(participant.userId !== this.state.user._id){
                 friendName = participant.name;
                 friendId = participant.userId;
             }
         });
-        //if User and private participant have the same name
-        if(friendName === null && friendId === null){
-            friendName = this.state.user.name;
-            friendId = this.state.user._id;
-        }
-
+        
         return ({friendName: friendName, friendId: friendId})
     }
 

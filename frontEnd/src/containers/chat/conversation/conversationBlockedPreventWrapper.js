@@ -15,18 +15,11 @@ const BlockedUserPrevent = (props) => {
         let friendName = null;
         let friendId = null;
         props.selectedConversation.participants.forEach(participant => {
-            console.log(participant)
-            if(participant.name !== userData.name){
+            if(participant.userId !== userData._id){
                 friendName = participant.name;
                 friendId = participant.userId;
             }
         });
-        //if User and private participant have the same name
-        // if(friendName === null && friendId === null){
-        //     friendName = this.state.user.name;
-        //     friendId = this.state.user._id;
-        // }
-
         return ({friendName: friendName, friendId: friendId})
     }
 
