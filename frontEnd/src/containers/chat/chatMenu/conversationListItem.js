@@ -20,36 +20,94 @@ const ConversationListItem = (props) => {
     const token = getToken();
 
     useEffect(() => {
-        if(props.el.conversationType === 'private'){
-            let friend = props.el.participants.filter(participant => participant.userId !== userData._id)[0];
+        let friend = props.el.participants.filter(participant => participant.userId !== userData._id)[0];
 
+        if(props.el.conversationType === 'private'){
             axios({
                 method: 'get',
-                url: `http://localhost:3001/users/getUser/${friend.userId}`,
+                url: `http://localhost:3001/blocking/checkBlock/${friend.userId}`,
                 headers: {'Authorization': token}
             })
             .then((res)=>{
                 if(res.status===200){
-                    setUser(res.data.user);
-                    setLoading(false);
-                    return;
+                    if(res.data.blocked === true){
+                        axios({
+                            method: 'get',
+                            url: `http://localhost:3001/users/getUser/${friend.userId}`,
+                            headers: {'Authorization': token}
+                        })
+                        .then((res)=>{
+                            if(res.status===200){
+                                setUser(res.data.user);
+                                setlatestMessage({content: "blocked"});
+                                setIsNew(false);
+                                setLoadingLatestMessage(false);
+                                setLoading(false);
+                            }
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        })
+                    }
+                    else{
+                        //getting user data becasue he wasn't blocked
+                        axios({
+                            method: 'get',
+                            url: `http://localhost:3001/users/getUser/${friend.userId}`,
+                            headers: {'Authorization': token}
+                        })
+                        .then((res)=>{
+                            if(res.status===200){
+                                setUser(res.data.user);
+                                setLoading(false);
+                                return;
+                            }
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        }) 
+                        
+                        //getting latest message
+                        axios({
+                            method: 'post',
+                            url: `http://localhost:3001/messages/latest`,
+                            headers: {'Authorization': token},
+                            data: {
+                                conversationId: props.el._id
+                            }
+                        })
+                        .then((res) => {
+                            if(res.data.message === "none"){
+                                setlatestMessage({content: "none", authorName: ""});
+                                setIsNew(res.data.isNew);
+                                setLoadingLatestMessage(false);
+                            }
+                            else{
+                                setlatestMessage(res.data.message);
+                                setIsNew(res.data.isNew);
+                                setLoadingLatestMessage(false);
+                            }
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        })
+                    }
                 }
             })
             .catch(error => {
                 console.log(error);
-            })        
+            })
         }
-
-        axios({
-            method: 'post',
-            url: `http://localhost:3001/messages/latest`,
-            headers: {'Authorization': token},
-            data: {
-                conversationId: props.el._id
-            }
-        })
-        .then((res)=>{
-            if(res.status===200){
+        else{
+            axios({
+                method: 'post',
+                url: `http://localhost:3001/messages/latest`,
+                headers: {'Authorization': token},
+                data: {
+                    conversationId: props.el._id
+                }
+            })
+            .then((res) => {
                 if(res.data.message === "none"){
                     setlatestMessage({content: "none", authorName: ""});
                     setIsNew(res.data.isNew);
@@ -60,12 +118,13 @@ const ConversationListItem = (props) => {
                     setIsNew(res.data.isNew);
                     setLoadingLatestMessage(false);
                 }
-            }
-        })
-        .catch(error => {
-            console.log(error);
-        })
+            })
+            .catch(error => {
+                console.log(error);
+            })
+        }
 
+        
     }, [])
 
     let chatSelect = () => {
@@ -91,34 +150,45 @@ const ConversationListItem = (props) => {
     let latestMessageDisplay = null;
     if(loadingLatestMessage === true) latestMessageDisplay = <Spinner small/>;
     else{
-        latestMessageDisplay = (
-            <div className={classes2.latestMessageContainer}>
-                {
-                    (latestMessage.content === "none") ? 
-                    <p className={classes2.latestMessage}>no messages have been sent yet</p> :
-                    <p className={classes2.latestMessage}>{latestMessage.authorName}: {latestMessage.content}</p>
-                }
-            </div>
-        )
+        if(latestMessage.content === "blocked"){
+            latestMessageDisplay = (
+                <div className={classes2.latestMessageContainer}>
+                    <p className={classes2.latestMessage}>this user is blocked</p>
+                </div>
+            )
+        }
+        else{
+            latestMessageDisplay = (
+                <div className={classes2.latestMessageContainer}>
+                    {
+                        (latestMessage.content === "none") ? 
+                        <p className={classes2.latestMessage}>no messages have been sent yet</p> :
+                        <p className={classes2.latestMessage}>{latestMessage.authorName}: {latestMessage.content}</p>
+                    }
+                </div>
+            )
+        }
     }
 
     let classNames;
     isNew ? classNames = [classes.conversation, classes.conversationNewMessage].join(" ") : classNames = classes.conversation;
 
-    return (<>
-        <div className={classNames} onClick={chatSelect}>
-            {loadingLatestMessage ? null : <h3 className={classes2.latestMessageHour}>{latestMessage.hour}</h3>}
-            {content}
-            {latestMessageDisplay}
-            {
-                props.join ? (
-                    <div className={classes.joinButtonContainer}>
-                        <div className={classes.joinButton} onClick={()=>props.join(props.el._id)}>join</div>
-                    </div>
-                ) : null
-            }
-        </div>
-    </>);
+    return (
+        <>
+            <div className={classNames} onClick={chatSelect}>
+                {loadingLatestMessage ? null : <h3 className={classes2.latestMessageHour}>{latestMessage.hour}</h3>}
+                {content}
+                {latestMessageDisplay}
+                {
+                    props.join ? (
+                        <div className={classes.joinButtonContainer}>
+                            <div className={classes.joinButton} onClick={()=>props.join(props.el._id)}>join</div>
+                        </div>
+                    ) : null
+                }
+            </div>
+        </>
+    );
 }
  
 export default ConversationListItem;
