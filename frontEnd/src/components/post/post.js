@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { Link } from 'react-router-dom';
+import Spinner from '../UI/spinner';
 
 import classes from './post.module.css';
 import Button from '../UI/button';
@@ -10,6 +11,7 @@ import getToken from '../../getToken';
 const Post = (props) => {
     let userLoggedData = getUserData();
 
+    const [loading, setloading] = useState(true);
     const [userData, setuserData] = useState({});
     const [nickname, setnickname] = useState(userLoggedData.nickname)
     let token = getToken();
@@ -24,6 +26,7 @@ const Post = (props) => {
             .then((res)=>{
                 setuserData(res.data.user);
                 setnickname(res.data.user.nickname);
+                setloading(false);
             })
             .catch(error => {
                 console.log(error);
@@ -36,40 +39,46 @@ const Post = (props) => {
     if(props.socialBoard) tempCompareVal = userLoggedData._id;
 
     return (
-        <div className={classes.Card}>
-            <div className={classes.contentWrapperSmaller}>
-            <Link to={"/post/?id="+props.id} style={{textDecoration: "none", color: "black"}}>
-                <h1>{props.title}</h1>
-            </Link> 
-            </div>
+        <>
             {
-                props.socialBoard ? (
-                    <div className={classes.userInfoContainer}>
-                        <img src={userData.photo} alt="user's face" className={classes.userPhoto} />
-                        <h2><a href={"/user/profile/?id="+userData._id}
-                            style={{color: "black", textDecoration: "none"}}
-                        >@{nickname}</a></h2>
-                    </div>
-                )
-                : (
-                    <div className={classes.contentWrapperSmaller}>
-                        <h2>@{nickname}</h2>
+                loading ? <Spinner small /> : (
+                    <div className={classes.Card}>
+                        <div className={classes.contentWrapperSmaller}>
+                        <Link to={"/post/?id="+props.id} style={{textDecoration: "none", color: "black"}}>
+                            <h1>{props.title}</h1>
+                        </Link> 
+                        </div>
+                        {
+                            props.socialBoard ? (
+                                <div className={classes.userInfoContainer}>
+                                    <img src={userData.photo} alt="user's face" className={classes.userPhoto} />
+                                    <h2><a href={"/user/profile/?id="+userData._id}
+                                        style={{color: "black", textDecoration: "none"}}
+                                    >@{nickname}</a></h2>
+                                </div>
+                            )
+                            : (
+                                <div className={classes.contentWrapperSmaller}>
+                                    <h2>@{nickname}</h2>
+                                </div>
+                            )
+                        }
+                        <div className={classes.contentWrapper}>
+                            <p>{props.content}</p>
+                        </div>
+                        <p>(see the full blog to read further)</p>
+                        {
+                            (props.author===tempCompareVal) ? (
+                                <div className={classes.btnWrapper}>
+                                    <Button clicked={()=>props.edit(props.id)}>Edit</Button>
+                                    <Button clicked={()=>props.delete(props.id)}>Delete</Button>
+                                </div> 
+                            ) : null
+                        }
                     </div>
                 )
             }
-            <div className={classes.contentWrapper}>
-                <p>{props.content}</p>
-            </div>
-            <p>(see the full blog to read further)</p>
-            {
-                (props.author===tempCompareVal) ? (
-                    <div className={classes.btnWrapper}>
-                        <Button clicked={()=>props.edit(props.id)}>Edit</Button>
-                        <Button clicked={()=>props.delete(props.id)}>Delete</Button>
-                    </div> 
-                ) : null
-            }
-        </div>
+        </>
     )
 };
  

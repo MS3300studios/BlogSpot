@@ -113,7 +113,12 @@ router.get('/users/getUser/:userId', auth, (req, res) => {
         .exec()
         .then(user => {
             BlockedUsers.findOne({forUser: req.userData.userId}, (err, blockList) => {
-                if(!blockList) res.json({blocked: false});
+                if(!blockList){
+                    res.json({
+                        user: user,
+                        blocked: false
+                    });
+                }
                 else{
                     let isInList = blockList.blockedUsers.filter(el => {
                         if(el.blockedUserId === req.params.userId) return true
