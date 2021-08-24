@@ -41,13 +41,13 @@ const UnblockUsers = () => {
         .then((res)=>{
             if(res.status===200){
                 let blockedUsers = null;
-                if(res.data.friends.length === 0){ blockedUsers = (
+                if(res.data.users.length === 0){ blockedUsers = (
                     <h1 style={{color: "white"}}>
                         You don't have any blocked users, to block a user go to their profile and press the block button there
                     </h1>
                 )}
                 else {
-                    blockedUsers = res.data.friends.map((user, index) => {
+                    blockedUsers = res.data.users.map((user, index) => {
                         return (
                             <FriendsListItem 
                                 key={index}

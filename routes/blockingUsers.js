@@ -19,58 +19,43 @@ router.post('/blocking/blockedUsers', auth, (req, res) => {
         }
         else if(req.body.getFullData === true){
 
-            let friendsData = blockedUsers.blockedUsers;
-
-            function getter(id){
-                return new Promise((resolve, reject) => {
-                    User.findById(id)
-                        .exec()
-                        .then(user => {
-                            resolve(user);
-                        }) 
-                        .catch(error => {
-                            reject(error.code);
-                        })
-                })
+            if(blockedUsers === null){
+                res.json({
+                    users: []
+                });
             }
+            else{
+                let friendsData = blockedUsers.blockedUsers;
 
-            let fullFriendsArr = [];
-
-            async function looper(){
-                for(let i=0; i<friendsData.length; i++){
-                    let fullFriend = await getter(friendsData[i].blockedUserId);
-                    fullFriendsArr.push(fullFriend)
+                function getter(id){
+                    return new Promise((resolve, reject) => {
+                        User.findById(id)
+                            .exec()
+                            .then(user => {
+                                resolve(user);
+                            }) 
+                            .catch(error => {
+                                reject(error.code);
+                            })
+                    })
                 }
 
-                res.status(200).json({
-                    friends: fullFriendsArr
-                }) 
-            }
+                let fullFriendsArr = [];
 
+                async function looper(){
+                    for(let i=0; i<friendsData.length; i++){
+                        let fullFriend = await getter(friendsData[i].blockedUserId);
+                        fullFriendsArr.push(fullFriend)
+                    }
 
-            looper();
-
-
-            /*let getUser = (el) => {
-                return new Promise((resolve, reject) => {
-                    User.findById(el).then(user => resolve(user)).catch(error => reject(error));
-                })
-            }
-
-            let loop = async () => {
-                let fullUsers = [];
-                for(let i=0; i<blockedUsers.length; i++){
-                    console.log(blockedUsers)
-                    let fullUser = await getUser(blockedUsers.blockedUsers[i].blockedUserId);
-                    fullUsers.push(fullUser);
+                    res.status(200).json({
+                        users: fullFriendsArr
+                    }) 
                 }
 
-                return fullUsers
-            }
 
-            loop().then((fullUsers)=>{
-                console.log('full ahaha'+fullUsers);
-            })*/
+                looper();
+            }
         }
     }).catch(err => console.log(err))
 })
