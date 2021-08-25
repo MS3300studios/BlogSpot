@@ -36,7 +36,7 @@ const BlockedUserPrevent = (props) => {
             if(res.status===200){
                 console.log(res.data)
                 if(res.data.blocked === false){
-                    setcontent(<Conversation conversation={props.selectedConversation}/>);
+                    setcontent(<Conversation conversation={props.selectedConversation} refreshAfterBlock={validate}/>);
                     setloading(false);
                 }
                 else{
