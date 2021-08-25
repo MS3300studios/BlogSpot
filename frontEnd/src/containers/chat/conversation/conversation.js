@@ -372,7 +372,9 @@ class Conversation extends Component {
             conversationName = (
                 <div className={classes.conversationName}>
                     <OnlineIcon online={data.friendId}/>
-                    <h1>{data.friendName}</h1>
+                    <a href={`/user/profile/?id=${data.friendId}`} style={{color: "unset", textDecoration: "none"}}>
+                        <h1>{data.friendName}</h1>
+                    </a>
                 </div>
             )
         }

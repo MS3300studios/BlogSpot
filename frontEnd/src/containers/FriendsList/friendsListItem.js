@@ -85,28 +85,34 @@ const FriendsListItem = (props) => {
                     </div>
                 </div>
                 {
-                    props.friendSelect ? (
-                        <input 
-                            type="checkbox" 
-                            className={classes.inputCheckbox} 
-                            onChange={()=>{
-                                props.friendWasSelected({userId: props.id, name: props.name}, !checked)
-                                setchecked(!checked)
-                            }}
-                            checked={checked}
-                        />
-                    ) : (
+                    props.noInteractionIcon ? null : (
                         <>
                             {
-                                props.unblock ? (
-                                    <button className={classes.unblockUser} onClick={()=>props.unblock(props.id)}>
-                                        <BiBlock size="1.5em" color="#FFF" />
-                                        Unblock user
-                                    </button>
+                                props.friendSelect ? (
+                                    <input 
+                                        type="checkbox" 
+                                        className={classes.inputCheckbox} 
+                                        onChange={()=>{
+                                            props.friendWasSelected({userId: props.id, name: props.name}, !checked)
+                                            setchecked(!checked)
+                                        }}
+                                        checked={checked}
+                                    />
                                 ) : (
-                                    <div className={classes.chatIcon} onClick={checkIfBlocked}>
-                                        <BiMessageDetail size="2em" color="#0a42a4" />
-                                    </div>
+                                    <>
+                                        {
+                                            props.unblock ? (
+                                                <button className={classes.unblockUser} onClick={()=>props.unblock(props.id)}>
+                                                    <BiBlock size="1.5em" color="#FFF" />
+                                                    Unblock user
+                                                </button>
+                                            ) : (
+                                                <div className={classes.chatIcon} onClick={checkIfBlocked}>
+                                                    <BiMessageDetail size="2em" color="#0a42a4" />
+                                                </div>
+                                            )
+                                        }
+                                    </>
                                 )
                             }
                         </>

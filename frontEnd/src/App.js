@@ -61,6 +61,8 @@ class App extends Component {
   
 
   componentDidMount(){
+    this.socket.on('message', sth => console.log(sth))
+
     let session = sessionStorage.getItem('token');
     let local = localStorage.getItem('token');
     if(session!==null||local!==null){

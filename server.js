@@ -56,6 +56,7 @@ io.on('connection', (socket) => {
     
     socket.on('logOnlineUsers', () => {
         console.log(onlineUsers)
+        console.log('----------------')
     })
     
     socket.on('join', ({userId, name, conversationId}) => {
