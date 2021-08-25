@@ -135,7 +135,9 @@ const ConversationListItem = (props) => {
         else return null
     }
 
-    let content = <h1>{props.el.name}</h1>;
+    let content = (
+        <h1>{props.el.name}</h1>
+    );
 
     if(props.el.conversationType === "private"){
         loading ? content = <Spinner small darkgreen/> : content = (

@@ -12,6 +12,16 @@
     margin: 10px;
     transition: 0.2s;
     border-radius: 50%;
+    animation: skeleton-loading 1s linear infinite alternate;
+}
+
+@keyframes skeleton-loading {
+    0% {
+        background-color: hsl(200, 20%, 70%);
+    }
+    100% {
+        background-color: hsl(200, 20%, 95%);
+    }
 }
 
 .smallPhotoCommentForm{
@@ -20,6 +30,7 @@
     height: 45px;
     margin-left: -5px;
     margin-top: 5px;
+    animation: skeleton-loading 1s linear infinite alternate;
 }
 
 .userPhoto:hover{

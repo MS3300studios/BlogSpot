@@ -11,7 +11,7 @@ import getToken from '../../getToken';
 const Post = (props) => {
     let userLoggedData = getUserData();
 
-    const [loading, setloading] = useState(true);
+    const [loading, setloading] = useState(props.socialBoard);
     const [userData, setuserData] = useState({});
     const [nickname, setnickname] = useState(userLoggedData.nickname)
     let token = getToken();
@@ -32,6 +32,7 @@ const Post = (props) => {
                 console.log(error);
             })
         }
+        // else if(props.dashboard) setloading(false); 
     }, [props.socialBoard, props.author, token])
 
     //if in socialBoard then author prop is an ID, and has to be adjusted.

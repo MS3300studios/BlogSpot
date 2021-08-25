@@ -117,14 +117,13 @@ class Dashboard extends Component {
         axios({
             method: 'get',
             url: 'http://localhost:3001/myBlogs',
-            params: {},
             headers: {'Authorization': this.state.token}
         })
-        .then(async (res) => {
+        .then(res => {
+            console.log(res.data)
             this.setState({loading: false});
             const posts = [];
             for(let key in res.data.blogs) {
-
                 posts.push({
                     ...res.data.blogs[key],
                     id: key
@@ -266,6 +265,7 @@ class Dashboard extends Component {
                         key={index}
                         delete={this.deletePost}
                         edit={this.editPost}
+                        dashboard
                     />        
                 )}
             );

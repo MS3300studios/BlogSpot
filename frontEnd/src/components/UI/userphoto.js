@@ -98,6 +98,3 @@ class UserPhoto extends Component {
 }
  
 export default UserPhoto;
-
-
-// <Link to={"/user/profile/?id="+this.state.userData._id} className={classes.myProfileLink}><p>My Profile</p></Link>
