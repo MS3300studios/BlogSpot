@@ -1,5 +1,5 @@
 import axios from 'axios'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import getToken from '../../../getToken'
 
 import Spinner from '../../../components/UI/spinner';
@@ -10,7 +10,7 @@ const BlockedUserPrevent = (props) => {
     const [content, setcontent] = useState()
     const [loading, setloading] = useState(true)
 
-    let getOtherUserNameAndId = () => {
+    let getOtherUserNameAndId = useCallback(() => {
         let userData = getUserData();
         let friendName = null;
         let friendId = null;
@@ -21,9 +21,10 @@ const BlockedUserPrevent = (props) => {
             }
         });
         return ({friendName: friendName, friendId: friendId})
-    }
+    }, [props.selectedConversation.participants])
 
-    let validate = () => {
+    let validate = useCallback(() => {
+        console.log('validating')
         const token = getToken();
         const data = getOtherUserNameAndId();
         axios({
@@ -51,21 +52,19 @@ const BlockedUserPrevent = (props) => {
         .catch(error => {
             console.log(error);
         })
-    }
+    }, [props.selectedConversation, getOtherUserNameAndId])
 
     useEffect(() => {
         
         if(props.selectedConversation.conversationType === 'private'){
-            console.log('conversation changed - private')
             setloading(true);
             validate();
         }
         else{
-            console.log('conversation changed - public')
             setcontent(<Conversation conversation={props.selectedConversation} refreshAfterBlock={validate}/>);
             setloading(false);
         }
-    }, [props.selectedConversation])
+    }, [props.selectedConversation, validate])
 
     return (
         <>
