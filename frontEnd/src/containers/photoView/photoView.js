@@ -151,8 +151,6 @@ class photoView extends Component {
     }
 
     deleteCommentHandler = (index) => {
-        console.log(index)
-        console.log(this.state.comments.length-1)
         axios({
             method: 'post',
             url: `http://localhost:3001/photo/comment/delete`,

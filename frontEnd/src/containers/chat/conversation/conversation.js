@@ -56,8 +56,9 @@ class Conversation extends Component {
             filterParticipantsString: "",
             conversationStartReached: false,
             redirectToDashboard: false,
-            loadingBlocked: true,
+            loadingBlocked: true
         }
+        
         this.sendMessage.bind(this);
         this.sendConversationName.bind(this);
         this.fetchMessages.bind(this);
@@ -68,6 +69,7 @@ class Conversation extends Component {
         this.deleteConversation.bind(this);
         this.sendLastReadMessage.bind(this);
         this.getOtherUserNameAndId.bind(this);
+        this.blockUserInPrivateConversation.bind(this);
         
         this.scrollPosition = React.createRef();
         this.scrollPosition.current = 201;
@@ -95,6 +97,7 @@ class Conversation extends Component {
         }
 
         if(prevProps.conversation._id !== this.props.conversation._id){
+            console.log('setting new conversation')
             this.socket.emit('leaveConversation', {conversationId: prevProps.conversation._id}) //leaving old conversation
             this.socket.emit('join', {name: this.state.user.name, conversationId: this.props.conversation._id }); //joining new conversation
             this.setState({skip: 0, infoOpened: false, loadingNewMessages: false, messages: [], conversationStartReached: false}, () => {
@@ -169,7 +172,23 @@ class Conversation extends Component {
         }
     }
 
-    deleteConversation = (block) => {
+    deleteConversation = () => {
+        axios({
+            method: 'get',
+            url: `http://localhost:3001/conversation/delete/${this.props.conversation._id}`,
+            headers: {'Authorization': this.state.token}
+        })
+        .then((res)=>{
+            if(res.status===200){
+                this.setState({redirectToDashboard: true});
+            }
+        })
+        .catch(error => {
+            console.log(error);
+        }) 
+    }
+
+    blockUserInPrivateConversation = () => {
         let friendId = null;
         this.props.conversation.participants.forEach(participant => {
             if(participant.userId !== this.state.user._id){
@@ -178,37 +197,20 @@ class Conversation extends Component {
         });
 
         axios({
-            method: 'get',
-            url: `http://localhost:3001/conversation/delete/${this.props.conversation._id}`,
-            headers: {'Authorization': this.state.token}
+            method: 'post',
+            url: `http://localhost:3001/blocking/addBlock`,
+            headers: {'Authorization': this.state.token},
+            data: {userToBeBlockedId: friendId}
         })
         .then((res)=>{
             if(res.status===200){
-                if(block === true){
-                    //call api to add user to blocked users list
-                    axios({
-                        method: 'post',
-                        url: `http://localhost:3001/blocking/addBlock`,
-                        headers: {'Authorization': this.state.token},
-                        data: {userToBeBlockedId: friendId}
-                    })
-                    .then((res)=>{
-                        if(res.status===200){
-                            this.setState({redirectToDashboard: true});
-                        }
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    })
-                }
-                else{
-                    this.setState({redirectToDashboard: true});
-                }
+                //trigger props function that resets component
+                this.props.refreshAfterBlock();
             }
         })
         .catch(error => {
             console.log(error);
-        }) 
+        })
     }
 
     sendMessage = (e) => {
@@ -392,7 +394,7 @@ class Conversation extends Component {
                         {
                             this.state.loadingNewMessages ? <Spinner small/> : (
                                 <div ref={this.top} className={classes.messagesTopDiv}>
-                                    {this.state.conversationStartReached ? <h1>You've reached the start of the conversation</h1> : null}
+                                    {(this.state.conversationStartReached && this.state.messages.length!==0) ? <h1>You've reached the start of the conversation</h1> : null}
                                 </div>
                             )
                         }
@@ -422,7 +424,7 @@ class Conversation extends Component {
                                                 <p>Delete conversation</p>
                                             </div>
                                             <br />
-                                            <div className={[classes.operationButton,classes.leave].join(" ")} onClick={()=>this.deleteConversation(true)}>
+                                            <div className={[classes.operationButton,classes.leave].join(" ")} onClick={this.blockUserInPrivateConversation}>
                                                 <BiBlock size="2em" color="#fff"/>
                                                 <p>Block user</p>
                                             </div>

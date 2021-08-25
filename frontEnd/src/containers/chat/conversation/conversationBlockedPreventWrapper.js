@@ -54,11 +54,16 @@ const BlockedUserPrevent = (props) => {
     }
 
     useEffect(() => {
+        
         if(props.selectedConversation.conversationType === 'private'){
+            console.log('conversation changed - private')
+            setloading(true);
             validate();
         }
         else{
-            setcontent(<Conversation conversation={props.selectedConversation}/>);
+            console.log('conversation changed - public')
+            setcontent(<Conversation conversation={props.selectedConversation} refreshAfterBlock={validate}/>);
+            setloading(false);
         }
     }, [props.selectedConversation])
 

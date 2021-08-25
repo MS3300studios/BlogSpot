@@ -93,7 +93,6 @@ router.post('/blocking/addBlock', auth, (req, res) => {
             })
 
             blockedUsers.save().then(response => {
-                console.log(response);
                 res.sendStatus(200);
             })
         }
