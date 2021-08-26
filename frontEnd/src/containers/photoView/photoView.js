@@ -6,17 +6,17 @@ import getUserData from '../../getUserData';
 import Like from '../../components/UI/like';
 import { FaCommentAlt } from 'react-icons/fa';
 import classes from './photoView.module.css';
-import newCommentClasses from '../../components/UI/AddCommentForm.module.css'
+// import newCommentClasses from '../../components/UI/AddCommentForm.module.css'
 import Button from '../../components/UI/button';
 import formattedCurrentDate from '../../formattedCurrentDate';
 import UserPhoto from '../../components/UI/userphoto';
 import Spinner from '../../components/UI/spinner';
-import { RiSendPlaneFill, RiSendPlaneLine } from 'react-icons/ri' 
+// import { RiSendPlaneFill, RiSendPlaneLine } from 'react-icons/ri' 
 import Flash from '../../components/UI/flash';
 
-import photoCommentClasses from './photoComment/photoComment.module.css';
+// import photoCommentClasses from './photoComment/photoComment.module.css';
 import CommentOptions from '../userProfile/tabs/comments/optionsContainer/CommentOptions';
-import EditCommentForm from '../userProfile/tabs/comments/optionsContainer/EditCommentFrom';
+// import EditCommentForm from '../userProfile/tabs/comments/optionsContainer/EditCommentFrom';
 import { withRouter } from 'react-router-dom';
 import EditPhotoDesc from './EditPhotoDesc';
 import PhotoComments from './photoComments/photoComments';
@@ -46,11 +46,11 @@ class photoView extends Component {
             editingPhotoDescription: false
         }
         this.getPhoto.bind(this);
-        this.sendComment.bind(this);
         this.flash.bind(this);
-        this.deleteCommentHandler.bind(this);
-        this.editCommentHandler.bind(this);
-        this.indexComments.bind(this);
+        // this.sendComment.bind(this);
+        // this.deleteCommentHandler.bind(this);
+        // this.editCommentHandler.bind(this);
+        // this.indexComments.bind(this);
         this.sendLikeAction.bind(this);
         this.checkFills.bind(this);
         this.deletePhotoHandler.bind(this);
@@ -135,44 +135,44 @@ class photoView extends Component {
         })
     }
 
-    editCommentHandler = (index, cancelEdit) => {
-        let editComArr = this.state.commentsEditing;
-        let temp = true;
-        if(cancelEdit){
-            temp = false;
-        }
-        editComArr[index] = temp;
-        this.setState({commentsEditing: editComArr});
-    }
+    // editCommentHandler = (index, cancelEdit) => {
+    //     let editComArr = this.state.commentsEditing;
+    //     let temp = true;
+    //     if(cancelEdit){
+    //         temp = false;
+    //     }
+    //     editComArr[index] = temp;
+    //     this.setState({commentsEditing: editComArr});
+    // }
 
-    editCommentCleanUp = (photo) => {
-        this.indexComments();
-        this.setState({
-            photo: photo
-        })
-    }
+    // editCommentCleanUp = (photo) => {
+    //     this.indexComments();
+    //     this.setState({
+    //         photo: photo
+    //     })
+    // }
 
-    deleteCommentHandler = (index) => {
-        axios({
-            method: 'post',
-            url: `http://localhost:3001/photo/comment/delete`,
-            headers: {'Authorization': this.state.token},
-            data: {
-                photoId: this.state.photo._id,
-                content: this.state.comments[index].content
-            }
-        })
-        .then((res)=>{
-            if(res.status===200){
-                this.setState({photo: res.data.photo, socialStateWasChanged: true});
-                this.indexComments();
-                return;
-            }
-        })
-        .catch(error => {
-            console.log(error);
-        })
-    }
+    // deleteCommentHandler = (index) => {
+    //     axios({
+    //         method: 'post',
+    //         url: `http://localhost:3001/photo/comment/delete`,
+    //         headers: {'Authorization': this.state.token},
+    //         data: {
+    //             photoId: this.state.photo._id,
+    //             content: this.state.comments[index].content
+    //         }
+    //     })
+    //     .then((res)=>{
+    //         if(res.status===200){
+    //             this.setState({photo: res.data.photo, socialStateWasChanged: true});
+    //             this.indexComments();
+    //             return;
+    //         }
+    //     })
+    //     .catch(error => {
+    //         console.log(error);
+    //     })
+    // }
 
     flash = (message) => {
         this.setState({flashMessage: message});
@@ -215,15 +215,15 @@ class photoView extends Component {
         })
     }
 
-    indexComments = () => {
-        let editingComments = [];
-        let comments = this.state.photo.comments.map((com, index) => {
-            editingComments.push(false);
-            com.index = index;
-            return com
-        })
-        this.setState({comments: comments, commentsEditing: editingComments});
-    }
+    // indexComments = () => {
+    //     let editingComments = [];
+    //     let comments = this.state.photo.comments.map((com, index) => {
+    //         editingComments.push(false);
+    //         com.index = index;
+    //         return com
+    //     })
+    //     this.setState({comments: comments, commentsEditing: editingComments});
+    // }
 
     sendNotification = () => {
         let data = {
@@ -246,77 +246,77 @@ class photoView extends Component {
         })
     }
 
-    sendComment = () => {
-        if(this.state.newCommentContent !== ""){
-            axios({
-                method: 'post',
-                url: `http://localhost:3001/photo/addComment`,
-                headers: {'Authorization': this.state.token},
-                data: {
-                    photoId: this.state.photo._id,
-                    nickname: this.state.userData.nickname,
-                    content: this.state.newCommentContent,
-                    adressingUser: this.state.photo.authorId
-                }
-            })
-            .then((res)=>{
-                if(res.status===201){
-                    this.indexComments();
-                    this.sendNotification();
-                    let commentsRdy = res.data.photo.comments.map((comment, index) => {
-                        return (
-                            <div key={index}>
-                                {/* <PhotoComment comment={comment} userId={this.state.userData.userId}/> */}
-                                <div className={photoCommentClasses.commentContainer}>
-                                    <div className={photoCommentClasses.topBar}>    
-                                        <div className={photoCommentClasses.userPhotoDiv}>
-                                            <UserPhoto userId={comment.authorId} small hideOnlineIcon/>
-                                        </div>
-                                        <p className={photoCommentClasses.nickName}>
-                                            <a href={"/user/profile/?id="+comment.authorId}>@{comment.authorNick}</a>
-                                        </p>
-                                        <p className={photoCommentClasses.Date}>{formattedCurrentDate(comment.createdAt)}</p>
-                                        {
-                                            (this.state.userData._id === comment.authorId) ? 
-                                                <CommentOptions 
-                                                    photoComment
-                                                    deleteComment={() => this.deleteCommentHandler(index)}
-                                                    editComment={() => this.editCommentHandler(index, false)} /> : null
-                                        }
-                                    </div>
-                                    <div className={photoCommentClasses.content}>
-                                        {
-                                            this.state.commentsEditing[index] ? 
-                                            <EditCommentForm 
-                                                photo
-                                                cancelEdit={()=>this.editCommentHandler(index, true)}    
-                                                initialValue={comment.content}  
-                                                flashProp={this.flash}  
-                                                afterSend={this.editCommentCleanUp}  
-                                                photoId={this.state.photo._id}                          
-                                            /> : <p>{comment.content}</p>
-                                        }
-                                    </div>
-                                </div>
-                            </div>
-                        )
-                    })
+    // sendComment = () => {
+    //     if(this.state.newCommentContent !== ""){
+    //         axios({
+    //             method: 'post',
+    //             url: `http://localhost:3001/photo/addComment`,
+    //             headers: {'Authorization': this.state.token},
+    //             data: {
+    //                 photoId: this.state.photo._id,
+    //                 nickname: this.state.userData.nickname,
+    //                 content: this.state.newCommentContent,
+    //                 adressingUser: this.state.photo.authorId
+    //             }
+    //         })
+    //         .then((res)=>{
+    //             if(res.status===201){
+    //                 this.indexComments();
+    //                 this.sendNotification();
+    //                 let commentsRdy = res.data.photo.comments.map((comment, index) => {
+    //                     return (
+    //                         <div key={index}>
+    //                             {/* <PhotoComment comment={comment} userId={this.state.userData.userId}/> */}
+    //                             <div className={photoCommentClasses.commentContainer}>
+    //                                 <div className={photoCommentClasses.topBar}>    
+    //                                     <div className={photoCommentClasses.userPhotoDiv}>
+    //                                         <UserPhoto userId={comment.authorId} small hideOnlineIcon/>
+    //                                     </div>
+    //                                     <p className={photoCommentClasses.nickName}>
+    //                                         <a href={"/user/profile/?id="+comment.authorId}>@{comment.authorNick}</a>
+    //                                     </p>
+    //                                     <p className={photoCommentClasses.Date}>{formattedCurrentDate(comment.createdAt)}</p>
+    //                                     {
+    //                                         (this.state.userData._id === comment.authorId) ? 
+    //                                             <CommentOptions 
+    //                                                 photoComment
+    //                                                 deleteComment={() => this.deleteCommentHandler(index)}
+    //                                                 editComment={() => this.editCommentHandler(index, false)} /> : null
+    //                                     }
+    //                                 </div>
+    //                                 <div className={photoCommentClasses.content}>
+    //                                     {
+    //                                         this.state.commentsEditing[index] ? 
+    //                                         <EditCommentForm 
+    //                                             photo
+    //                                             cancelEdit={()=>this.editCommentHandler(index, true)}    
+    //                                             initialValue={comment.content}  
+    //                                             flashProp={this.flash}  
+    //                                             afterSend={this.editCommentCleanUp}  
+    //                                             photoId={this.state.photo._id}                          
+    //                                         /> : <p>{comment.content}</p>
+    //                                     }
+    //                                 </div>
+    //                             </div>
+    //                         </div>
+    //                     )
+    //                 })
 
-                    this.setState({photo: res.data.photo, comments: commentsRdy, newCommentContent: "", socialStateWasChanged: true})
-                    return;
-                }
-            })
-            .catch(error => {
-                console.log(error)
-                if(error.message === "Request failed with status code 403"){
-                    this.flash('You cannot post comments on this users activity');
-                }
-            })
-        }
-        else{
-            this.flash("you cannot send an empty comment")
-        }
-    }  
+    //                 this.setState({photo: res.data.photo, comments: commentsRdy, newCommentContent: "", socialStateWasChanged: true})
+    //                 return;
+    //             }
+    //         })
+    //         .catch(error => {
+    //             console.log(error)
+    //             if(error.message === "Request failed with status code 403"){
+    //                 this.flash('You cannot post comments on this users activity');
+    //             }
+    //         })
+    //     }
+    //     else{
+    //         this.flash("you cannot send an empty comment")
+    //     }
+    // }  
 
     render() {
         let flashView = null;
@@ -326,10 +326,10 @@ class photoView extends Component {
         else if(this.state.flashMessage && this.state.flashNotClosed === false){
             flashView = <Flash close>{this.state.flashMessage}</Flash>
         }
-        let smallClass = newCommentClasses.mainForm;
-        if(this.props.small){
-            smallClass = [newCommentClasses.mainForm, newCommentClasses.smallForm].join(" ");
-        }
+        // let smallClass = newCommentClasses.mainForm;
+        // if(this.props.small){
+        //     smallClass = [newCommentClasses.mainForm, newCommentClasses.smallForm].join(" ");
+        // }
 
         return (
             <div className={classes.backdrop}>
@@ -413,37 +413,14 @@ class photoView extends Component {
                                     }
                                 </div>
                                 <hr />
-                                <div className={classes.commentForm}>
-                                <div className={newCommentClasses.mainContainer}>
-                                    <div className={newCommentClasses.userPhotoDiv}>
-                                        <UserPhoto userId={this.state.userData._id} smallPhotoCommentForm hideOnlineIcon/>
-                                    </div>
-                                    <div className={smallClass} style={{marginLeft: "-54px"}}>
-                                        <input 
-                                            value={this.state.newCommentContent} 
-                                            placeholder="write your comment here" 
-                                            onChange={(event)=>this.setState({newCommentContent: event.target.value})}
-                                            onKeyPress={ev => ev.key==="Enter" ? this.sendComment() : null}
-                                        />
-                                    </div>
-                                    <div 
-                                        onMouseDown={(e)=>{
-                                            this.setState({sendPressed: true})
-                                            this.sendComment()
-                                        }}
-                                        onMouseUp={()=>{this.setState({sendPressed: false})}} 
-                                        className={newCommentClasses.sendIcon}>
-                                        {this.state.sendPressed ? <RiSendPlaneLine size="2em"/> : <RiSendPlaneFill size="2em" />}
-                                    </div>
-                                </div>
-                                </div>
-                                <div className={classes.commentsContainer}>
-                                    <PhotoComments 
-                                        photoId={this.props.photo._id} 
-                                        flash={this.flash} 
-                                        afterSend={this.editCommentCleanUp}
-                                    />
-                                </div>
+                                <PhotoComments 
+                                    photoId={this.props.photo._id} 
+                                    flash={this.flash} 
+                                    afterSend={this.editCommentCleanUp}
+                                    small={this.props.small}
+                                    photoAuthorId={this.props.photo.authorId}
+                                    sendNotification={this.sendNotification}
+                                />
                             </div>
                         )
                     }
