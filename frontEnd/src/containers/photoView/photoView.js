@@ -261,7 +261,8 @@ class photoView extends Component {
                 data: {
                     photoId: this.state.photo._id,
                     nickname: this.state.userData.nickname,
-                    content: this.state.newCommentContent
+                    content: this.state.newCommentContent,
+                    adressingUser: this.state.photo.authorId
                 }
             })
             .then((res)=>{
@@ -273,7 +274,10 @@ class photoView extends Component {
                 }
             })
             .catch(error => {
-                console.log(error);
+                console.log(error)
+                if(error.message === "Request failed with status code 403"){
+                    //this.flash('You cannot post comments on this users activity');
+                }
             })
         }
         else{

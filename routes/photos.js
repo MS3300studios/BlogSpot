@@ -2,6 +2,7 @@ const express = require('express');
 const router = express();
 
 const auth = require('../middleware/authorization');
+const checkBlock = require('../middleware/checkingBlock');
 
 const User = require('../models/user');
 const Module = require('../models/photo');
@@ -74,7 +75,7 @@ router.post('/photo/edit', auth, (req, res) => {
 
 //----------------------------------------------COMMENTS
 
-router.post('/photo/addComment', auth, (req, res) => {
+router.post('/photo/addComment', auth, checkBlock, (req, res) => {
     if(req.body.content === ""){
         res.status(401);
     }
