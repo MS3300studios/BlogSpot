@@ -192,18 +192,10 @@ class photoView extends Component {
     }
 
     getPhoto = () => {
-        let editingComments = [];
-        let comments = this.props.photo.comments.map((comment, index) => {
-            editingComments.push(false);
-            comment.index = index;
-            return comment
-        })
         let fills = this.checkFills(this.props.photo);
         this.setState({
             photo: this.props.photo, 
             loading: false, 
-            comments: comments, 
-            commentsEditing: editingComments,
             likeFill: fills.likeFill, 
             dislikeFill: fills.dislikeFill
         });
@@ -297,7 +289,18 @@ class photoView extends Component {
         })
         .then((res)=>{
             if(res.status===200){
-                let commentsRdy = res.data.comments.map((comment, index) => {
+                console.log(res.data.comments)
+
+                let editingComments = [];
+                let comments = res.data.comments.map((comment, index) => {
+                    editingComments.push(false);
+                    comment.index = index;
+                    return comment
+                })
+                console.log(comments)
+                console.log(editingComments)
+
+                let commentsRdy = comments.map((comment, index) => {
                     return (
                         <div key={index}>
                             {/* <PhotoComment comment={comment} userId={this.state.userData.userId}/> */}
@@ -344,10 +347,6 @@ class photoView extends Component {
     }
 
     render() {
-
-        let loadedComments = null;
-        this.state.loadingComments ? loadedComments = <Spinner /> : <>{this.state.comments}</> //they have to be JSX els, and can't be a js object
-
         let flashView = null;
         if(this.state.flashMessage && this.state.flashNotClosed){
             flashView = <Flash>{this.state.flashMessage}</Flash>
@@ -468,7 +467,7 @@ class photoView extends Component {
                                 </div>
                                 <div className={classes.commentsContainer}>
                                     {
-                                        loadedComments
+                                        this.state.loadingComments ? <Spinner darkgreen/> : <>{this.state.comments}</>
                                     }
                                 </div>
                             </div>
