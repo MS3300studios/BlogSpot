@@ -3,12 +3,13 @@ const router = express();
 
 const Comment = require('../models/comment');
 const auth = require('../middleware/authorization');
+const checkBlock = require('../middleware/checkingBlock');
 
 router.use(express.json());
 
-router.post('/comments/new', auth, (req, res) => {
+router.post('/comments/new', auth, checkBlock, (req, res) => {
     if(req.body.content === ""){
-        res.sendStatus(500)
+        res.sendStatus(400) //bad request
     }
     const comment = new Comment({
         content: req.body.content,
