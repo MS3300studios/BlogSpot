@@ -438,7 +438,11 @@ class photoView extends Component {
                                 </div>
                                 </div>
                                 <div className={classes.commentsContainer}>
-                                    <PhotoComments photoId={this.props.photo._id} flash={this.flash} />
+                                    <PhotoComments 
+                                        photoId={this.props.photo._id} 
+                                        flash={this.flash} 
+                                        afterSend={this.editCommentCleanUp}
+                                    />
                                 </div>
                             </div>
                         )

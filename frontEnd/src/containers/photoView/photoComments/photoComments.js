@@ -18,6 +18,50 @@ const PhotoComments = (props) => {
     const token = getToken();
     const userData = getUserData();
 
+    let editCommentHandler = (index, cancelEdit) => {
+        let editComArr = commentsEditing;
+        let temp = true;
+        if(cancelEdit){
+            temp = false;
+        }
+        editComArr[index] = temp;
+        setcommentsEditing(editComArr);
+    }
+
+    let indexComments = () => {
+        let editingComments = [];
+        let commentsReady = comments.map((com, index) => {
+            editingComments.push(false);
+            com.index = index;
+            return com
+        })
+        
+        setcommentsEditing(editingComments);
+        setcomments(commentsReady);
+    }
+
+    let deleteCommentHandler = (index) => {
+        axios({
+            method: 'post',
+            url: `http://localhost:3001/photo/comment/delete`,
+            headers: {'Authorization': this.state.token},
+            data: {
+                photoId: props.photoId,
+                content: comments[index].content
+            }
+        })
+        .then((res)=>{
+            if(res.status===200){
+                // this.setState({photo: res.data.photo, socialStateWasChanged: true});
+                indexComments();
+                return;
+            }
+        })
+        .catch(error => {
+            console.log(error);
+        })
+    }
+
     useEffect(() => {
         axios({
             method: 'get',
@@ -64,8 +108,8 @@ const PhotoComments = (props) => {
                                                 (userData._id === comment.authorId) ? 
                                                     <CommentOptions 
                                                         photoComment
-                                                        deleteComment={() => this.deleteCommentHandler(index)}
-                                                        editComment={() => this.editCommentHandler(index, false)} /> : null
+                                                        deleteComment={() => deleteCommentHandler(index)}
+                                                        editComment={() => editCommentHandler(index, false)} /> : null
                                             }
                                         </div>
                                         <div className={photoCommentClasses.content}>
@@ -76,7 +120,7 @@ const PhotoComments = (props) => {
                                                     cancelEdit={()=>this.editCommentHandler(index, true)}    
                                                     initialValue={comment.content}  
                                                     flashProp={props.flash}  
-                                                    afterSend={this.editCommentCleanUp}  
+                                                    afterSend={props.afterSend}  
                                                     photoId={props.photoId}                          
                                                 /> : <p>{comment.content}</p>
                                             }
