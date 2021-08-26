@@ -75,6 +75,17 @@ router.post('/photo/edit', auth, (req, res) => {
 
 //----------------------------------------------COMMENTS
 
+router.get('/photo/getComments/:photoId', auth, (req, res) => {
+    Photo.findById(req.params.photoId, (err, photo) => {
+        if(err) console.log(err)
+        else{
+            res.json({
+                comments: photo.comments
+            })
+        }
+    })
+});
+
 router.post('/photo/addComment', auth, checkBlock, (req, res) => {
     if(req.body.content === ""){
         res.status(401);

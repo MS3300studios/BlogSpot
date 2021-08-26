@@ -37,6 +37,7 @@ class photoView extends Component {
             newCommentContent: "",
             sendPressed: false,
             comments: [],
+            loadingComments: true,
             commentsEditing: [],
             likeFill: false,
             dislikeFill: false,
@@ -55,10 +56,12 @@ class photoView extends Component {
         this.editPhotoDescHandler.bind(this);
         this.sendEditedDesc.bind(this);
         this.sendNotification.bind(this);
+        this.getComments.bind(this);
     }
 
     componentDidMount(){
         this.getPhoto();
+        this.getComments();
     }
 
     componentDidUpdate(prevProps, prevState){
@@ -269,6 +272,7 @@ class photoView extends Component {
                 if(res.status===201){
                     this.indexComments();
                     this.sendNotification();
+                    console.log(res.data.photo)
                     this.setState({photo: res.data.photo, comments: res.data.photo.comments, newCommentContent: "", socialStateWasChanged: true})
                     return;
                 }
@@ -285,7 +289,65 @@ class photoView extends Component {
         }
     }  
 
+    getComments = () => {
+        axios({
+            method: 'get',
+            url: `http://localhost:3001/photo/getComments/${this.props.photo._id}`,
+            headers: {"Authorization": this.state.token}
+        })
+        .then((res)=>{
+            if(res.status===200){
+                let commentsRdy = res.data.comments.map((comment, index) => {
+                    return (
+                        <div key={index}>
+                            {/* <PhotoComment comment={comment} userId={this.state.userData.userId}/> */}
+                            <div className={photoCommentClasses.commentContainer}>
+                                <div className={photoCommentClasses.topBar}>   
+                                    <div className={photoCommentClasses.userPhotoDiv}>
+                                        <UserPhoto userId={comment.authorId} small hideOnlineIcon/>
+                                    </div>
+                                    <p className={photoCommentClasses.nickName}>
+                                        <a href={"/user/profile/?id="+comment.authorId}>@{comment.authorNick}</a>
+                                    </p>
+                                    <p className={photoCommentClasses.Date}>{formattedCurrentDate(comment.createdAt)}</p>
+                                    {
+                                        (this.state.userData._id === comment.authorId) ? 
+                                            <CommentOptions 
+                                                photoComment
+                                                deleteComment={() => this.deleteCommentHandler(index)}
+                                                editComment={() => this.editCommentHandler(index, false)} /> : null
+                                    }
+                                </div>
+                                <div className={photoCommentClasses.content}>
+                                    {
+                                        this.state.commentsEditing[index] ? 
+                                        <EditCommentForm 
+                                            photo
+                                            cancelEdit={()=>this.editCommentHandler(index, true)}    
+                                            initialValue={comment.content}  
+                                            flashProp={this.flash}  
+                                            afterSend={this.editCommentCleanUp}  
+                                            photoId={this.state.photo._id}                          
+                                        /> : <p>{comment.content}</p>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    )
+                })
+                this.setState({comments: commentsRdy, loadingComments: false});
+            }
+        })
+        .catch(error => {
+            console.log(error);
+        })
+    }
+
     render() {
+
+        let loadedComments = null;
+        this.state.loadingComments ? loadedComments = <Spinner /> : <>{this.state.comments}</> //they have to be JSX els, and can't be a js object
+
         let flashView = null;
         if(this.state.flashMessage && this.state.flashNotClosed){
             flashView = <Flash>{this.state.flashMessage}</Flash>
@@ -406,44 +468,7 @@ class photoView extends Component {
                                 </div>
                                 <div className={classes.commentsContainer}>
                                     {
-                                        this.state.photo.comments.map((comment, index) => {
-                                            return (
-                                                <div key={index}>
-                                                    {/* <PhotoComment comment={comment} userId={this.state.userData.userId}/> */}
-                                                    <div className={photoCommentClasses.commentContainer}>
-                                                        <div className={photoCommentClasses.topBar}>   
-                                                            <div className={photoCommentClasses.userPhotoDiv}>
-                                                                <UserPhoto userId={comment.authorId} small hideOnlineIcon/>
-                                                            </div>
-                                                            <p className={photoCommentClasses.nickName}>
-                                                                <a href={"/user/profile/?id="+comment.authorId}>@{comment.authorNick}</a>
-                                                            </p>
-                                                            <p className={photoCommentClasses.Date}>{formattedCurrentDate(comment.createdAt)}</p>
-                                                            {
-                                                                (this.state.userData._id === comment.authorId) ? 
-                                                                    <CommentOptions 
-                                                                        photoComment
-                                                                        deleteComment={() => this.deleteCommentHandler(index)}
-                                                                        editComment={() => this.editCommentHandler(index, false)} /> : null
-                                                            }
-                                                        </div>
-                                                        <div className={photoCommentClasses.content}>
-                                                            {
-                                                                this.state.commentsEditing[index] ? 
-                                                                <EditCommentForm 
-                                                                    photo
-                                                                    cancelEdit={()=>this.editCommentHandler(index, true)}    
-                                                                    initialValue={comment.content}  
-                                                                    flashProp={this.flash}  
-                                                                    afterSend={this.editCommentCleanUp}  
-                                                                    photoId={this.state.photo._id}                          
-                                                                /> : <p>{comment.content}</p>
-                                                            }
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            )
-                                        })
+                                        loadedComments
                                     }
                                 </div>
                             </div>
