@@ -23,7 +23,7 @@ module.exports = (req, res, next) => {
             else{
                 console.log('blockeeed!')
 
-                res.json({
+                res.status(403).json({
                     error: "user is blocked"
                 })
             }

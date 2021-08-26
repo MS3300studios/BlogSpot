@@ -83,16 +83,20 @@ class AddCommentForm extends Component {
             }
         })
         .then((res)=>{
-            if(res.status===200){
-                this.flash("you posted a comment!");
-                this.setState({content: ""});
-                this.sendNotification();
-                this.props.afterSend(res.data.comment, true);
-            }
+            // if(res.status===200){
+            //     this.flash("you posted a comment!");
+            //     this.setState({content: ""});
+            //     this.sendNotification();
+            //     this.props.afterSend(res.data.comment, true);
+            // }
         })
         .catch(error => {
-            this.flash(error);
-            console.log(error);
+            if(error.message === "Request failed with status code 403"){
+                this.flash('You cannot post comments on this users activity');
+            }
+            else{
+                this.flash(error.message);
+            }
         })
 
     }   
