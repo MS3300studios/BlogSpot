@@ -264,8 +264,46 @@ class photoView extends Component {
                 if(res.status===201){
                     this.indexComments();
                     this.sendNotification();
-                    console.log(res.data.photo)
-                    this.setState({photo: res.data.photo, comments: res.data.photo.comments, newCommentContent: "", socialStateWasChanged: true})
+                    let commentsRdy = res.data.photo.comments.map((comment, index) => {
+                        return (
+                            <div key={index}>
+                                {/* <PhotoComment comment={comment} userId={this.state.userData.userId}/> */}
+                                <div className={photoCommentClasses.commentContainer}>
+                                    <div className={photoCommentClasses.topBar}>    
+                                        <div className={photoCommentClasses.userPhotoDiv}>
+                                            <UserPhoto userId={comment.authorId} small hideOnlineIcon/>
+                                        </div>
+                                        <p className={photoCommentClasses.nickName}>
+                                            <a href={"/user/profile/?id="+comment.authorId}>@{comment.authorNick}</a>
+                                        </p>
+                                        <p className={photoCommentClasses.Date}>{formattedCurrentDate(comment.createdAt)}</p>
+                                        {
+                                            (this.state.userData._id === comment.authorId) ? 
+                                                <CommentOptions 
+                                                    photoComment
+                                                    deleteComment={() => this.deleteCommentHandler(index)}
+                                                    editComment={() => this.editCommentHandler(index, false)} /> : null
+                                        }
+                                    </div>
+                                    <div className={photoCommentClasses.content}>
+                                        {
+                                            this.state.commentsEditing[index] ? 
+                                            <EditCommentForm 
+                                                photo
+                                                cancelEdit={()=>this.editCommentHandler(index, true)}    
+                                                initialValue={comment.content}  
+                                                flashProp={this.flash}  
+                                                afterSend={this.editCommentCleanUp}  
+                                                photoId={this.state.photo._id}                          
+                                            /> : <p>{comment.content}</p>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        )
+                    })
+
+                    this.setState({photo: res.data.photo, comments: commentsRdy, newCommentContent: "", socialStateWasChanged: true})
                     return;
                 }
             })
@@ -289,17 +327,12 @@ class photoView extends Component {
         })
         .then((res)=>{
             if(res.status===200){
-                console.log(res.data.comments)
-
                 let editingComments = [];
                 let comments = res.data.comments.map((comment, index) => {
                     editingComments.push(false);
                     comment.index = index;
                     return comment
                 })
-                console.log(comments)
-                console.log(editingComments)
-
                 let commentsRdy = comments.map((comment, index) => {
                     return (
                         <div key={index}>
