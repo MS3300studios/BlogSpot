@@ -276,7 +276,7 @@ class photoView extends Component {
             .catch(error => {
                 console.log(error)
                 if(error.message === "Request failed with status code 403"){
-                    //this.flash('You cannot post comments on this users activity');
+                    this.flash('You cannot post comments on this users activity');
                 }
             })
         }
@@ -385,9 +385,14 @@ class photoView extends Component {
                                     <div className={newCommentClasses.userPhotoDiv}>
                                         <UserPhoto userId={this.state.userData._id} smallPhotoCommentForm hideOnlineIcon/>
                                     </div>
-                                    <form className={smallClass} style={{marginLeft: "-54px"}}>
-                                        <input value={this.state.newCommentContent} placeholder="write your comment here" onChange={(event)=>this.setState({newCommentContent: event.target.value})}/>
-                                    </form>
+                                    <div className={smallClass} style={{marginLeft: "-54px"}}>
+                                        <input 
+                                            value={this.state.newCommentContent} 
+                                            placeholder="write your comment here" 
+                                            onChange={(event)=>this.setState({newCommentContent: event.target.value})}
+                                            onKeyPress={ev => ev.key==="Enter" ? this.sendComment() : null}
+                                        />
+                                    </div>
                                     <div 
                                         onMouseDown={(e)=>{
                                             this.setState({sendPressed: true})

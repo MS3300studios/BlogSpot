@@ -1,7 +1,6 @@
 const { BlockedUsers } = require('../models/blockedUsers');
 
 module.exports = (req, res, next) => {
-    console.log('checking block')
     BlockedUsers.findOne({forUser: req.body.adressingUser}, (err, blockList) => {
 
         if(!blockList) next();
@@ -10,8 +9,6 @@ module.exports = (req, res, next) => {
                 if(el.blockedUserId === req.userData.userId) return true
                 else return false
             })
-
-            console.log(isInList)
 
             if(isInList.length === 0){
                 next();
