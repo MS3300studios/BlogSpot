@@ -13,10 +13,8 @@
 
 .photoViewContainer{
     background-color: #82ca66;
-    /* width: 80%; */
     height: 90%;
     margin: 0 auto;
-    /* margin-top: 3%; */
     position: relative;
     transition: 0.3s ease-in all;
     padding: 10px;
@@ -124,11 +122,11 @@
 }
 
 .commentsContainer{
-    /* max-height: 392px; */
     height: 65%;
     overflow: auto;
     overflow-x: hidden;
 }
+
 .commentsContainer button{
     position: unset;
 }

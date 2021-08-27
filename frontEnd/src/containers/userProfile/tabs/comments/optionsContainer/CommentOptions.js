@@ -25,7 +25,6 @@ class CommentOptions extends Component {
 
     optionsAction = (type) => {
         if(type === "delete"){
-            //delete comment from props id
             if(this.props.photoComment){
                 this.props.deleteComment();
             } 
