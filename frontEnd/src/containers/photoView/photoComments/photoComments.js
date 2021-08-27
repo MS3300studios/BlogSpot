@@ -341,10 +341,14 @@ class PhotoComments extends Component {
                                                     <>
                                                         <EditCommentForm 
                                                             photo
-                                                            cancelEdit={()=>this.editCommentHandler(index, true)}    
+                                                            cancelEdit={()=>this.setState({editingIndex: null})}    
                                                             initialValue={comment.content}  
-                                                            //afterSend={this.editCommentCleanUp}  
                                                             flashProp={this.props.flash}  
+                                                            setContent={newContent => this.setState(prevState => {
+                                                                let comments = prevState.comments;
+                                                                comments[index].content = newContent;
+                                                                return ({...prevState, comments: comments, editingIndex: null});
+                                                            })}
                                                             photoId={this.props.photoId}                          
                                                         />  
                                                     </>
@@ -363,3 +367,10 @@ class PhotoComments extends Component {
 }
  
 export default PhotoComments;
+
+
+/*editContent => this.setState(prevState => {
+                                                                let comments = prevState.comments;
+                                                                comments[index].content = editContent
+                                                                return ({...prevState, comments: comments})
+                                                            })*/

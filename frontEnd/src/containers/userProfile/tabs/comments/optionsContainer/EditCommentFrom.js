@@ -23,14 +23,13 @@ const EditCommentForm = (props) => {
             })
             .then((res)=>{
                 if(res.status===200){
-                    console.log(res.data.photo)
-                    props.afterSend(res.data.photo);
                     props.flashProp("comment was edited");
-                    return;
+                    props.setContent(editContent);
                 }
             })
             .catch(error => {
                 console.log(error);
+                props.flashProp(error.message);
             })
         }
         else{
@@ -56,7 +55,8 @@ const EditCommentForm = (props) => {
     return (
         <div className={classes.container}>
             <input onChange={(e)=>seteditContent(e.target.value)} value={editContent}/>
-            <Button btnType={"Continue"} clicked={submitHandler} >Submit</Button>
+            <Button btnType={"Continue"} clicked={()=>props.setContent(editContent)} >Submit</Button>
+            {/* <Button btnType={"Continue"} clicked={submitHandler} >Submit</Button> */}
             <Button btnType={"Cancel"} clicked={props.cancelEdit} >Cancel</Button>
         </div>
     );
