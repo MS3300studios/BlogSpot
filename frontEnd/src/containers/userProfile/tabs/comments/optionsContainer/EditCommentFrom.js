@@ -57,7 +57,7 @@ const EditCommentForm = (props) => {
             <input onChange={(e)=>seteditContent(e.target.value)} value={editContent}/>
             <Button btnType={"Continue"} clicked={()=>props.setContent(editContent)} >Submit</Button>
             {/* <Button btnType={"Continue"} clicked={submitHandler} >Submit</Button> */}
-            <Button btnType={"Cancel"} clicked={props.cancelEdit} >Cancel</Button>
+            <Button btnType={"Cancel"} clicked={props.cancelEdit}>Cancel</Button>
         </div>
     );
 }

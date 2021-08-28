@@ -55,14 +55,10 @@ class App extends Component {
       isLoggedIn: false,
       cookiesBannerOpened: setConstrVal,
     }
-
-    this.socket = io('http://localhost:3001');
   }
   
 
   componentDidMount(){
-    this.socket.on('message', sth => console.log(sth))
-
     let session = sessionStorage.getItem('token');
     let local = localStorage.getItem('token');
     if(session!==null||local!==null){
@@ -121,17 +117,6 @@ class App extends Component {
           {gate}
           <Route component={URLnotFound} />
         </Switch>
-        <button onClick={()=>{
-            this.socket.emit("logOnlineUsers");
-        }} style={
-          {
-            backgroundColor: "black",
-            cursor: "pointer",
-            position: "fixed",
-            top: "10px",
-            left: "400px"
-          }
-        }>check users on server</button> 
         <button onClick={()=>{
             let token = getToken();
             axios({

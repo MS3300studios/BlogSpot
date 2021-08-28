@@ -104,7 +104,7 @@ router.post('/photo/addComment', auth, checkBlock, (req, res) => {
                 photo.comments = comments;
                 photo.save().then(resp => {
                     res.status(201).json({
-                        photo: resp
+                        comment: photoComment
                     })
                 })
             }

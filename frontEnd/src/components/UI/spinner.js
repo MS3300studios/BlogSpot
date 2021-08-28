@@ -19,8 +19,7 @@ const Spinner = (props) => {
     let again = (
         <div className={classes.again}>
             <span>
-                <p>Loading error</p>
-                <Button clicked={()=>window.location.reload()}>Try again</Button>
+                <p>Loading failed</p>
             </span>
         </div>
     );
@@ -34,7 +33,7 @@ const Spinner = (props) => {
         
         const timer = setTimeout(()=>{
             setContent(again);
-        }, 5000)
+        }, 15000)
         return () => {
             clearTimeout(timer);
         }

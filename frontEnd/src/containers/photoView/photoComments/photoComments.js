@@ -247,7 +247,9 @@ class PhotoComments extends Component {
         this.userData = getUserData();
 
         this.getComments.bind(this);
+        this.addComment.bind(this);
         this.deleteCommentHandler.bind(this);
+        this.editCommentHandler.bind(this);
     }
 
     getComments = () => {
@@ -258,13 +260,37 @@ class PhotoComments extends Component {
         })
         .then((res)=>{
             if(res.status===200){
-                console.log(res.data)
-                this.setState({comments: res.data.comments, loading: false});
+                let arr = res.data.comments.reverse();
+                this.setState({comments: arr, loading: false});
                 return;
             }
         })
         .catch(error => {
+            console.log(error);
+        })
+    }
 
+    addComment = () => {
+        let newComments = this.state.comments;
+        newComments.splice(0,0,{
+            self: true,
+            authorId: this.userData._id,
+            photoId: this.props.photoId,
+            authorNick: this.userData.nickname,
+            content: this.state.newCommentContent
+        });
+        this.setState({comments: newComments, newCommentContent: ""}); 
+        axios({
+            method: 'post',
+            url: `http://localhost:3001/photo/addComment`,
+            headers: {'Authorization': this.token},
+            data: {
+                photoId: this.props.photoId,
+                nickname: this.userData.nickname,
+                content: this.state.newCommentContent
+            }
+        })
+        .catch(error => {
             console.log(error);
         })
     }
@@ -296,13 +322,19 @@ class PhotoComments extends Component {
                             <input 
                                 value={this.state.newCommentContent} 
                                 placeholder="write your comment here" 
-                                onChange={ event => this.setState({newCommentContent: event.target.value}) }
-                                onKeyPress={ev => ev.key === "Enter" ? console.log('haahahah') : null}
+                                onChange={ event => {
+                                    console.log(event.key)
+                                    this.setState({newCommentContent: event.target.value})
+                                }}
+                                // onKeyPress={ event => {
+                                //     event.preventDefault();
+                                //     if(event.key === "Enter") this.addComment();
+                                // }}
                             />
                         </div>
                         <div 
-                            onMouseDown={(e)=>{
-                                console.log('hahhahahaeheeeheheehe')
+                            onMouseDown={()=>{
+                                this.addComment();
                                 this.setState({sendPressed: true});
                             }}
                             onMouseUp={()=>this.setState({sendPressed: false})} 
@@ -317,7 +349,6 @@ class PhotoComments extends Component {
                             {
                                 this.state.comments.map((comment, index) => (
                                     <div className={photoCommentClasses.commentContainer} key={index}>
-                                        <p>{index}</p>
                                         <div className={photoCommentClasses.topBar}>    
                                             <div className={photoCommentClasses.userPhotoDiv}>
                                                 <UserPhoto userId={comment.authorId} small hideOnlineIcon/>
@@ -325,7 +356,7 @@ class PhotoComments extends Component {
                                             <p className={photoCommentClasses.nickName}>
                                                 <a href={"/user/profile/?id="+comment.authorId}>@{comment.authorNick}</a>
                                             </p>
-                                            <p className={photoCommentClasses.Date}>{formattedCurrentDate(comment.createdAt)}</p>
+                                            <p className={photoCommentClasses.Date}>{comment.self ? "just now" : formattedCurrentDate(comment.createdAt)}</p>
                                             {
                                                 (this.userData._id === comment.authorId) ? 
                                                     <CommentOptions 
@@ -370,7 +401,7 @@ export default PhotoComments;
 
 
 /*editContent => this.setState(prevState => {
-                                                                let comments = prevState.comments;
-                                                                comments[index].content = editContent
-                                                                return ({...prevState, comments: comments})
-                                                            })*/
+    let comments = prevState.comments;
+    comments[index].content = editContent
+    return ({...prevState, comments: comments})
+})*/
