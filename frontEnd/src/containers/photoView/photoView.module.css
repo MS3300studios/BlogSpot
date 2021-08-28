@@ -82,7 +82,7 @@
     padding: 10px;   
     font-size: 18px;
     font-weight: 550;
-    max-height: 240px;
+    max-height: 30%;
     overflow-x: hidden;
     overflow-y: auto;
 }
@@ -122,7 +122,8 @@
 }
 
 .commentsContainer{
-    height: 65%;
+    /* max-height: 65%; */
+    max-height: 47%;
     overflow: auto;
     overflow-x: hidden;
 }

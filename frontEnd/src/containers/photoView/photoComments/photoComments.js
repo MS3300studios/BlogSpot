@@ -305,7 +305,19 @@ class PhotoComments extends Component {
         let newComments = this.state.comments;
         newComments.splice(index, 1);
         console.log(newComments);
-        this.setState({comments: newComments})
+        this.setState({comments: newComments});
+        axios({
+            method: 'post',
+            url: `http://localhost:3001/photo/comment/delete`,
+            headers: {'Authorization': this.token},
+            data: {
+                photoId: this.props.photoId,
+                content: this.state.comments[index].content
+            }
+        })
+        .catch(error => {
+            console.log(error);
+        })
     }
 
     editCommentHandler = (index) => {

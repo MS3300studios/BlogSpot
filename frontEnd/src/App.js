@@ -117,31 +117,6 @@ class App extends Component {
           {gate}
           <Route component={URLnotFound} />
         </Switch>
-        <button onClick={()=>{
-            let token = getToken();
-            axios({
-                method: 'get',
-                url: `http://localhost:3001/lastReadMessage/60fc2ad143515d2e8cc44be0`,
-                headers: {'Authorization': token}
-            })
-            .then((res)=>{
-                if(res.status===200){
-                    console.log(res.data);
-                    return;
-                }
-            })
-            .catch(error => {
-                console.log(error);
-            })
-        }} style={
-          {
-            backgroundColor: "black",
-            cursor: "pointer",
-            position: "fixed",
-            top: "10px",
-            left: "600px"
-          }
-        }>test get lastReadMessage</button> 
       </React.Fragment>
     );
   }
