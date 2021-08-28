@@ -208,6 +208,21 @@ class SocialBoard extends Component {
                         </div>
                     )
                 }
+                <Button clicked={()=>{
+                    fetch('https://api.ipify.org/?format=json').then(results => results.json()).then(data => {
+                        axios({
+                            method: 'post',
+                            url: `http://ip-api.com/batch`,
+                            data: [`${data.ip}`]
+                        })
+                        .then((res)=>{
+                            console.log(res.data)
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        })
+                    })
+                }}>Get my location</Button>
                 {flash}
             </>
         );

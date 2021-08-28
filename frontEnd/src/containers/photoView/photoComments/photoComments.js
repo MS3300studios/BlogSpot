@@ -230,8 +230,6 @@ import CommentOptions from '../../userProfile/tabs/comments/optionsContainer/Com
 import EditCommentForm from '../../userProfile/tabs/comments/optionsContainer/EditCommentFrom';
 import photoCommentClasses from '../photoComment/photoComment.module.css';
 
-
-
 class PhotoComments extends Component {
     constructor(props) {
         super(props);
