@@ -287,11 +287,17 @@ class PhotoComments extends Component {
             data: {
                 photoId: this.props.photoId,
                 nickname: this.userData.nickname,
-                content: this.state.newCommentContent
+                content: this.state.newCommentContent,
+                adressingUser: this.props.photoAuthorId
             }
         })
         .catch(error => {
             console.log(error);
+            if(error.message === "Request failed with status code 403"){
+                this.props.flash('You cannot post comments on this users activity');
+                let commentsRdy = this.state.comments.filter(el => el.self ? false : true);
+                this.setState({comments: commentsRdy});
+            }
         })
     }
 

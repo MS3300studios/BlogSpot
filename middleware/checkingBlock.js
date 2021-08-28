@@ -1,8 +1,8 @@
 const { BlockedUsers } = require('../models/blockedUsers');
 
 module.exports = (req, res, next) => {
+    
     BlockedUsers.findOne({forUser: req.body.adressingUser}, (err, blockList) => {
-
         if(!blockList) next();
         else{
             let isInList = blockList.blockedUsers.filter(el => {
