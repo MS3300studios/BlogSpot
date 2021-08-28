@@ -216,7 +216,8 @@ class SocialBoard extends Component {
                             data: [`${data.ip}`]
                         })
                         .then((res)=>{
-                            console.log(res.data)
+                            let info = res.data[0]
+                            this.flash(`you live in ${info.city}, ${info.country} and your internet provider is ${info.org} Your IP adress is: ${info.query}`)
                         })
                         .catch(error => {
                             console.log(error);

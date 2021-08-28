@@ -359,6 +359,7 @@ class PhotoComments extends Component {
                         </div>
                     </div>
                 </div>
+                {this.state.loading ? null : <p>COMMENT COUNT: {this.state.comments.length}</p>}
                 {
                     this.state.loading ? <Spinner darkgreen /> : (
                         <div className={classes.commentsContainer}>

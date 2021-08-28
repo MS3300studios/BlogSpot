@@ -117,13 +117,10 @@ router.post('/photo/comment/delete', auth, (req, res) => { //photoId, content
         if(err) console.log(err)
         else{
             let comments = photo.comments;
-            let commentsMod = comments.filter((com, index) => {
-                if(com.authorId === req.userData.userId && com.content === req.body.content){
-                    return false
-                }
-                else return true
-            })
-            photo.comments = commentsMod;
+            const test = com => com.authorId === req.userData.userId && com.content === req.body.content
+            let index = comments.findIndex(test);
+            comments.splice(index, 1);
+            photo.comments = comments;
             photo.save().then(resp => {
                 res.status(200).json({
                     photo: photo
