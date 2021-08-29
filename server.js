@@ -49,6 +49,7 @@ io.on('connection', (socket) => {
     })
 
     socket.on('checkUserOnlineStatus', (userId) => {
+        console.log(onlineUsers)
         let isOnline = onlineUsers.findIndex(user => user.userId === userId);
         if(isOnline !== -1) socket.emit('userOnlineStatus', true); 
         else socket.emit('userOnlineStatus', false); 
@@ -93,6 +94,12 @@ io.on('connection', (socket) => {
 
     socket.on('disconnect', ()=>{
         console.log("user disconnected");
+
+        /* let disconnectingUser = users.filter(user => user.socketId === socket.id)[0];
+        console.log(socket.id)
+        console.log(disconnectingUser)
+        socket.emit('userOnlineStatus', {isOnline: false, userId: }); */
+        
         let newUsers = users.filter(user => user.socketId !== socket.id);        
         let newonlineUsers = onlineUsers.filter(user => user.socketId !== socket.id);
         

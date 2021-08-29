@@ -79,7 +79,7 @@ class Conversation extends Component {
     }
 
     componentDidMount(){
-        //this.socket.emit('join', {name: this.state.user.name, conversationId: this.props.conversation._id })
+        this.socket.emit('join', {name: this.state.user.name, conversationId: this.props.conversation._id })
         this.socket.on('message', message => {
             let prevMessages = this.state.messages;
             prevMessages.push(message);
@@ -97,8 +97,8 @@ class Conversation extends Component {
         }
 
         if(prevProps.conversation._id !== this.props.conversation._id){
-            // this.socket.emit('leaveConversation', {conversationId: prevProps.conversation._id}) //leaving old conversation
-            // this.socket.emit('join', {name: this.state.user.name, conversationId: this.props.conversation._id }); //joining new conversation
+            //this.socket.emit('leaveConversation', {conversationId: prevProps.conversation._id}) //leaving old conversation
+            this.socket.emit('join', {name: this.state.user.name, conversationId: this.props.conversation._id }); //joining new conversation
             this.setState({skip: 0, infoOpened: false, loadingNewMessages: false, messages: [], conversationStartReached: false}, () => {
                 this.scrollPosition.current = 201;
                 this.fetchMessages();
@@ -222,6 +222,7 @@ class Conversation extends Component {
             let minute = new Date().getMinutes()
             if(minute<10) minute = "0"+minute;
             let time = `${hour}:${minute}`
+
 
             this.socket.emit('sendMessage', {
                 authorId: this.state.user._id,

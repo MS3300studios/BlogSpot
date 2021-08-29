@@ -23,7 +23,7 @@ class Menu extends Component {
             peoplePressed: false,
             redirect: false,
             conversations: [],
-            messageCount: 4
+            messageCount: 0
         }
         
         this.data = getUserData();
@@ -50,8 +50,6 @@ class Menu extends Component {
         .catch(error => {
             console.log(error);
         })
-
-        console.log(this.props.location.pathname)
 
         this.socket.on('message', message => {
             if(message.authorId !== this.data._id && this.props.location.pathname !== "/chat/" && this.props.location.pathname !== "/conversation/"){

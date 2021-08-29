@@ -66,3 +66,12 @@
     margin-bottom: -10px;
     overflow: hidden;
 }
+
+/* SKELETON */
+
+.skel_heading{
+    width: 90%;
+    height: 30px;
+    margin: 10px;
+    background-color: cadetblue;
+}

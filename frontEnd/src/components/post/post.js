@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import { Link } from 'react-router-dom';
-import Spinner from '../UI/spinner';
 
 import classes from './post.module.css';
 import Button from '../UI/button';
@@ -42,7 +41,23 @@ const Post = (props) => {
     return (
         <>
             {
-                loading ? <Spinner small /> : (
+                loading ? (
+                    <div className={classes.Card}>
+                        <div style={{width: "100%", display: "flex", justifyContent: "center"}}>
+                            <div className={classes.skel_heading}></div>
+                        </div>
+                        <div>
+                            <div></div>
+                            <p></p>
+                        </div>
+                        <div>
+                            <p></p>
+                            <p></p>
+                            <p></p>
+                            <p></p>
+                        </div>
+                    </div>
+                ) : (
                     <div className={classes.Card}>
                         <div className={classes.contentWrapperSmaller}>
                         <Link to={"/post/?id="+props.id} style={{textDecoration: "none", color: "black"}}>
