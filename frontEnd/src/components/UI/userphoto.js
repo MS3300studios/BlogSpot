@@ -8,7 +8,7 @@ import getToken from '../../getToken';
 import getUserData from '../../getUserData';
 import Spinner from './spinner';
 
-import io from 'socket.io-client';
+// import io from 'socket.io-client';
 import OnlineIcon from './onlineIcon';
 
 class UserPhoto extends Component {
@@ -31,16 +31,38 @@ class UserPhoto extends Component {
             userId: userId,
             photo: null,
             loading: false,
+            conversations: []
         }
 
-        this.socket = io('http://localhost:3001');
+        // this.socket = io('http://localhost:3001');
     }
 
     componentDidMount() {
-        if(this.props.dropdown){ //only in the menu do we want to signal that the user is online
+        /*if(this.props.dropdown){ //only in the menu do we want to signal that the user is online
             this.socket.emit("online", {userId: this.state.userData._id});
-        }
 
+            axios({
+                method: 'get',
+                url: `http://localhost:3001/conversations`,
+                headers: {'Authorization': this.state.token},
+            })
+            .then((res)=>{
+                if(res.status === 200){
+                    this.setState({conversations: res.data.conversations})
+                    res.data.conversations.forEach(conv => {
+                        this.socket.emit('join', {name: this.state.userData.name, conversationId: conv._id });
+                    })
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            })
+
+        }
+        
+        this.socket.on('message', message => {
+            console.log(message)
+        })*/
 
         this.setState({loading: true});
         let getData = new Promise((resolve, reject) => {
@@ -60,6 +82,12 @@ class UserPhoto extends Component {
             this.setState({photo: photo, loading: false});
         })
     }
+
+    // componentWillUnmount(){
+    //     this.state.conversations.forEach(conv => {
+    //         this.socket.emit('leaveConversation', {conversationId: conv._id});
+    //     })
+    // }
 
     render() { 
         let userPhotoClasses = classes.userPhoto;

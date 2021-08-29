@@ -24,7 +24,6 @@ const BlockedUserPrevent = (props) => {
     }, [props.selectedConversation.participants])
 
     let validate = useCallback(() => {
-        console.log('validating')
         const token = getToken();
         const data = getOtherUserNameAndId();
         axios({
@@ -34,7 +33,6 @@ const BlockedUserPrevent = (props) => {
         })
         .then((res)=>{
             if(res.status===200){
-                console.log(res.data)
                 if(res.data.blocked === false){
                     setcontent(<Conversation conversation={props.selectedConversation} refreshAfterBlock={validate}/>);
                     setloading(false);
