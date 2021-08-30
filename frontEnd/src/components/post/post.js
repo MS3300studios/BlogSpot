@@ -46,15 +46,19 @@ const Post = (props) => {
                         <div style={{width: "100%", display: "flex", justifyContent: "center"}}>
                             <div className={classes.skel_heading}></div>
                         </div>
-                        <div>
-                            <div></div>
-                            <p></p>
+                        <div style={{width: "100%", display: "flex", justifyContent: "center"}}>
+                            <div className={classes.skel_pictureNameContainer}>
+                                <div className={classes.skel_img}></div>
+                                <p></p>
+                            </div>
                         </div>
-                        <div>
-                            <p></p>
-                            <p></p>
-                            <p></p>
-                            <p></p>
+                        <div style={{width: "100%", display: "flex", justifyContent: "center"}}>
+                            <div className={classes.skel_textContainer}>
+                                <p></p>
+                                <p></p>
+                                <p></p>
+                                <p></p>
+                            </div>
                         </div>
                     </div>
                 ) : (

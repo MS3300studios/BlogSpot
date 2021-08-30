@@ -74,4 +74,54 @@
     height: 30px;
     margin: 10px;
     background-color: cadetblue;
+    animation: skeleton infinite 1s alternate linear;
+    opacity: 0.5;
+}
+
+.skel_pictureNameContainer{
+    width: 90%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0 10px;
+}
+
+.skel_img{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    animation: skeleton infinite 1s alternate linear;
+    opacity: 0.5;
+}
+
+.skel_pictureNameContainer p{
+    width: 75%;
+    margin-left: 20px;
+    height: 30px;
+    animation: skeleton infinite 1s alternate linear;
+    opacity: 0.5;
+}
+
+.skel_textContainer{
+    width: 90%;
+}
+
+.skel_textContainer p{
+    animation: skeleton infinite 1s alternate linear;
+    opacity: 0.5;
+    width: 100%;
+    height: 15px;
+}
+
+.skel_textContainer :last-child{
+    width: 60%;
+}
+
+@keyframes skeleton {
+    from{
+        background-color: hsl(200, 20%, 70%);
+    }
+    to{
+        background-color: hsl(200, 20%, 95%);
+    }
 }
