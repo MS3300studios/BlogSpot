@@ -4,6 +4,7 @@ const router = express();
 const Blog = require('../models/blog');
 const User = require('../models/user');
 const auth = require('../middleware/authorization');
+const Comment = require('../models/comment');
 
 router.use(express.json());
 
@@ -88,15 +89,28 @@ router.post('/blogs/new', auth, (req, res) => {
 });
 
 router.delete('/blogs/delete/:blogId', auth, (req, res) => {
-    Blog.deleteOne({_id: req.params.blogId})
-        .exec()
-        .then((response => {
-            res.sendStatus(200);
-        }))
-        .catch(err => {
-            console.log("deleting error: ", err);
-            res.sendStatus(500);
-        })
+    //deleting blog
+    Blog.findByIdAndDelete(req.params.blogId, (err, blog) => {
+        if(err) console.log(err)
+        else {
+            //deleting comments linked to blog
+            Comment.deleteMany({blogId: blog._id}, (err2, comments) => {
+                if(err2)console.log(err2)
+                else{
+                    console.log(comments)
+                }   
+            })
+        }
+    })
+    // Blog.deleteOne({_id: req.params.blogId})
+    //     .exec()
+    //     .then((response => {
+    //         res.sendStatus(200);
+    //     }))
+    //     .catch(err => {
+    //         console.log("deleting error: ", err);
+    //         res.sendStatus(500);
+    //     })
 })
 
 router.post('/blogs/edit/:blogId', auth, (req, res) => {

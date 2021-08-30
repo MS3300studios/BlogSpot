@@ -97,7 +97,6 @@ router.delete('/comments/delete/:commentId', auth, (req, res) => {
     Comment.findByIdAndDelete(req.params.commentId)
         .exec()
         .then((response => {
-            console.log(response)
             res.json({comment: response})
         }))
         .catch(err => {

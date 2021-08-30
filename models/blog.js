@@ -8,8 +8,8 @@ const schema = new db.Schema({
   },
   {
     timestamps: true
-  });
+  }
+);
 
 const Blog = db.model("Blog", schema);
-
 module.exports = Blog;

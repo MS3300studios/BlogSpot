@@ -329,7 +329,26 @@ class Dashboard extends Component {
 
         //handling posts/spinner
         let posts = null;
-        if(this.state.loading) posts = <Spinner />
+        if(this.state.loading){
+            let temp = [];
+            for(let i = 0; i<7; i++){
+                temp.push(
+                    <Post 
+                        loading={true}
+                    />
+                )
+            }
+            posts = (
+                <div className={classes.postContainer}>
+                    {
+                        temp
+                    }
+                    <div className={classes.Card} onClick={this.showPostForm}>
+                        <img alt="add a post" src={addPostImage} className={classes.addPostDiv}/>
+                    </div>
+                </div> 
+            )
+        }
         else posts = (
             <div className={classes.postContainer}>
                 {this.filterPosts(this.state.filterIn, this.state.filterBy)}
