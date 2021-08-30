@@ -142,13 +142,22 @@ class SocialBoard extends Component {
     render() { 
         let content;
         if(this.state.loading){
-            content = <Spinner />
+            content = [];
+            for(let i = 0; i<12; i++){
+                content.push(
+                    <Post 
+                        loading={true}
+                        socialBoard
+                    />
+                )
+            }
         }
         else{
             content = this.state.elements.map((el, index) => {
                 if(el.content){
                     return (
                         <Post 
+                            loading={false}
                             title={el.title}
                             author={el.author}
                             content={el.content}

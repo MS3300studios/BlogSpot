@@ -16,7 +16,7 @@ const Post = (props) => {
     let token = getToken();
 
     useEffect(() => {
-        if(props.socialBoard){
+        if(props.socialBoard && (props.loading !== true)){
             axios({
                 method: 'get',
                 url: `http://localhost:3001/users/getUser/${props.author}`,
@@ -32,7 +32,7 @@ const Post = (props) => {
             })
         }
         // else if(props.dashboard) setloading(false); 
-    }, [props.socialBoard, props.author, token])
+    }, [props.socialBoard, props.author, token, props.loading])
 
     //if in socialBoard then author prop is an ID, and has to be adjusted.
     let tempCompareVal = userLoggedData.nickname;
@@ -41,7 +41,7 @@ const Post = (props) => {
     return (
         <>
             {
-                loading ? (
+                (loading || props.loading) ? (
                     <div className={classes.Card}>
                         <div style={{width: "100%", display: "flex", justifyContent: "center"}}>
                             <div className={classes.skel_heading}></div>
