@@ -20,6 +20,11 @@
     margin-left: 80px;
 }
 
+.cardBig p{
+    font-size: 20px;
+    font-weight: 500;
+}
+
 .blogFace{
     width: 300px;
     background-color: #82ca66;

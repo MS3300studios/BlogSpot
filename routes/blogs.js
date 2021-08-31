@@ -3,8 +3,13 @@ const router = express();
 
 const Blog = require('../models/blog');
 const User = require('../models/user');
-const auth = require('../middleware/authorization');
 const Comment = require('../models/comment');
+const BlogLike = require('../models/BlogLike');
+const BlogDislike = require('../models/BlogDislike');
+const CommentLike = require('../models/CommentLike');
+const CommentDislike = require('../models/CommentDislike');
+
+const auth = require('../middleware/authorization');
 
 router.use(express.json());
 
@@ -23,7 +28,6 @@ router.post('/blogs', auth, (req, res) => {
             })
         });
 });
-
 
 
 router.post('/blogs/limited', auth, (req, res) => {
@@ -90,18 +94,34 @@ router.post('/blogs/new', auth, (req, res) => {
 
 router.delete('/blogs/delete/:blogId', auth, (req, res) => {
     //deleting blog
+ 
     Blog.findByIdAndDelete(req.params.blogId, (err, blog) => {
         if(err) console.log(err)
         else {
-            //deleting comments linked to blog
-            Comment.deleteMany({blogId: blog._id}, (err2, comments) => {
-                if(err2)console.log(err2)
+            Comment.deleteMany({blogId: req.params.blogId}, (err2, comments) => {
+                if(err2)console.log(err2);
                 else{
-                    console.log(comments)
+                    console.log(comments);
                 }   
+            })  
+
+            BlogLike.deleteMany({blogId: req.params.blogId}, (err3, blogLikes) => {
+                if(err3) console.log(err3);
+                else{
+                    console.log(blogLikes);
+                }
+            })
+            
+            BlogDislike.deleteMany({blogId: req.params.blogId}, (err4, blogDislike) => {
+                if(err4) console.log(err4);
+                else{
+                    console.log(blogDislike);
+                }
             })
         }
     })
+
+
     // Blog.deleteOne({_id: req.params.blogId})
     //     .exec()
     //     .then((response => {
