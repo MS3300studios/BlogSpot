@@ -18,6 +18,7 @@
     padding: 15px;
     min-height: 113px;
     margin-left: 80px;
+    overflow-wrap: anywhere;
 }
 
 .cardBig p{
@@ -50,7 +51,7 @@
     font-weight: 600;
     margin-top: 10px;
     margin-bottom: 10px;
-
+    overflow-wrap: anywhere;
 }
 .postAuthor{
     font-size: 20px;

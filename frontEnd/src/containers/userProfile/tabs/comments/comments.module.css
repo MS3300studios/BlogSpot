@@ -26,6 +26,7 @@
 
 .commentContent{
     margin-top: -10px;
+    overflow-wrap: anywhere;
 }
 
 .userPhotoDiv{
