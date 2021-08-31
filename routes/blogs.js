@@ -93,7 +93,16 @@ router.post('/blogs/new', auth, (req, res) => {
 });
 
 router.delete('/blogs/delete/:blogId', auth, (req, res) => {
-    //deleting blog
+    Comment.find({blogId: req.params.blogId}).exec().then(comments => {
+        for(let i=0; i<comments.length; i++){
+            CommentLike.deleteMany({commentId: comments[i]._id}, (comLikeErr, status) => {
+                console.log(status)
+            });
+            CommentDislike.deleteMany({commentId: comments[i]._id}, (comLikeErr, status) => {
+                console.log(status)
+            });
+        }
+    }).catch(error => console.log(error));
  
     Blog.findByIdAndDelete(req.params.blogId, (err, blog) => {
         if(err) console.log(err)
@@ -120,17 +129,6 @@ router.delete('/blogs/delete/:blogId', auth, (req, res) => {
             })
         }
     })
-
-
-    // Blog.deleteOne({_id: req.params.blogId})
-    //     .exec()
-    //     .then((response => {
-    //         res.sendStatus(200);
-    //     }))
-    //     .catch(err => {
-    //         console.log("deleting error: ", err);
-    //         res.sendStatus(500);
-    //     })
 })
 
 router.post('/blogs/edit/:blogId', auth, (req, res) => {
