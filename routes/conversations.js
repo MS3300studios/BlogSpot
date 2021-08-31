@@ -5,6 +5,7 @@ const auth = require('../middleware/authorization');
 const convModels = require('../models/conversation');
 const Conversation = convModels.Conversation;
 const Message = require('../models/message');
+const LastReadMessage = require('../models/lastReadMessage');
 const Participant = convModels.Participant;
 const User = require('../models/user');
 
@@ -127,12 +128,20 @@ router.get('/conversation/delete/:id', auth, (req, res) => {
 
         if(isParticipant === true){
             Conversation.findByIdAndDelete(req.params.id).then(conversation => {
+                LastReadMessage.deleteMany({conversationId: conversation._id}, (error, status) => {
+                    if(error) console.log(error)
+                    else{
+                        console.log(status)
+                    }
+                })
+
                 Message.deleteMany({conversationId: conversation._id}, (error, status) => {
                     if(error) console.log(error)
                     else{
                         console.log(status)
                     }
                 })
+
                 res.sendStatus(200);
             })
         }
