@@ -91,17 +91,13 @@ class PostView extends Component {
             method: 'delete',
             url: `http://localhost:3001/blogs/delete/${id}`,
             headers: {'Authorization': this.state.token},
-        }).then((res) => {
-            if(res.status===200){
-                this.setState({redirect: true, deletePending: false});
-            }
-            else{
-                console.error('deleting error');
-            }
         })
         .catch(error => {
+            console.log('error deleting post')
             console.log(error);
         });
+
+        this.setState({deletePending: false, redirect: true});
     }
 
     

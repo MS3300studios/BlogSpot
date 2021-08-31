@@ -96,10 +96,16 @@ router.delete('/blogs/delete/:blogId', auth, (req, res) => {
     Comment.find({blogId: req.params.blogId}).exec().then(comments => {
         for(let i=0; i<comments.length; i++){
             CommentLike.deleteMany({commentId: comments[i]._id}, (comLikeErr, status) => {
-                console.log(status)
+                if(comLikeErr) console.log(comLikeErr)
+                else{
+                    console.log(status)
+                }
             });
-            CommentDislike.deleteMany({commentId: comments[i]._id}, (comLikeErr, status) => {
-                console.log(status)
+            CommentDislike.deleteMany({commentId: comments[i]._id}, (comDislikeErr, status) => {
+                if(comDislikeErr) console.log(comDislikeErr)
+                else{
+                    console.log(status)
+                }
             });
         }
     }).catch(error => console.log(error));
