@@ -17,9 +17,11 @@ const CookiesBanner = (props) => {
             {
                 show ? (
                     <div className="cookiesBanner">
-                    <p>This website utilizes cookies to function properly. 
-                        By closing this banner you consent to cookies being stored on your computer. 
-                        If you don't agree with this, leave this site now.</p>
+                        <p>
+                            This website utilizes cookies to function properly. 
+                            By closing this banner you consent to cookies being stored on your computer. 
+                            If you don't agree with this, leave this site now.
+                        </p>
                         <div className="closeCookiesBannerIcon" onClick={closeBanner}>
                         <AiOutlineCloseCircle size="2em" color="#0a42a4" />
                         </div>

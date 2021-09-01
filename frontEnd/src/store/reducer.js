@@ -1,39 +1,23 @@
 import * as actionTypes from './actions';
 
 const initialState = {
-    fullFriends: [],
-    friendReqIdToBeRemoved: null,
-    refreshComments: false
+    newMessage: "",
+    newSendMessage: ""
 };
 
 const reducer = ( state = initialState, action ) => {
     switch ( action.type ) {
-        case actionTypes.ADD_FRIEND:
-            let arr = state.fullFriends;
-            console.log(state.fullFriends)
-            arr.push(action.data);
+        case actionTypes.RECEIVING_MESSAGE:
+            console.log("[STORE]", action);
             return {
                 ...state,
-                fullFriends: arr
+                newMessage: action.data                
             };
-        case actionTypes.CHECK_STORE:
-            console.log(state)
-            return state;
-        case actionTypes.CLEAR_FULLFRIENDS:
+        case actionTypes.SENDING_MESSAGE:
+            console.log("[STORE]", action);
             return {
                 ...state,
-                fullFriends: []
-            };
-        case actionTypes.REMOVE_NOTIF_FRIENDREQ:
-            return {
-                ...state,
-                friendReqIdToBeRemoved: action.data
-            };
-        case actionTypes.REFRESH_COMMENTS:
-            let temp = initialState.refreshComments;
-            return {
-                ...state,
-                refreshComments: !temp
+                newSendMessage: action.data                
             };
         default:
             return state;

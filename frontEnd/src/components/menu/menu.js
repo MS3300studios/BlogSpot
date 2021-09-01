@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { Redirect, withRouter } from 'react-router-dom';
 import io from 'socket.io-client';
+import { connect } from 'react-redux';
+import * as actionTypes from '../../store/actions';
+
 
 import { BsPeople, BsPeopleFill } from 'react-icons/bs';
-
 import { IoChatbubbles, IoChatbubblesOutline } from 'react-icons/io5';
 import Notifications from '../../containers/notifications/notifications';
 import classes from './menu.module.css';
@@ -52,6 +54,7 @@ class Menu extends Component {
         })
 
         this.socket.on('message', message => {
+            this.props.redux_send_message_to_store(message);
             if(message.authorId !== this.data._id && this.props.location.pathname !== "/chat/" && this.props.location.pathname !== "/conversation/"){
                 let msgCnt = this.state.messageCount;
                 this.setState({messageCount: msgCnt+1});
@@ -120,33 +123,19 @@ class Menu extends Component {
     }
 }
 
-export default withRouter(Menu);
-//username cannot be longer than 21 characters!
+const mapStateToProps = state => {
+    return {
+        state: state
+    };
+}
 
-
-/*
-this.socket.emit("online", {userId: this.state.userData._id});
-
-            axios({
-                method: 'get',
-                url: `http://localhost:3001/conversations`,
-                headers: {'Authorization': this.state.token},
-            })
-            .then((res)=>{
-                if(res.status === 200){
-                    this.setState({conversations: res.data.conversations})
-                    res.data.conversations.forEach(conv => {
-                        this.socket.emit('join', {name: this.state.userData.name, conversationId: conv._id });
-                    })
-                }
-            })
-            .catch(error => {
-                console.log(error);
-            })
-
+const mapDispatchToProps = dispatch => {
+    return {
+        redux_send_message_to_store: (message) => {
+            console.log('[redux_send_message_to_store] dispatching to store!');
+            dispatch({type: actionTypes.RECEIVING_MESSAGE, data: message});
         }
-        
-        this.socket.on('message', message => {
-            console.log(message)
-        })
-*/
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Menu));

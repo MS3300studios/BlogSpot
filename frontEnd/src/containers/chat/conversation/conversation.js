@@ -7,6 +7,8 @@ import io from 'socket.io-client';
 import { withRouter } from 'react-router';
 import axios from 'axios';
 import { Redirect } from 'react-router';
+import { connect } from 'react-redux';
+import * as actionTypes from '../../../store/actions';
 
 import { IoIosArrowDown } from 'react-icons/io';
 import { IoIosArrowUp } from 'react-icons/io';
@@ -80,19 +82,29 @@ class Conversation extends Component {
 
     componentDidMount(){
         //this.socket.emit('join', {name: this.state.user.name, conversationId: this.props.conversation._id })
-        this.socket.on('message', message => {
-            console.log(message)
-            let prevMessages = this.state.messages;
-            prevMessages.push(message);
-            this.setState({messages: prevMessages});
-            this.sendLastReadMessage(message.content);
-        })
+        // this.socket.on('message', message => {
+        //     let prevMessages = this.state.messages;
+        //     prevMessages.push(message);
+        //     this.setState({messages: prevMessages});
+        //     this.sendLastReadMessage(message.content);
+        // })
 
         this.fetchMessages();
         this.messagesEnd.scrollIntoView({ behavior: "smooth" });
     }   
 
     componentDidUpdate(prevProps, prevState){
+        console.log(this.props.redux.newMessage.content)
+        if(this.props.redux.newMessage.content === undefined) console.log('undefined hahaha')
+        else{
+            if(this.props.redux.newMessage.content !== this.state.messages[this.state.messages.length-1].content){
+                let prevMessages = this.state.messages;
+                prevMessages.push(this.props.redux.newMessage);
+                this.setState({messages: prevMessages});
+                this.sendLastReadMessage(this.props.redux.newMessage.content);
+            }
+        }
+
         if(this.state.message === "" && this.scrollPosition.current > 200){
             this.messagesEnd.scrollIntoView({ behavior: "smooth" });
         }
@@ -223,7 +235,6 @@ class Conversation extends Component {
             let minute = new Date().getMinutes()
             if(minute<10) minute = "0"+minute;
             let time = `${hour}:${minute}`
-
 
             this.socket.emit('sendMessage', {
                 authorId: this.state.user._id,
@@ -526,5 +537,20 @@ class Conversation extends Component {
         );
     }
 }
- 
-export default withRouter(Conversation);
+
+const mapStateToProps = state => {
+    return {
+        redux: state
+    };
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        redux_send_message_to_store: (message) => {
+            console.log('[redux_send_message_to_store] dispatching to store!');
+            dispatch({type: actionTypes.SENDING_MESSAGE, data: message});
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Conversation));

@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-// import { connect } from 'react-redux';
-// import * as actionTypes from '../../store/actions';
 
 import classes from './dashboard.module.css';
 
@@ -373,18 +371,4 @@ class Dashboard extends Component {
     }
 }
 
-// const mapStateToProps = state => {
-//     return {
-//         state: state
-//     };
-// }
-
-// const mapDispatchToProps = dispatch => {
-//     return {
-//         redux_add_friend: (friend) => dispatch({type: actionTypes.ADD_FRIEND, data: friend}),
-//         redux_check_store: () => dispatch({type: actionTypes.CHECK_STORE})
-//     }
-// }
-
-// export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
 export default Dashboard;
