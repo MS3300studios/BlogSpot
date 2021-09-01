@@ -37,7 +37,7 @@ const SinglePhotoHigherOrderComponent = (props) => {
         .catch(error => {
             console.log(error);
         })
-    }, [])
+    }, [props.location.search])
 
     return (
         <>

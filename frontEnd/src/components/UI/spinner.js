@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 
 import classes from './spinner.module.css';
-import Button from '../UI/button';
 //author of the spinner: Luke Haas  
 //https://twitter.com/lukehaas
 
@@ -16,13 +15,6 @@ const Spinner = (props) => {
     }
 
     let loader = <div className={classNames.join(" ")}></div>
-    let again = (
-        <div className={classes.again}>
-            <span>
-                <p>Loading failed</p>
-            </span>
-        </div>
-    );
 
     const [content, setContent] = useState(loader);
 
@@ -30,14 +22,20 @@ const Spinner = (props) => {
         if(!props.small){
             return
         }
-        
+
         const timer = setTimeout(()=>{
-            setContent(again);
+            setContent(
+                <div className={classes.again}>
+                    <span>
+                        <p>Loading failed</p>
+                    </span>
+                </div>
+            );
         }, 15000)
         return () => {
             clearTimeout(timer);
         }
-    }, [])
+    }, [props.small])
 
     return (
         <>

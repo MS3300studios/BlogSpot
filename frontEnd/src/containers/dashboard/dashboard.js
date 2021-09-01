@@ -6,7 +6,6 @@ import classes from './dashboard.module.css';
 
 import getToken from '../../getToken';
 import formattedCurrentDate from '../../formattedCurrentDate';
-import Spinner from '../../components/UI/spinner';
 import Post from '../../components/post/post';
 import addPostImage from '../../assets/gfx/add.png';
 import PostForm from '../../components/UI/PostForm';

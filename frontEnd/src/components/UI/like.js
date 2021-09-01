@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import classes from './like.module.css';
-import { AiOutlineLike, AiOutlineDislike, AiFillLike, AiFillDislike, AiOutlineConsoleSql } from 'react-icons/ai';
+import { AiOutlineLike, AiOutlineDislike, AiFillLike, AiFillDislike } from 'react-icons/ai';
 import axios from 'axios';
 import getToken from '../../getToken';
 

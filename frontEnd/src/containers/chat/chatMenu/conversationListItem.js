@@ -125,7 +125,7 @@ const ConversationListItem = (props) => {
         }
 
         
-    }, [])
+    }, [props.el._id, props.el.conversationType, props.el.participants, token, userData._id])
 
     let chatSelect = () => {
         if(!props.join){

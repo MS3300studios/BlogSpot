@@ -1,13 +1,6 @@
 import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
-import io from 'socket.io-client';
-
-//for debug only:
-import axios from 'axios';
-import getToken from './getToken';
-// import getUserData from './getUserData';
-//end for debug only
 
 import termsAndConditions from './termsAndConditions';
 import './App.css';
