@@ -95,9 +95,6 @@ class Conversation extends Component {
 
     componentDidUpdate(prevProps, prevState){
         if(prevProps.conversation._id !== this.props.conversation._id){
-            // setTimeout(()=>{
-            //     this.messagesEnd.scrollIntoView({ behavior: "smooth" });
-            // }, 400);
             //this.socket.emit('leaveConversation', {conversationId: prevProps.conversation._id}) //leaving old conversation
             //this.socket.emit('join', {name: this.state.user.name, conversationId: this.props.conversation._id }); //joining new conversation
             this.setState({skip: 0, infoOpened: false, loadingNewMessages: false, messages: [], conversationStartReached: false}, () => {
@@ -171,11 +168,12 @@ class Conversation extends Component {
                             else this.lastCurrentMessage.scrollIntoView();
                         }
                         else if(!scrollToPosition){
-                            res.data.messages.forEach((el, index) => {
-                                if(index===res.data.messages.length-1){
-                                    this.sendLastReadMessage(el.content);
-                                }
-                            })
+                            this.messagesEnd.scrollIntoView({ behavior: "smooth" });                            
+                            // res.data.messages.forEach((el, index) => {
+                            //     if(index===res.data.messages.length-1){
+                            //         this.sendLastReadMessage(el.content); ---> last message in the newly fetched array
+                            //     }
+                            // })
                         }
                     });
                     return;
