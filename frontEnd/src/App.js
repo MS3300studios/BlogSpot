@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { connect } from 'react-redux';
 
 import termsAndConditions from './termsAndConditions';
 import './App.css';
@@ -115,11 +114,4 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    postsData: state.posts,
-    postID: state.id
-  };
-}
-
-export default connect(mapStateToProps)(App);
+export default App;

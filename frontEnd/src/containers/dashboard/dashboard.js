@@ -215,7 +215,6 @@ class Dashboard extends Component {
                     clearPost.content = "";
                     this.setState({newPostForm: clearPost});
                     this.getPosts();
-                    // this.props.redux_refresh_posts();
                 }
                 else{
                     this.flash("Network error, try again later.")

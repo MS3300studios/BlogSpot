@@ -191,8 +191,8 @@ class UnblockUsers extends Component {
                 let blockedUsers = null;
                 if(res.data.users.length === 0){
                     const msg = (
-                        <h1 style={{color: "white"}}>
-                            You don't have any blocked users, to block a user go to their profile and press the block button there
+                        <h1 style={{color: "white",  margin: "20px"}}>
+                            You don't have any blocked users. To block a user go to their profile and press the block button there.
                         </h1>
                     )
                     this.setState({blockedUsers: msg, loading: false});
@@ -228,8 +228,8 @@ class UnblockUsers extends Component {
                 this.state.loading ? <Spinner /> : (
                     <>
                     <div className={classes.userContainer}>{this.state.blockedUsers ? <>{this.state.blockedUsers}</> : (
-                        <h1 style={{color: "white"}}>
-                            You don't have any blocked users, to block a user go to their profile and press the block button there
+                        <h1 style={{color: "white", margin: "20px"}}>
+                            You don't have any blocked users. To block a user go to their profile and press the block button there.
                         </h1>
                     )}</div>
                     </>

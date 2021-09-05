@@ -72,7 +72,6 @@ class Login extends Component {
         axios.post('http://localhost:3001/users/login', loginData)
             .then(res => {
                 if(res.status===200){
-                    //this.props.redux_store_token(res.data.token); //saving to redux store 
                     if(this.state.keepLoggedIn){
                         localStorage.setItem('token', res.data.token);
                         let userData = JSON.parse(res.data.userData);
@@ -120,7 +119,6 @@ class Login extends Component {
         axios.post('http://localhost:3001/users/login', loginData)
             .then(res => {
                 if(res.status===200){
-                    //this.props.redux_store_token(res.data.token); //saving to redux store 
                     if(this.state.keepLoggedIn){
                         localStorage.setItem('token', res.data.token);
                         let userData = JSON.parse(res.data.userData);
@@ -189,12 +187,4 @@ class Login extends Component {
     }
 }
  
-
-// const mapDispatchToProps = dispatch => {
-//     return {
-//         redux_store_token: (token) => dispatch({type: actionTypes.STORE_TOKEN, data: token}),
-//     }
-// }
-
-// export default connect(null, mapDispatchToProps)(Login);
 export default Login;

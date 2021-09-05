@@ -90,7 +90,6 @@ class Conversation extends Component {
         // })
 
         this.fetchMessages();
-        this.messagesEnd.scrollIntoView({ behavior: "smooth" });
     }   
 
     componentDidUpdate(prevProps, prevState){
@@ -125,15 +124,15 @@ class Conversation extends Component {
     // }
 
     sendLastReadMessage = (content, conversationId) => {
-        // axios({
-        //     method: 'post',
-        //     url: `http://localhost:3001/lastReadMessage/create`,
-        //     headers: {'Authorization': this.state.token},
-        //     data: {
-        //         conversationId: conversationId,
-        //         content: content 
-        //     }
-        // });
+        axios({
+            method: 'post',
+            url: `http://localhost:3001/lastReadMessage/create`,
+            headers: {'Authorization': this.state.token},
+            data: {
+                conversationId: conversationId,
+                content: content 
+            }
+        });
     }
 
     handleScroll = (e) => {
@@ -226,8 +225,7 @@ class Conversation extends Component {
         })
     }
 
-    sendMessage = (e) => {
-        e.preventDefault();
+    sendMessage = () => {
         if(this.state.message === "") return null
         else {
             //processing time
@@ -245,7 +243,6 @@ class Conversation extends Component {
                 hour: time 
             });
 
-            this.sendLastReadMessage(this.state.message);
             this.messagesEnd.scrollIntoView({ behavior: "smooth" });
         }
         this.setState({message: ""});

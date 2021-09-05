@@ -270,7 +270,6 @@ class UserProfile extends Component {
                 })
                 break;
             case "acceptFriendRequest":
-                //redux remove notif
                 axios({
                     method: 'post',
                     url: `http://localhost:3001/anwserRequest`,
@@ -288,7 +287,6 @@ class UserProfile extends Component {
                 })
                 break;
             case "declineFriendRequest":
-                //redux remove notif
                 console.log('decline friend request');
                 axios({
                     method: 'post',

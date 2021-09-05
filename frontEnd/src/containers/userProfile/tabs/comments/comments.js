@@ -9,9 +9,6 @@ import Comment from './comment';
 import getToken from '../../../../getToken';
 import getUserData from '../../../../getUserData';
 
-import { connect } from 'react-redux';
-// import * as actionTypes from '../../../../store/actions';
-
 class Comments extends Component {
     constructor(props){
         super(props);
@@ -123,17 +120,4 @@ class Comments extends Component {
     }
 }
 
-const mapStateToProps = state => {
-    return {
-        refresh: state.refreshComments
-    };
-}
-
-// const mapDispatchToProps = dispatch => {
-//     return {
-//         redux_refresh_comments: () => dispatch({type: actionTypes.CHECK_STORE})
-//     }
-// }
-
-// export default connect(mapStateToProps, mapDispatchToProps)(Comments);
-export default connect(mapStateToProps)(Comments);
+export default Comments;
