@@ -105,13 +105,14 @@ class Conversation extends Component {
         }
 
         if(this.props.redux.newMessage.content === undefined) return null
-        else{
-            if(this.props.redux.newMessage.content !== this.state.messages[this.state.messages.length-1].content){
-                let prevMessages = this.state.messages;
-                prevMessages.push(this.props.redux.newMessage);
-                this.setState({messages: prevMessages});
-                this.sendLastReadMessage(this.props.redux.newMessage.content, this.props.conversation._id);
-            }
+        else if(
+            this.props.redux.newMessage.content !== this.state.messages[this.state.messages.length-1].content && 
+            (this.props.redux.newMessage.conversationId === this.props.conversation._id)
+        ){
+            let prevMessages = this.state.messages;
+            prevMessages.push(this.props.redux.newMessage);
+            this.setState({messages: prevMessages});
+            this.sendLastReadMessage(this.props.redux.newMessage.content, this.props.conversation._id);
         }
 
         if(this.state.message === "" && this.scrollPosition.current > 200){ 

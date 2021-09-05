@@ -68,6 +68,11 @@ class Menu extends Component {
         })
     }
 
+    componentDidUpdate(prevProps){
+        console.log('prev',prevProps);
+        console.log('now', this.props);
+    }
+
     render() { 
         return (
             <nav className={classes.Menu}>
