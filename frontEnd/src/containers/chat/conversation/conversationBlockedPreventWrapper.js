@@ -34,7 +34,7 @@ const BlockedUserPrevent = (props) => {
         .then((res)=>{
             if(res.status===200){
                 if(res.data.blocked === false){
-                    setcontent(<Conversation conversation={props.selectedConversation} refreshAfterBlock={validate}/>);
+                    setcontent(<Conversation conversation={props.selectedConversation} refreshAfterBlock={validate} scrBot/>);
                     setloading(false);
                 }
                 else{
@@ -53,13 +53,12 @@ const BlockedUserPrevent = (props) => {
     }, [props.selectedConversation, getOtherUserNameAndId])
 
     useEffect(() => {
-        
         if(props.selectedConversation.conversationType === 'private'){
             setloading(true);
             validate();
         }
         else{
-            setcontent(<Conversation conversation={props.selectedConversation} refreshAfterBlock={validate}/>);
+            setcontent(<Conversation conversation={props.selectedConversation} refreshAfterBlock={validate} scrBot/>);
             setloading(false);
         }
     }, [props.selectedConversation, validate])

@@ -81,7 +81,7 @@ class Conversation extends Component {
     }
 
     componentDidMount(){
-        //this.socket.emit('join', {name: this.state.user.name, conversationId: this.props.conversation._id })
+        // this.socket.emit('join', {name: this.state.user.name, conversationId: this.props.conversation._id })
         // this.socket.on('message', message => {
         //     let prevMessages = this.state.messages;
         //     prevMessages.push(message);
@@ -94,29 +94,32 @@ class Conversation extends Component {
     }   
 
     componentDidUpdate(prevProps, prevState){
-        console.log(this.props.redux.newMessage.content)
-        if(this.props.redux.newMessage.content === undefined) console.log('undefined hahaha')
-        else{
-            if(this.props.redux.newMessage.content !== this.state.messages[this.state.messages.length-1].content){
-                let prevMessages = this.state.messages;
-                prevMessages.push(this.props.redux.newMessage);
-                this.setState({messages: prevMessages});
-                this.sendLastReadMessage(this.props.redux.newMessage.content);
-            }
-        }
-
-        if(this.state.message === "" && this.scrollPosition.current > 200){
-            this.messagesEnd.scrollIntoView({ behavior: "smooth" });
-        }
-
         if(prevProps.conversation._id !== this.props.conversation._id){
+            // setTimeout(()=>{
+            //     this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+            // }, 400);
             //this.socket.emit('leaveConversation', {conversationId: prevProps.conversation._id}) //leaving old conversation
             //this.socket.emit('join', {name: this.state.user.name, conversationId: this.props.conversation._id }); //joining new conversation
             this.setState({skip: 0, infoOpened: false, loadingNewMessages: false, messages: [], conversationStartReached: false}, () => {
                 this.scrollPosition.current = 201;
                 this.fetchMessages();
-                this.messagesEnd.scrollIntoView({ behavior: "smooth" });
             })
+        }else if(this.props.scrBot){
+            this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+        }
+
+        if(this.props.redux.newMessage.content === undefined) return null
+        else{
+            if(this.props.redux.newMessage.content !== this.state.messages[this.state.messages.length-1].content){
+                let prevMessages = this.state.messages;
+                prevMessages.push(this.props.redux.newMessage);
+                this.setState({messages: prevMessages});
+                this.sendLastReadMessage(this.props.redux.newMessage.content, this.props.conversation._id);
+            }
+        }
+
+        if(this.state.message === "" && this.scrollPosition.current > 200){ 
+            this.messagesEnd.scrollIntoView({ behavior: "smooth" });
         }
     }
 
@@ -124,16 +127,16 @@ class Conversation extends Component {
     //     this.socket.emit('leaveConversation', {conversationId: this.props.conversation._id});
     // }
 
-    sendLastReadMessage = (content) => {
-        axios({
-            method: 'post',
-            url: `http://localhost:3001/lastReadMessage/create`,
-            headers: {'Authorization': this.state.token},
-            data: {
-                conversationId: this.props.conversation._id,
-                content: content 
-            }
-        });
+    sendLastReadMessage = (content, conversationId) => {
+        // axios({
+        //     method: 'post',
+        //     url: `http://localhost:3001/lastReadMessage/create`,
+        //     headers: {'Authorization': this.state.token},
+        //     data: {
+        //         conversationId: conversationId,
+        //         content: content 
+        //     }
+        // });
     }
 
     handleScroll = (e) => {
@@ -396,6 +399,7 @@ class Conversation extends Component {
             <>
             <div className={classes.conversationBanner}>
                 {conversationName}
+                <button style={{backgroundColor: 'black', cursor: "pointer"}} onClick={()=>this.messagesEnd.scrollIntoView({ behavior: "smooth" })}>scroll to bottom</button>
                 <div className={classes.infoCircle} onClick={()=>this.setState((prevState)=>({infoOpened: !prevState.infoOpened}))}>
                     {
                         this.state.infoOpened ? <BsInfoCircleFill size="2em" color="#04255f"/> : <BsInfoCircle size="2em" color="#04255f"/>
