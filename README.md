@@ -32,8 +32,7 @@ This is how the page looks like:
 ![register](https://user-images.githubusercontent.com/42747756/125074393-8503ed80-e0bd-11eb-9105-845672e665c3.png)
 
 ### This is the dashboard with user's posts:
-
-![dashboard](https://user-images.githubusercontent.com/42747756/125074449-95b46380-e0bd-11eb-8059-01478727fd2f.png)
+![dashboard](https://user-images.githubusercontent.com/42747756/132127921-4c1577bb-e735-4af6-a808-b9b206a66138.png)
 
 ### This is the user profile view
 
@@ -49,13 +48,22 @@ This is how the page looks like:
 
 ### Here the user can search through his/hers friends
 
-![friends](https://user-images.githubusercontent.com/42747756/125074588-c85e5c00-e0bd-11eb-85aa-d5f329512c44.png)
+![friends](https://user-images.githubusercontent.com/42747756/132127981-1463ce76-e2e5-4352-9680-4760fb8dcf21.png)
+
 
 ### Or if they don't have any, add them:
 
-![no friends](https://user-images.githubusercontent.com/42747756/125074671-ddd38600-e0bd-11eb-8255-8b6879f6ea7e.png)
+![adding friends](https://user-images.githubusercontent.com/42747756/132128061-ea91b894-a81e-44a8-a8de-1a8efd5e6a41.png)
 
 ### Adding comments and likes is also possible
 
 ![post view](https://user-images.githubusercontent.com/42747756/125074711-ec21a200-e0bd-11eb-9c8f-77f0582ed2da.png)
 
+### As well as chatting to friends in real time!
+![chat](https://user-images.githubusercontent.com/42747756/132128092-e160f791-e310-4114-ac41-dc0b0eddabc2.png)
+
+### Joining group chats or private chats 
+![image](https://user-images.githubusercontent.com/42747756/132128115-f7136ea9-be4a-499e-991b-a33e9363fafc.png)
+![image](https://user-images.githubusercontent.com/42747756/132128146-849f1b36-e376-414f-bb21-855b49a5fdf3.png)
+### And managing blocking users
+![image](https://user-images.githubusercontent.com/42747756/132128165-aa6555d1-741a-44de-a57b-b5ab9ceaa41b.png)
