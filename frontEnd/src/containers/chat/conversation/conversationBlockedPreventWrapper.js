@@ -7,8 +7,8 @@ import Conversation from './conversation';
 import getUserData from '../../../getUserData';
 
 const BlockedUserPrevent = (props) => {
-    const [content, setcontent] = useState()
-    const [loading, setloading] = useState(true)
+    const [content, setcontent] = useState();
+    const [loading, setloading] = useState(true);
 
     let getOtherUserNameAndId = useCallback(() => {
         let userData = getUserData();
@@ -53,14 +53,7 @@ const BlockedUserPrevent = (props) => {
     }, [props.selectedConversation, getOtherUserNameAndId])
 
     useEffect(() => {
-        if(props.selectedConversation.conversationType === 'private'){
-            setloading(true);
-            validate();
-        }
-        else{
-            setcontent(<Conversation conversation={props.selectedConversation} refreshAfterBlock={validate} scrBot/>);
-            setloading(false);
-        }
+        validate();
     }, [props.selectedConversation, validate])
 
     return (

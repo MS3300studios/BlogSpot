@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ChatMenu from './chatMenu/chatMenu';
 import classes from './chat.module.css';
-// import Conversation from './conversation/conversation';
+import Conversation from './conversation/conversation';
 
 import BlockedUserPrevent from './conversation/conversationBlockedPreventWrapper';
 
@@ -25,7 +25,11 @@ class Chat extends Component {
                 {
                     this.state.selectedConversation ? (
                         <div className={classes.mainPanel}>
-                            <BlockedUserPrevent selectedConversation={this.state.selectedConversation}/>
+                            {
+                                this.state.selectedConversation.conversationType === "group" ? 
+                                    <Conversation conversation={this.state.selectedConversation}/> :
+                                    <BlockedUserPrevent selectedConversation={this.state.selectedConversation}/>
+                            }
                         </div>
                     ) : (
                         <div className={classes.mainPanel}>

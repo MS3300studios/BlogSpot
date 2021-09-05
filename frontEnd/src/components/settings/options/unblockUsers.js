@@ -225,7 +225,15 @@ class UnblockUsers extends Component {
         return (
             <div className={classes.center}>
             {
-                this.state.loading ? <Spinner /> : <div className={classes.userContainer}>{this.state.blockedUsers}</div>
+                this.state.loading ? <Spinner /> : (
+                    <>
+                    <div className={classes.userContainer}>{this.state.blockedUsers ? <>{this.state.blockedUsers}</> : (
+                        <h1 style={{color: "white"}}>
+                            You don't have any blocked users, to block a user go to their profile and press the block button there
+                        </h1>
+                    )}</div>
+                    </>
+                )
             }
             </div>
         );
