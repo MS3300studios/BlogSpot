@@ -146,6 +146,7 @@ class SocialBoard extends Component {
             for(let i = 0; i<12; i++){
                 content.push(
                     <Post 
+                        key={i}
                         loading={true}
                         socialBoard
                     />

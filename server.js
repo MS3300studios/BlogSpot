@@ -38,6 +38,11 @@ let onlineUsers = [];
 const Message = require('./models/message');
 
 io.on('connection', (socket) => {  
+
+    socket.on('test', () => {
+        console.log(test)
+    })
+
     socket.on('online', ({userId}) => {
         onlineUsers.push({userId: userId, socketId: socket.id});
         console.log(onlineUsers)
@@ -68,6 +73,7 @@ io.on('connection', (socket) => {
 
     socket.on('sendMessage', (message) => {
         io.to(message.conversationId).emit('message', message);
+        
         const msg = new Message({
             authorId: message.authorId,
             authorName: message.authorName,

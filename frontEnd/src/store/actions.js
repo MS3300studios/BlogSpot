@@ -1,4 +1,5 @@
 export const RECEIVING_MESSAGE = 'RECEIVING_MESSAGE';
 export const SENDING_MESSAGE = 'SENDING_MESSAGE';
+export const TEST = 'TEST';
 
 

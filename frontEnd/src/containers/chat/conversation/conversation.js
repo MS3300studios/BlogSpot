@@ -3,7 +3,7 @@ import classes from './conversation.module.css';
 
 import getUserData from '../../../getUserData';
 import getToken from '../../../getToken';
-import io from 'socket.io-client';
+// import io from 'socket.io-client'; 
 import { withRouter } from 'react-router';
 import axios from 'axios';
 import { Redirect } from 'react-router';
@@ -77,7 +77,7 @@ class Conversation extends Component {
         this.scrollPosition.current = 201;
         this.messagesEnd = null;
         this.lastCurrentMessage = null;
-        this.socket = io('http://localhost:3001');
+        // this.socket = io('http://localhost:3001');
     }
 
     componentDidMount(){
@@ -104,10 +104,11 @@ class Conversation extends Component {
             this.messagesEnd.scrollIntoView({ behavior: "smooth" });
         }
 
-        if(this.props.redux.newMessage.content === undefined) return null
+        if(this.props.redux.newMessage === undefined) return null
         else if(
-            this.props.redux.newMessage.content !== this.state.messages[this.state.messages.length-1].content && 
-            (this.props.redux.newMessage.conversationId === this.props.conversation._id)
+            (this.props.redux.newMessage.content !== this.state.messages[this.state.messages.length-1].content) && 
+            (this.props.redux.newMessage.authorId !== this.state.messages[this.state.messages.length-1].authorId) && 
+            (this.props.redux.newMessage.conversationId === this.props.conversation._id) 
         ){
             let prevMessages = this.state.messages;
             prevMessages.push(this.props.redux.newMessage);
@@ -236,13 +237,21 @@ class Conversation extends Component {
             if(minute<10) minute = "0"+minute;
             let time = `${hour}:${minute}`
 
-            this.socket.emit('sendMessage', {
+            this.props.redux_send_message_to_store({
                 authorId: this.state.user._id,
                 authorName: this.state.user.name, 
                 content: this.state.message, 
                 conversationId: this.props.conversation._id, 
                 hour: time 
-            });
+            })
+
+            // this.socket.emit('sendMessage', {
+            //     authorId: this.state.user._id,
+            //     authorName: this.state.user.name, 
+            //     content: this.state.message, 
+            //     conversationId: this.props.conversation._id, 
+            //     hour: time 
+            // });
 
             this.messagesEnd.scrollIntoView({ behavior: "smooth" });
         }
@@ -547,7 +556,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         redux_send_message_to_store: (message) => {
-            console.log('[redux_send_message_to_store] dispatching to store!');
+            console.log('[redux_sending_message]');
             dispatch({type: actionTypes.SENDING_MESSAGE, data: message});
         }
     }

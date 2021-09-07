@@ -69,8 +69,14 @@ class Menu extends Component {
     }
 
     componentDidUpdate(prevProps){
-        console.log('prev',prevProps);
-        console.log('now', this.props);
+        // console.log('prev',prevProps);
+        // console.log('now', this.props);
+        if(
+            (this.props.redux.newSendMessage.content !== prevProps.redux.newSendMessage.content) && 
+            (this.props.redux.newSendMessage.authorId !== prevProps.redux.newSendMessage.authorId)
+        ){
+            this.socket.emit('sendMessage', this.props.redux.newSendMessage);
+        }
     }
 
     render() { 
@@ -130,7 +136,7 @@ class Menu extends Component {
 
 const mapStateToProps = state => {
     return {
-        state: state
+        redux: state
     };
 }
 
