@@ -88,7 +88,7 @@ const Post = (props) => {
                         </div>
                         <p>(see the full blog to read further)</p>
                         {
-                            (props.author===tempCompareVal) ? (
+                            (props.author===tempCompareVal && !props.socialBoard) ? (
                                 <div className={classes.btnWrapper}>
                                     <Button clicked={()=>props.edit(props.id)}>Edit</Button>
                                     <Button clicked={()=>props.delete(props.id)}>Delete</Button>

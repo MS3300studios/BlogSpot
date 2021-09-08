@@ -2,9 +2,12 @@ import * as actionTypes from './actions';
 
 import io from 'socket.io-client';
 
+// const initialState = {
+//     newMessage: "",
+//     newSendMessage: "",
+//     socket: io('http://localhost:3001')
+// };
 const initialState = {
-    newMessage: "",
-    newSendMessage: "",
     socket: io('http://localhost:3001')
 };
 
@@ -25,8 +28,9 @@ const reducer = ( state = initialState, action ) => {
         case actionTypes.TEST:
             console.log("[STORE]", action);
             return {
-                ...state,
+                ...state            
             };
+
         default:
             return state;
     }

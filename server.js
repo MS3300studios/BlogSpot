@@ -40,7 +40,8 @@ const Message = require('./models/message');
 io.on('connection', (socket) => {  
 
     socket.on('test', () => {
-        console.log(test)
+        console.log("getting signal from: ", socket.id)
+        socket.emit('test-response', {data: 'datatext'});
     })
 
     socket.on('online', ({userId}) => {

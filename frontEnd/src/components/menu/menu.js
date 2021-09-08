@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Redirect, withRouter } from 'react-router-dom';
-import io from 'socket.io-client';
 import { connect } from 'react-redux';
-import * as actionTypes from '../../store/actions';
+// import io from 'socket.io-client';
+// import * as actionTypes from '../../store/actions';
 
 
 import { BsPeople, BsPeopleFill } from 'react-icons/bs';
@@ -30,11 +30,11 @@ class Menu extends Component {
         
         this.data = getUserData();
         this.token = getToken();
-        this.socket = io('http://localhost:3001');
+        // this.socket = io('http://localhost:3001');
     }
 
     componentDidMount(){
-        this.socket.emit("online", {userId: this.data._id});
+        this.props.socket.emit("online", {userId: this.data._id});
 
         axios({
             method: 'get',
@@ -45,7 +45,7 @@ class Menu extends Component {
             if(res.status === 200){
                 this.setState({conversations: res.data.conversations})
                 res.data.conversations.forEach(conv => {
-                    this.socket.emit('join', {name: this.data.name, conversationId: conv._id });
+                    this.props.socket.emit('join', {name: this.data.name, conversationId: conv._id });
                 })
             }
         })
@@ -53,7 +53,7 @@ class Menu extends Component {
             console.log(error);
         })
 
-        this.socket.on('message', message => {
+        this.props.socket.on('message', message => {
             this.props.redux_send_message_to_store(message);
             if(message.authorId !== this.data._id && this.props.location.pathname !== "/chat/" && this.props.location.pathname !== "/conversation/"){
                 let msgCnt = this.state.messageCount;
@@ -64,19 +64,19 @@ class Menu extends Component {
 
     componentWillUnmount(){
         this.state.conversations.forEach(conv => {
-            this.socket.emit('leaveConversation', {conversationId: conv._id});
+            this.props.socket.emit('leaveConversation', {conversationId: conv._id});
         })
     }
 
     componentDidUpdate(prevProps){
         // console.log('prev',prevProps);
         // console.log('now', this.props);
-        if(
-            (this.props.redux.newSendMessage.content !== prevProps.redux.newSendMessage.content) && 
-            (this.props.redux.newSendMessage.authorId !== prevProps.redux.newSendMessage.authorId)
-        ){
-            this.socket.emit('sendMessage', this.props.redux.newSendMessage);
-        }
+        // if(
+        //     (this.props.redux.newSendMessage.content !== prevProps.redux.newSendMessage.content) && 
+        //     (this.props.redux.newSendMessage.authorId !== prevProps.redux.newSendMessage.authorId)
+        // ){
+        //     this.socket.emit('sendMessage', this.props.redux.newSendMessage);
+        // }
     }
 
     render() { 
@@ -129,24 +129,33 @@ class Menu extends Component {
                 <UserPhoto userId={this.data._id} dropdown/>
                 {this.state.redirect ? <Redirect to="/user/friends/" /> : null}
                 {this.state.redirectChat ? <Redirect to="/chat/" /> : null}
+                <button style={{backgroundColor: "black", cursor: "pointer"}} onClick={()=>{
+                    // console.log()
+                }}>
+                    test socket
+                </button>
             </nav>
         );
     }
 }
 
-const mapStateToProps = state => {
-    return {
-        redux: state
-    };
+// const mapStateToProps = state => {
+//     return {
+//         redux: state
+//     };
+// }
+const mapStateToProps = socket => {
+    return socket;
 }
 
-const mapDispatchToProps = dispatch => {
-    return {
-        redux_send_message_to_store: (message) => {
-            console.log('[redux_send_message_to_store] dispatching to store!');
-            dispatch({type: actionTypes.RECEIVING_MESSAGE, data: message});
-        }
-    }
-}
+// const mapDispatchToProps = dispatch => {
+//     return {
+//         redux_send_message_to_store: (message) => {
+//             console.log('[redux_send_message_to_store] dispatching to store!');
+//             dispatch({type: actionTypes.RECEIVING_MESSAGE, data: message});
+//         }
+//     }
+// }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Menu));
+// export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Menu));
+export default connect(mapStateToProps)(withRouter(Menu));
