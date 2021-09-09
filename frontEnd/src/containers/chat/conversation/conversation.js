@@ -3,12 +3,14 @@ import classes from './conversation.module.css';
 
 import getUserData from '../../../getUserData';
 import getToken from '../../../getToken';
+
 // import io from 'socket.io-client'; 
+// import * as actionTypes from '../../../store/actions';
+
 import { withRouter } from 'react-router';
 import axios from 'axios';
 import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
-import * as actionTypes from '../../../store/actions';
 
 import { IoIosArrowDown } from 'react-icons/io';
 import { IoIosArrowUp } from 'react-icons/io';
@@ -90,9 +92,20 @@ class Conversation extends Component {
         // })
 
         this.fetchMessages();
+        //getting message directly from server
+        this.props.socket.on('message', message => {
+            if(message.conversationId === this.props.conversation._id){
+                console.log('[CONVERSATION] message has been received from server: ', message);
+                let prevMessages = this.state.messages;
+                prevMessages.push(message);
+                this.setState({messages: prevMessages});
+                this.sendLastReadMessage(message.content, this.props.conversation._id);    
+            }
+        })
     }   
 
     componentDidUpdate(prevProps, prevState){
+        //scrolling events
         if(prevProps.conversation._id !== this.props.conversation._id){
             //this.socket.emit('leaveConversation', {conversationId: prevProps.conversation._id}) //leaving old conversation
             //this.socket.emit('join', {name: this.state.user.name, conversationId: this.props.conversation._id }); //joining new conversation
@@ -103,8 +116,12 @@ class Conversation extends Component {
         }else if(this.props.scrBot){
             this.messagesEnd.scrollIntoView({ behavior: "smooth" });
         }
+        if(this.state.message === "" && this.scrollPosition.current > 200){ 
+            this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+        }
 
-        if(this.props.redux.newMessage === undefined) return null
+        //getting messages
+        /*if(this.props.redux.newMessage === undefined) return null
         else if(
             (this.props.redux.newMessage.content !== this.state.messages[this.state.messages.length-1].content) && 
             (this.props.redux.newMessage.authorId !== this.state.messages[this.state.messages.length-1].authorId) && 
@@ -114,11 +131,7 @@ class Conversation extends Component {
             prevMessages.push(this.props.redux.newMessage);
             this.setState({messages: prevMessages});
             this.sendLastReadMessage(this.props.redux.newMessage.content, this.props.conversation._id);
-        }
-
-        if(this.state.message === "" && this.scrollPosition.current > 200){ 
-            this.messagesEnd.scrollIntoView({ behavior: "smooth" });
-        }
+        }*/
     }
 
     // componentWillUnmount(){
@@ -170,11 +183,11 @@ class Conversation extends Component {
                         }
                         else if(!scrollToPosition){
                             this.messagesEnd.scrollIntoView({ behavior: "smooth" });                            
-                            // res.data.messages.forEach((el, index) => {
-                            //     if(index===res.data.messages.length-1){
-                            //         this.sendLastReadMessage(el.content); ---> last message in the newly fetched array
-                            //     }
-                            // })
+                            res.data.messages.forEach((el, index) => {
+                                if(index===res.data.messages.length-1){
+                                    this.sendLastReadMessage(el.content, this.props.conversation._id); 
+                                }
+                            })
                         }
                     });
                     return;
@@ -237,21 +250,21 @@ class Conversation extends Component {
             if(minute<10) minute = "0"+minute;
             let time = `${hour}:${minute}`
 
-            this.props.redux_send_message_to_store({
-                authorId: this.state.user._id,
-                authorName: this.state.user.name, 
-                content: this.state.message, 
-                conversationId: this.props.conversation._id, 
-                hour: time 
-            })
-
-            // this.socket.emit('sendMessage', {
+            // this.props.redux_send_message_to_store({
             //     authorId: this.state.user._id,
             //     authorName: this.state.user.name, 
             //     content: this.state.message, 
             //     conversationId: this.props.conversation._id, 
             //     hour: time 
-            // });
+            // })
+
+            this.props.socket.emit('sendMessage', {
+                authorId: this.state.user._id,
+                authorName: this.state.user.name, 
+                content: this.state.message, 
+                conversationId: this.props.conversation._id, 
+                hour: time 
+            });
 
             this.messagesEnd.scrollIntoView({ behavior: "smooth" });
         }
@@ -547,19 +560,18 @@ class Conversation extends Component {
     }
 }
 
-const mapStateToProps = state => {
-    return {
-        redux: state
-    };
+const mapStateToProps = socket => {
+    return socket;
 }
 
-const mapDispatchToProps = dispatch => {
-    return {
-        redux_send_message_to_store: (message) => {
-            console.log('[redux_sending_message]');
-            dispatch({type: actionTypes.SENDING_MESSAGE, data: message});
-        }
-    }
-}
+// const mapDispatchToProps = dispatch => {
+//     return {
+//         redux_send_message_to_store: (message) => {
+//             console.log('[redux_sending_message]');
+//             dispatch({type: actionTypes.SENDING_MESSAGE, data: message});
+//         }
+//     }
+// }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Conversation));
+export default connect(mapStateToProps)(withRouter(Conversation));
+// export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Conversation));

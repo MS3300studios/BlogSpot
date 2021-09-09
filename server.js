@@ -39,11 +39,6 @@ const Message = require('./models/message');
 
 io.on('connection', (socket) => {  
 
-    socket.on('test', () => {
-        console.log("getting signal from: ", socket.id)
-        socket.emit('test-response', {data: 'datatext'});
-    })
-
     socket.on('online', ({userId}) => {
         onlineUsers.push({userId: userId, socketId: socket.id});
         console.log(onlineUsers)
@@ -60,21 +55,19 @@ io.on('connection', (socket) => {
         if(isOnline !== -1) socket.emit('userOnlineStatus', true); 
         else socket.emit('userOnlineStatus', false); 
     })
-    
-    socket.on('logOnlineUsers', () => {
-        console.log(onlineUsers)
-        console.log('----------------')
-    })
-    
-    socket.on('join', ({userId, name, conversationId}) => {
+        
+    socket.on('join', ({name, conversationId}) => {
         console.log(`${name} joined room nr: ${conversationId}`)
         socket.join(conversationId); //user is joining a specific room
         users.push({id: socket.id, name: name, conversationId: conversationId});
     })
 
     socket.on('sendMessage', (message) => {
+        //emitting message to specific room
+        console.log('received message from user, sending it to conversations')
         io.to(message.conversationId).emit('message', message);
         
+        //saving message to database
         const msg = new Message({
             authorId: message.authorId,
             authorName: message.authorName,
@@ -84,10 +77,6 @@ io.on('connection', (socket) => {
         });
     
         msg.save();
-    })
-
-    socket.on('allUsers', () => {
-        console.log(users)
     })
 
     socket.on('leaveConversation', ({conversationId}) => {
@@ -101,16 +90,11 @@ io.on('connection', (socket) => {
 
     socket.on('disconnect', ()=>{
         console.log("user disconnected");
-
-        /* let disconnectingUser = users.filter(user => user.socketId === socket.id)[0];
-        console.log(socket.id)
-        console.log(disconnectingUser)
-        socket.emit('userOnlineStatus', {isOnline: false, userId: }); */
         
         let newUsers = users.filter(user => user.socketId !== socket.id);        
-        let newonlineUsers = onlineUsers.filter(user => user.socketId !== socket.id);
+        let newOnlineUsers = onlineUsers.filter(user => user.socketId !== socket.id);
         
         users = newUsers;
-        onlineUsers = newonlineUsers;
+        onlineUsers = newOnlineUsers;
     })
 });

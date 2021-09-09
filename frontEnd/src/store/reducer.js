@@ -7,6 +7,7 @@ import io from 'socket.io-client';
 //     newSendMessage: "",
 //     socket: io('http://localhost:3001')
 // };
+
 const initialState = {
     socket: io('http://localhost:3001')
 };

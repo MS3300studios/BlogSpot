@@ -54,11 +54,13 @@ class Menu extends Component {
         })
 
         this.props.socket.on('message', message => {
-            this.props.redux_send_message_to_store(message);
-            if(message.authorId !== this.data._id && this.props.location.pathname !== "/chat/" && this.props.location.pathname !== "/conversation/"){
-                let msgCnt = this.state.messageCount;
-                this.setState({messageCount: msgCnt+1});
-            }
+            // this.props.redux_send_message_to_store(message);
+            // if(message.authorId !== this.data._id && this.props.location.pathname !== "/chat/" && this.props.location.pathname !== "/conversation/"){
+            //     let msgCnt = this.state.messageCount;
+            //     this.setState({messageCount: msgCnt+1});
+            // }
+
+            console.log('[MENU] message received from server: ', message);
         })
     }
 
@@ -129,11 +131,6 @@ class Menu extends Component {
                 <UserPhoto userId={this.data._id} dropdown/>
                 {this.state.redirect ? <Redirect to="/user/friends/" /> : null}
                 {this.state.redirectChat ? <Redirect to="/chat/" /> : null}
-                <button style={{backgroundColor: "black", cursor: "pointer"}} onClick={()=>{
-                    // console.log()
-                }}>
-                    test socket
-                </button>
             </nav>
         );
     }
