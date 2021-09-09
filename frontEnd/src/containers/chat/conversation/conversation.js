@@ -94,12 +94,12 @@ class Conversation extends Component {
         this.fetchMessages();
         //getting message directly from server
         this.props.socket.on('message', message => {
+            let prevMessages = this.state.messages;
+            prevMessages.push(message);
+            this.setState({messages: prevMessages});
+            this.sendLastReadMessage(message.content, this.props.conversation._id);    
             if(message.conversationId === this.props.conversation._id){
-                console.log('[CONVERSATION] message has been received from server: ', message);
-                let prevMessages = this.state.messages;
-                prevMessages.push(message);
-                this.setState({messages: prevMessages});
-                this.sendLastReadMessage(message.content, this.props.conversation._id);    
+                // console.log('[CONVERSATION] message has been received from server: ', message);
             }
         })
     }   
