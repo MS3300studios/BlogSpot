@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-// import io from 'socket.io-client';
-// import * as actionTypes from '../../store/actions';
-
 
 import { BsPeople, BsPeopleFill } from 'react-icons/bs';
 import { IoChatbubbles, IoChatbubblesOutline } from 'react-icons/io5';
@@ -30,7 +27,6 @@ class Menu extends Component {
         
         this.data = getUserData();
         this.token = getToken();
-        // this.socket = io('http://localhost:3001');
     }
 
     componentDidMount(){
@@ -54,7 +50,6 @@ class Menu extends Component {
         })
 
         this.props.socket.on('message', message => {
-            // this.props.redux_send_message_to_store(message);
             if(message.authorId !== this.data._id && this.props.location.pathname !== "/chat/" && this.props.location.pathname !== "/conversation/"){
                 let msgCnt = this.state.messageCount;
                 this.setState({messageCount: msgCnt+1});
@@ -66,17 +61,6 @@ class Menu extends Component {
         this.state.conversations.forEach(conv => {
             this.props.socket.emit('leaveConversation', {conversationId: conv._id});
         })
-    }
-
-    componentDidUpdate(prevProps){
-        // console.log('prev',prevProps);
-        // console.log('now', this.props);
-        // if(
-        //     (this.props.redux.newSendMessage.content !== prevProps.redux.newSendMessage.content) && 
-        //     (this.props.redux.newSendMessage.authorId !== prevProps.redux.newSendMessage.authorId)
-        // ){
-        //     this.socket.emit('sendMessage', this.props.redux.newSendMessage);
-        // }
     }
 
     render() { 
@@ -134,23 +118,8 @@ class Menu extends Component {
     }
 }
 
-// const mapStateToProps = state => {
-//     return {
-//         redux: state
-//     };
-// }
 const mapStateToProps = socket => {
     return socket;
 }
 
-// const mapDispatchToProps = dispatch => {
-//     return {
-//         redux_send_message_to_store: (message) => {
-//             console.log('[redux_send_message_to_store] dispatching to store!');
-//             dispatch({type: actionTypes.RECEIVING_MESSAGE, data: message});
-//         }
-//     }
-// }
-
-// export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Menu));
 export default connect(mapStateToProps)(withRouter(Menu));

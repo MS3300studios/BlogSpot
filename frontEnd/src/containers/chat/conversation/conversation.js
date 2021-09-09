@@ -4,9 +4,6 @@ import classes from './conversation.module.css';
 import getUserData from '../../../getUserData';
 import getToken from '../../../getToken';
 
-// import io from 'socket.io-client'; 
-// import * as actionTypes from '../../../store/actions';
-
 import { withRouter } from 'react-router';
 import axios from 'axios';
 import { Redirect } from 'react-router';
@@ -79,18 +76,9 @@ class Conversation extends Component {
         this.scrollPosition.current = 201;
         this.messagesEnd = null;
         this.lastCurrentMessage = null;
-        // this.socket = io('http://localhost:3001');
     }
 
     componentDidMount(){
-        // this.socket.emit('join', {name: this.state.user.name, conversationId: this.props.conversation._id })
-        // this.socket.on('message', message => {
-        //     let prevMessages = this.state.messages;
-        //     prevMessages.push(message);
-        //     this.setState({messages: prevMessages});
-        //     this.sendLastReadMessage(message.content);
-        // })
-
         this.fetchMessages();
         //getting message directly from server
         this.props.socket.on('message', message => {
@@ -98,17 +86,12 @@ class Conversation extends Component {
             prevMessages.push(message);
             this.setState({messages: prevMessages});
             this.sendLastReadMessage(message.content, this.props.conversation._id);    
-            if(message.conversationId === this.props.conversation._id){
-                // console.log('[CONVERSATION] message has been received from server: ', message);
-            }
         })
     }   
 
     componentDidUpdate(prevProps, prevState){
         //scrolling events
         if(prevProps.conversation._id !== this.props.conversation._id){
-            //this.socket.emit('leaveConversation', {conversationId: prevProps.conversation._id}) //leaving old conversation
-            //this.socket.emit('join', {name: this.state.user.name, conversationId: this.props.conversation._id }); //joining new conversation
             this.setState({skip: 0, infoOpened: false, loadingNewMessages: false, messages: [], conversationStartReached: false}, () => {
                 this.scrollPosition.current = 201;
                 this.fetchMessages();
@@ -119,24 +102,7 @@ class Conversation extends Component {
         if(this.state.message === "" && this.scrollPosition.current > 200){ 
             this.messagesEnd.scrollIntoView({ behavior: "smooth" });
         }
-
-        //getting messages
-        /*if(this.props.redux.newMessage === undefined) return null
-        else if(
-            (this.props.redux.newMessage.content !== this.state.messages[this.state.messages.length-1].content) && 
-            (this.props.redux.newMessage.authorId !== this.state.messages[this.state.messages.length-1].authorId) && 
-            (this.props.redux.newMessage.conversationId === this.props.conversation._id) 
-        ){
-            let prevMessages = this.state.messages;
-            prevMessages.push(this.props.redux.newMessage);
-            this.setState({messages: prevMessages});
-            this.sendLastReadMessage(this.props.redux.newMessage.content, this.props.conversation._id);
-        }*/
     }
-
-    // componentWillUnmount(){
-    //     this.socket.emit('leaveConversation', {conversationId: this.props.conversation._id});
-    // }
 
     sendLastReadMessage = (content, conversationId) => {
         axios({
@@ -249,14 +215,6 @@ class Conversation extends Component {
             let minute = new Date().getMinutes()
             if(minute<10) minute = "0"+minute;
             let time = `${hour}:${minute}`
-
-            // this.props.redux_send_message_to_store({
-            //     authorId: this.state.user._id,
-            //     authorName: this.state.user.name, 
-            //     content: this.state.message, 
-            //     conversationId: this.props.conversation._id, 
-            //     hour: time 
-            // })
 
             this.props.socket.emit('sendMessage', {
                 authorId: this.state.user._id,
@@ -564,14 +522,4 @@ const mapStateToProps = socket => {
     return socket;
 }
 
-// const mapDispatchToProps = dispatch => {
-//     return {
-//         redux_send_message_to_store: (message) => {
-//             console.log('[redux_sending_message]');
-//             dispatch({type: actionTypes.SENDING_MESSAGE, data: message});
-//         }
-//     }
-// }
-
 export default connect(mapStateToProps)(withRouter(Conversation));
-// export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Conversation));
