@@ -193,6 +193,7 @@ button:hover{
     animation: out 1s;
     box-shadow: 10px 10px 29px -1px rgba(0,0,0,0.55);
 }
+
 @keyframes out{
     from {box-shadow: none;}
     to {box-shadow: 10px 10px 29px -1px rgba(0,0,0,0.55);}
@@ -205,6 +206,26 @@ button:hover{
 .roboto{
     font-family: 'Roboto', sans-serif;
 }
+
+.googleBanner{
+    margin-top: 10vh;
+    display: flex;
+    justify-content: center;
+}
+
+.googleBanner button{
+    animation: none;
+    transition: 0.2s ease-out;
+    cursor: pointer;
+}
+
+.googleBanner span{
+    color: #000;
+}
+.googleBanner button:hover{
+    transform: scale(1.1);
+}
+
 
 @media screen and (max-width: 1603px){
     .gateWelcomeH1{

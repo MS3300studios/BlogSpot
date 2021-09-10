@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 import classes from './gate.module.css';
 import Button from '../../components/UI/button';
+import GoogleLogin from 'react-google-login';
 
 import manLeft from '../../assets/gfx/manLeft.png';
 import manRight from '../../assets/gfx/manRight.png';
@@ -11,9 +12,11 @@ import speechLeft from '../../assets/gfx/speechLeft.png';
 import BlogSpotLogo from '../../assets/gfx/BlogSpotLogo.png';
 
 class Gate extends Component {
-    state = {
-
+    responseGoogle = (response) => {
+        console.log(response);
+        console.log(response.profileObj);
     }
+
     render() { 
         return (
             <React.Fragment>
@@ -34,6 +37,15 @@ class Gate extends Component {
                         <div className={classes.card}>
                             <h1>Visiting us again?</h1>
                             <Link to="/login"><Button>login</Button></Link>
+                        </div>
+                        <div className={classes.googleBanner}>
+                            <GoogleLogin 
+                                clientId="663202900382-uprlid8mck8lndd4ur1d9dujnobt5q8h.apps.googleusercontent.com"
+                                buttonText="Sign in with Google"
+                                onSuccess={this.responseGoogle}
+                                onFailure={this.responseGoogle}
+                                cookiePolicy={'single_host_origin'}
+                            />
                         </div>
                     </div>
                 </div>
