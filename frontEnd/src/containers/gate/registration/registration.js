@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import axios from 'axios'; 
 
+import ReCAPTCHA from "react-google-recaptcha";
 import Flash from '../../../components/UI/flash';
 import classes from './registration.module.css';
 import defaultUserPhoto from '../../../assets/gfx/defaultUserPhoto.png';
@@ -23,6 +24,8 @@ class Registration extends Component {
             flashMessage: "",
             flashNotClosed: true,
             redirectToLogin: false,
+            showCaptcha: false,
+            captchaVerified: false
         }
         
         this.photosubmit.bind(this);
@@ -31,8 +34,9 @@ class Registration extends Component {
         this.flash.bind(this);
         this.PasswordCorrect.bind(this);
         this.EmailCorrect.bind(this);
-    }
-    
+        this.captchaVerify.bind(this);
+    }    
+
     inputHandler = (e, type) => {
         switch (type) {
             case "name":
@@ -190,6 +194,10 @@ class Registration extends Component {
         }, 3000);
     }
 
+    captchaVerify = (response) => {
+        console.log(response)
+    }
+
     render() { 
 
         let flash = null;
@@ -223,18 +231,28 @@ class Registration extends Component {
                     <div className={classes.imgContainer}>
                         <img src={this.state.photoPreview} alt="default"/>
                     </div>
-                    <div className={classes.buttonContainer}>
-                        <Button clicked={this.submitUser} disabled={!this.state.readyForSubmission}>Register</Button>
+                    {/* <div className={classes.center}>
+                        <ReCAPTCHA
+                            sitekey="6LeJ1F0cAAAAAAdyLblJwWcVJ7IayxS8hOtLDOtl"
+                            onChange={this.captchaVerify}
+                            theme='light'
+                        />
+                    </div> */}
+                    <div className={[classes.buttonContainer, classes.center].join(" ")}>
+                        <Button clicked={this.submitUser} disabled={!this.state.readyForSubmission && this.state.captchaVerified}>Register</Button>
                     </div>
                     <div className={classes.consentContainer}>
                         <p>When you click register, you agree to the <Link to="/termsAndConditions">terms and conditions</Link> of BragSpot</p>
                     </div>
                 </form>
-                <label className={classes.labelLogin}>Already have an account?</label>
-                <Link to="/login" className={classes.loginLink}>Log in here</Link>
-                {this.state.redirectToLogin ? <Redirect to="/login" /> : null}
+                <hr style={{margin: "-10px 0px -10px 0px"}} />
+                <div className={classes.bottomLabel}>
+                    <label className={classes.labelLogin}>Already have an account?</label> <br />
+                    <Link to="/login" className={classes.loginLink}>Log in here</Link>
+                </div>
             </div> 
             {flash}
+            {this.state.redirectToLogin ? <Redirect to="/login" /> : null}
            </React.Fragment>
         );
     }

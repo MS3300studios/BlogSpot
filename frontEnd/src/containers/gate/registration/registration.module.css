@@ -1,7 +1,6 @@
 .RegistrationContainer{
     background-color: #82ca66;
     width: 500px;
-    height: 865px;
     margin: 0 auto;
     margin-top: 2%;
     position: relative;
@@ -20,8 +19,7 @@
 }
 
 .Form h1{
-    /* position: absolute; */
-    top: 0px;
+    margin-top: 0px;
     margin-left: 165px;
 }
 
@@ -49,9 +47,7 @@
 }
   
 .buttonContainer{
-    position: absolute;
-    top: 750px;
-    left: 210px;
+    margin: 10px 0px 10px -10px;
 }
 
 .InputName{
@@ -93,23 +89,19 @@
 
 .imgContainer{
     position: absolute;
-    top: 440px;
+    top: 430px;
     left: 250px;
 }
 
 .labelLogin{
-    position: absolute;
-    top: 785px;
-    left: 43px;
+    /* position: absolute; */
     color: teal;
     font-weight: 500;
     font-size: 25px;
 }
 
 .loginLink{
-    position: absolute;
-    top: 820px;
-    left: 43px;
+    /* position: absolute; */
     text-decoration: none;
     font-weight: 600;
     font-size: 20px;
@@ -121,4 +113,14 @@
 .consentContainer{
     width: 60%;
     margin: 0 auto;
+}
+
+.center{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.bottomLabel{
+    padding: 30px;
 }

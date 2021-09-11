@@ -7,7 +7,6 @@ import Flash from '../../components/UI/flash';
 import Button from '../../components/UI/button';
 
 import GoogleLogin from 'react-google-login';
-import FacebookLogin from 'react-facebook-login';
 
 import manLeft from '../../assets/gfx/manLeft.png';
 import manRight from '../../assets/gfx/manRight.png';
