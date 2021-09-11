@@ -83,10 +83,6 @@ class Gate extends Component {
         }).catch(err => console.log(err));
     }
 
-    responseFacebook = (response) => {
-        console.log(response);
-    }    
-
     flash = (message) => {
         this.setState({flashMessage: message});
         
@@ -133,24 +129,13 @@ class Gate extends Component {
                             <Link to="/login"><Button>login</Button></Link>
                         </div>
                         <div className={classes.googleBanner}>
-                            <div className={classes.googleButton}>
-                                <GoogleLogin 
-                                    clientId="663202900382-uprlid8mck8lndd4ur1d9dujnobt5q8h.apps.googleusercontent.com"
-                                    buttonText="Sign in with Google"
-                                    onSuccess={this.responseGoogle}
-                                    onFailure={this.handleGoogleFailure}
-                                    cookiePolicy={'single_host_origin'}
-                                />
-                            </div >
-                            <div className={classes.social}>
-                                <FacebookLogin
-                                    appId="1194971730986165"
-                                    autoLoad={true}
-                                    fields="name,email,picture"
-                                    // onClick={this.componentClicked}
-                                    callback={this.responseFacebook} 
-                                />
-                            </div>
+                            <GoogleLogin 
+                                clientId="663202900382-uprlid8mck8lndd4ur1d9dujnobt5q8h.apps.googleusercontent.com"
+                                buttonText="Sign in with Google"
+                                onSuccess={this.responseGoogle}
+                                onFailure={this.handleGoogleFailure}
+                                cookiePolicy={'single_host_origin'}
+                            />
                         </div>
                     </div>
                 </div>
