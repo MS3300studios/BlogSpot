@@ -117,7 +117,6 @@ class Dashboard extends Component {
             headers: {'Authorization': this.state.token}
         })
         .then(res => {
-            console.log(res.data)
             this.setState({loading: false});
             const posts = [];
             for(let key in res.data.blogs) {
@@ -253,16 +252,17 @@ class Dashboard extends Component {
         else{
             posts = this.state.posts.map((post, index)=>{
                 return (
-                    <Post
-                        title={post.title}
-                        author={userData._id}
-                        content={post.content}
-                        id={post._id}
-                        key={index}
-                        delete={this.deletePost}
-                        edit={this.editPost}
-                        dashboard
-                    />        
+                    <div key={index}>
+                        <Post
+                            title={post.title}
+                            author={userData._id}
+                            content={post.content}
+                            id={post._id}
+                            delete={this.deletePost}
+                            edit={this.editPost}
+                            dashboard
+                        />        
+                    </div>
                 )}
             );
             if(filterIn==="title"){
