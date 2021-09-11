@@ -195,7 +195,10 @@ class Registration extends Component {
     }
 
     captchaVerify = (response) => {
-        console.log(response)
+        if(response) this.setState({captchaVerified: true}) 
+        else{
+            return null;
+        }
     }
 
     render() { 
@@ -231,15 +234,25 @@ class Registration extends Component {
                     <div className={classes.imgContainer}>
                         <img src={this.state.photoPreview} alt="default"/>
                     </div>
-                    {/* <div className={classes.center}>
-                        <ReCAPTCHA
-                            sitekey="6LeJ1F0cAAAAAAdyLblJwWcVJ7IayxS8hOtLDOtl"
-                            onChange={this.captchaVerify}
-                            theme='light'
-                        />
-                    </div> */}
+                    {
+                        this.state.showCaptcha ? (
+                            <div className={classes.center}>
+                                <ReCAPTCHA
+                                    sitekey="6LeJ1F0cAAAAAAdyLblJwWcVJ7IayxS8hOtLDOtl"
+                                    onChange={this.captchaVerify}
+                                    theme='light'
+                                />
+                            </div>
+                        ) : null
+                    }
                     <div className={[classes.buttonContainer, classes.center].join(" ")}>
-                        <Button clicked={this.submitUser} disabled={!this.state.readyForSubmission && this.state.captchaVerified}>Register</Button>
+                        <Button clicked={(e)=>{
+                            e.preventDefault();
+                            if(this.state.showCaptcha === false) this.setState({showCaptcha: true})
+                            else if(this.state.captchaVerified===true){
+                                this.submitUser();
+                            }
+                        }} disabled={!this.state.readyForSubmission}>Register</Button>
                     </div>
                     <div className={classes.consentContainer}>
                         <p>When you click register, you agree to the <Link to="/termsAndConditions">terms and conditions</Link> of BragSpot</p>
