@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 import classes from './gate.module.css';
+import Flash from '../../components/UI/flash';
 import Button from '../../components/UI/button';
 import GoogleLogin from 'react-google-login';
 
@@ -12,12 +14,74 @@ import speechLeft from '../../assets/gfx/speechLeft.png';
 import BlogSpotLogo from '../../assets/gfx/BlogSpotLogo.png';
 
 class Gate extends Component {
+    state = {
+        flashMessage: "",
+        flashNotClosed: true
+    }
+
+    handleGoogleFailure = (res) => {
+        console.log(res)
+        console.log('failure');
+    }
+
     responseGoogle = (response) => {
-        console.log(response);
-        console.log(response.profileObj);
+        
+        //registration process:
+        let userData = {
+            name: response.profileObj.givenName,
+            surname: response.profileObj.familyName,
+            email: response.profileObj.email,
+            password: `g${response.profileObj.googleId}`,
+            nickname: response.profileObj.name,
+            photoString: response.profileObj.imageUrl
+        }
+
+        axios.post('http://localhost:3001/users/register', userData)
+        .then((res)=>{
+            if(Object.keys(res.data).includes("error")){
+                let taken = Object.keys(res.data.error.keyValue)[0]
+                if(taken==="email"){
+                    this.flash("email already taken");
+                }
+                else if(taken==="nickname"){
+                    this.flash("nickname already taken");
+                }
+            }
+            if(res.status === 201){
+                //do login stuff
+            }
+        }).catch( error => {
+            if(error.status === 413){
+                this.flash("Profile picture size is too big, maximum image size is 10mb");
+            }
+        })
+    }
+
+    flash = (message) => {
+        this.setState({flashMessage: message});
+        
+        setTimeout(()=>{
+            this.setState({flashNotClosed: false});
+        }, 2000)
+
+        setTimeout(()=>{
+            this.setState({flashMessage: ""});
+        }, 3000);
+    
+        setTimeout(()=>{
+            this.setState({flashNotClosed: true});
+        }, 3000);
     }
 
     render() { 
+        let flash = null;
+        if(this.state.flashMessage && this.state.flashNotClosed){
+            flash = <Flash>{this.state.flashMessage}</Flash>
+        }
+        else if(this.state.flashMessage && this.state.flashNotClosed === false){
+            flash = <Flash close>{this.state.flashMessage}</Flash>
+        }
+
         return (
             <React.Fragment>
                 <div className={classes.flexCenter}>
@@ -43,12 +107,13 @@ class Gate extends Component {
                                 clientId="663202900382-uprlid8mck8lndd4ur1d9dujnobt5q8h.apps.googleusercontent.com"
                                 buttonText="Sign in with Google"
                                 onSuccess={this.responseGoogle}
-                                onFailure={this.responseGoogle}
+                                onFailure={this.handleGoogleFailure}
                                 cookiePolicy={'single_host_origin'}
                             />
                         </div>
                     </div>
                 </div>
+                {flash}
             </React.Fragment>
         );
     }
