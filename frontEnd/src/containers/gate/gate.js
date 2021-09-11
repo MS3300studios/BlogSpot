@@ -5,7 +5,9 @@ import axios from 'axios';
 import classes from './gate.module.css';
 import Flash from '../../components/UI/flash';
 import Button from '../../components/UI/button';
+
 import GoogleLogin from 'react-google-login';
+import FacebookLogin from 'react-facebook-login';
 
 import manLeft from '../../assets/gfx/manLeft.png';
 import manRight from '../../assets/gfx/manRight.png';
@@ -20,15 +22,13 @@ class Gate extends Component {
     }
 
     handleGoogleFailure = (res) => {
-        console.log(res)
-        console.log('failure');
+        this.flash(res.error)
     }
 
     responseGoogle = (response) => {
         axios.post('http://localhost:3001/users/findByGoogleId', {googleId: `google${response.profileObj.googleId}`}).then(resp => {
             if(resp.data.user){
                 //log in user
-                console.log('logging in')
                 axios.post('http://localhost:3001/users/login', {email: response.profileObj.email, password: `google${response.profileObj.googleId}`})
                 .then(res => {
                     if(res.status===200){
@@ -83,6 +83,10 @@ class Gate extends Component {
         }).catch(err => console.log(err));
     }
 
+    responseFacebook = (response) => {
+        console.log(response);
+    }    
+
     flash = (message) => {
         this.setState({flashMessage: message});
         
@@ -129,13 +133,24 @@ class Gate extends Component {
                             <Link to="/login"><Button>login</Button></Link>
                         </div>
                         <div className={classes.googleBanner}>
-                            <GoogleLogin 
-                                clientId="663202900382-uprlid8mck8lndd4ur1d9dujnobt5q8h.apps.googleusercontent.com"
-                                buttonText="Sign in with Google"
-                                onSuccess={this.responseGoogle}
-                                onFailure={this.handleGoogleFailure}
-                                cookiePolicy={'single_host_origin'}
-                            />
+                            <div className={classes.googleButton}>
+                                <GoogleLogin 
+                                    clientId="663202900382-uprlid8mck8lndd4ur1d9dujnobt5q8h.apps.googleusercontent.com"
+                                    buttonText="Sign in with Google"
+                                    onSuccess={this.responseGoogle}
+                                    onFailure={this.handleGoogleFailure}
+                                    cookiePolicy={'single_host_origin'}
+                                />
+                            </div >
+                            <div className={classes.social}>
+                                <FacebookLogin
+                                    appId="1194971730986165"
+                                    autoLoad={true}
+                                    fields="name,email,picture"
+                                    // onClick={this.componentClicked}
+                                    callback={this.responseFacebook} 
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>

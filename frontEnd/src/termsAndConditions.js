@@ -40,6 +40,11 @@ function termsAndConditions (){
                     <h1>6. SPAMMING</h1>
                     <p>Spamming is strictly forbidden, and users who produce spam will be immediately removed from BragSpot. Spamming is defined as posting/sending large quantities of data in a short space of time. That includes sending more than 5 messages in a time period of maximum 3 seconds, or multiple (no less than 10) posts during the time period of one minute. That also refers to, but is not limited by likes, photos, and other means of sending data accessible on this website.</p>
                 </li>
+                <hr />
+                <li>
+                    <h3>Privacy Policy Link</h3>
+                    <a href="https://www.termsfeed.com/live/35194640-fcb4-477d-b80e-95545d807a93">https://www.termsfeed.com/live/35194640-fcb4-477d-b80e-95545d807a93</a>
+                </li>
             </ul>
             <hr />
             <h3>

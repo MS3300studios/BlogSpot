@@ -227,6 +227,9 @@ button:hover{
     transform: scale(1.1);
 }
 
+.social .googleButton{
+    max-height: 48px;
+}
 
 @media screen and (max-width: 1603px){
     .gateWelcomeH1{
