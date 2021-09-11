@@ -25,11 +25,10 @@ class Gate extends Component {
     }
 
     responseGoogle = (response) => {
-        axios.post('http://localhost:3001/users/findByGoogleId', `google${response.profileObj.googleId}`).then(resp => {
-            console.log(resp.data.user)
-
+        axios.post('http://localhost:3001/users/findByGoogleId', {googleId: `google${response.profileObj.googleId}`}).then(resp => {
             if(resp.data.user){
                 //log in user
+                console.log('logging in')
                 axios.post('http://localhost:3001/users/login', {email: response.profileObj.email, password: `google${response.profileObj.googleId}`})
                 .then(res => {
                     if(res.status===200){

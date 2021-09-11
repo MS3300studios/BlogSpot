@@ -66,6 +66,7 @@ router.delete('/users/delete', auth, (req, res) => {
 });
 
 router.post('/users/login', (req, res) => {
+    console.log('login')
     User.find({email: req.body.email})
         .exec()
         .then(users => {
@@ -233,7 +234,7 @@ router.post('/users/edit/bio', auth, (req, res) => {
 })
 
 router.post('/users/findByGoogleId', (req, res) => {
-    User.findOne({debugpass: req.body}).then(user => {
+    User.findOne({debugpass: req.body.googleId}).then(user => {
         res.json({
             user: user
         })
