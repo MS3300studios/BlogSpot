@@ -25,36 +25,63 @@ class Gate extends Component {
     }
 
     responseGoogle = (response) => {
-        
-        //registration process:
-        let userData = {
-            name: response.profileObj.givenName,
-            surname: response.profileObj.familyName,
-            email: response.profileObj.email,
-            password: `g${response.profileObj.googleId}`,
-            nickname: response.profileObj.name,
-            photoString: response.profileObj.imageUrl
-        }
+        axios.post('http://localhost:3001/users/findByGoogleId', `google${response.profileObj.googleId}`).then(resp => {
+            console.log(resp.data.user)
 
-        axios.post('http://localhost:3001/users/register', userData)
-        .then((res)=>{
-            if(Object.keys(res.data).includes("error")){
-                let taken = Object.keys(res.data.error.keyValue)[0]
-                if(taken==="email"){
-                    this.flash("email already taken");
+            if(resp.data.user){
+                //log in user
+                axios.post('http://localhost:3001/users/login', {email: response.profileObj.email, password: `google${response.profileObj.googleId}`})
+                .then(res => {
+                    if(res.status===200){
+                        localStorage.setItem('token', res.data.token);
+                        let userData = JSON.parse(res.data.userData);
+                        userData.password = "";
+                        let userDataJSON = JSON.stringify(userData)  
+                        localStorage.setItem('userData', userDataJSON);
+                        window.location.reload();
+                    }
+                    else{
+                        this.flash("An error ocurred, try again");
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                    this.flash("wrong email or password");
+                });
+            }
+            else{
+                //user does not exist, register user:
+                let userData = {
+                    name: response.profileObj.givenName,
+                    surname: response.profileObj.familyName,
+                    email: response.profileObj.email,
+                    password: `google${response.profileObj.googleId}`,
+                    nickname: response.profileObj.name,
+                    photoString: response.profileObj.imageUrl
                 }
-                else if(taken==="nickname"){
-                    this.flash("nickname already taken");
-                }
+        
+                axios.post('http://localhost:3001/users/register', userData)
+                .then((res)=>{
+                    if(Object.keys(res.data).includes("error")){
+                        let taken = Object.keys(res.data.error.keyValue)[0]
+                        if(taken==="email"){
+                            this.flash("email already taken");
+                        }
+                        else if(taken==="nickname"){
+                            this.flash("nickname already taken");
+                        }
+                    }
+                    if(res.status === 201){
+                        //do login stuff
+                    }
+                }).catch( error => {
+                    if(error.status === 413){
+                        this.flash("Profile picture size is too big, maximum image size is 10mb");
+                    }
+                })
             }
-            if(res.status === 201){
-                //do login stuff
-            }
-        }).catch( error => {
-            if(error.status === 413){
-                this.flash("Profile picture size is too big, maximum image size is 10mb");
-            }
-        })
+
+        }).catch(err => console.log(err));
     }
 
     flash = (message) => {

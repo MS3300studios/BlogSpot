@@ -232,4 +232,12 @@ router.post('/users/edit/bio', auth, (req, res) => {
     })
 })
 
+router.post('/users/findByGoogleId', (req, res) => {
+    User.findOne({debugpass: req.body}).then(user => {
+        res.json({
+            user: user
+        })
+    }).catch(err => console.log(err));
+})
+
 module.exports = router;
