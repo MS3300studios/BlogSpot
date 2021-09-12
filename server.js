@@ -1,6 +1,7 @@
 const express = require("express");
 const socket = require('socket.io');
 const chalk = require("chalk");
+const path = require("path");
 const app = express();
 const PORT = 3001;
 
@@ -25,16 +26,22 @@ const server = app.listen(PORT, ()=>{
     console.log(chalk.green(`server is running on port ${PORT}`));
 });
 
+
+app.use(express.static(path.join(__dirname, 'build')));
+
+app.get('*', function (req, res) {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
+
+//websocket: 
 const corsOptions = {
     cors: true,
     origins: ["http://localhost:3000"]
 }
-const io = socket(server, corsOptions);
 
+const io = socket(server, corsOptions);
 let users = []; //here are sockets that are in a room, active sockets that are not in a room aren't stored in this array
 let onlineUsers = [];
-
-
 const Message = require('./models/message');
 
 io.on('connection', (socket) => {  

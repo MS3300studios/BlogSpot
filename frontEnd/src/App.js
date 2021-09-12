@@ -52,16 +52,13 @@ class App extends Component {
   
 
   componentDidMount(){
+    console.log(window.location)
     let session = sessionStorage.getItem('token');
     let local = localStorage.getItem('token');
     if(session!==null||local!==null){
       this.setState({isLoggedIn: true}); //user gets access to dashboard and posts views
     }  
   }
-
-  // componentWillUnmount(){
-  //   this.socket.emit('leaveConversation', {conversationId: this.props.conversation._id});
-  // }
 
   render() {
     let content; 

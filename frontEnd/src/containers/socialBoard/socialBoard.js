@@ -219,20 +219,6 @@ class SocialBoard extends Component {
                     )
                 }
                 <Button clicked={()=>{
-                    fetch('https://api.ipify.org/?format=json').then(results => results.json()).then(data => {
-                        axios({
-                            method: 'post',
-                            url: `http://ip-api.com/batch`,
-                            data: [`${data.ip}`]
-                        })
-                        .then((res)=>{
-                            let info = res.data[0]
-                            this.flash(`you live in ${info.city}, ${info.country} and your internet provider is ${info.org} Your IP adress is: ${info.query}`)
-                        })
-                        .catch(error => {
-                            console.log(error);
-                        })
-                    })
                 }}>Get my location</Button>
                 {flash}
             </>

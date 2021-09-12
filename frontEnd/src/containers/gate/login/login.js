@@ -86,7 +86,7 @@ class Login extends Component {
                         let userDataJSON = JSON.stringify(userData)                    
                         sessionStorage.setItem('userData', userDataJSON);
                     }
-                    window.location.reload();
+                    window.location.replace("http://localhost:3000/");
                 }
                 else{
                     this.flash("An error ocurred, try again");
@@ -133,7 +133,7 @@ class Login extends Component {
                         let userDataJSON = JSON.stringify(userData)                    
                         sessionStorage.setItem('userData', userDataJSON);
                     }
-                    window.location.reload();
+                    window.location.replace("http://localhost:3000/");
                 }
                 else{
                     this.flash("An error ocurred, try again");
