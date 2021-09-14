@@ -50,8 +50,7 @@ class AddUser extends Component {
         .then((res)=>{
             if(res.status===200){
                 this.setState(prevState => {
-                    let newUsers = prevState.users.concat(res.data.users);
-                    return ({loadingInit: false, users: newUsers, skip: prevState.skip+10});
+                    return ({loadingInit: false, users: prevState.users.concat(res.data.users), skip: prevState.skip+5})
                 })
             }
         })

@@ -6,6 +6,7 @@ const cors = require('cors');
 const User = require('../models/user');
 const { BlockedUsers } = require('../models/blockedUsers');
 const auth = require('../middleware/authorization');
+const Friend = require('../models/friend');
 
 router.use(cors());
 router.use(express.json({limit: '10mb'}));
@@ -13,10 +14,53 @@ router.use(express.urlencoded({limit: '10mb', extended: true}));
 
 
 router.post('/users/getRandomUsers', auth, (req, res) => { 
-    User.find().skip(req.body.skip).limit(10).exec().then(users => {
-        users.forEach(user => console.log(user.name))
+
+    User.find().skip(req.body.skip).limit(5).exec().then(users => {
         res.json({users: users})
     }).catch(err => console.log(err));
+
+    /*Friend.find({userId: req.userData.userId}).exec().then(friends1 => {
+        Friend.find({friendId: req.userData.userId}).exec().then(friends2 => {
+            let friendsData = friends1.concat(friends2);
+            let allFriends = friendsData.map((object, index) => {
+                if(object.userId === req.userData.userId){
+                    return (
+                        {
+                            _id: object._id,
+                            userId: object.userId,
+                            friendId: object.friendId,
+                            createdAt: object.createdAt,
+                            updatedAt: object.updatedAt
+                        }
+                    )
+                }
+                else if(object.friendId === req.userData.userId){
+                    return (
+                        {
+                            _id: object._id,
+                            userId: object.friendId,
+                            friendId: object.userId,
+                            createdAt: object.createdAt,
+                            updatedAt: object.updatedAt
+                        }
+                    )
+                }
+            })
+
+            User.find().skip(req.body.skip).limit(5).exec().then(users => {
+                allFriends.forEach(user => console.log("friends: "+user.userId))
+
+                let usersRdy = [];
+                for(let i=0; i<users.length-1; i++){
+                    for(let j=0; j<allFriends.length-1; j++){
+                        if(users[i]._id !== allFriends[j].userId) usersRdy.push(users[i])
+                        else break
+                    }
+                }
+                res.json({users: usersRdy})
+            }).catch(err => console.log(err));
+        })
+    })*/
 })
 
 router.post('/users/register', (req, res) => {
