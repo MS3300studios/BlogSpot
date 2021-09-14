@@ -8,15 +8,18 @@ import getToken from '../../../getToken';
 import Spinner from '../../../components/UI/spinner';
 import SearchBar from '../../../components/UI/searchBar';
 import ConversationListItem from './conversationListItem';
+import getUserData from '../../../getUserData';
 
 class ChatMenu extends Component {
     constructor(props) {
         super(props);
 
         let token = getToken();
+        let userData = getUserData();
 
         this.state = {
             token: token,
+            userData: userData,
             loading: true,
             addingConversation: false,
             conversations: [],
@@ -74,10 +77,17 @@ class ChatMenu extends Component {
             switch(this.state.filterIn){
                 case "name":
                     conversationsRdy = conversationsJSX.filter((conversation)=>{
-                        if(conversation.props.el.name.includes(this.state.filterBy)){
-                            return true;
+                        if(conversation.props.el.conversationType === "private"){
+                            let friend = conversation.props.el.participants.filter(participant => participant.userId !== this.state.userData._id)[0];
+                            if(friend.name.includes(this.state.filterBy)) return true;
+                            else return false;
                         }
-                        else return false;
+                        else{
+                            if(conversation.props.el.name.includes(this.state.filterBy)){
+                                return true;
+                            }
+                            else return false;
+                        }
                     });
                     break;
                 case "id":

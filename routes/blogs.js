@@ -72,8 +72,6 @@ router.get('/blogs/one/:blogId', auth, (req, res) => {
 
 router.post('/blogs/new', auth, (req, res) => {
     User.findById(req.userData.userId, (err, user) => {
-        console.log(user.nickname)
-
         const blog = new Blog({
             title: req.body.title,
             content: req.body.content,

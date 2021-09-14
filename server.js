@@ -3,6 +3,7 @@ const socket = require('socket.io');
 const chalk = require("chalk");
 const path = require("path");
 const app = express();
+require("dotenv").config();
 const PORT = process.env.PORT || 3001;
 
 app.use(require('./routes/users'));
@@ -19,19 +20,17 @@ app.use(require('./routes/messages'));
 app.use(require('./routes/lastReadMessages'));
 app.use(require('./routes/blockingUsers'));
 
-require("dotenv").config();
-
 const server = app.listen(PORT, ()=>{
     console.log(chalk.green("------------------------------"));
     console.log(chalk.green(`server is running on port ${PORT}`));
 });
 
 
-app.use(express.static(path.join(__dirname, 'build')));
+// app.use(express.static(path.join(__dirname, 'build')));
 
-app.get('*', function (req, res) {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
-});
+// app.get('*', function (req, res) {
+//   res.sendFile(path.join(__dirname, 'build', 'index.html'));
+// });
 
 //websocket: 
 const corsOptions = {

@@ -174,14 +174,6 @@ class Login extends Component {
                 </div>
                 <label className={classes.labelNoAccount}>Don't have an account yet?</label>
                 <Link to="/register" className={classes.registerLink}>Register here</Link>
-                <button onClick={()=>this.autoLogin({email: "jennysan@test.pl", password: "jennysan11111A"})}
-                style={{backgroundColor: "black"}}>
-                    auto login Jenny
-                </button>
-                <button onClick={()=>this.autoLogin({email: "johndoe@test.pl", password: "johndoe11111A"})}
-                style={{backgroundColor: "black"}}>
-                    auto login John
-                </button>
             </div>
         );
     }

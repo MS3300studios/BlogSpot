@@ -218,8 +218,6 @@ class SocialBoard extends Component {
                         </div>
                     )
                 }
-                <Button clicked={()=>{
-                }}>Get my location</Button>
                 {flash}
             </>
         );

@@ -375,7 +375,6 @@ class Conversation extends Component {
             <>
             <div className={classes.conversationBanner}>
                 {conversationName}
-                <button style={{backgroundColor: 'black', cursor: "pointer"}} onClick={()=>this.messagesEnd.scrollIntoView({ behavior: "smooth" })}>scroll to bottom</button>
                 <div className={classes.infoCircle} onClick={()=>this.setState((prevState)=>({infoOpened: !prevState.infoOpened}))}>
                     {
                         this.state.infoOpened ? <BsInfoCircleFill size="2em" color="#04255f"/> : <BsInfoCircle size="2em" color="#04255f"/>

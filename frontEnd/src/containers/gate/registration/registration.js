@@ -247,7 +247,7 @@ class Registration extends Component {
                     }
                     <div className={[classes.buttonContainer, classes.center].join(" ")}>
                         <Button clicked={(e)=>{
-                            e.preventDefault();
+                            // e.preventDefault();
                             if(this.state.showCaptcha === false) this.setState({showCaptcha: true})
                             else if(this.state.captchaVerified===true){
                                 this.submitUser();
