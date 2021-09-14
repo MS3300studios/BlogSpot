@@ -49,8 +49,10 @@ class AddUser extends Component {
         })
         .then((res)=>{
             if(res.status===200){
-                this.setState(prevState => ({loadingInit: false, users: res.data.users, skip: prevState.skip+res.data.users.length}));
-                return;
+                this.setState(prevState => {
+                    let newUsers = prevState.users.concat(res.data.users);
+                    return ({loadingInit: false, users: newUsers, skip: prevState.skip+10});
+                })
             }
         })
         .catch(error => {
@@ -143,7 +145,9 @@ class AddUser extends Component {
                             );
                         })
                     }
-                    <Button>Load more</Button>
+                    <Button clicked={()=>{
+                        this.getRandomUsers();                            
+                    }}>Load more</Button>
                 </div>
             )
         }
