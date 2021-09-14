@@ -10,11 +10,16 @@ import {AiOutlineSearch} from 'react-icons/ai';
 import {AiOutlineCloseCircle} from 'react-icons/ai';
 import FriendsListItem from '../friendsListItem';
 import Flash from '../../../components/UI/flash';
+import getToken from '../../../getToken';
 
 class AddUser extends Component {
     constructor(props) {
         super(props);
+
+        let token = getToken();
+
         this.state = {
+            token: token,
             users: [],
             searched: false,
             userNotFound: false,
@@ -23,11 +28,38 @@ class AddUser extends Component {
             loading: false,
             flashMessage: "",
             flashNotClosed: true,
+            skip: 0,
+            loadingInit: true
         }
 
         this.searchNewUser.bind(this);
         this.filterSearchHandler.bind(this);
         this.flash.bind(this);
+        this.getRandomUsers.bind(this);
+    }
+
+    getRandomUsers = () => {
+        axios({
+            method: 'post',
+            url: `http://localhost:3001/users/getRandomUsers`,
+            headers: {'Authorization': this.state.token},
+            data: {
+                skip: this.state.skip
+            }
+        })
+        .then((res)=>{
+            if(res.status===200){
+                this.setState(prevState => ({loadingInit: false, users: res.data.users, skip: prevState.skip+res.data.users.length}));
+                return;
+            }
+        })
+        .catch(error => {
+            console.log(error);
+        })
+    }
+
+    componentDidMount(){
+        this.getRandomUsers();
     }
 
     searchNewUser = () => {
@@ -86,12 +118,35 @@ class AddUser extends Component {
     }
 
     render() { 
-        let content = (
-            <div className={classes2.nameListContainer}>
-                <h1>Write in the searchbar in order to search</h1>
-                <hr />
-            </div>
-        );
+        let content;
+        if(this.state.loadingInit){
+            content = (
+                <Spinner />
+            );
+        }
+        else{
+            content = (
+                <div className={classes2.nameListContainer}>
+                    {
+                        this.state.users.map((user, index) => {
+                            return (
+                                <FriendsListItem
+                                    noInteractionIcon
+                                    hideOnlineIcon 
+                                    key={index}  
+                                    id={user._id} 
+                                    name={user.name}
+                                    nickname={user.nickname}
+                                    surname={user.surname}
+                                    photo={user.photo}
+                                />
+                            );
+                        })
+                    }
+                    <Button>Load more</Button>
+                </div>
+            )
+        }
 
         if(this.state.searched){
             if(this.state.users.length === 0){

@@ -12,6 +12,13 @@ router.use(express.json({limit: '10mb'}));
 router.use(express.urlencoded({limit: '10mb', extended: true}));
 
 
+router.post('/users/getRandomUsers', auth, (req, res) => { 
+    User.find().skip(req.body.skip).limit(10).exec().then(users => {
+        users.forEach(user => console.log(user.name))
+        res.json({users: users})
+    }).catch(err => console.log(err));
+})
+
 router.post('/users/register', (req, res) => {
     if(req.body.nickname.length > 21){
         res.json({
@@ -38,6 +45,7 @@ router.post('/users/register', (req, res) => {
     
                 user.save()
                     .then(result => {
+                        console.log(result)
                         res.sendStatus(201);
                     })
                     .catch(err => res.json({error: err}));

@@ -126,8 +126,8 @@ class Registration extends Component {
         else return false;
     }
 
-    submitUser = (e) => {
-        e.preventDefault();
+    submitUser = () => {
+        console.log('submitting user')
 
         if(this.state.nickname.length > 21){
             this.flash("The nickname should be no longer than 21 characters")
@@ -247,7 +247,7 @@ class Registration extends Component {
                     }
                     <div className={[classes.buttonContainer, classes.center].join(" ")}>
                         <Button clicked={(e)=>{
-                            // e.preventDefault();
+                            e.preventDefault();
                             if(this.state.showCaptcha === false) this.setState({showCaptcha: true})
                             else if(this.state.captchaVerified===true){
                                 this.submitUser();
