@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import getColor from '../../getColor';
 
-import classes from './gate.module.css';
+import greenStyles from './gateGreen.module.css';
+import blueStyles from './gateBlue.module.css';
+
 import Flash from '../../components/UI/flash';
 import Button from '../../components/UI/button';
 
@@ -14,6 +17,12 @@ import speechRight from '../../assets/gfx/speechRight.png';
 import speechLeft from '../../assets/gfx/speechLeft.png';
 import BlogSpotLogo from '../../assets/gfx/BlogSpotLogo.png';
 
+const colorScheme = getColor();
+let classes = greenStyles;
+if(colorScheme === "blue"){
+    classes = blueStyles;
+}
+
 class Gate extends Component {
     state = {
         flashMessage: "",
@@ -21,7 +30,7 @@ class Gate extends Component {
     }
 
     handleGoogleFailure = (res) => {
-        this.flash(res.error)
+        console.log(res.error)
     }
 
     responseGoogle = (response) => {
