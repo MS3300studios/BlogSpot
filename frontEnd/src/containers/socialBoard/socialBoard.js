@@ -5,6 +5,8 @@ import classes from './socialBoard.module.css';
 import axios from 'axios';
 import getToken from '../../getToken';
 
+import AddItemsForm from './AddItemsForm';
+import addPostImage from '../../assets/gfx/add.png';
 import SearchBar from '../../components/UI/searchBar';
 import Photo from '../../components/photo/photo';
 import Spinner from '../../components/UI/spinner'; 
@@ -33,6 +35,7 @@ class SocialBoard extends Component {
             flashNotClosed: true,
             limitSearchedPhotos: 0,
             limitSearchedPosts: 0,
+            showAddingItems: false
         }
         this.getElements.bind(this);
         this.openBigPhoto.bind(this);
@@ -184,6 +187,19 @@ class SocialBoard extends Component {
             flash = <Flash close>{this.state.flashMessage}</Flash>
         }
 
+        const addItemStyle = {
+            padding: "8px",
+            textDecoration: "none",
+            borderRadius: "4px",
+            backgroundColor: "#82ca66",
+            width: "320px",
+            height: "300px",
+            margin: "5px",
+            transition: "0.3s",
+            textOverflow: "hidden",
+            position: "relative"
+        }
+
         return (
             <>
                 <h1 className={classes.mainHeader}>Latest activity:</h1>
@@ -208,6 +224,16 @@ class SocialBoard extends Component {
                     </div>
                 </div>
                 <div className={classes.mainContainer}>
+                    <div style={addItemStyle} onClick={()=>this.setState({showAddingItems: true})}>
+                        <img alt="add a post" src={addPostImage} style={{
+                                cursor: "pointer",
+                                width: "90px",
+                                height: "90px",
+                                marginTop: "110px",
+                                marginLeft: "115px"
+                            }}
+                        />
+                    </div>
                     {content}
                     {this.state.bigPhoto ? <PhotoView photo={this.state.bigPhoto} closeBigPhoto={this.bigPhotoWasClosed}/> : null}
                 </div>
@@ -218,6 +244,7 @@ class SocialBoard extends Component {
                         </div>
                     )
                 }
+                {this.state.showAddingItems ? <AddItemsForm closeAddItem={()=>this.setState({showAddingItems: false})} addItemStyle={addItemStyle}/> : null }
                 {flash}
             </>
         );
