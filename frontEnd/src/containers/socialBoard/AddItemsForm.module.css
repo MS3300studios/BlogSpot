@@ -37,6 +37,7 @@
 
 .addBlog{
     border: 3px solid green;
+    cursor: pointer;
 }
 
 .addBlog:hover{
@@ -45,6 +46,7 @@
 
 .addPhoto{
     border: 3px solid green;
+    cursor: pointer;
 }
 
 .addPhoto:hover{

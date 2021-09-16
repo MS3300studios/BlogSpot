@@ -1,4 +1,8 @@
-.deleteAccountContainer{
+.deleteAccountContainer h1{
+    color: white;
+}
+
+.deleteAccountContainer h3{
     color: white;
 }
 
