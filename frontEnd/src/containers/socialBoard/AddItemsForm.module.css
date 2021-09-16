@@ -36,21 +36,37 @@
 }
 
 .addBlog{
-    border: 3px solid green;
+    background-color: green !important;
     cursor: pointer;
+    font-size: 100px;
 }
 
 .addBlog:hover{
     transform: scale(1.2);
 }
 
+.addBlog div{
+    height: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .addPhoto{
-    border: 3px solid green;
+    background-color: green !important;
     cursor: pointer;
+    font-size: 100px;
 }
 
 .addPhoto:hover{
     transform: scale(1.2);
+}
+
+.addPhoto div{
+    height: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .centeringDiv{
@@ -59,4 +75,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.mainh1{
+    color: white;
+    font-size: 20px;
+    margin-left: 35%;
 }

@@ -1,10 +1,16 @@
-import React from 'react';
-import Backdrop from '../../components/UI/backdrop';
-
+import React, { useState } from 'react';
 import classes from './AddItemsForm.module.css';
+
+
+import Backdrop from '../../components/UI/backdrop';
 import {AiOutlineCloseCircle} from 'react-icons/ai';
+import {MdAddToPhotos} from 'react-icons/md'; //add blog
+import {MdAddAPhoto} from 'react-icons/md';
+import { Redirect } from 'react-router';
 
 const AddItemsForm = (props) => {
+    const [redirectPhoto, setredirectPhoto] = useState(false)
+
     const centerStyle = {
         width: "100%",
         heigth: "100%",
@@ -21,16 +27,25 @@ const AddItemsForm = (props) => {
                 <div style={centerStyle}>
                     <div className={classes.centeringDiv}>
                         <div className={classes.addBlog} style={props.addItemStyle}>
-                            <p>hello</p>        
+                            <div>
+                                <MdAddToPhotos size="1.5em" color="#fff"/>
+                            </div>
+                            <h1 className={classes.mainh1}>Add blog</h1>
                         </div>
                     </div>
                     <div className={classes.centeringDiv}>
-                        <div className={classes.addPhoto} style={props.addItemStyle}>
-                            
+                        <div className={classes.addPhoto} style={props.addItemStyle} onClick={()=>setredirectPhoto(true)}>
+                            <div>
+                                <MdAddAPhoto size="1.5em" color="#fff"/>
+                            </div>
+                            <h1 className={classes.mainh1} >Add photo</h1>
                         </div>
                     </div>
                 </div>
             </div>
+            {
+                redirectPhoto ? <Redirect to="/addPhoto" /> : null
+            }
         </Backdrop>
     )
 }
