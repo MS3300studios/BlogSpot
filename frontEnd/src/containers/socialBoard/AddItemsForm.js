@@ -9,7 +9,8 @@ import {MdAddAPhoto} from 'react-icons/md';
 import { Redirect } from 'react-router';
 
 const AddItemsForm = (props) => {
-    const [redirectPhoto, setredirectPhoto] = useState(false)
+    const [redirectPhoto, setredirectPhoto] = useState(false);
+    const [redirectBlog, setredirectBlog] = useState(false);
 
     const centerStyle = {
         width: "100%",
@@ -26,7 +27,7 @@ const AddItemsForm = (props) => {
                 </div>
                 <div style={centerStyle}>
                     <div className={classes.centeringDiv}>
-                        <div className={classes.addBlog} style={props.addItemStyle}>
+                        <div className={classes.addBlog} style={props.addItemStyle} onClick={()=>setredirectBlog(true)}>
                             <div>
                                 <MdAddToPhotos size="1.5em" color="#fff"/>
                             </div>
@@ -45,6 +46,9 @@ const AddItemsForm = (props) => {
             </div>
             {
                 redirectPhoto ? <Redirect to="/addPhoto" /> : null
+            }
+            {
+                redirectBlog ? <Redirect to="/addPost" /> : null
             }
         </Backdrop>
     )
