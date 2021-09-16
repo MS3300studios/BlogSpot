@@ -26,6 +26,7 @@ import AddingConversation from './containers/chat/addingConversation/addingConve
 import JoiningConversation from './containers/chat/addingConversation/joiningConversation';
 import SinglePhotoHOC from './containers/photoView/singlePhotoHOC/singlePhotoHOC';
 import Settings from './components/settings/settings';
+import AddPost from './components/AddPost/AddPost';
 
 class App extends Component {
   constructor(props){
@@ -68,7 +69,8 @@ class App extends Component {
           <ScrollListener>
             <Menu />
             <Switch>
-              <Route path="/test" exact render={()=><Test />} />
+              {/* <Route path="/test" exact render={()=><Test />} /> */}
+              <Route path="/addPost" exact component={AddPost} />
               <Route path="/conversation/" component={ConversationContainer} />
               <Route path="/addConversation/" component={AddingConversation} />
               <Route path="/joinConversation/" component={JoiningConversation} />
