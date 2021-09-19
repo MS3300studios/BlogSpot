@@ -4,7 +4,6 @@ import { Route, Switch } from 'react-router-dom';
 import termsAndConditions from './termsAndConditions';
 import './App.css';
 
-import Test from './test';
 import Menu from './components/menu/menu';
 import UserProfile from './containers/userProfile/userProfile';
 import Chat from './containers/chat/chat';
@@ -69,7 +68,6 @@ class App extends Component {
           <ScrollListener>
             <Menu />
             <Switch>
-              {/* <Route path="/test" exact render={()=><Test />} /> */}
               <Route path="/addPost" exact component={AddPost} />
               <Route path="/conversation/" component={ConversationContainer} />
               <Route path="/addConversation/" component={AddingConversation} />

@@ -4,7 +4,7 @@ import classes from './tabSelector.module.css';
 
 import BlogsTab from '../tabs/Blogs';
 import PhotosTab from '../tabs/PhotosTab';
-import FriendsList from '../../FriendsList/FriendsList';
+// import FriendsList from '../../FriendsList/FriendsList';
 
 const TabSelector = (props) => {
     let display;
@@ -16,7 +16,7 @@ const TabSelector = (props) => {
             display = <PhotosTab userId={props.userId} />
             break;
         case "Friends":
-            display = <FriendsList profileViewComponent={props.userId}/>
+            display = <h1>Coming soon!</h1>
             break;
         case "Badges":
             display = <h1>Coming soon!</h1>
@@ -30,6 +30,8 @@ const TabSelector = (props) => {
         </div>
     );
 }
+
+//<FriendsList profileViewComponent={props.userId}/>
  
 export default TabSelector;
 

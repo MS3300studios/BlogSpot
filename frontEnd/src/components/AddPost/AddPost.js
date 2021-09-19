@@ -7,8 +7,6 @@ import getToken from '../../getToken';
 import Button from '../UI/button';
 import Flash from '../UI/flash';
 import { Redirect } from 'react-router';
-import PostForm from '../UI/PostForm';
-
 
 const AddPost = (props) => {
     const [Title, setTitle] = useState("");
@@ -50,7 +48,6 @@ const AddPost = (props) => {
                 }
             })
             .then((res)=>{
-                console.log(res.status)
                 if(res.status===201){
                     setredirectToMyActivity(true);
                 }
