@@ -11,15 +11,31 @@ import Button from '../../components/UI/button';
 
 import GoogleLogin from 'react-google-login';
 
-import manLeft from '../../assets/gfx/manLeft.png';
-import manRight from '../../assets/gfx/manRight.png';
-import speechRight from '../../assets/gfx/speechRight.png';
-import speechLeft from '../../assets/gfx/speechLeft.png';
-import BlogSpotLogo from '../../assets/gfx/BlogSpotLogo.png';
+import manLeftGreen from '../../assets/gfx/manLeft.png';
+import manRightGreen from '../../assets/gfx/manRight.png';
+import manLeftBlue from '../../assets/gfx/manLeftBlue.png';
+import manRightBlue from '../../assets/gfx/manRightBlue.png';
+import speechLeftGreen from '../../assets/gfx/speechLeft.png';
+import speechLeftBlue from '../../assets/gfx/speechLeftBlue.png';
+import speechRightGreen from '../../assets/gfx/speechRight.png';
+import speechRightBlue from '../../assets/gfx/speechRightBlue.png';
+import BlogSpotLogoGreen from '../../assets/gfx/BlogSpotLogo.png';
+import BlogSpotLogoBlue from '../../assets/gfx/BlogSpotLogoBlue.png';
 
 const colorScheme = getColor();
 let classes = greenStyles;
+let manLeft = manLeftGreen;
+let manRight = manRightGreen;
+let speechLeft = speechLeftGreen;
+let speechRight = speechRightGreen;
+let BlogSpotLogo = BlogSpotLogoGreen;
+
 if(colorScheme === "blue"){
+    manLeft = manLeftBlue;
+    manRight = manRightBlue;
+    speechLeft = speechLeftBlue;
+    speechRight = speechRightBlue;
+    BlogSpotLogo = BlogSpotLogoBlue;
     classes = blueStyles;
 }
 
@@ -126,7 +142,7 @@ class Gate extends Component {
                         <img src={speechLeft} className={classes.speechLeft} alt="failed to load" />
                         <img src={BlogSpotLogo} className={classes.BlogSpotLogo} alt="failed to load" />
                     </div>
-                    <h1 className={classes.gateWelcomeH1}>Welcome to BlogSpot!</h1>
+                    <h1 className={classes.gateWelcomeH1}>Welcome to Bragspot!</h1>
                     <div className={classes.cardContainer_gate}>
                         <div className={classes.card}>
                             <h1>Your first time here?</h1>
