@@ -98,16 +98,7 @@ class Dashboard extends Component {
             url: `http://localhost:3001/blogs/delete/${dbId}`,
             headers: {'Authorization': this.state.token},
         })
-        .then((res)=>{
-            if(res.status===200){
-                this.flash("Post deleted successfully!");
-                this.getPosts();
-                return;
-            }
-        })
-        .catch(error => {
-            this.flash(`${error}`);
-        })
+        this.getPosts();
     }
 
     getPosts = () => {

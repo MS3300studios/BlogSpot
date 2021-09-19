@@ -43,7 +43,6 @@ const AddPost = (props) => {
             axios({
                 method: 'post',
                 url: `http://localhost:3001/blogs/new`,
-                params: {},
                 headers: {'Authorization': token},
                 data: {
                     title: Title, //data is equivalent to req.body inside the server
@@ -51,7 +50,8 @@ const AddPost = (props) => {
                 }
             })
             .then((res)=>{
-                if(res.status===200){
+                console.log(res.status)
+                if(res.status===201){
                     setredirectToMyActivity(true);
                 }
             })
