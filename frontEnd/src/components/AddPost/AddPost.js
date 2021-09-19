@@ -7,6 +7,7 @@ import getToken from '../../getToken';
 import Button from '../UI/button';
 import Flash from '../UI/flash';
 import { Redirect } from 'react-router';
+import PostForm from '../UI/PostForm';
 
 
 const AddPost = (props) => {
@@ -72,8 +73,26 @@ const AddPost = (props) => {
 
     return (
         <div className={classes.mainContainer}>
-
-
+            <div className={classes.center}>
+                <h1>Add a post</h1>
+            </div>
+            <div className={classes.center}>
+                <input 
+                    type="text" 
+                    placeholder="your title here!" 
+                    className={classes.Input} 
+                    onChange={(e)=> setTitle(e.target.value)} 
+                    value={Title}
+                />
+            </div>
+            <div className={classes.center}>
+                <textarea 
+                    placeholder="your blog here!" 
+                    className={classes.Textarea} 
+                    onChange={(e)=> setContent(e.target.value)}
+                    value={Content}>
+                </textarea>
+            </div>
             <div className={classes.buttonsContainer}>
                 <Button btnType="Cancel" clicked={()=>setredirectToSocialBoard(true)}>Cancel</Button>
                 <Button btnType="Continue" clicked={sendData}>Continue</Button>
