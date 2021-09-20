@@ -9,6 +9,7 @@
   position: absolute;
   top: 0px;
   left: 195px;
+  color: white;
 }
 
 .Form label{
@@ -85,8 +86,10 @@
   font-weight: 600;
   font-size: 20px;
   border-bottom: solid 2px;
-  border-bottom-color: hsl(53deg 100% 47%);
-  color: hsl(53deg 100% 47%);
+  /* border-bottom-color: hsl(53deg 100% 47%);
+  color: hsl(53deg 100% 47%); */
+  border-bottom-color: white;
+  color: white;
 }
 
 .keepLoggedinP{

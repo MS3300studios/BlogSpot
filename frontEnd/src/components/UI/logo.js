@@ -2,7 +2,15 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import classes from './logo.module.css';
-import logo from '../../assets/gfx/BlogSpotLogo.png';
+import logoGreen from '../../assets/gfx/BlogSpotLogo.png';
+import logoBlue from '../../assets/gfx/BlogSpotLogoBlue.png';
+import getColor from '../../getColor';
+
+const colorScheme = getColor();
+let logo = logoGreen;
+if(colorScheme === "blue"){
+    logo = logoBlue;
+}
 
 const Logo = () => (
     <div className={classes.Logo}>

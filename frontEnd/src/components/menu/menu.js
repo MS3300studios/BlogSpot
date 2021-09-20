@@ -5,13 +5,22 @@ import { connect } from 'react-redux';
 import { BsPeople, BsPeopleFill } from 'react-icons/bs';
 import { IoChatbubbles, IoChatbubblesOutline } from 'react-icons/io5';
 import Notifications from '../../containers/notifications/notifications';
-import classes from './menu.module.css';
 import Logo from '../UI/logo';
 import UserPhoto from '../UI/userphoto';
 import getUserData from '../../getUserData';
 import axios from 'axios';
 import getToken from '../../getToken';
+import getColor from '../../getColor';
 
+import classes from './menu.module.css';
+import greenClasses from './greenClasses.module.css';
+import blueClasses from './blueClasses.module.css';
+
+const colorScheme = getColor();
+let colorClasses = greenClasses;
+if(colorScheme === "blue"){
+    colorClasses = blueClasses;
+}
 
 class Menu extends Component {
     constructor(props) {
@@ -65,7 +74,7 @@ class Menu extends Component {
 
     render() { 
         return (
-            <nav className={classes.Menu}>
+            <nav className={colorClasses.Menu}>
                 <Logo />
                 <div className={classes.iconContainer}>
                     <div className={classes.otherIcons}>
