@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { AiOutlineSearch } from 'react-icons/ai';
 
-import classes from './socialBoard.module.css';
-import axios from 'axios';
 import getToken from '../../getToken';
+import getColor from '../../getColor';
 
+import axios from 'axios';
 import AddItemsForm from './AddItemsForm';
 import addPostImage from '../../assets/gfx/add.png';
 import SearchBar from '../../components/UI/searchBar';
@@ -14,6 +14,8 @@ import PhotoView from '../photoView/photoView';
 import Post from '../../components/post/post';
 import Button from '../../components/UI/button';
 import Flash from '../../components/UI/flash';
+
+import classes from './socialBoard.module.css';
 
 class SocialBoard extends Component {
     constructor(props) {
@@ -187,11 +189,17 @@ class SocialBoard extends Component {
             flash = <Flash close>{this.state.flashMessage}</Flash>
         }
 
+        const colorScheme = getColor();
+        let background = "#82ca66";
+        if(colorScheme === "blue"){
+            background = "hsl(210deg 66% 52%)";
+        }
+
         const addItemStyle = {
             padding: "8px",
             textDecoration: "none",
             borderRadius: "4px",
-            backgroundColor: "#82ca66",
+            backgroundColor: background,
             width: "320px",
             height: "300px",
             margin: "5px",
@@ -218,7 +226,8 @@ class SocialBoard extends Component {
                                 className={classes.searchButton}
                                 onClick={this.searchActivity}
                             >
-                                search<AiOutlineSearch size="2em" color="#0a42a4" />
+                                search
+                                <AiOutlineSearch size="2em" color="#0a42a4" />
                             </div>
                         </Button>
                     </div>
