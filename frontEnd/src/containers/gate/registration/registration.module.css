@@ -1,16 +1,3 @@
-.RegistrationContainer{
-    background-color: #82ca66;
-    width: 500px;
-    margin: 0 auto;
-    margin-top: 2%;
-    position: relative;
-    transition: 0.3s ease-in all;
-}
-
-.RegistrationContainer:hover{
-    box-shadow: 10px 10px 29px -1px rgba(0,0,0,0.55);
-}
-
 .Form{
     width: 100%;
     height: 100%;
@@ -21,11 +8,12 @@
 .Form h1{
     margin-top: 0px;
     margin-left: 165px;
+    color: white;
 }
 
 .Form label{
     margin: 10px;
-    color: teal;
+    color: hsl(119deg 84% 73%);
     font-weight: 600;
     font-size: 30px;
 }
@@ -94,20 +82,18 @@
 }
 
 .labelLogin{
-    /* position: absolute; */
-    color: teal;
+    color: hsl(119deg 84% 73%);
     font-weight: 500;
     font-size: 25px;
 }
 
 .loginLink{
-    /* position: absolute; */
     text-decoration: none;
     font-weight: 600;
     font-size: 20px;
     border-bottom: solid 2px;
-    border-bottom-color: #006def;
-    color: #006def;
+    border-bottom-color: hsl(53deg 100% 47%);
+    color: hsl(53deg 100% 47%);
 }
 
 .consentContainer{

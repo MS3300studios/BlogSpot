@@ -4,10 +4,20 @@ import axios from 'axios';
 
 import ReCAPTCHA from "react-google-recaptcha";
 import Flash from '../../../components/UI/flash';
-import classes from './registration.module.css';
 import defaultUserPhoto from '../../../assets/gfx/defaultUserPhoto.png';
 import Button from '../../../components/UI/button';
 import DropZone from '../../PhotoForm/dropZone';
+
+import classes from './registration.module.css';
+import registrationGreen from './registrationGreen.module.css';
+import registrationBlue from './registrationBlue.module.css';
+import getColor from '../../../getColor';
+
+let colorClasses = registrationGreen;
+const colorScheme = getColor();
+if(colorScheme === "blue"){
+    colorClasses = registrationBlue;
+}
 
 class Registration extends Component {
     constructor(props){
@@ -213,7 +223,7 @@ class Registration extends Component {
         
         return (
            <React.Fragment>
-            <div className={classes.RegistrationContainer}>
+            <div className={colorClasses.RegistrationContainer}>
                 <form className={classes.Form}>
                     <h1>Register</h1>
                     <label>Name:</label>
