@@ -81,25 +81,6 @@
     outline: none;
 }
 
-::-webkit-scrollbar {
-    width: 8px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-background: #64ff64; 
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-background: #3ca23c; 
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-background: #555; 
-}
-
 .conversationBanner{
     width: 100%;
     background-color: #469e46;

@@ -12,30 +12,6 @@
     color: yellow;
 }
 
-.nameListContainer{
-    background-color: #82ca66;
-    margin: 0 auto;
-    width: 50%;
-    border: 3px solid green;
-    padding: 10px;
-    border-radius: 10px;
-    overflow-y: auto;
-    max-height: 60vh;
-}
-
-.addUserIcon{
-    margin-top: 39px;
-    background-color: #82ca66;
-    border-radius: 20%;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    transition: 0.3s ease;
-}
-
 .addUserIcon:hover{
     transform: scale(1.4);
 }

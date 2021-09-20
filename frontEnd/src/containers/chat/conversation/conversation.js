@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import classes from './conversation.module.css';
 
 import getUserData from '../../../getUserData';
 import getToken from '../../../getToken';
+import getColor from '../../../getColor';
 
 import { withRouter } from 'react-router';
 import axios from 'axios';
@@ -22,6 +22,16 @@ import Spinner from '../../../components/UI/spinner';
 import Participant from './participant';
 import AddingConversation from '../addingConversation/addingConversation';
 import OnlineIcon from '../../../components/UI/onlineIcon';
+
+import classes from './conversation.module.css';
+import greenClasses from './greenClasses.module.css';
+import blueClasses from './blueClasses.module.css';
+
+const colorScheme = getColor();
+let colorClasses = greenClasses;
+if(colorScheme === "blue"){
+    colorClasses = blueClasses;
+}
 
 class Conversation extends Component {
     constructor(props) {

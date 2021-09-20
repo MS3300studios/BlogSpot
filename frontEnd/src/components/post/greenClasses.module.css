@@ -15,3 +15,13 @@
 .Card:hover{
     box-shadow: 10px 10px 29px -1px rgba(0,0,0,0.55);
 }
+
+.Card h1 {
+    margin: 0px;
+    font-size: 30px;
+    color: white;
+}
+
+.Card h2 {
+    font-size: 20px;
+}

@@ -1,22 +1,33 @@
 import React, { Component } from 'react';
 
-import classes from './FriendsList.module.css';
 import SearchBar from '../../components/UI/searchBar';
 import Button from '../../components/UI/button'; 
 import {IoMdPersonAdd} from 'react-icons/io';
 import FriendsListItem from './friendsListItem';
-import getToken from '../../getToken';
 import axios from 'axios';
 import AddUser from './addUser/addUser';
-import getUserData from '../../getUserData';
 import Spinner from '../../components/UI/spinner';
+
+import getToken from '../../getToken';
+import getUserData from '../../getUserData';
+import getColor from '../../getColor';
+
+import classes from './FriendsList.module.css';
+import greenClasses from './greenClasses.module.css';
+import blueClasses from './blueClasses.module.css';
+
+const colorScheme = getColor();
+let colorClasses = greenClasses;
+if(colorScheme === "blue"){
+    colorClasses = blueClasses;
+}
 
 class FriendsList extends Component {
     constructor(props) {
         super(props);
 
-        let token = getToken();
-        let userData = getUserData();        
+        const token = getToken();
+        const userData = getUserData();    
 
         this.state = {
             token: token,
@@ -174,7 +185,7 @@ class FriendsList extends Component {
         let friends;
         if(this.state.friends.length===0){
             friends = (
-                <div className={classes.nameListContainer}>
+                <div className={colorClasses.nameListContainer}>
                     <h1>You don't have any friends yet!</h1>
                     <hr />
                     <p>To add new friends click add friend button</p>
@@ -183,7 +194,7 @@ class FriendsList extends Component {
         }
         else{
             friends = (
-                <div className={classes.nameListContainer}>
+                <div className={colorClasses.nameListContainer}>
                     {this.filterFriends(this.state.filterIn, this.state.filterBy)}
                 </div>
             );
@@ -205,7 +216,7 @@ class FriendsList extends Component {
                                 />
                                 {
                                     this.props.profileViewComponent ? null : (
-                                        <div className={classes.addUserIcon} onClick={()=>this.setState({showAddFriendCoponent: true})}>
+                                        <div className={colorClasses.addUserIcon} onClick={()=>this.setState({showAddFriendCoponent: true})}>
                                             <IoMdPersonAdd size="2em" color="#0a42a4" />
                                         </div>
                                     )
