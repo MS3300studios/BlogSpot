@@ -1,28 +1,10 @@
-.Card{
-    padding: 8px;
-    text-decoration: none;
-    border-radius: 4px;
-    background-color: #82ca66;
-    width: 320px;
-    height: 300px;
-    margin: 5px;
-    transition: 0.5s ease-out;
-    text-overflow: hidden;
-    position: relative;
-    color: black;
-}
-
-.Card:hover{
-    box-shadow: 10px 10px 29px -1px rgba(0,0,0,0.55);
-}
-
-.Card h1 {
+h1 {
     margin: 0px;
     font-size: 30px;
-    color: yellow;
+    color: white;
 }
 
-.Card h2 {
+h2 {
     font-size: 20px;
 }
 

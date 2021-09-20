@@ -1,14 +1,27 @@
 import React, {useEffect, useState} from 'react';
 import { Link } from 'react-router-dom';
 
-import classes from './post.module.css';
 import Button from '../UI/button';
 import getUserData from '../../getUserData';
 import axios from 'axios';
+
 import getToken from '../../getToken';
+import getColor from '../../getColor';
+
+import classes from './post.module.css';
+import greenClasses from './greenClasses.module.css';
+import blueClasses from './blueClasses.module.css';
+
+const colorScheme = getColor();
+let colorClasses = greenClasses;
+if(colorScheme === "blue"){
+    colorClasses = blueClasses;
+}
 
 const Post = (props) => {
     let userLoggedData = getUserData();
+
+    console.log(colorClasses)
 
     const [loading, setloading] = useState(props.socialBoard);
     const [userData, setuserData] = useState({});
@@ -42,7 +55,7 @@ const Post = (props) => {
         <>
             {
                 (loading || props.loading) ? (
-                    <div className={classes.Card}>
+                    <div className={colorClasses.Card}>
                         <div style={{width: "100%", display: "flex", justifyContent: "center"}}>
                             <div className={classes.skel_heading}></div>
                         </div>
@@ -62,7 +75,7 @@ const Post = (props) => {
                         </div>
                     </div>
                 ) : (
-                    <div className={classes.Card}>
+                    <div className={colorClasses.Card}>
                         <div className={classes.contentWrapperSmaller}>
                         <Link to={"/post/?id="+props.id} style={{textDecoration: "none", color: "black"}}>
                             <h1>{props.title}</h1>
