@@ -1,9 +1,19 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import classes from './login.module.css';
 import Button from '../../../components/UI/button';
 import Flash from '../../../components/UI/flash';
+import getColor from '../../../getColor';
+
+import classes from './login.module.css';
+import greenClasses from './greenClasses.module.css';
+import blueClasses from './blueClasses.module.css';
+
+const colorScheme = getColor();
+let colorClasses = greenClasses;
+if(colorScheme === "blue"){
+    colorClasses = blueClasses;
+}
 
 class Login extends Component {
     constructor(props){
@@ -155,7 +165,7 @@ class Login extends Component {
             flash = <Flash close>{this.state.flashMessage}</Flash>
         }
         return (
-            <div className={classes.LoginContainer}>
+            <div className={colorClasses.LoginContainer}>
                 <div className={classes.Form}>
                     <h1>Log in</h1>
                     <label className={classes.labelEmail}>email:</label>

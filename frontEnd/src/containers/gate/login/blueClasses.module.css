@@ -1,0 +1,14 @@
+.LoginContainer{
+    background-color: hsl(210deg 66% 52%);
+    width: 500px;
+    height: 550px;
+    margin: 0 auto;
+    margin-top: 10%;
+    position: relative;
+    transition: 0.3s ease-in all;
+  }
+  
+  .LoginContainer:hover{
+    box-shadow: 10px 10px 29px -1px rgba(0,0,0,0.55);
+  }
+  
