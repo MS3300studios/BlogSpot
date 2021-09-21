@@ -37,14 +37,14 @@ background: #555;
 .sidePanel{
     margin-top: 60px;
     width: 30%;
-    background-color: #53c253;
+    background-color: hsl(210deg 66% 52%);
 }
 
 .participantListItem{
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    border: green solid 3px;
+    border: hsl(244, 46%, 44%) solid 3px;
     border-radius: 20px;
     margin: 10px auto;
     transition: 0.3s ease-out;
@@ -57,7 +57,7 @@ background: #555;
 }
 
 .participantListItem:hover{
-    background-color: green;
+    background-color: hsl(244, 46%, 44%);
     color: white;
 }
 

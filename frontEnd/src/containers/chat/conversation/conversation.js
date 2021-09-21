@@ -417,7 +417,7 @@ class Conversation extends Component {
                 </div>
                 {
                     this.state.infoOpened ? (
-                        <div className={classes.sidePanel}>
+                        <div className={colorClasses.sidePanel}>
                             {
                                 (this.props.conversation.conversationType === "private") ? (
                                     <div className={colorClasses.centerTop}>

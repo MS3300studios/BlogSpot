@@ -89,6 +89,10 @@
     padding: 10px;
 }
 
+.conversationName h1{
+    color: white;
+}
+
 .editConversationNameInput{
     border: none;
     border-bottom: solid #04255f 3px;
