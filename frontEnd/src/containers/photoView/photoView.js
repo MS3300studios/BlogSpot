@@ -5,7 +5,6 @@ import getUserData from '../../getUserData';
 
 import Like from '../../components/UI/like';
 import { FaCommentAlt } from 'react-icons/fa';
-import classes from './photoView.module.css';
 // import newCommentClasses from '../../components/UI/AddCommentForm.module.css'
 import Button from '../../components/UI/button';
 import formattedCurrentDate from '../../formattedCurrentDate';
@@ -20,6 +19,15 @@ import CommentOptions from '../userProfile/tabs/comments/optionsContainer/Commen
 import { withRouter } from 'react-router-dom';
 import EditPhotoDesc from './EditPhotoDesc';
 import PhotoComments from './photoComments/photoComments';
+import getColor from '../../getColor';
+
+import classes from './photoView.module.css';
+
+const colorScheme = getColor();
+let background = {backgroundColor: "#82ca66"};
+if(colorScheme === "blue"){
+    background = {backgroundColor: "hsl(210deg 66% 52%)"};
+}
 
 class photoView extends Component {
     constructor(props) {
@@ -333,7 +341,7 @@ class photoView extends Component {
 
         return (
             <div className={classes.backdrop}>
-                <div className={classes.photoViewContainer}>
+                <div className={classes.photoViewContainer} style={background}>
                     <Button className={classes.CloseButton} clicked={()=>this.props.closeBigPhoto(this.state.socialStateWasChanged)}>Close</Button>
                         <div className={classes.imgContainer}>
                             {
@@ -404,7 +412,7 @@ class photoView extends Component {
                                         <p>{this.state.photo.comments.length}</p>
                                     </div>
                                 </div>
-                                <hr />
+                                <hr style={{borderColor: "hsl(201deg 97% 32%)"}}/>
                                 <div className={classes.description}>
                                     {
                                         this.state.editingPhotoDescription ? 
@@ -412,7 +420,7 @@ class photoView extends Component {
                                             <p>{this.state.photo.description}</p>
                                     }
                                 </div>
-                                <hr />
+                                <hr style={{borderColor: "hsl(201deg 97% 32%)"}}/>
                                 <PhotoComments 
                                     photoId={this.props.photo._id} 
                                     flash={this.flash} 

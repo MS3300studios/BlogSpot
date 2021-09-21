@@ -12,7 +12,6 @@
 }
 
 .photoViewContainer{
-    background-color: #82ca66;
     height: 90%;
     margin: 0 auto;
     position: relative;
@@ -21,6 +20,7 @@
     display: flex;
     justify-content: center;
     z-index: 100;
+    color: white;
 }
 
 .photoViewContainer button{
@@ -136,4 +136,5 @@
     position: absolute;
     top: 50px;
     left: 550px;
+    color: black;
 }
