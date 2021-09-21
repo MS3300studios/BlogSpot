@@ -6,6 +6,9 @@ import getToken from '../../getToken';
 import imageX from '../../assets/gfx/x.png';
 import classes from './PostForm.module.css';
 import Button from './button';
+import getColor from '../../getColor';
+
+const colorScheme = getColor();
 
 const PostForm = (props) => {
     let editingTitle;
@@ -43,9 +46,15 @@ const PostForm = (props) => {
         })
     }
 
+    let backgroundColor = {backgroundColor: "#82ca66"};
+    if(colorScheme === "blue"){
+        backgroundColor = {backgroundColor: "hsl(210deg 66% 52%)"};
+    }
+    
+
     if(props.editing){
         return ( 
-            <div className={classes.addPostFormContainer}>
+            <div className={classes.addPostFormContainer} style={backgroundColor}>
                 <img alt="exit adding post" src={imageX} title="close" onClick={props.closeBackdrop} className={classes.imageX}/>
                 <form>
                     <input 

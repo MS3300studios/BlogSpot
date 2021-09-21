@@ -4,13 +4,24 @@ import axios from 'axios';
 
 import Comments from '../../containers/userProfile/tabs/comments/comments';
 import Spinner from '../UI/spinner';
-import classes from './postView.module.css';
 import Button from '../UI/button';
 import PostForm from '../UI/PostForm';
 import Backdrop from '../UI/backdrop';
 import formattedCurrentDate from '../../formattedCurrentDate';
-import getUserData from '../../getUserData';
 import LikesCommentsNumbers from '../UI/likesCommentsNumbers';
+
+import getUserData from '../../getUserData';
+import getColor from '../../getColor';
+
+import classes from './postView.module.css';
+import greenClasses from './greenClasses.module.css';
+import blueClasses from './blueClasses.module.css';
+
+const colorScheme = getColor();
+let colorClasses = greenClasses;
+if(colorScheme === "blue"){
+    colorClasses = blueClasses;
+}
 
 class PostView extends Component {
     constructor(props){
@@ -116,7 +127,7 @@ class PostView extends Component {
             info = (
                 <div className={classes.blogCards}>
                     <div className={classes.blogFaceContainer}>
-                        <div className={classes.blogFace}>
+                        <div className={colorClasses.blogFace}>
                             <p className={classes.postTitle}>{this.state.post.title}</p>
                             <div className={classes.userDataContainer}>
                                 <img className={classes.userPhoto} src={this.state.authorData.photo} alt="users face"/>
@@ -137,11 +148,11 @@ class PostView extends Component {
                                 </div>
                             </div>
                         </div>
-                        <div className={[classes.blogFace, classes.commentsContainer].join(" ")}>
+                        <div className={[classes.blogFace, colorClasses.commentsContainer].join(" ")}>
                             <Comments blogId={this.state.postId} blogAuthorId={this.state.authorData._id} small/>
                         </div>
                     </div>
-                    <div className={classes.cardBig} >
+                    <div className={colorClasses.cardBig} >
                         <p>{this.state.post.content}</p>
                     </div>
                 </div>

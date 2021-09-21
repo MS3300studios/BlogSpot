@@ -1,0 +1,31 @@
+.cardBig{
+    display: flex;
+    border: 3px solid #82ca66;
+    border-radius: 4px;
+    background-color: #82ca66;
+    width: 1000px;
+    padding: 15px;
+    min-height: 113px;
+    margin-left: 80px;
+    overflow-wrap: anywhere;
+}
+
+.blogFace{
+    width: 300px;
+    background-color: #82ca66;
+    border-radius: 4px;
+    padding: 20px; 
+    padding-top: 0px;
+}
+
+.commentContainer{
+    width: 300px;
+    background-color: #82ca66;
+    border-radius: 4px;
+    padding: 20px;
+}
+
+.cardBig p{
+    font-size: 20px;
+    font-weight: 500;
+}

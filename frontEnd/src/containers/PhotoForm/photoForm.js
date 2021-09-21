@@ -1,15 +1,23 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
+
 import getToken from '../../getToken';
 import getUserData from '../../getUserData'
+import getColor from '../../getColor';
 
-import classes from './photoForm.module.css';
 import addYourPhoto from '../../assets/gfx/addyourphoto.png';
 import Button from '../../components/UI/button';
 import Flash from '../../components/UI/flash';
 import Spinner from '../../components/UI/spinner';
 import DropZone from './dropZone';
+
+import classes from './photoForm.module.css';
+
+const colorScheme = getColor();
+
+let colorStyle = { backgroundColor: "" };
+if(colorScheme === "blue") colorStyle = { backgroundColor: "hsl(210deg 66% 52%)" };
 
 class PhotoForm extends Component {
     constructor(props) {
@@ -125,9 +133,9 @@ class PhotoForm extends Component {
 
         return (
             <React.Fragment>
-                <div className={classes.formContainer}>
+                <div className={classes.formContainer} style={colorStyle}>
                     <div className={classes.center}>
-                        <h1>Adding Photo</h1>
+                        <h1 style={{color: "white"}}>Adding Photo</h1>
                     </div>
                     <div className={classes.center}>
                         <textarea onChange={this.inputDesc} placeholder="   add your description here..."/>

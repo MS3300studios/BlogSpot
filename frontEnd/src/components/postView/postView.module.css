@@ -9,31 +9,6 @@
     margin-top: 50px;
 }
 
-.cardBig{
-    display: flex;
-    border: 3px solid #82ca66;
-    border-radius: 4px;
-    background-color: #82ca66;
-    width: 1000px;
-    padding: 15px;
-    min-height: 113px;
-    margin-left: 80px;
-    overflow-wrap: anywhere;
-}
-
-.cardBig p{
-    font-size: 20px;
-    font-weight: 500;
-}
-
-.blogFace{
-    width: 300px;
-    background-color: #82ca66;
-    border-radius: 4px;
-    padding: 20px; 
-    padding-top: 0px;
-}
-
 .commentsContainer{
     padding-top: 20px;
     margin-top: 20px;
@@ -56,14 +31,6 @@
 .postAuthor{
     font-size: 20px;
     font-weight: 500;
-    /* margin: 10px 5px 5px 5px; */
-}
-
-.commentContainer{
-    width: 300px;
-    background-color: #82ca66;
-    border-radius: 4px;
-    padding: 20px;
 }
 
 .smallSpinnerLocation{
