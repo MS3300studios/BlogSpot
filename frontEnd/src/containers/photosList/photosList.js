@@ -10,6 +10,9 @@ import PhotoView from '../photoView/photoView';
 
 import classes from './photosList.module.css';
 import Spinner from '../../components/UI/spinner';
+import getColor from '../../getColor';
+
+const colorScheme = getColor();
 
 class PhotosList extends Component {
     constructor(props) {
@@ -98,6 +101,12 @@ class PhotosList extends Component {
             this.state.photos.forEach(photo => {
                 if(photo._id === this.state.bigPhotoId) bigPhotoToSend = photo;
             })
+
+            let colorStyle = { backgroundColor: "#82ca66" };
+            if(colorScheme === "blue"){
+                colorStyle = { backgroundColor: "hsl(210deg 66% 52%)" };
+            }
+
             content = (
                 <>
                     {this.state.bigPhotoId ? <PhotoView photo={bigPhotoToSend} closeBigPhoto={this.bigPhotoWasClosed}/> : null}
@@ -107,7 +116,7 @@ class PhotosList extends Component {
                                 photos
                             }
                             <div className={classes.addPhoto}>
-                                    <div className={classes.addPhotoContainer} onClick={this.showPostForm}>
+                                    <div className={classes.addPhotoContainer} onClick={this.showPostForm} style={colorStyle}>
                                         <Link to="/addPhoto">
                                             <img alt="add a post" src={addPostImage}/>
                                         </Link>
@@ -120,7 +129,6 @@ class PhotosList extends Component {
                             width: "81%",
                             display: "flex",
                             justifyContent: "center",
-                            backgroundColor: "#53c253",
                             paddingTop: "20px",
                             paddingBottom: "10px"
                         }}>

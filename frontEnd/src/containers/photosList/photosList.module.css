@@ -7,7 +7,6 @@
     margin-top: 20px;
     padding: 10px;
     width: 80%; 
-    background-color: #53c253;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -29,7 +28,6 @@
     justify-content: center;
     align-items: center;
     border-radius: 10px;
-    background-color: #82ca66;
     transition: 0.3s linear;
 }
 
