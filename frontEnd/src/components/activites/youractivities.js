@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
-import classes from './youractivites.module.css';
 
 import Dashboard from '../../containers/dashboard/dashboard';
 import PhotosList from '../../containers/photosList/photosList';
+
+import classes from './youractivites.module.css';
+import getColor from '../../getColor';
+
+const colorScheme = getColor();
 
 class YourActivities extends Component {
     constructor(props){
@@ -20,10 +24,15 @@ class YourActivities extends Component {
             content = <PhotosList />
         }
 
+        let backgroundSwitchMenuStyle = {backgroundColor: "#82ca66"} 
+        if(colorScheme === "blue"){
+            backgroundSwitchMenuStyle = {backgroundColor: "hsl(210deg 66% 52%)"} 
+        }
+
         return (
             <React.Fragment>
                 <div className={classes.yourActivitiesContainer}>
-                    <div className={classes.switchMenuContainer}>
+                    <div className={classes.switchMenuContainer} style={backgroundSwitchMenuStyle}>
                         <div className={classes.radioList}>
                             <label>posts</label>
                             <input className={classes.input1} type="radio" checked={this.state.view === "posts"} onChange={()=>this.setState({view: "posts"})}/>

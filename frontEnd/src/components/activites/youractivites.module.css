@@ -4,7 +4,6 @@
     left: 10px;
     width: 120px;
     height: 100px;
-    background-color: #82ca66;
     border-radius: 20%;
     display: flex;
     justify-content: center;
@@ -14,6 +13,7 @@
 .switchMenuContainer label{
     font-size: 20px;
     margin-top: 10px;
+    color: white;
 }
 
 .switchMenuContainer input[type='radio']:after {

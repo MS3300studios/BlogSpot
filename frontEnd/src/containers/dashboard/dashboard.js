@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
-
-import classes from './dashboard.module.css';
-
-import getToken from '../../getToken';
 import formattedCurrentDate from '../../formattedCurrentDate';
+
 import Post from '../../components/post/post';
 import addPostImage from '../../assets/gfx/add.png';
 import PostForm from '../../components/UI/PostForm';
@@ -13,6 +10,18 @@ import SearchBar from '../../components/UI/searchBar';
 import NoSearchResult from '../../components/UI/noSearchResult';
 import axios from 'axios';
 import getUserData from '../../getUserData';
+import getToken from '../../getToken';
+import getColor from '../../getColor';
+
+import classes from './dashboard.module.css';
+import greenClasses from './greenClasses.module.css';
+import blueClasses from './blueClasses.module.css';
+
+const colorScheme = getColor();
+let colorClasses = greenClasses;
+if(colorScheme === "blue"){
+    colorClasses = blueClasses;
+}
 
 class Dashboard extends Component {
     constructor(props){
@@ -330,7 +339,7 @@ class Dashboard extends Component {
                     {
                         temp
                     }
-                    <div className={classes.Card} onClick={this.showPostForm}>
+                    <div className={colorClasses.Card} onClick={this.showPostForm}>
                         <img alt="add a post" src={addPostImage} className={classes.addPostDiv}/>
                     </div>
                 </div> 
@@ -339,7 +348,7 @@ class Dashboard extends Component {
         else posts = (
             <div className={classes.postContainer}>
                 {this.filterPosts(this.state.filterIn, this.state.filterBy)}
-                <div className={classes.Card} onClick={this.showPostForm}>
+                <div className={colorClasses.Card} onClick={this.showPostForm}>
                     <img alt="add a post" src={addPostImage} className={classes.addPostDiv}/>
                 </div>
             </div> 
