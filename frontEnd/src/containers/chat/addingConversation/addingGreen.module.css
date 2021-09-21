@@ -1,0 +1,17 @@
+.addUserContainer{
+    background-color: #82ca66;
+    margin: auto;
+    margin-top: 2px;
+    width: 70%;
+    max-height: 820px;
+    border: 3px solid green;
+    padding: 10px;
+    border-radius: 10px;
+    overflow-y: auto;
+}
+
+.friendsListItemOutline{
+    border: green 3px solid;
+    border-radius: 20px;
+    margin: 20px;
+}

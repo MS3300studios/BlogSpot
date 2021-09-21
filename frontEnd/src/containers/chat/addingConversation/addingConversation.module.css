@@ -11,18 +11,6 @@
     z-index: 100;
 }
 
-.addUserContainer{
-    background-color: #82ca66;
-    margin: auto;
-    margin-top: 2px;
-    width: 70%;
-    max-height: 820px;
-    border: 3px solid green;
-    padding: 10px;
-    border-radius: 10px;
-    overflow-y: auto;
-}
-
 .closeIcon{
     width: 40px;
     height: 40px;
@@ -35,7 +23,7 @@
     align-items: center;
 }
 .closeIcon:hover{
-    background-color: teal;
+    background-color: hsl(222deg 60% 51%);;
 }
 
 .topContainer{
@@ -54,7 +42,7 @@
     margin-top: 10px;
 }
 .centerInput h1{
-    color: green;
+    color: white;
 }
 
 .Input{
@@ -74,6 +62,7 @@
     box-shadow: 0px 0px 18px 3px #FFFFFF;
     outline: none;
 }
+
 .addUserContainer hr{
     border-color: green;
     color: green;
@@ -81,13 +70,7 @@
 }
 
 .addingUsers h1{
-    color: green;
-}
-
-.friendsListItemOutline{
-    border: green 3px solid;
-    border-radius: 20px;
-    margin: 20px;
+    color: white;
 }
 
 .center{

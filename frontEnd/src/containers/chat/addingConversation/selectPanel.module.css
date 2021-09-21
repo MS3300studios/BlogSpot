@@ -9,12 +9,13 @@
     width: 300px;
     height: 300px;
     margin-bottom: 40px;
-    background-color: #368813;
+    background-color: #53c253;
     padding: 10px;
     border-radius: 4px;
     transition: 0.3s ease-out;
     cursor: pointer;
 }
+
 .optionCard:hover{
     transform: scale(1.2);
 }

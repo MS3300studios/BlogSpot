@@ -343,8 +343,8 @@ class Conversation extends Component {
         }
         else{
             messages = this.state.messages.map((message, index) => {
-                let messageClassNames = [classes.message, classes.partnerColor].join(" ");
-                if(message.authorName === this.state.user.name) messageClassNames = [classes.message, classes.userLoggedColor].join(" ");
+                let messageClassNames = [classes.message, colorClasses.partnerColor].join(" ");
+                if(message.authorName === this.state.user.name) messageClassNames = [classes.message, colorClasses.userLoggedColor].join(" ");
                 else if(message.authorName === "Admin") messageClassNames = [classes.message, classes.adminColor].join(" ");
                 
                 return (
@@ -383,7 +383,7 @@ class Conversation extends Component {
 
         return (
             <>
-            <div className={classes.conversationBanner}>
+            <div className={colorClasses.conversationBanner}>
                 {conversationName}
                 <div className={classes.infoCircle} onClick={()=>this.setState((prevState)=>({infoOpened: !prevState.infoOpened}))}>
                     {
@@ -420,7 +420,7 @@ class Conversation extends Component {
                         <div className={classes.sidePanel}>
                             {
                                 (this.props.conversation.conversationType === "private") ? (
-                                    <div className={classes.centerTop}>
+                                    <div className={colorClasses.centerTop}>
                                         <div style={{margin: "0 auto"}}>
                                             <div className={[classes.operationButton,classes.leave].join(" ")} onClick={()=>this.deleteConversation(false)}>
                                                 <AiFillDelete size="2em" color="#fff"/>

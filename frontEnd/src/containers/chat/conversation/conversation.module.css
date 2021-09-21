@@ -4,12 +4,6 @@
     justify-content: center;
 }
 
-.centerTop{
-    height: 100%;
-    display: flex;
-    align-items: center;
-}
-
 .messages{
     overflow-y: auto;
     height: 80vh;
@@ -31,15 +25,6 @@
     margin: 4px;
 }
 
-.userLoggedColor{
-    background-color: #3ca23c;
-    float: right;
-}
-.partnerColor{
-    background-color: #6af76a;
-    float: left;
-    color: #000;
-}
 .adminColor{
     max-width: unset;
     min-width: unset;
@@ -81,60 +66,20 @@
     outline: none;
 }
 
-.conversationBanner{
-    width: 100%;
-    background-color: #469e46;
-    height: 60px;
-    position: absolute;
-    top: 75;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: white;
-}
-.conversationBanner h1{
-    margin-left: 10px;
-    margin-right: 10px;
-}
 .mainContainer{
     margin-top: 57px;
     width: 100%;
 }
+
 .infoCircle{
     margin-right: 25px;
     cursor: pointer;
     margin-top: 6px;
 }
 
-.sidePanel{
-    margin-top: 60px;
-    width: 30%;
-    background-color: #53c253;
-}
-
 .participantLink{
     text-decoration: none;
     color: unset;
-}
-
-.participantListItem p{
-    font-size: 25px;
-    font-weight: 500;
-    margin-left: -40px;
-}
-.participantListItem{
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    border: green solid 3px;
-    border-radius: 20px;
-    margin: 10px auto;
-    transition: 0.3s ease-out;
-}
-
-.participantListItem:hover{
-    background-color: green;
-    color: white;
 }
 
 .conversationName{

@@ -2,11 +2,20 @@ import React, { useState } from 'react';
 
 import classes from './selectPanel.module.css';
 import classes2 from './addingConversation.module.css';
+import blue from './addingBlue.module.css';
+import green from './addingGreen.module.css';
 
+import getColor from '../../../getColor';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 import { ImEnter } from 'react-icons/im';
 import { BiMessageAdd } from 'react-icons/bi';
 import { Redirect } from 'react-router-dom';
+
+let colorClasses = green;
+const colorScheme = getColor();
+if(colorScheme === "blue"){
+    colorClasses = blue;
+}
 
 const SelectPanel = (props) => {
     const [redirect, setredirect] = useState("no")
@@ -18,9 +27,9 @@ const SelectPanel = (props) => {
 
     return (
         <div className={classes2.backDrop}>
-            <div className={classes2.addUserContainer}>
+            <div className={colorClasses.addUserContainer}>
                 <div className={classes2.closeIcon} onClick={props.closeAddConversation}>
-                    <AiOutlineCloseCircle size="2em" color="#0a42a4" />
+                    <AiOutlineCloseCircle size="2em" color="#fff" />
                 </div>
                 <div className={classes.cardsContainer}>
                     <div className={classes.optionCard} onClick={()=>setredirect("join")}>

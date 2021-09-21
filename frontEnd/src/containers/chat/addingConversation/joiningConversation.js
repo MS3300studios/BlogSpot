@@ -4,6 +4,8 @@ import axios from 'axios';
 import classes from './JoiningConversation.module.css';
 import classes2 from './addingConversation.module.css';
 import classes3 from '../../FriendsList/addUser/addUser.module.css';
+import green from './addingGreen.module.css';
+import blue from './addingBlue.module.css';
 
 import {AiOutlineSearch} from 'react-icons/ai';
 import { Redirect } from 'react-router-dom';
@@ -12,9 +14,18 @@ import SearchBar from '../../../components/UI/searchBar';
 import Spinner from '../../../components/UI/spinner';
 import Button from '../../../components/UI/button';
 import Flash from '../../../components/UI/flash';
+import ConversationListItem from '../chatMenu/conversationListItem';
+
 import getToken from '../../../getToken';
 import getUserData from '../../../getUserData';
-import ConversationListItem from '../chatMenu/conversationListItem';
+import getColor from '../../../getColor';
+
+
+let colorClasses = green;
+const colorScheme = getColor();
+if(colorScheme === "blue"){
+    colorClasses = blue;
+}
 
 class JoiningConversation extends Component {
     constructor(props) {
@@ -175,7 +186,7 @@ class JoiningConversation extends Component {
 
         return (
             <div className={classes2.backDrop}>
-                <div className={classes2.addUserContainer}>
+                <div className={colorClasses.addUserContainer}>
                     <div className={classes2.closeIcon} onClick={()=>this.setState({redirectChat: true})}>
                         <AiOutlineCloseCircle size="2em" color="#0a42a4" />
                     </div>

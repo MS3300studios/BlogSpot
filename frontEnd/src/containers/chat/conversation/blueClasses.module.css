@@ -16,3 +16,65 @@ background: hsl(244, 46%, 44%);
 ::-webkit-scrollbar-thumb:hover {
 background: #555; 
 }
+
+.conversationBanner{
+    width: 100%;
+    background-color: hsl(244, 46%, 44%);
+    height: 60px;
+    position: absolute;
+    top: 75;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+}
+
+.conversationBanner h1{
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.sidePanel{
+    margin-top: 60px;
+    width: 30%;
+    background-color: #53c253;
+}
+
+.participantListItem{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    border: green solid 3px;
+    border-radius: 20px;
+    margin: 10px auto;
+    transition: 0.3s ease-out;
+}
+
+.participantListItem p{
+    font-size: 25px;
+    font-weight: 500;
+    margin-left: -40px;
+}
+
+.participantListItem:hover{
+    background-color: green;
+    color: white;
+}
+
+.userLoggedColor{
+    background-color: #00539CFF;
+    float: right;
+}
+
+.partnerColor{
+    background-color: hsl(210deg 66% 52%); 
+    float: left;
+    color: #fff;
+}
+
+.centerTop{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    background-color: #00539CFF;
+}

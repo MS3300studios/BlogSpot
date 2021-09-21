@@ -1,18 +1,28 @@
 import React, { Component } from 'react';
 
-import classes from './addingConversation.module.css';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 import FriendsListItem from '../../FriendsList/friendsListItem';
 
 import axios from 'axios';
 import getUserData from '../../../getUserData';
 import getToken from '../../../getToken';
+import getColor from '../../../getColor';
 import Spinner from '../../../components/UI/spinner';
 import SearchBar from '../../../components/UI/searchBar';
 import Button from '../../../components/UI/button';
 
 import Flash from '../../../components/UI/flash';
 import { Redirect } from 'react-router-dom';
+
+import classes from './addingConversation.module.css';
+import greenClasses from './addingGreen.module.css';
+import blueClasses from './addingBlue.module.css';
+
+const colorScheme = getColor();
+let colorClasses = greenClasses;
+if(colorScheme === "blue"){
+    colorClasses = blueClasses;
+}
 
 class AddingConversation extends Component {
     constructor(props) {
@@ -290,7 +300,7 @@ class AddingConversation extends Component {
         else{
             wrappedFriends = friendsRdy.map((friend, index) => {
                 return (
-                    <div className={classes.friendsListItemOutline} key={index}>
+                    <div className={colorClasses.friendsListItemOutline} key={index}>
                         {friend}
                     </div>
                 )
@@ -329,7 +339,7 @@ class AddingConversation extends Component {
             <div className={classes.backDrop}>
                 {
                     this.state.loading ? <Spinner /> : (
-                        <div className={classes.addUserContainer}>
+                        <div className={colorClasses.addUserContainer}>
                             <div className={classes.closeIcon} onClick={()=>{
                                 if(this.props.closeWindow) this.props.closeWindow();
                                 else this.setState({redirectChat: true})
