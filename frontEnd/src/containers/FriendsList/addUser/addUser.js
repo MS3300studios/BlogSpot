@@ -2,15 +2,26 @@ import React, { Component } from 'react';
 import axios from 'axios';
 
 import Spinner from '../../../components/UI/spinner';
-import classes2 from '../FriendsList.module.css';
-import classes from './addUser.module.css';
 import SearchBar from '../../../components/UI/searchBar';
 import Button from '../../../components/UI/button';
 import {AiOutlineSearch} from 'react-icons/ai';
 import {AiOutlineCloseCircle} from 'react-icons/ai';
 import FriendsListItem from '../friendsListItem';
 import Flash from '../../../components/UI/flash';
+
 import getToken from '../../../getToken';
+import getColor from '../../../getColor';
+
+import classes2 from '../FriendsList.module.css';
+import classes from './addUser.module.css';
+import greenClasses from './greenClasses.module.css';
+import blueClasses from './blueClasses.module.css';
+
+const colorScheme = getColor();
+let colorClasses = greenClasses;
+if(colorScheme === "blue"){
+    colorClasses = blueClasses;
+}
 
 class AddUser extends Component {
     constructor(props) {
@@ -155,7 +166,7 @@ class AddUser extends Component {
             if(this.state.users.length === 0){
                 content = (
                     <div className={classes2.nameListContainer}>
-                        <h1>No user with this {this.state.filterIn} was found!</h1>
+                        <h1 style={{color: "white"}}>No user with this {this.state.filterIn} was found!</h1>
                         <hr />
                     </div>
                 );
@@ -201,7 +212,7 @@ class AddUser extends Component {
 
         return (
             <div className={classes.lightbox}>
-                <div className={classes.addUserContainer}>
+                <div className={colorClasses.addUserContainer}>
                 <div className={classes.closeIcon} onClick={this.props.closeAddUser}>
                     <AiOutlineCloseCircle size="2em" color="#0a42a4" />
                 </div>

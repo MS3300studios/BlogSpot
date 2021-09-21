@@ -144,3 +144,8 @@ input[type=checkbox]:checked:after {
     transform: scale(1.2);
     cursor: pointer;
 }
+
+.nameListContainer{
+    overflow-y: auto;
+    height: 65vh;
+}
