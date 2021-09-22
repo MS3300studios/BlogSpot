@@ -26,6 +26,7 @@ import JoiningConversation from './containers/chat/addingConversation/joiningCon
 import SinglePhotoHOC from './containers/photoView/singlePhotoHOC/singlePhotoHOC';
 import Settings from './components/settings/settings';
 import AddPost from './components/AddPost/AddPost';
+import getColor from './getColor';
 
 class App extends Component {
   constructor(props){
@@ -103,14 +104,22 @@ class App extends Component {
       )
     }
 
+    const colorScheme = getColor();
+    let background = { backgroundColor: "seagreen"};
+    if(colorScheme === "blue"){
+      background = { backgroundColor: "hsl(201deg 98% 32%)"};
+    }
+
     return ( 
       <React.Fragment>
-        <CookiesBanner show={this.state.cookiesBannerOpened} />
-        <Switch>
-          {content}
-          {gate}
-          <Route component={URLnotFound} />
-        </Switch>
+        <div style={{...background, width: "100%", height: "100%", position: "fixed", top: "0", left: "0"}}>
+          <CookiesBanner show={this.state.cookiesBannerOpened} />
+          <Switch>
+            {content}
+            {gate}
+            <Route component={URLnotFound} />
+          </Switch>
+        </div>
       </React.Fragment>
     );
   }

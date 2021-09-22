@@ -6,9 +6,15 @@ import Button from '../../UI/button';
 import classicGreen from '../../../assets/gfx/classicGreen.png'
 import modernBlue from '../../../assets/gfx/modernBlue.png'
 import vibrantRed from '../../../assets/gfx/vibrantRed.png'
+import getColor from '../../../getColor';
 
 const ColoursSettingsOption = () => {
-    const [optionSelected, setoptionSelected] = useState("green")
+    const [optionSelected, setoptionSelected] = useState(getColor());
+
+    const savePressed = () => {
+        localStorage.setItem("colorScheme", optionSelected);
+        window.location.reload();
+    }
 
     return (
         <div className={classes.coloursContainer}>
@@ -32,13 +38,13 @@ const ColoursSettingsOption = () => {
                     <div className={classes.imgContainer}>
                         <img src={vibrantRed} alt="vibrant red"/>
                         <div className={classes.inputContainer}>
-                            <input type="radio" className={classes.imgInput} checked={optionSelected === "red"} onChange={()=>setoptionSelected("red")} />
-                            <p>vibrant red</p>
+                            <input type="radio" className={classes.imgInput} disabled checked={optionSelected === "red"} onChange={()=>setoptionSelected("red")} />
+                            <p style={{color: "gray"}}>vibrant red</p>
                         </div>
                     </div>
                 </div>
                 <div className={classes.saveButtonContainer}>
-                    <Button>Save</Button>
+                    <Button clicked={savePressed}>Save</Button>
                 </div>
             </div>
         </div>

@@ -1,0 +1,19 @@
+.option{
+    display: flex;
+    justify-content: center;
+    width: 90%;
+    margin: 10px auto;
+    cursor: pointer;
+    transition: 0.2s ease-in all;
+    border-radius: 30px;
+}
+
+.option:hover{
+    background-color: #53c253;
+    color: white;
+}
+
+.option p{
+    font-weight: 550;
+    font-size: 30px;
+}
