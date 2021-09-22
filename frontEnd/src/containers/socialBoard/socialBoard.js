@@ -233,7 +233,7 @@ class SocialBoard extends Component {
                     </div>
                 </div>
                 <div className={classes.mainContainer}>
-                    <div style={addItemStyle} onClick={()=>this.setState({showAddingItems: true})}>
+                    <div style={addItemStyle} onClick={()=>this.setState({showAddingItems: true})} className={classes.addPost}> 
                         <img alt="add a post" src={addPostImage} style={{
                                 cursor: "pointer",
                                 width: "90px",

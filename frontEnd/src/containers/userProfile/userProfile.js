@@ -17,6 +17,7 @@ import getUserData from '../../getUserData';
 import Spinner from '../../components/UI/spinner';
 import NumberInfoContainer from './numberInfoContainer/numberInfoContainer';
 import OnlineIcon from '../../components/UI/onlineIcon';
+import getColor from '../../getColor';
 
 class UserProfile extends Component {
     constructor(props){
@@ -453,10 +454,18 @@ class UserProfile extends Component {
             );
         }
 
+        const colorScheme = getColor();
+        let backgroundColor = {backgroundColor: "#70c45c"}; 
+        let backgroundColorDarker = {backgroundColor: "#83dc61"}; 
+        if(colorScheme === "blue"){
+            backgroundColor = {backgroundColor: "hsl(210deg 66% 52%)"};
+            backgroundColorDarker = {backgroundColor: "hsl(244, 46%, 44%)"};
+        }
+
         return ( 
             <React.Fragment>
                 <div className={classes.flexContainer}>
-                    <div className={classes.mainContainer}>
+                    <div className={classes.mainContainer} style={backgroundColor}>
                         <div className={classes.imgContainer}>
                             {userImg}
                         </div>
@@ -479,7 +488,7 @@ class UserProfile extends Component {
                                             <h1>{this.state.userData.name+" "+this.state.userData.surname}</h1>
                                         </div>
                                         <h2 className={classes.textNameH2}>@{this.state.userData.nickname}</h2>
-                                        <div className={classes.bio}>
+                                        <div className={classes.bio} style={backgroundColorDarker}>
                                             <p>{this.state.editBio}</p>
                                         </div>
                                     </div>
@@ -523,20 +532,20 @@ class UserProfile extends Component {
                     </div>                    
                  </div>
                  <div className={classes.flexContainer}>
-                    <div className={classes.userProfileMenu}>
-                        <div className={classes.userProfileMenuItem} onClick={() => this.handleMenuSelect('Blogs')}>
+                    <div className={classes.userProfileMenu} style={backgroundColor}>
+                        <div className={classes.userProfileMenuItem} onClick={() => this.handleMenuSelect('Blogs')} style={{...backgroundColor, cursor: "pointer"}}>
                             <div className={this.state.blogsClass.join(" ")}></div>
                             <p>Blogs</p>
                         </div>
-                        <div className={classes.userProfileMenuItem} onClick={() => this.handleMenuSelect('Photos')}>
+                        <div className={classes.userProfileMenuItem} onClick={() => this.handleMenuSelect('Photos')} style={{...backgroundColor, cursor: "pointer"}}>
                             <div className={this.state.photosClass.join(" ")}></div>
                             <p>Photos</p>
                         </div>
-                        <div className={classes.userProfileMenuItem} onClick={() => this.handleMenuSelect('Friends')}>
+                        <div className={classes.userProfileMenuItem} onClick={() => this.handleMenuSelect('Friends')} style={{...backgroundColor, cursor: "pointer"}}>
                             <div className={this.state.friendsClass.join(" ")}></div>
                             <p>Friends</p>
                         </div>
-                        <div className={classes.userProfileMenuItem} onClick={() => this.handleMenuSelect('Badges')}>
+                        <div className={classes.userProfileMenuItem} onClick={() => this.handleMenuSelect('Badges')} style={{...backgroundColor, cursor: "pointer"}}>
                             <div className={this.state.badgesClass.join(" ")}></div>
                             <p>Badges</p>
                         </div>

@@ -4,6 +4,7 @@ import classes from './tabSelector.module.css';
 
 import BlogsTab from '../tabs/Blogs';
 import PhotosTab from '../tabs/PhotosTab';
+import getColor from '../../../getColor';
 // import FriendsList from '../../FriendsList/FriendsList';
 
 const TabSelector = (props) => {
@@ -24,8 +25,15 @@ const TabSelector = (props) => {
         default:
             break;
     }
+
+    const colorScheme = getColor();
+    let backgroundColor = {backgroundColor: "#70c45c"}; 
+    if(colorScheme === "blue"){
+        backgroundColor = {backgroundColor: "hsl(210deg 66% 52%)"};
+    }
+
     return (
-        <div className={classes.mainContainer}>
+        <div className={classes.mainContainer} style={backgroundColor}>
             {display}
         </div>
     );

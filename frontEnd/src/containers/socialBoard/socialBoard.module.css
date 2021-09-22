@@ -34,3 +34,11 @@
     width: 30%;
     margin: 0 auto;
 }
+
+.addPost{
+    transition: 0.3s ease-in-out;
+}
+
+.addPost:hover{
+    box-shadow: 10px 10px 29px -1px rgb(0 0 0 / 55%);
+}

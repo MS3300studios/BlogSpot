@@ -6,7 +6,6 @@
 }
 .mainContainer{
     z-index: 0;
-    background-color: #70c45c;
     width: 60%;
     margin-top: 40px;
     padding: 25px;
@@ -59,7 +58,7 @@
 }
 
 .bio{
-    background-color: #83dc61;
+    color: white;
     border-radius: 4px;
     width: 90%;
     height: 240px;
@@ -69,6 +68,7 @@
     overflow: hidden;
     position: relative;
     overflow-y: auto;
+    font-size: 20px;
 }
 
 .bio p{
@@ -172,7 +172,6 @@
 .userProfileMenu{
     width: 60%;
     height: 30px;
-    background-color: #70c45c;
     padding: 10px 25px 10px 25px;
     border-bottom: 3px solid black;
     display: flex;
@@ -185,12 +184,11 @@
     z-index: 9;
     margin-top: -15px;
     width: 150px;
-    background-color: #70c45c;
     display: flex;
     justify-content: center;
     vertical-align: middle;
     position: relative;
-    transition: background-color 0.6s ease-in;
+    transition: all 0.6s ease-in;
 }
 
 .userProfileMenuItem p{
@@ -209,7 +207,7 @@
 
 .active{
     border: black 3px solid;
-    border-bottom: #70c45c 3px solid;
+    border-bottom: hsl(210deg 66% 52%) 3px solid;
 }
 .center{
     display: flex;
