@@ -52,7 +52,7 @@
     width: 100px;
 }
 .content{
-    margin-bottom: 10px;
+    overflow-wrap: anywhere;    
 }
 .showcomments{
     margin-top: 30px;

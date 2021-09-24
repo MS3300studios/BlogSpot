@@ -100,15 +100,10 @@ class BlogsTab extends Component {
                                     <h1><Link to={"/post/?id="+el._id}>{el.title}</Link></h1>
                                 </div>
                                 <LikesCommentsNumbers objectId={el._id} userId={this.state.userId} comments objectIsBlog/>
-                            </div>
-        
-        
-                            <p className={classes.date}>{formattedCurrentDate(el.createdAt)}</p>
-        
+                            </div>        
+                            <p className={classes.date}>{formattedCurrentDate(el.createdAt)}</p>        
                             <div className={classes.content}>
-                                <p>
-                                    {el.content}
-                                </p>
+                                {el.content}
                             </div>
                             <ShowComments blogId={el._id}/>
                         </div>
