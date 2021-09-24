@@ -134,6 +134,9 @@ class Gate extends Component {
 
         return (
             <React.Fragment>
+                <div className={classes.gateWelcomeH1}>
+                    <h1>Welcome to Bragspot!</h1>
+                </div>
                 <div className={classes.flexCenter}>
                     <div className={classes.imgsContainer}>
                         <img src={manLeft} className={classes.manLeft} alt="failed to load" />
@@ -142,26 +145,29 @@ class Gate extends Component {
                         <img src={speechLeft} className={classes.speechLeft} alt="failed to load" />
                         <img src={BlogSpotLogo} className={classes.BlogSpotLogo} alt="failed to load" />
                     </div>
-                    <h1 className={classes.gateWelcomeH1}>Welcome to Bragspot!</h1>
                     <div className={classes.cardContainer_gate}>
                         <div className={classes.card}>
                             <h1>Your first time here?</h1>
-                            <Link to="/register"><Button>register</Button></Link>
+                            <div className={classes.buttonContainer}>
+                                <Link to="/register"><Button>register</Button></Link>
+                            </div>
                         </div>
                         <div className={classes.card}>
                             <h1>Visiting us again?</h1>
-                            <Link to="/login"><Button>login</Button></Link>
-                        </div>
-                        <div className={classes.googleBanner}>
-                            <GoogleLogin 
-                                clientId="663202900382-uprlid8mck8lndd4ur1d9dujnobt5q8h.apps.googleusercontent.com"
-                                buttonText="Sign in with Google"
-                                onSuccess={this.responseGoogle}
-                                onFailure={this.handleGoogleFailure}
-                                cookiePolicy={'single_host_origin'}
-                            />
+                            <div className={classes.buttonContainer}>
+                                <Link to="/login"><Button>login</Button></Link>
+                            </div>
                         </div>
                     </div>
+                </div>
+                <div className={classes.googleBanner}>
+                    <GoogleLogin 
+                        clientId="663202900382-uprlid8mck8lndd4ur1d9dujnobt5q8h.apps.googleusercontent.com"
+                        buttonText="Sign in with Google"
+                        onSuccess={this.responseGoogle}
+                        onFailure={this.handleGoogleFailure}
+                        cookiePolicy={'single_host_origin'}
+                    />
                 </div>
                 {flash}
             </React.Fragment>

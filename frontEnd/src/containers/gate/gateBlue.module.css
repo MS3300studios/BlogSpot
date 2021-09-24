@@ -1,43 +1,64 @@
-.cardContainer_gate{
-    border: none;
-    border-left: solid 3px black;
-    margin-top: 150px;
-    margin-left: 120px;
-    width: 1500px;
-    height: 700px;
-    display: grid;
+/* main container */
+.flexCenter{ 
+    width: 100%;
+    display: flex;
     justify-content: center;
-    align-content: center;
-    grid-template-columns: repeat(auto-fill,minmax(420px, 0fr));
+    margin-top: 10vh;
 }
+
+.cardContainer_gate{
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 70%;
+}
+
+.imgsContainer{
+    position: relative;
+    margin-left: 50px;
+    width: 40%;
+    height: 70vh;
+    z-index: 10;
+}
+
 .gateWelcomeH1{
-    position: absolute;
-    left: 1000px;
-    font-size: 40px;
+    margin-top: 20px;
+    margin-bottom: 0px;
     color: white;
-}
-.flexCenter{
     display: flex;
     justify-content: center;
 }
+
+.gateWelcomeH1 h1{
+    font-size: 40px;
+}
+
 .card{
     text-decoration: none;
     color: white;
     border-radius: 4px;
     background-color: hsl(210deg 66% 52%) !important;
-    width: 280px;
-    height: 350px;
+    width: 16vw;
+    height: 38vh;
     animation: in 1s;
     margin: 5px;
     padding: 50px;
     z-index: 20;
+    position: relative;
 }
 .card h1{
     font-size: 50px;
     font-family: Arial, Helvetica, sans-serif;
 }
+
+.buttonContainer{
+    position: absolute;
+    bottom: 25px;
+    left: 25px;
+}
+
 .card button{
-    margin-top: 105px;
     font-size: 25px;
 }
 
@@ -45,14 +66,6 @@
     height: 70px;
     overflow: hidden;
     text-overflow: ellipsis;
-}
-.imgsContainer{
-    position: relative;
-    margin-top: 140px;
-    margin-left: 50px;
-    width: 1050px;
-    height: 650px;
-    /* animation: 0.7s ease-out 0s 1 slideInFromBelow; */
 }
 .manLeft{
     top: 190px;
@@ -144,10 +157,6 @@
         opacity: 0.5;
         transform: rotate(360deg);
     }
-    /* 75%{    
-        opacity: 0.75;
-        transform: rotate(-180deg);
-    } */
     100%{
         opacity: 1;
         transform: rotate(0deg);
@@ -155,7 +164,7 @@
 }
 /* ========================== */
 button{
-    background-color: .01b1b1;
+    background-color: #01b1b1;
     color: white !important;
     border: none;
     border-radius: 4px !important;
@@ -167,19 +176,19 @@ button:hover{
 @keyframes tilt{
     0%{
         transform: rotate(0deg);
-        background: .01b1b1;
+        background: #01b1b1;
     }
     50%{
         transform: rotate(4deg);
-        background:  .007979;
+        background:  #007979;
     }
     75%{    
         transform: rotate(-4deg);
-        background: .017575;
+        background: #017575;
     }
     100%{
         transform: rotate(0deg);
-        background: .01b1b1;
+        background: #01b1b1;
     }
 }
 
@@ -205,10 +214,10 @@ button:hover{
 }
 
 .googleBanner{
-    margin-top: 10vh;
-    width: 10vw;
+    width: 90%;
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
+    z-index: 20;
 }
 
 .googleBanner button{
@@ -228,33 +237,57 @@ button:hover{
     max-height: 48px;
 }
 
-@media screen and (max-width: 1603px){
-    .gateWelcomeH1{
+@media screen and (max-width: 1503px){
+    /* .gateWelcomeH1{
         display: none;
+    } */
+
+    .card h1{
+        font-size: 25px;
     }
-    .cardContainer_gate{
+
+    /* .cardContainer_gate{
         border: none;
-    }
+    } */
 }
 
-@media screen and (max-width: 576px){
-    .gateWelcomeH1{
+@media screen and (max-width: 1300px){
+    .imgsContainer{
         display: none;
     }
-    .cardContainer_gate{
-        border: none;
-        margin-left: 0px;
-    }
+    /* .card{
+        margin: ;
+    } */
+}
+
+@media screen and (max-width: 800px){
     .card{
         width: 180px;
-        height: 380px;
+        height: 200px;
         margin: 5px;
         padding: 30px;
         margin-top: 20px;
-        margin-left: 70px;
+    }
+    
+    .card h1{
+        font-size: 20px;
     }
     
     .card button{
+        margin-top: 15px;
+    }
+}
+
+@media screen and (max-width: 500px){
+    .gateWelcomeH1 h1{
+        font-size: 30px;
+    }
+
+    .card{
+        width: 140px;
+        height: 180px;
+        margin: 20px;
+        padding: 22px;
         margin-top: 15px;
     }
 }

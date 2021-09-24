@@ -112,7 +112,7 @@ class App extends Component {
 
     return ( 
       <React.Fragment>
-        <div style={{...background, width: "100%", height: "100%", position: "fixed", top: "0", left: "0"}}>
+        <div style={{...background, width: "100%", height: "100%", position: "fixed", top: "0", left: "0", overflow: "auto"}}>
           <CookiesBanner show={this.state.cookiesBannerOpened} />
           <Switch>
             {content}

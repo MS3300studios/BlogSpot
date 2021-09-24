@@ -3,8 +3,8 @@
     border-left: solid 3px black;
     margin-top: 150px;
     margin-left: 120px;
-    width: 1500px;
-    height: 700px;
+    width: 100vw;
+    height: 78vh;
     display: grid;
     justify-content: center;
     align-content: center;
@@ -25,8 +25,8 @@
     background-color: #82ca66;
     border-radius: 4px;
     background-color: #82ca66 !important;
-    width: 280px;
-    height: 350px;
+    width: 16vw;
+    height: 50vh;
     animation: in 1s;
     margin: 5px;
     padding: 50px;
