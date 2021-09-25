@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+
 import classes from './FriendsList.module.css';
 
 import { BiMessageDetail } from 'react-icons/bi';
@@ -78,9 +80,9 @@ const FriendsListItem = (props) => {
                         }
                     </div>
                     <div className={classes.namesContainer}>
-                        <a href={"/user/profile/?id="+props.id} key={props.index} className={classes.containerLink}>
+                        <Link to={"/user/profile/?id="+props.id} key={props.index} className={classes.containerLink}>
                             <h1>{props.name} {props.surname}</h1>
-                        </a>
+                        </Link>
                         <p>@{props.nickname}</p>
                     </div>
                 </div>

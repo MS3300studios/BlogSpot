@@ -4,9 +4,9 @@ import getUserData from '../../../getUserData';
 import getToken from '../../../getToken';
 import getColor from '../../../getColor';
 
-import { withRouter } from 'react-router';
+import { withRouter, Redirect } from 'react-router';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
 
 import { IoIosArrowDown } from 'react-icons/io';
@@ -374,9 +374,9 @@ class Conversation extends Component {
             conversationName = (
                 <div className={classes.conversationName}>
                     <OnlineIcon online={data.friendId}/>
-                    <a href={`/user/profile/?id=${data.friendId}`} style={{color: "unset", textDecoration: "none"}}>
+                    <Link to={`/user/profile/?id=${data.friendId}`} style={{color: "unset", textDecoration: "none"}}>
                         <h1>{data.friendName}</h1>
-                    </a>
+                    </Link>
                 </div>
             )
         }

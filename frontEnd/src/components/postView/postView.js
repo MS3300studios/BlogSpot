@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Redirect, withRouter } from 'react-router-dom';
+import { Redirect, withRouter, Link } from 'react-router-dom';
 import axios from 'axios';
 
 import Comments from '../../containers/userProfile/tabs/comments/comments';
@@ -131,9 +131,9 @@ class PostView extends Component {
                             <p className={classes.postTitle}>{this.state.post.title}</p>
                             <div className={classes.userDataContainer}>
                                 <img className={classes.userPhoto} src={this.state.authorData.photo} alt="users face"/>
-                                <a href={"/user/profile/?id="+this.state.authorData._id} className={classes.userProfileLink}>
+                                <Link to={"/user/profile/?id="+this.state.authorData._id} className={classes.userProfileLink}>
                                     <p className={classes.postAuthor}>@{this.state.authorData.nickname}</p>
-                                </a>
+                                </Link>
                             </div>
                             <p>started at: {formattedCurrentDate(this.state.post.createdAt)}</p>
                             <p>latest edit: {formattedCurrentDate(this.state.post.updatedAt)}</p>

@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import { Link } from 'react-router-dom';
+
 import photoCommentClasses from './photoComment.module.css';
 
 import CommentOptions from '../../userProfile/tabs/comments/optionsContainer/CommentOptions';
@@ -23,7 +25,7 @@ class PhotoComment extends Component {
                             <UserPhoto userId={this.props.comment.authorId} small hideOnlineIcon/>
                         </div>
                         <p className={photoCommentClasses.nickName}>
-                            <a href={"/user/profile/?id="+this.props.comment.authorId}>@{this.props.comment.authorNick}</a>
+                            <Link to={"/user/profile/?id="+this.props.comment.authorId}>@{this.props.comment.authorNick}</Link>
                         </p>
                         <p className={photoCommentClasses.Date}>{formattedCurrentDate(this.props.comment.createdAt)}</p>
                         {

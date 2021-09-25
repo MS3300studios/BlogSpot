@@ -76,7 +76,7 @@ class DropdownItem extends Component {
             notification = (
                 <React.Fragment>
                     <div className={classes.notificationLink}>
-                        <a href={"/user/profile/?id="+this.state.user._id} className={classes.notificationLink}>
+                        <a href={"/#/user/profile/?id="+this.state.user._id} className={classes.notificationLink}>
                             <img src={this.state.user.photo} alt="this person wants to be your friend" className={classes.friendRequestPhoto}/>
                             <div><p className={classes.bold}>{`@${this.state.user.nickname}`}</p> wants to be your friend</div> 
                         </a>
@@ -121,9 +121,9 @@ class DropdownItem extends Component {
                             )
                         }
                     </div>
-                    <a href={"/user/profile/?id="+this.state.user._id} style={{color: 'unset', textDecoration: "none"}}>
+                    <Link to={"/user/profile/?id="+this.state.user._id} style={{color: 'unset', textDecoration: "none"}}>
                         <img src={this.state.user.photo} alt="friend" className={classes.friendRequestPhoto}/>
-                    </a>
+                    </Link>
                     <Link to={link} className={classes.notificationLink} replace>
                         <div><p className={classes.bold}>{`@${this.state.user.nickname}`}</p>{this.props.data.actionType} {grammar} your {this.props.data.objectType}</div> 
                     </Link>

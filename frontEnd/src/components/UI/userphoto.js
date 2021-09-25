@@ -33,37 +33,9 @@ class UserPhoto extends Component {
             loading: false,
             conversations: []
         }
-
-        // this.socket = io('http://localhost:3001');
     }
 
     componentDidMount() {
-        /*if(this.props.dropdown){ //only in the menu do we want to signal that the user is online
-            this.socket.emit("online", {userId: this.state.userData._id});
-
-            axios({
-                method: 'get',
-                url: `http://localhost:3001/conversations`,
-                headers: {'Authorization': this.state.token},
-            })
-            .then((res)=>{
-                if(res.status === 200){
-                    this.setState({conversations: res.data.conversations})
-                    res.data.conversations.forEach(conv => {
-                        this.socket.emit('join', {name: this.state.userData.name, conversationId: conv._id });
-                    })
-                }
-            })
-            .catch(error => {
-                console.log(error);
-            })
-
-        }
-        
-        this.socket.on('message', message => {
-            console.log(message)
-        })*/
-
         this.setState({loading: true});
         let getData = new Promise((resolve, reject) => {
             axios({
@@ -83,12 +55,6 @@ class UserPhoto extends Component {
         })
     }
 
-    // componentWillUnmount(){
-    //     this.state.conversations.forEach(conv => {
-    //         this.socket.emit('leaveConversation', {conversationId: conv._id});
-    //     })
-    // }
-
     render() { 
         let userPhotoClasses = classes.userPhoto;
         if(this.props.small){
@@ -104,7 +70,7 @@ class UserPhoto extends Component {
                 <div className={classes.dropdownContent}>
                     <h1 className={classes.dropdownUsername}>{this.state.nickname}</h1>
                     <hr />
-                    <a href={"/user/profile/?id="+this.state.userData._id} className={classes.myProfileLink}><p>My Profile</p></a>
+                    <Link to={"/user/profile/?id="+this.state.userData._id} className={classes.myProfileLink}><p>My Profile</p></Link>
                     <Link to="/user/activity" className={classes.myProfileLink}><p>My activity</p></Link>
                     <Link to="/settings" className={classes.myProfileLink}><p>Settings</p></Link>
                     <p onClick={() => this.setState({logOut: true})}>Log Out</p>

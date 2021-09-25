@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import { Link } from 'react-router-dom';
 
 import classes from './comments.module.css';
 
@@ -51,12 +52,14 @@ const Comment = (props) => {
             <div className={classes.commentContainer}>
                 <div className={classes.topBar}>   
                     <div className={classes.userPhotoDiv}>
-                        <a href={"/user/profile/?id="+props.comment.author}>
+                        <Link to={"/user/profile/?id="+props.comment.author}>
                             <UserPhoto userId={props.comment.author} small hideOnlineIcon/>
-                        </a>
+                        </Link>
                     </div>
                     <p className={props.authorClassArr}>
-                        <a href={"/user/profile/?id="+props.comment.author}>@{props.comment.authorNick}</a>
+                        <Link to={"/user/profile/?id="+props.comment.author}>
+                            @{props.comment.authorNick}
+                        </Link>
                     </p>
                     <p>{formattedCurrentDate(props.comment.createdAt)}</p>
                     <div className={classes.positionNumberContainer}>

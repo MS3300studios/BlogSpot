@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import { Link } from 'react-router-dom';
 
 import classes from './photo.module.css';
 import {BsArrowsAngleExpand} from 'react-icons/bs';
@@ -44,9 +45,9 @@ const Photo = (props) => {
                         loading ? <Spinner /> : (
                             <>
                                 <img src={userData.photo} alt="user's face" className={classes.userPhoto} />
-                                <h2><a href={"/user/profile/?id="+userData._id}
+                                <h2><Link to={"/user/profile/?id="+userData._id}
                                     style={{color: "white", textDecoration: "none"}}
-                                >@{nickname}</a></h2>
+                                >@{nickname}</Link></h2>
                             </>
                         )
                     }

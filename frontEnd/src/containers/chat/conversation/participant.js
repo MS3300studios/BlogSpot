@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { Link } from 'react-router-dom';
+
 import UserPhoto from '../../../components/UI/userphoto';
 import getColor from '../../../getColor';
 
@@ -16,12 +18,12 @@ if(colorScheme === "blue"){
 
 const participant = (props) => {
     return (
-        <a href={"/user/profile/?id="+props.el.userId} className={classes.participantLink}>
+        <Link to={"/user/profile/?id="+props.el.userId} className={classes.participantLink}>
             <div className={colorClasses.participantListItem}>
                 <UserPhoto userId={props.el.userId} />
                 <p>{props.el.name}</p>
             </div>
-        </a>
+        </Link>
     );
 }
  
