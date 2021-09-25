@@ -68,10 +68,29 @@ class UserProfile extends Component {
         this.sendEditedBio.bind(this);
         this.blockUser.bind(this);
         this.removeBlock.bind(this);
+        this.getDataInit.bind(this);
     }
 
     componentDidMount () {
-        if(this.state.userLogged === false){
+        this.getDataInit();
+    }
+
+    componentDidUpdate(prevProps, prevState){
+        if(this.props.location.search !== prevProps.location.search){
+            window.location.reload();
+        }
+    }
+
+    getDataInit = () => {
+        let queryParams = new URLSearchParams(this.props.location.search);
+        let userId = queryParams.get('id');         
+        //determining wether the profile of the user is the user currently logged
+        let userLogged = false;
+        if(userId === this.state.userData._id){
+            userLogged = true;
+        }
+
+        if(userLogged === false){
             axios({
                 method: 'get',
                 url: `http://localhost:3001/users/getUser/${this.state.userId}`,

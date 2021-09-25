@@ -155,7 +155,7 @@ class PhotoComments extends Component {
                                                 <UserPhoto userId={comment.authorId} small hideOnlineIcon/>
                                             </div>
                                             <p className={photoCommentClasses.nickName}>
-                                                <Link href={"/user/profile/?id="+comment.authorId}>@{comment.authorNick}</Link>
+                                                <Link to={"/user/profile/?id="+comment.authorId}>@{comment.authorNick}</Link>
                                             </p>
                                             <p className={photoCommentClasses.Date}>{comment.self ? "just now" : formattedCurrentDate(comment.createdAt)}</p>
                                             {
@@ -199,10 +199,3 @@ class PhotoComments extends Component {
 }
  
 export default PhotoComments;
-
-
-/*editContent => this.setState(prevState => {
-    let comments = prevState.comments;
-    comments[index].content = editContent
-    return ({...prevState, comments: comments})
-})*/
