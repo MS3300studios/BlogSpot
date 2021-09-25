@@ -243,7 +243,6 @@ class UserProfile extends Component {
                     data: { friendId: this.state.userId }
                 })
                 .then((res)=>{
-                    console.log(res.status);
                     if(res.status === 200){
                         this.setState({isFriend: false});
                         this.flash(`${this.state.userData.name} ${this.state.userData.surname} removed from friends`);

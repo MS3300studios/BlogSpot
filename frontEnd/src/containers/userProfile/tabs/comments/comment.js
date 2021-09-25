@@ -19,7 +19,6 @@ const Comment = (props) => {
     let flashHandle = (message, comment) => {
         setflashMessage(message);
         if(message === "comment deleted"){
-            console.log(comment)
             props.afterDelete(comment, false); //false means that adding is false
         }
         
