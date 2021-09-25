@@ -8,6 +8,7 @@ import getToken from '../../../getToken';
 import classes from './Blogs.module.css';
 import ShowComments from './comments/showComments';
 import { Link } from 'react-router-dom';
+import getColor from '../../../getColor';
 
 class BlogsTab extends Component {
     constructor(props){
@@ -87,13 +88,19 @@ class BlogsTab extends Component {
     }
 
     render() {
+        let blogBackgroundColor = {backgroundColor: "#83dc61"};
+        const colorScheme = getColor();
+        if(colorScheme === "blue"){
+            blogBackgroundColor = {backgroundColor: "hsl(213deg 86% 67%)"};
+        }
+
         let blogs = null;
         if(this.state.blogs.length === 0 ) blogs = <h1>No blogs were added yet!</h1>
         else{
             blogs = this.state.blogs.map((el, index)=>{
                 return (
                     <div className={classes.center} key={index}>
-                        <div key={index} className={classes.smallBlogContainer}>
+                        <div key={index} className={classes.smallBlogContainer} style={blogBackgroundColor}>
                             <div className={classes.upperSegment}>
         
                                 <div className={classes.h1Container}>

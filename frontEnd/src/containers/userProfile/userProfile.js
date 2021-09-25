@@ -456,10 +456,12 @@ class UserProfile extends Component {
 
         const colorScheme = getColor();
         let backgroundColor = {backgroundColor: "#70c45c"}; 
-        let backgroundColorDarker = {backgroundColor: "#83dc61"}; 
+        let backgroundColorDarker = {backgroundColor: "#83dc61"};
+        let editYourProfileBgColor = {backgroundColor: "teal"}; 
         if(colorScheme === "blue"){
             backgroundColor = {backgroundColor: "hsl(210deg 66% 52%)"};
             backgroundColorDarker = {backgroundColor: "hsl(244, 46%, 44%)"};
+            editYourProfileBgColor = {backgroundColor: "rgb(67, 61, 164)"};
         }
 
         return ( 
@@ -501,7 +503,7 @@ class UserProfile extends Component {
                                 this.state.userLogged ? (
                                     <div className={classes.editYourProfileContainer}>
                                         <Link to="/editProfile">
-                                            <button className={classes.editYourProfile}>Edit your profile</button>
+                                            <button className={classes.editYourProfile} style={editYourProfileBgColor}>Edit your profile</button>
                                         </Link>
                                     </div>
                                 ) : (
