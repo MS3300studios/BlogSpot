@@ -14,6 +14,7 @@ const Comment = (props) => {
     const [flashMessage, setflashMessage] = useState("");
     const [flashNotClosed, setflashNotClosed] = useState(true);
     const [editing, setediting] = useState(false)
+    const [commentContent, setcommentContent] = useState(props.comment.content);
 
     let flashHandle = (message, comment) => {
         setflashMessage(message);
@@ -79,8 +80,14 @@ const Comment = (props) => {
                             commentId={props.comment._id} 
                             flashProp={flashHandle} 
                             commentContent={props.comment.content} 
-                            cancelEdit={()=>setediting(false)} />
-                    ) : <p className={classes.commentContent}>{props.comment.content}</p>
+                            afterEdit={(newContent)=>{
+                                setcommentContent(newContent);
+                                setediting(false); //close editing form
+                            }} 
+                            cancelEdit={()=>setediting(false)}
+                            initialValue={commentContent}
+                        />
+                    ) : <p className={classes.commentContent}>{commentContent}</p>
                 }
             </div>
             {flash}

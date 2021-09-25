@@ -34,6 +34,7 @@ const EditCommentForm = (props) => {
             })
         }
         else{
+            console.log('hahahaha')
             axios({
                 method: 'post',
                 url: `http://localhost:3001/comments/edit/${props.commentId}`,
@@ -42,7 +43,7 @@ const EditCommentForm = (props) => {
             })
             .then((res)=>{
                 if(res.status===200){
-                    props.cancelEdit(); //simply closes editing form
+                    props.afterEdit(editContent);
                     props.flashProp("comment was edited");
                     return;
                 }
