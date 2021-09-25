@@ -156,7 +156,7 @@ class Notifications extends Component {
         
         return (
             <div className={classes.dropdown}>
-                <div className={classes.center}><IoNotifications size="2em" color="hsl(57deg 100% 50%)"/>
+                <div className={classes.center}><IoNotifications size="2em" color="#0a42a4"/>
                     {this.state.notificationsCount<1 ? null : (
                         <div className={classes.notificationNumber}>{this.state.notificationsCount}</div>
                     )}

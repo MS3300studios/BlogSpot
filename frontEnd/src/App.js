@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { HashRouter, Route, Switch } from 'react-router-dom';
 
 import termsAndConditions from './termsAndConditions';
 import './App.css';
@@ -12,7 +12,6 @@ import PostView from './components/postView/postView';
 import Gate from './containers/gate/gate';
 import Login from './containers/gate/login/login';
 import Registration from './containers/gate/registration/registration';
-import URLnotFound from './components/URLnotfound/404';
 import CookiesBanner from './components/UI/cookiesBanner';
 
 import PhotoForm from './containers/PhotoForm/photoForm';
@@ -98,7 +97,7 @@ class App extends Component {
             <Route path="/register" exact component={Registration} />
             <Route path="/login" exact component={Login} />
             <Route path="/termsAndConditions" exact component={termsAndConditions} />
-            <Route path="/" render={ () => <Gate /> } />
+            <Route path="/" component={Gate} />
           </Switch>
         </React.Fragment>
       )
@@ -111,16 +110,13 @@ class App extends Component {
     }
 
     return ( 
-      <React.Fragment>
+      <HashRouter>
         <div style={{...background, width: "100%", height: "100%", position: "fixed", top: "0", left: "0", overflow: "auto"}}>
           <CookiesBanner show={this.state.cookiesBannerOpened} />
-          <Switch>
             {content}
             {gate}
-            <Route component={URLnotFound} />
-          </Switch>
         </div>
-      </React.Fragment>
+      </HashRouter>
     );
   }
 }

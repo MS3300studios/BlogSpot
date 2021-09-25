@@ -87,7 +87,7 @@ class Menu extends Component {
                                 this.setState({peoplePressed: false, redirect: false});
                             }} 
                         >                            
-                            {this.state.peoplePressed ? <BsPeople size="2em" color="hsl(57deg 100% 50%)"/> : <BsPeopleFill size="2em" color="hsl(57deg 100% 50%)"/>}
+                            {this.state.peoplePressed ? <BsPeople size="2em" color="#0a42a4"/> : <BsPeopleFill size="2em" color="#0a42a4"/>}
                         </div>
                         <div
                             className={classes.friendsIcon}
@@ -104,14 +104,14 @@ class Menu extends Component {
                                         {this.state.messageCount<1 ? null : (
                                             <div className={classes.notificationNumber}>{this.state.messageCount}</div>
                                         )}
-                                        <IoChatbubblesOutline size="2em" color="hsl(57deg 100% 50%)"/>
+                                        <IoChatbubblesOutline size="2em" color="#0a42a4"/>
                                     </>
                                 ) : (
                                     <>
                                         {this.state.messageCount<1 ? null : (
                                             <div className={classes.notificationNumber}>{this.state.messageCount}</div>
                                         )}
-                                        <IoChatbubbles size="2em" color="hsl(57deg 100% 50%)"/>
+                                        <IoChatbubbles size="2em" color="#0a42a4"/>
                                     </>
                                 )
                             }   

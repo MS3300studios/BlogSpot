@@ -20,9 +20,6 @@ if(colorScheme === "blue"){
 
 const Post = (props) => {
     let userLoggedData = getUserData();
-
-    console.log(colorClasses)
-
     const [loading, setloading] = useState(props.socialBoard);
     const [userData, setuserData] = useState({});
     const [nickname, setnickname] = useState(userLoggedData.nickname)

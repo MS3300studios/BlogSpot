@@ -7,7 +7,7 @@ function termsAndConditions (){
     return (
         <div className="terms_and_conditions_centerContainer">
             <h1>Terms and Conditions</h1>
-            <Link to="/register" className="terms_and_conditions_Link">
+            <Link to="/#/register" className="terms_and_conditions_Link">
                 <Button>Back to registration</Button>
             </Link>
             <ul>
