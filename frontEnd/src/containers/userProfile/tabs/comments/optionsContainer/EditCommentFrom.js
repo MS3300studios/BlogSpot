@@ -6,6 +6,7 @@ import classes from './editCommentForm.module.css';
 import getToken from '../../../../../getToken';
 
 const EditCommentForm = (props) => {
+    console.log(props.initialValue)
     const [editContent, seteditContent] = useState(props.initialValue);
     let token = getToken();
 
@@ -55,7 +56,7 @@ const EditCommentForm = (props) => {
     return (
         <div className={classes.container}>
             <input onChange={(e)=>seteditContent(e.target.value)} value={editContent}/>
-            <Button btnType={"Continue"} clicked={submitHandler} >Submit</Button>
+            <Button btnType={"Continue"} clicked={submitHandler}>Submit</Button>
             <Button btnType={"Cancel"} clicked={props.cancelEdit}>Cancel</Button>
         </div>
     );
