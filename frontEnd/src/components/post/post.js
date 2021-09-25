@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from 'react';
+import axios from 'axios';
 import { Link } from 'react-router-dom';
 
 import Button from '../UI/button';
 import getUserData from '../../getUserData';
-import axios from 'axios';
+import LikesCommentsNumbers from '../UI/likesCommentsNumbers';
 
 import getToken from '../../getToken';
 import getColor from '../../getColor';
@@ -98,12 +99,27 @@ const Post = (props) => {
                         </div>
                         <p>(see the full blog to read further)</p>
                         {
-                            (props.author===tempCompareVal && !props.socialBoard) ? (
-                                <div className={classes.btnWrapper}>
-                                    <Button clicked={()=>props.edit(props.id)}>Edit</Button>
-                                    <Button clicked={()=>props.delete(props.id)}>Delete</Button>
-                                </div> 
-                            ) : null
+                            props.socialBoard ? (
+                                <div className={classes.LikesCommentsNumbersPositionContainer}>
+                                    <LikesCommentsNumbers 
+                                        objectId={props.id} 
+                                        userId={userData._id} 
+                                        comments 
+                                        objectIsBlog
+                                    />
+                                </div>
+                            ) : (
+                                <>
+                                    {
+                                        props.author===tempCompareVal ? (
+                                            <div className={classes.btnWrapper}>
+                                                <Button clicked={()=>props.edit(props.id)}>Edit</Button>
+                                                <Button clicked={()=>props.delete(props.id)}>Delete</Button>
+                                            </div>
+                                        ) : null
+                                    }                                
+                                </>
+                            )
                         }
                     </div>
                 )

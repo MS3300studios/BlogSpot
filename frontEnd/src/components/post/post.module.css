@@ -39,6 +39,12 @@
     overflow: hidden;
 }
 
+.LikesCommentsNumbersPositionContainer{
+    position: absolute;
+    left: 150px;
+    bottom: 60px;
+}
+
 /* SKELETON */
 
 .skel_heading{

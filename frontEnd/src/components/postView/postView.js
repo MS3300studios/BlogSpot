@@ -138,7 +138,12 @@ class PostView extends Component {
                             <p>started at: {formattedCurrentDate(this.state.post.createdAt)}</p>
                             <p>latest edit: {formattedCurrentDate(this.state.post.updatedAt)}</p>
                             <div className={classes.positionSocialData}>
-                                <LikesCommentsNumbers objectId={this.state.postId} userId={this.state.authorData._id} comments objectIsBlog />
+                                <LikesCommentsNumbers 
+                                    objectId={this.state.postId} 
+                                    userId={this.state.authorData._id} 
+                                    comments 
+                                    objectIsBlog 
+                                />
                             </div>
                             <div className={classes.btnsContainer}>
                                 <Button clicked={this.displayPostForm}>Edit</Button>
