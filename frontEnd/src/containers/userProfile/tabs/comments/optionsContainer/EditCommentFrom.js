@@ -6,7 +6,6 @@ import classes from './editCommentForm.module.css';
 import getToken from '../../../../../getToken';
 
 const EditCommentForm = (props) => {
-    console.log(props.initialValue)
     const [editContent, seteditContent] = useState(props.initialValue);
     let token = getToken();
 
@@ -34,7 +33,6 @@ const EditCommentForm = (props) => {
             })
         }
         else{
-            console.log('hahahaha')
             axios({
                 method: 'post',
                 url: `http://localhost:3001/comments/edit/${props.commentId}`,

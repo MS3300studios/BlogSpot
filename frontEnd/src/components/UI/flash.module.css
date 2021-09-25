@@ -1,11 +1,8 @@
 .Flash{
-    background-color: lightgoldenrodyellow;
     position: fixed;
     bottom: 200px;
     left: 43px;
     min-width: 200px;
-    /* height: 100px; */
-    border: 5px solid #6bb94c;
     border-radius: 10px;
     padding: 10px;
     z-index: 2001;
