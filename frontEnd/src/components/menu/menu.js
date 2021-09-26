@@ -11,6 +11,7 @@ import getUserData from '../../getUserData';
 import axios from 'axios';
 import getToken from '../../getToken';
 import getColor from '../../getColor';
+import Button from '../UI/button';
 
 import classes from './menu.module.css';
 import greenClasses from './greenClasses.module.css';
@@ -31,7 +32,8 @@ class Menu extends Component {
             peoplePressed: false,
             redirect: false,
             conversations: [],
-            messageCount: 0
+            messageCount: 0,
+            redirectReportBug: false
         }
         
         this.data = getUserData();
@@ -76,6 +78,10 @@ class Menu extends Component {
         return (
             <nav className={colorClasses.Menu}>
                 <Logo />
+                <h1 style={{color: "white", marginRight: "5px"}}>BragSpot v1.0 (community testing)</h1>
+                <Button clicked={()=>this.setState({redirectReportBug: true})}>
+                    Zgłoś błąd
+                </Button>
                 <div className={classes.iconContainer}>
                     <div className={classes.otherIcons}>
                         <div
@@ -122,6 +128,7 @@ class Menu extends Component {
                 <UserPhoto userId={this.data._id} dropdown/>
                 {this.state.redirect ? <Redirect to="/user/friends/" /> : null}
                 {this.state.redirectChat ? <Redirect to="/chat/" /> : null}
+                {this.state.redirectReportBug ? <Redirect to="/reportingBug" /> : null }
             </nav>
         );
     }

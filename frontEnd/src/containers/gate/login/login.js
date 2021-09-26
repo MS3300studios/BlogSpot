@@ -67,9 +67,6 @@ class Login extends Component {
             this.state.email!==null && this.state.password!==null){
             this.setState({readyForSubmission: true});
          }
-        // else{
-        //     this.setState({readyForSubmission: false});
-        // }
     }
 
     loginHandler = (e) => {     
@@ -78,7 +75,6 @@ class Login extends Component {
             email: this.state.email,
             password: this.state.password
         }
-        // console.log(loginData);
         axios.post('http://localhost:3001/users/login', loginData)
             .then(res => {
                 if(res.status===200){
@@ -143,7 +139,7 @@ class Login extends Component {
                         let userDataJSON = JSON.stringify(userData)                    
                         sessionStorage.setItem('userData', userDataJSON);
                     }
-                    window.location.replace("http://localhost:3000/");
+                    window.location.replace("https://bragspot.herokuapp.com/");
                 }
                 else{
                     this.flash("An error ocurred, try again");

@@ -82,6 +82,7 @@ class App extends Component {
               <Route path="/user/profile/" component={UserProfile} />
               <Route path="/user/friends/" component={FriendsList} />
               <Route path="/termsAndConditions" exact component={termsAndConditions} />
+              <Route path="/reportingBug" exact component={termsAndConditions} />
               <Route path="/" render={()=><SocialBoard />} />
             </Switch>
           </ScrollListener>
