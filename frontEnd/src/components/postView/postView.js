@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Redirect, withRouter, Link } from 'react-router-dom';
 import axios from 'axios';
+import { MAIN_URI } from '../../config';
+
 
 import Comments from '../../containers/userProfile/tabs/comments/comments';
 import Spinner from '../UI/spinner';
@@ -69,7 +71,7 @@ class PostView extends Component {
     getBlogOnInit = (postId) => {
         axios({
             method: 'get',
-            url: `http://localhost:3001/blogs/one/${postId}`,
+            url: `${MAIN_URI}/blogs/one/${postId}`,
             headers: {'Authorization': this.state.token},
         }).then((res) => {
             const post = {
@@ -100,7 +102,7 @@ class PostView extends Component {
         this.setState({deletePending: true});
         axios({
             method: 'delete',
-            url: `http://localhost:3001/blogs/delete/${id}`,
+            url: `${MAIN_URI}/blogs/delete/${id}`,
             headers: {'Authorization': this.state.token},
         })
         .catch(error => {

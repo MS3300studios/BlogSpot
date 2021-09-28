@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Button from '../../components/UI/button';
 import PhotoView from '../photoView/photoView';
+import { MAIN_URI } from '../../config';
 
 import classes from './photosList.module.css';
 import Spinner from '../../components/UI/spinner';
@@ -42,7 +43,7 @@ class PhotosList extends Component {
     getPhotos = (limit) => {
         axios({
             method: 'post',
-            url: `http://localhost:3001/photos/user/limited`,
+            url: `${MAIN_URI}/photos/user/limited`,
             headers: {'Authorization': this.state.token},
             data: {
                 limit: limit,

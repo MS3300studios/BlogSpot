@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import getColor from '../../getColor';
+import { MAIN_URI } from '../../config';
 
 import greenStyles from './gateGreen.module.css';
 import blueStyles from './gateBlue.module.css';
@@ -50,10 +51,10 @@ class Gate extends Component {
     }
 
     responseGoogle = (response) => {
-        axios.post('http://localhost:3001/users/findByGoogleId', {googleId: `google${response.profileObj.googleId}`}).then(resp => {
+        axios.post(`${MAIN_URI}/users/findByGoogleId`, {googleId: `google${response.profileObj.googleId}`}).then(resp => {
             if(resp.data.user){
                 //log in user
-                axios.post('http://localhost:3001/users/login', {email: response.profileObj.email, password: `google${response.profileObj.googleId}`})
+                axios.post(`${MAIN_URI}/users/login`, {email: response.profileObj.email, password: `google${response.profileObj.googleId}`})
                 .then(res => {
                     if(res.status===200){
                         localStorage.setItem('token', res.data.token);
@@ -83,7 +84,7 @@ class Gate extends Component {
                     photoString: response.profileObj.imageUrl
                 }
         
-                axios.post('http://localhost:3001/users/register', userData)
+                axios.post(`${MAIN_URI}/users/register`, userData)
                 .then((res)=>{
                     if(Object.keys(res.data).includes("error")){
                         let taken = Object.keys(res.data.error.keyValue)[0]

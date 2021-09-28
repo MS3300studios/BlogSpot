@@ -4,6 +4,7 @@ import Spinner from '../../../../components/UI/spinner';
 import axios from 'axios';
 import getToken from '../../../../getToken';
 import getUserData from '../../../../getUserData';
+import { MAIN_URI } from '../../../../config';
 
 class ConversationContainer extends Component {
     constructor(props) {
@@ -26,7 +27,7 @@ class ConversationContainer extends Component {
     componentDidMount(){
         axios({
             method: 'post',
-            url: `http://localhost:3001/conversations/checkPrivate`,
+            url: `${MAIN_URI}/conversations/checkPrivate`,
             headers: {'Authorization': this.state.token},
             data: {
                 userId: this.state.userData._id,

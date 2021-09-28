@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { MAIN_URI } from '../../config';
 
 import classes from './userProfile.module.css';
 import Flash from '../../components/UI/flash';
@@ -93,7 +94,7 @@ class UserProfile extends Component {
         if(userLogged === false){
             axios({
                 method: 'get',
-                url: `http://localhost:3001/users/getUser/${this.state.userId}`,
+                url: `${MAIN_URI}/users/getUser/${this.state.userId}`,
                 headers: {'Authorization': this.state.token},
             }).then((res) => {
                 const user = {
@@ -114,7 +115,7 @@ class UserProfile extends Component {
         let getData = new Promise((resolve, reject) => {
             axios({
                 method: 'get',
-                url: `http://localhost:3001/users/getUserPhoto/${this.state.userId}`,
+                url: `${MAIN_URI}/users/getUserPhoto/${this.state.userId}`,
                 headers: {'Authorization': this.state.token},
             }).then((res) => {
                 resolve(res.data.photo);
@@ -130,7 +131,7 @@ class UserProfile extends Component {
         //check if user is friend
         axios({
             method: 'post',
-            url: `http://localhost:3001/checkFriendStatus`,
+            url: `${MAIN_URI}/checkFriendStatus`,
             headers: {'Authorization': this.state.token},
             data: {
                 friendId: this.state.userId
@@ -140,7 +141,7 @@ class UserProfile extends Component {
             if(res.data.isFriend === false){
                 axios({
                     method: 'post',
-                    url: `http://localhost:3001/checkFriendRequest`,
+                    url: `${MAIN_URI}/checkFriendRequest`,
                     headers: {'Authorization': this.state.token},
                     data: {friendId: this.state.userId}
                 })
@@ -167,7 +168,7 @@ class UserProfile extends Component {
     sendEditedBio = () => {
         axios({
             method: 'post',
-            url: `http://localhost:3001/users/edit/bio`,
+            url: `${MAIN_URI}/users/edit/bio`,
             headers: {'Authorization': this.state.token},
             data: {newBio: this.state.editBio}
         })
@@ -238,7 +239,7 @@ class UserProfile extends Component {
             case "removeFriend":
                 axios({
                     method: 'post',
-                    url: `http://localhost:3001/deleteFriend`,
+                    url: `${MAIN_URI}/deleteFriend`,
                     headers: {'Authorization': this.state.token},
                     data: { friendId: this.state.userId }
                 })
@@ -255,7 +256,7 @@ class UserProfile extends Component {
             case "removeRequest":
                 axios({
                     method: 'post',
-                    url: `http://localhost:3001/revokeRequest`,
+                    url: `${MAIN_URI}/revokeRequest`,
                     headers: {'Authorization': this.state.token},
                     data: { friendId: this.state.userId }
                 })
@@ -273,7 +274,7 @@ class UserProfile extends Component {
             case "addRequest":
                 axios({
                     method: 'post',
-                    url: `http://localhost:3001/createRequest`,
+                    url: `${MAIN_URI}/createRequest`,
                     headers: {'Authorization': this.state.token},
                     data: { friendId: this.state.userId }
                 })
@@ -291,7 +292,7 @@ class UserProfile extends Component {
             case "acceptFriendRequest":
                 axios({
                     method: 'post',
-                    url: `http://localhost:3001/anwserRequest`,
+                    url: `${MAIN_URI}/anwserRequest`,
                     headers: {'Authorization': this.state.token},
                     data: { accept: true, friendId: this.state.userId }
                 })
@@ -309,7 +310,7 @@ class UserProfile extends Component {
                 console.log('decline friend request');
                 axios({
                     method: 'post',
-                    url: `http://localhost:3001/anwserRequest`,
+                    url: `${MAIN_URI}/anwserRequest`,
                     headers: {'Authorization': this.state.token},
                     data: { accept: false }
                 })
@@ -393,7 +394,7 @@ class UserProfile extends Component {
     removeBlock = () => {
         axios({
             method: 'post',
-            url: `http://localhost:3001/blocking/removeBlock`,
+            url: `${MAIN_URI}/blocking/removeBlock`,
             headers: {'Authorization': this.state.token},
             data: {blockedUserId: this.state.userId}
         })
@@ -412,7 +413,7 @@ class UserProfile extends Component {
     blockUser = (userId) => {
         axios({
             method: 'post',
-            url: `http://localhost:3001/blocking/addBlock`,
+            url: `${MAIN_URI}/blocking/addBlock`,
             headers: {'Authorization': this.state.token},
             data: {userToBeBlockedId: userId}
         })

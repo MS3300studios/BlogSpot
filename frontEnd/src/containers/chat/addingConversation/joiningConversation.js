@@ -6,6 +6,8 @@ import classes2 from './addingConversation.module.css';
 import classes3 from '../../FriendsList/addUser/addUser.module.css';
 import green from './addingGreen.module.css';
 import blue from './addingBlue.module.css';
+import { MAIN_URI } from '../../../config';
+
 
 import {AiOutlineSearch} from 'react-icons/ai';
 import { Redirect } from 'react-router-dom';
@@ -86,7 +88,7 @@ class JoiningConversation extends Component {
                 if(this.state.filterIn === "name"){
                     axios({
                         method: 'post',
-                        url: `http://localhost:3001/conversations/search`,
+                        url: `${MAIN_URI}/conversations/search`,
                         headers: {'Authorization': this.state.token},
                         data: {
                             searchString: this.state.filterBy
@@ -112,7 +114,7 @@ class JoiningConversation extends Component {
                 else if(this.state.filterIn === "id"){
                     axios({
                         method: 'get',
-                        url: `http://localhost:3001/conversation/${this.state.filterBy}`,
+                        url: `${MAIN_URI}/conversation/${this.state.filterBy}`,
                         headers: {'Authorization': this.state.token},
                     })
                     .then((res)=>{
@@ -139,7 +141,7 @@ class JoiningConversation extends Component {
     join = (id) => {
         axios({
             method: 'post',
-            url: `http://localhost:3001/conversation/join/${id}`,
+            url: `${MAIN_URI}/conversation/join/${id}`,
             headers: {'Authorization': this.state.token},
             data: { name: this.state.userData.name }
         })

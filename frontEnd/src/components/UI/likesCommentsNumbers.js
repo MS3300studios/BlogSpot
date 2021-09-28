@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 
 import axios from 'axios';
+import { MAIN_URI } from '../../config';
+
 
 import { FaCommentAlt } from 'react-icons/fa';
 import Like from '../UI/like';
@@ -45,7 +47,7 @@ class LikesCommentsNumbers extends Component {
     getCommentsCount = () => {
         axios({
             method: 'post',
-            url: "http://localhost:3001/comments/getNumber",
+            url: `${MAIN_URI}/comments/getNumber`,
             headers: {'Authorization': this.state.token},
             data: {
                 blogId: this.props.objectId
@@ -64,8 +66,8 @@ class LikesCommentsNumbers extends Component {
 
     getLikesCount = (dislike) => {
         if(this.props.objectIsBlog){
-            let url = "http://localhost:3001/blogLike/count";
-            if(dislike) url = "http://localhost:3001/blogDislike/count";    
+            let url = `${MAIN_URI}/blogLike/count`;
+            if(dislike) url = `${MAIN_URI}/blogDislike/count`;    
             axios({
                 method: 'post',
                 url: url,
@@ -87,8 +89,8 @@ class LikesCommentsNumbers extends Component {
             })
         }
         else{
-            let url = "http://localhost:3001/commentLike/count";
-            if(dislike) url = "http://localhost:3001/commentDislike/count";
+            let url = `${MAIN_URI}/commentLike/count`;
+            if(dislike) url = `${MAIN_URI}/commentDislike/count`;
     
             axios({
                 method: 'post',
@@ -120,7 +122,7 @@ class LikesCommentsNumbers extends Component {
 
         axios({
             method: 'post',
-            url: `http://localhost:3001/checkIfLikedAlready`,
+            url: `${MAIN_URI}/checkIfLikedAlready`,
             headers: {'Authorization': this.state.token},
             data: data
         })
@@ -144,8 +146,8 @@ class LikesCommentsNumbers extends Component {
 
     sendAction = (like) => {
         if(this.props.objectIsBlog){
-            let url = "http://localhost:3001/blogLike/upvote";
-            if(!like) url = "http://localhost:3001/blogLike/downvote";    
+            let url = `${MAIN_URI}/blogLike/upvote`;
+            if(!like) url = `${MAIN_URI}/blogLike/downvote`;    
             axios({
                 method: 'post',
                 url: url,
@@ -217,8 +219,8 @@ class LikesCommentsNumbers extends Component {
             })
         }
         else{
-            let url = "http://localhost:3001/commentLike/upvote";
-            if(!like) url = "http://localhost:3001/commentLike/downvote";
+            let url = `${MAIN_URI}/commentLike/upvote`;
+            if(!like) url = `${MAIN_URI}/commentLike/downvote`;
     
             axios({
                 method: 'post',

@@ -1,6 +1,7 @@
 import axios from 'axios'
 import React, { useCallback, useEffect, useState } from 'react'
 import getToken from '../../../getToken'
+import { MAIN_URI } from '../../../config';
 
 import Spinner from '../../../components/UI/spinner';
 import Conversation from './conversation';
@@ -28,7 +29,7 @@ const BlockedUserPrevent = (props) => {
         const data = getOtherUserNameAndId();
         axios({
             method: 'get',
-            url: `http://localhost:3001/blocking/checkBlock/${data.friendId}`,
+            url: `${MAIN_URI}/blocking/checkBlock/${data.friendId}`,
             headers: {'Authorization': token}
         })
         .then((res)=>{

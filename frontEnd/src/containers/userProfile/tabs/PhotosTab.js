@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { MAIN_URI } from '../../../config';
 
 import classes from './PhotosTab.module.css';
 import {BsArrowsAngleExpand} from 'react-icons/bs';
@@ -41,7 +42,7 @@ class PhotosTab extends Component {
         this.setState(newSt);
         axios({
             method: 'post',
-            url: `http://localhost:3001/photos/user/limited`,
+            url: `${MAIN_URI}/photos/user/limited`,
             headers: {'Authorization': this.state.token},
             data: {
                 limit: limit,

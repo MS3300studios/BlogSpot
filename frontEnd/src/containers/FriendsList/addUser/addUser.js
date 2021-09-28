@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { MAIN_URI } from '../../../config';
 
 import Spinner from '../../../components/UI/spinner';
 import SearchBar from '../../../components/UI/searchBar';
@@ -52,7 +53,7 @@ class AddUser extends Component {
     getRandomUsers = () => {
         axios({
             method: 'post',
-            url: `http://localhost:3001/users/getRandomUsers`,
+            url: `${MAIN_URI}/users/getRandomUsers`,
             headers: {'Authorization': this.state.token},
             data: {
                 skip: this.state.skip
@@ -79,7 +80,7 @@ class AddUser extends Component {
             this.setState({loading: true});
             axios({
                 method: 'post',
-                url: `http://localhost:3001/users/find`,
+                url: `${MAIN_URI}/users/find`,
                 headers: {'Authorization': this.state.token},
                 data: {
                     field: this.state.filterIn,

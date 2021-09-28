@@ -9,6 +9,8 @@ import Spinner from '../../../components/UI/spinner';
 import SearchBar from '../../../components/UI/searchBar';
 import ConversationListItem from './conversationListItem';
 import getUserData from '../../../getUserData';
+import { MAIN_URI } from '../../../config';
+
 
 class ChatMenu extends Component {
     constructor(props) {
@@ -34,7 +36,7 @@ class ChatMenu extends Component {
     componentDidMount(){
         axios({
             method: 'get',
-            url: `http://localhost:3001/conversations`,
+            url: `${MAIN_URI}/conversations`,
             headers: {'Authorization': this.state.token},
         })
         .then((res)=>{

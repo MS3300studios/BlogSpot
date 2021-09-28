@@ -17,7 +17,7 @@ const DeleteAccount = () => {
     //     const token = getToken();
     //     axios({
     //         method: 'delete',
-    //         url: `http://localhost:3001/users/delete`,
+    //         url: `${MAIN_URI}/users/delete`,
     //         headers: {'Authorization': token}
     //     })
     //     .then((res)=>{

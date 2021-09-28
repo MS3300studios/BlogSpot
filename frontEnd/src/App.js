@@ -26,6 +26,7 @@ import SinglePhotoHOC from './containers/photoView/singlePhotoHOC/singlePhotoHOC
 import Settings from './components/settings/settings';
 import AddPost from './components/AddPost/AddPost';
 import getColor from './getColor';
+import Reporting from './components/reporting/reporting';
 
 class App extends Component {
   constructor(props){
@@ -82,7 +83,7 @@ class App extends Component {
               <Route path="/user/profile/" component={UserProfile} />
               <Route path="/user/friends/" component={FriendsList} />
               <Route path="/termsAndConditions" exact component={termsAndConditions} />
-              <Route path="/reportingBug" exact component={termsAndConditions} />
+              <Route path="/reportingBug" exact component={Reporting} />
               <Route path="/" render={()=><SocialBoard />} />
             </Switch>
           </ScrollListener>

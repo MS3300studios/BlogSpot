@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { Link } from 'react-router-dom';
+import { MAIN_URI } from '../../config';
 
 import classes from './photo.module.css';
 import {BsArrowsAngleExpand} from 'react-icons/bs';
@@ -19,7 +20,7 @@ const Photo = (props) => {
         if(props.socialBoard){
             axios({
                 method: 'get',
-                url: `http://localhost:3001/users/getUser/${props.photo.authorId}`,
+                url: `${MAIN_URI}/users/getUser/${props.photo.authorId}`,
                 headers: {'Authorization': token}
             })
             .then((res)=>{

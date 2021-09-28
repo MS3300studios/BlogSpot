@@ -5,6 +5,7 @@ import axios from 'axios';
 import Spinner from '../../../components/UI/spinner';
 import { Link } from 'react-router-dom';
 import { FaRegTrashAlt } from 'react-icons/fa';
+import { MAIN_URI } from '../../../config';
 
 class DropdownItem extends Component {
     constructor(props) {
@@ -38,7 +39,7 @@ class DropdownItem extends Component {
     getuserData = (userId) => {
         axios({
             method: 'get',
-            url: `http://localhost:3001/users/getUser/${userId}`,
+            url: `${MAIN_URI}/users/getUser/${userId}`,
             headers: {'Authorization': this.state.token},
         })
         .then((res)=>{
@@ -53,7 +54,7 @@ class DropdownItem extends Component {
         if(this.state.wasSeen === false){
             axios({
                 method: 'get',
-                url: `http://localhost:3001/notifications/setSeen/${this.props.data._id}`,
+                url: `${MAIN_URI}/notifications/setSeen/${this.props.data._id}`,
                 headers: {'Authorization': this.state.token}
             })
             .then((res)=>{

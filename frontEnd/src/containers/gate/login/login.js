@@ -4,6 +4,7 @@ import axios from 'axios';
 import Button from '../../../components/UI/button';
 import Flash from '../../../components/UI/flash';
 import getColor from '../../../getColor';
+import { MAIN_URI } from '../../../config';
 
 import classes from './login.module.css';
 import greenClasses from './greenClasses.module.css';
@@ -24,7 +25,7 @@ class Login extends Component {
             readyForSubmission: false,
             keepLoggedIn: false,
             flashMessage: "",
-            flashNotClosed: true
+            flashNotClosed: true,
         }
 
         this.loginHandler.bind(this);
@@ -75,7 +76,7 @@ class Login extends Component {
             email: this.state.email,
             password: this.state.password
         }
-        axios.post('http://localhost:3001/users/login', loginData)
+        axios.post(`${MAIN_URI}/users/login`, loginData)
             .then(res => {
                 if(res.status===200){
                     if(this.state.keepLoggedIn){
@@ -122,7 +123,7 @@ class Login extends Component {
     }
 
     autoLogin = (loginData) => {
-        axios.post('http://localhost:3001/users/login', loginData)
+        axios.post(`${MAIN_URI}/users/login`, loginData)
             .then(res => {
                 if(res.status===200){
                     if(this.state.keepLoggedIn){

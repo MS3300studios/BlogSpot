@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { MAIN_URI } from '../../../config';
 
 import PhotoView from "../photoView";
 import Spinner from '../../../components/UI/spinner';
@@ -20,7 +21,7 @@ const SinglePhotoHigherOrderComponent = (props) => {
 
         axios({
             method: 'get',
-            url: `http://localhost:3001/photos/getone/${photoId}`,
+            url: `${MAIN_URI}/photos/getone/${photoId}`,
             headers: {'Authorization': token}
         })
         .then((res)=>{

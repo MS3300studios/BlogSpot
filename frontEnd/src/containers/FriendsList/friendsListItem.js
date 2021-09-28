@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { MAIN_URI } from '../../config';
 
 import classes from './FriendsList.module.css';
 
@@ -43,7 +44,7 @@ const FriendsListItem = (props) => {
         const token = getToken();
         axios({
             method: 'get',
-            url: `http://localhost:3001/blocking/checkBlock/${props.id}`,
+            url: `${MAIN_URI}/blocking/checkBlock/${props.id}`,
             headers: {'Authorization': token}
         })
         .then((res)=>{

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import classes from './userphoto.module.css';
 import {Link} from 'react-router-dom';
+import { MAIN_URI } from '../../config.js';
 
 import axios from 'axios';
 import logout from '../../logout';
@@ -40,7 +41,7 @@ class UserPhoto extends Component {
         let getData = new Promise((resolve, reject) => {
             axios({
                 method: 'get',
-                url: `http://localhost:3001/users/getUserPhoto/${this.state.userId}`,
+                url: `${MAIN_URI}/users/getUserPhoto/${this.state.userId}`,
                 headers: {'Authorization': this.state.token},
             }).then((res) => {
                 resolve(res.data.photo);

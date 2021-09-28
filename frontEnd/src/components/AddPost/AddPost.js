@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-
 import classes from './AddPost.module.css';
 
 import axios from 'axios';
@@ -7,8 +6,10 @@ import getToken from '../../getToken';
 import Button from '../UI/button';
 import Flash from '../UI/flash';
 import { Redirect } from 'react-router';
+import { MAIN_URI } from '../../config';
 
-const AddPost = (props) => {
+
+const AddPost = () => {
     const [Title, setTitle] = useState("");
     const [Content, setContent] = useState("");
     const [redirectToMyActivity, setredirectToMyActivity] = useState(false);
@@ -40,7 +41,7 @@ const AddPost = (props) => {
             const token = getToken();
             axios({
                 method: 'post',
-                url: `http://localhost:3001/blogs/new`,
+                url: `${MAIN_URI}/blogs/new`,
                 headers: {'Authorization': token},
                 data: {
                     title: Title, //data is equivalent to req.body inside the server

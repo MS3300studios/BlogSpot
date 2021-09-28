@@ -1,0 +1,16 @@
+.center{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.reportingContainer textarea{
+    width: 30vw;
+    height: 30vh;
+    transition: 0.3s ease-out;
+}
+
+.reportingContainer textarea:focus{
+    outline: none;
+}

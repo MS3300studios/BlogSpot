@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { MAIN_URI } from '../../../../config';
 
 import classes from './comments.module.css';
 import Button from '../../../../components/UI/button';
@@ -60,7 +61,7 @@ class Comments extends Component {
 
         axios({
             method: 'post',
-            url: `http://localhost:3001/comments/limited`,
+            url: `${MAIN_URI}/comments/limited`,
             headers: {'Authorization': this.state.token},
             data: {
                 limit: limit,

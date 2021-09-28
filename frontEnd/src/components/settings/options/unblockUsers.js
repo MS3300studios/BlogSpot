@@ -15,7 +15,7 @@ const UnblockUsers = () => {
         () => {
             axios({
                 method: 'post',
-                url: `http://localhost:3001/blocking/blockedUsers`,
+                url: `${MAIN_URI}/blocking/blockedUsers`,
                 headers: {'Authorization': token},
                 data: {
                     getFullData: true
@@ -59,7 +59,7 @@ const UnblockUsers = () => {
     let unblock = useCallback((userId) => {
         axios({
             method: 'post',
-            url: `http://localhost:3001/blocking/removeBlock`,
+            url: `${MAIN_URI}/blocking/removeBlock`,
             headers: {'Authorization': token},
             data: {blockedUserId: userId}
         })
@@ -77,7 +77,7 @@ const UnblockUsers = () => {
     /*let getBlockedUsers = () => {
         axios({
             method: 'post',
-            url: `http://localhost:3001/blocking/blockedUsers`,
+            url: `${MAIN_URI}/blocking/blockedUsers`,
             headers: {'Authorization': token},
             data: {
                 getFullData: true
@@ -133,6 +133,7 @@ export default UnblockUsers; */
 
 
 import React, { Component } from 'react';
+import { MAIN_URI } from '../../../config';
 
 import axios from 'axios';
 
@@ -162,7 +163,7 @@ class UnblockUsers extends Component {
     unblock = (userId) => {
         axios({
             method: 'post',
-            url: `http://localhost:3001/blocking/removeBlock`,
+            url: `${MAIN_URI}/blocking/removeBlock`,
             headers: {'Authorization': this.token},
             data: {blockedUserId: userId}
         })
@@ -180,7 +181,7 @@ class UnblockUsers extends Component {
     getBlockedUsers = () => {
         axios({
             method: 'post',
-            url: `http://localhost:3001/blocking/blockedUsers`,
+            url: `${MAIN_URI}/blocking/blockedUsers`,
             headers: {'Authorization': this.token},
             data: {
                 getFullData: true

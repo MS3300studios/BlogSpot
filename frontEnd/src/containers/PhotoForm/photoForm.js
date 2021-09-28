@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
+import { MAIN_URI } from '../../config';
 
 import getToken from '../../getToken';
 import getUserData from '../../getUserData'
@@ -96,7 +97,7 @@ class PhotoForm extends Component {
             this.setState({sending: true});
             axios({
                 method: 'post',
-                url: `http://localhost:3001/photo/new`,
+                url: `${MAIN_URI}/photo/new`,
                 headers: {'Authorization': this.state.token},
                 data: {
                     description: this.state.description,

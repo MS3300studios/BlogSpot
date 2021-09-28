@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import axios from 'axios'; 
+import { MAIN_URI } from '../../../config';
 
 import ReCAPTCHA from "react-google-recaptcha";
 import Flash from '../../../components/UI/flash';
@@ -157,7 +158,7 @@ class Registration extends Component {
                     photoString: this.state.photo
                 }
                 
-                axios.post('http://localhost:3001/users/register', userData)
+                axios.post(`${MAIN_URI}/users/register`, userData)
                         .then((res)=>{
                             if(Object.keys(res.data).includes("error")){
                                 let taken = Object.keys(res.data.error.keyValue)[0]

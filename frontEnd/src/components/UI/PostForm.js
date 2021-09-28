@@ -1,6 +1,8 @@
 import React from 'react';
 import {useState} from 'react';
 import axios from 'axios';
+import { MAIN_URI } from '../../config';
+
 
 import getToken from '../../getToken';
 import imageX from '../../assets/gfx/x.png';
@@ -28,7 +30,7 @@ const PostForm = (props) => {
         let blogId = props.editId;
         axios({
             method: 'post',
-            url: `http://localhost:3001/blogs/edit/${blogId}`,
+            url: `${MAIN_URI}/blogs/edit/${blogId}`,
             params: {},
             headers: {'Authorization': token},
             data: {

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import classes from './notifications.module.css';
+import { MAIN_URI } from '../../config';
 
 import { FiRefreshCcw } from 'react-icons/fi';
 import { FaRegTrashAlt } from 'react-icons/fa';
@@ -54,7 +55,7 @@ class Notifications extends Component {
                 //axios call to delete all notifications (incl friend requests)
                 axios({
                     method: 'get',
-                    url: `http://localhost:3001/notifications/delete/all`,
+                    url: `${MAIN_URI}/notifications/delete/all`,
                     headers: {'Authorization': this.state.token}
                 })
                 .catch(error => {
@@ -73,7 +74,7 @@ class Notifications extends Component {
                 }, 600); //wait 600ms for the closing animation to finish
                 axios({
                     method: 'post',
-                    url: `http://localhost:3001/revokeRequestById`,
+                    url: `${MAIN_URI}/revokeRequestById`,
                     headers: {'Authorization': this.state.token},
                     data: {friendReqId: data.friendReqId}
                 })
@@ -100,7 +101,7 @@ class Notifications extends Component {
     
                 axios({
                     method: 'post',
-                    url: `http://localhost:3001/notifications/delete/one`,
+                    url: `${MAIN_URI}/notifications/delete/one`,
                     headers: {'Authorization': this.state.token},
                     data: {data}
                 })
@@ -121,7 +122,7 @@ class Notifications extends Component {
         this.setState({refreshing: true});
         axios({
             method: 'get',
-            url: `http://localhost:3001/notifications`,
+            url: `${MAIN_URI}/notifications`,
             headers: {'Authorization': this.state.token},
         })
         .then((res)=>{
@@ -211,7 +212,7 @@ this.setState(prevState => {
 /*
     axios({
         method: 'post',
-        url: `http://localhost:3001/notifications/delete/one`,
+        url: `${MAIN_URI}/notifications/delete/one`,
         headers: {'Authorization': this.state.token},
         data: {
             data: data

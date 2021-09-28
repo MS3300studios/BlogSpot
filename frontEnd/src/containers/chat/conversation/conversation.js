@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { MAIN_URI } from '../../../config';
 
 import getUserData from '../../../getUserData';
 import getToken from '../../../getToken';
@@ -117,7 +118,7 @@ class Conversation extends Component {
     sendLastReadMessage = (content, conversationId) => {
         axios({
             method: 'post',
-            url: `http://localhost:3001/lastReadMessage/create`,
+            url: `${MAIN_URI}/lastReadMessage/create`,
             headers: {'Authorization': this.state.token},
             data: {
                 conversationId: conversationId,
@@ -141,7 +142,7 @@ class Conversation extends Component {
         else{
             axios({
                 method: 'post',
-                url: `http://localhost:3001/messages`,
+                url: `${MAIN_URI}/messages`,
                 headers: {'Authorization': this.state.token},
                 data: {skip: this.state.skip, conversationId: this.props.conversation._id}
             })
@@ -178,7 +179,7 @@ class Conversation extends Component {
     deleteConversation = () => {
         axios({
             method: 'get',
-            url: `http://localhost:3001/conversation/delete/${this.props.conversation._id}`,
+            url: `${MAIN_URI}/conversation/delete/${this.props.conversation._id}`,
             headers: {'Authorization': this.state.token}
         })
         .then((res)=>{
@@ -201,7 +202,7 @@ class Conversation extends Component {
 
         axios({
             method: 'post',
-            url: `http://localhost:3001/blocking/addBlock`,
+            url: `${MAIN_URI}/blocking/addBlock`,
             headers: {'Authorization': this.state.token},
             data: {userToBeBlockedId: friendId}
         })
@@ -243,7 +244,7 @@ class Conversation extends Component {
         if(this.state.newConversationName !== ""){
             axios({
                 method: 'post',
-                url: `http://localhost:3001/conversation/edit/name/${this.props.conversation._id}`,
+                url: `${MAIN_URI}/conversation/edit/name/${this.props.conversation._id}`,
                 headers: {'Authorization': this.state.token},
                 data: {
                     newName: this.state.newConversationName
@@ -267,7 +268,7 @@ class Conversation extends Component {
     leaveConversation = () => {
         axios({
             method: 'get',
-            url: `http://localhost:3001/conversation/leave/${this.props.conversation._id}`,
+            url: `${MAIN_URI}/conversation/leave/${this.props.conversation._id}`,
             headers: {"Authorization": this.state.token}
         })
         .then((res)=>{

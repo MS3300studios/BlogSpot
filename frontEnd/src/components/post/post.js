@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { MAIN_URI } from '../../config';
 
 import Button from '../UI/button';
 import getUserData from '../../getUserData';
@@ -30,7 +31,7 @@ const Post = (props) => {
         if(props.socialBoard && (props.loading !== true)){
             axios({
                 method: 'get',
-                url: `http://localhost:3001/users/getUser/${props.author}`,
+                url: `${MAIN_URI}/users/getUser/${props.author}`,
                 headers: {'Authorization': token}
             })
             .then((res)=>{

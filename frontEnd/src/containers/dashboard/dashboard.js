@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import formattedCurrentDate from '../../formattedCurrentDate';
+import { MAIN_URI } from '../../config';
+
 
 import Post from '../../components/post/post';
 import addPostImage from '../../assets/gfx/add.png';
@@ -104,7 +106,7 @@ class Dashboard extends Component {
         let dbId = post.dbId;
         axios({
             method: 'delete',
-            url: `http://localhost:3001/blogs/delete/${dbId}`,
+            url: `${MAIN_URI}/blogs/delete/${dbId}`,
             headers: {'Authorization': this.state.token},
         })
         this.getPosts();
@@ -113,7 +115,7 @@ class Dashboard extends Component {
     getPosts = () => {
         axios({
             method: 'get',
-            url: 'http://localhost:3001/myBlogs',
+            url: `${MAIN_URI}/myBlogs`,
             headers: {'Authorization': this.state.token}
         })
         .then(res => {
@@ -202,7 +204,7 @@ class Dashboard extends Component {
 
             axios({
                 method: 'post',
-                url: 'http://localhost:3001/blogs/new',
+                url: `${MAIN_URI}/blogs/new`,
                 headers: {'Authorization': this.state.token},
                 data: content
             })

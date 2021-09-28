@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import classes from '../userProfile.module.css';
 import getToken from '../../../getToken';
+import { MAIN_URI } from '../../../config';
 
 import { BsFillPersonCheckFill } from 'react-icons/bs';
 import { BsFillPersonDashFill } from 'react-icons/bs';
@@ -32,7 +33,7 @@ class FriendButton extends Component {
         if(this.props.isFriend === false){
             axios({
                 method: 'post',
-                url: `http://localhost:3001/checkFriendRequest`,
+                url: `${MAIN_URI}/checkFriendRequest`,
                 headers: {'Authorization': this.state.token},
                 data: {friendId: this.props.friendId}
             })

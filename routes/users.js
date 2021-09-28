@@ -64,6 +64,7 @@ router.post('/users/getRandomUsers', auth, (req, res) => {
 })
 
 router.post('/users/register', (req, res) => {
+    console.log('getting register')
     if(req.body.nickname.length > 21){
         res.json({
             error: "the nickname is too long"

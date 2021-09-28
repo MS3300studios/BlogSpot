@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Redirect, withRouter } from 'react-router-dom';
+import { Link, Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { MAIN_URI } from '../../config';
 
 import { BsPeople, BsPeopleFill } from 'react-icons/bs';
 import { IoChatbubbles, IoChatbubblesOutline } from 'react-icons/io5';
@@ -33,7 +34,6 @@ class Menu extends Component {
             redirect: false,
             conversations: [],
             messageCount: 0,
-            redirectReportBug: false
         }
         
         this.data = getUserData();
@@ -45,7 +45,7 @@ class Menu extends Component {
 
         axios({
             method: 'get',
-            url: `http://localhost:3001/conversations`,
+            url: `${MAIN_URI}/conversations`,
             headers: {'Authorization': this.token},
         })
         .then((res)=>{
@@ -79,9 +79,9 @@ class Menu extends Component {
             <nav className={colorClasses.Menu}>
                 <Logo />
                 <h1 style={{color: "white", marginRight: "5px"}}>BragSpot v1.0 (community testing)</h1>
-                <Button clicked={()=>this.setState({redirectReportBug: true})}>
+                <Link to="/reportingBug">
                     Zgłoś błąd
-                </Button>
+                </Link>
                 <div className={classes.iconContainer}>
                     <div className={classes.otherIcons}>
                         <div
@@ -128,7 +128,6 @@ class Menu extends Component {
                 <UserPhoto userId={this.data._id} dropdown/>
                 {this.state.redirect ? <Redirect to="/user/friends/" /> : null}
                 {this.state.redirectChat ? <Redirect to="/chat/" /> : null}
-                {this.state.redirectReportBug ? <Redirect to="/reportingBug" /> : null }
             </nav>
         );
     }

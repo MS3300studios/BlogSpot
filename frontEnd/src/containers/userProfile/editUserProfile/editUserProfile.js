@@ -5,6 +5,7 @@ import getUserData from '../../../getUserData';
 import axios from 'axios';
 import DropZone from '../../PhotoForm/dropZone';
 import Flash from '../../../components/UI/flash';
+import { MAIN_URI } from '../../../config';
 
 import classes from './editUserProfile.module.css';
 import Spinner from '../../../components/UI/spinner';
@@ -43,7 +44,7 @@ class EditUserProfile extends Component {
     componentDidMount(){
         axios({
             method: 'get',
-            url: `http://localhost:3001/users/getUserPhoto/${this.state.userData._id}`,
+            url: `${MAIN_URI}/users/getUserPhoto/${this.state.userData._id}`,
             headers: {'Authorization': this.state.token}
         })
         .then((res)=>{
@@ -142,7 +143,7 @@ class EditUserProfile extends Component {
             ){  
                 axios({
                     method: 'post',
-                    url: `http://localhost:3001/users/edit/all`,
+                    url: `${MAIN_URI}/users/edit/all`,
                     headers: {'Authorization': this.state.token},
                     data: {
                         wasChanged: whatWasChanged,

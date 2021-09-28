@@ -6,6 +6,8 @@ import Flash from './flash';
 import { RiSendPlaneFill, RiSendPlaneLine } from 'react-icons/ri' 
 import getUserData from '../../getUserData';
 import UserPhoto from '../UI/userphoto';
+import { MAIN_URI } from '../../config';
+
 
 class AddCommentForm extends Component {
     constructor(props){
@@ -55,7 +57,7 @@ class AddCommentForm extends Component {
         };
         axios({
             method: 'post',
-            url: `http://localhost:3001/notifications/create`,
+            url: `${MAIN_URI}/notifications/create`,
             headers: {'Authorization': this.state.token},
             data: data
         })
@@ -72,7 +74,7 @@ class AddCommentForm extends Component {
 
         axios({
             method: 'post',
-            url: `http://localhost:3001/comments/new`,
+            url: `${MAIN_URI}/comments/new`,
             headers: {'Authorization': this.state.token},
             data: {
                 content: content,

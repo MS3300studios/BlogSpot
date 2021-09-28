@@ -4,6 +4,7 @@ import Spinner from '../../../components/UI/spinner';
 import getToken from '../../../getToken';
 import getUserData from '../../../getUserData';
 import { Link } from 'react-router-dom';
+import { MAIN_URI } from '../../../config';
 
 import formattedCurrentDate from '../../../formattedCurrentDate';
 import { RiSendPlaneFill, RiSendPlaneLine } from 'react-icons/ri' 
@@ -38,7 +39,7 @@ class PhotoComments extends Component {
     getComments = () => {
         axios({
             method: 'get',
-            url: `http://localhost:3001/photo/getComments/${this.props.photoId}`,
+            url: `${MAIN_URI}/photo/getComments/${this.props.photoId}`,
             headers: {'Authorization': this.token}
         })
         .then((res)=>{
@@ -65,7 +66,7 @@ class PhotoComments extends Component {
         this.setState({comments: newComments, newCommentContent: ""}); 
         axios({
             method: 'post',
-            url: `http://localhost:3001/photo/addComment`,
+            url: `${MAIN_URI}/photo/addComment`,
             headers: {'Authorization': this.token},
             data: {
                 photoId: this.props.photoId,
@@ -91,7 +92,7 @@ class PhotoComments extends Component {
         this.setState({comments: newComments});
         axios({
             method: 'post',
-            url: `http://localhost:3001/photo/comment/delete`,
+            url: `${MAIN_URI}/photo/comment/delete`,
             headers: {'Authorization': this.token},
             data: {
                 photoId: this.props.photoId,

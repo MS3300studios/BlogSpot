@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { AiOutlineSearch } from 'react-icons/ai';
+import { MAIN_URI } from '../../config';
 
 import getToken from '../../getToken';
 import getColor from '../../getColor';
@@ -37,7 +38,7 @@ class SocialBoard extends Component {
             flashNotClosed: true,
             limitSearchedPhotos: 0,
             limitSearchedPosts: 0,
-            showAddingItems: false
+            showAddingItems: false,
         }
         this.getElements.bind(this);
         this.openBigPhoto.bind(this);
@@ -74,7 +75,7 @@ class SocialBoard extends Component {
         else{
             axios({
                 method: 'post',
-                url: `http://localhost:3001/socialBoard/search`,
+                url: `${MAIN_URI}/socialBoard/search`,
                 headers: {'Authorization': this.state.token},
                 data: {
                     filterIn: this.state.filterIn,
@@ -92,12 +93,12 @@ class SocialBoard extends Component {
         }
     }
 
-    getElements = (limitphotos, limitposts, join) => {
+    getElements = (limitphotos, limitposts, join) => {        
         if(join === true) this.setState({loadingMore: true});
 
         axios({
             method: 'post',
-            url: `http://localhost:3001/socialBoard/init`,
+            url: `${MAIN_URI}/socialBoard/init`,
             headers: {'Authorization': this.state.token},
             data: {
                 skipPhotos: limitphotos,

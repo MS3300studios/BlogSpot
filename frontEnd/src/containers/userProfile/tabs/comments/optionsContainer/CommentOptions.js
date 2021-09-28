@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import getToken from '../../../../../getToken';
+import { MAIN_URI } from '../../../../../config';
 
 import { BsThreeDots } from 'react-icons/bs';
 import classes from '../comments.module.css';
@@ -31,7 +32,7 @@ class CommentOptions extends Component {
             else{
                 axios({
                     method: 'delete',
-                    url: `http://localhost:3001/comments/delete/${this.props.commentId}`,
+                    url: `${MAIN_URI}/comments/delete/${this.props.commentId}`,
                     headers: {'Authorization': this.state.token}
                 })
                 .then((res)=>{

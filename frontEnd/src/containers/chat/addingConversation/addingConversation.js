@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 import FriendsListItem from '../../FriendsList/friendsListItem';
+import { MAIN_URI } from '../../../config';
+
 
 import axios from 'axios';
 import getUserData from '../../../getUserData';
@@ -62,7 +64,7 @@ class AddingConversation extends Component {
         let id = this.state.userData._id;
         axios({
             method: 'get',
-            url: `http://localhost:3001/friends/all/${id}`,
+            url: `${MAIN_URI}/friends/all/${id}`,
             headers: {'Authorization': this.state.token},
         })
         .then((res)=>{
@@ -95,7 +97,7 @@ class AddingConversation extends Component {
             if(this.state.selectedFriends.length >= 1){
                 axios({
                     method: 'post',
-                    url: `http://localhost:3001/conversation/edit/participants/add/${this.props.conversationId}`,
+                    url: `${MAIN_URI}/conversation/edit/participants/add/${this.props.conversationId}`,
                     headers: {'Authorization': this.state.token},
                     data: {
                         participantsToAdd: this.state.selectedFriends
@@ -128,7 +130,7 @@ class AddingConversation extends Component {
     
                 axios({
                     method: 'post',
-                    url: `http://localhost:3001/conversations/new`,
+                    url: `${MAIN_URI}/conversations/new`,
                     headers: {'Authorization': this.state.token},
                     data: {
                         participants: participants,

@@ -3,6 +3,8 @@ import classes from './like.module.css';
 import { AiOutlineLike, AiOutlineDislike, AiFillLike, AiFillDislike } from 'react-icons/ai';
 import axios from 'axios';
 import getToken from '../../getToken';
+import { MAIN_URI } from '../../config';
+
 
 class Like extends Component {
     constructor(props){
@@ -25,7 +27,7 @@ class Like extends Component {
 
         axios({
             method: 'post',
-            url: `http://localhost:3001/notifications/create`,
+            url: `${MAIN_URI}/notifications/create`,
             headers: {'Authorization': this.state.token},
             data: data
         })

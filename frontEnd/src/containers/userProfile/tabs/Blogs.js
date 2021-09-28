@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { MAIN_URI } from '../../../config';
+
 
 import LikesCommentsNumbers from '../../../components/UI/likesCommentsNumbers';
 import formattedCurrentDate from '../../../formattedCurrentDate';
@@ -39,7 +41,7 @@ class BlogsTab extends Component {
     getPosts = () => {
         axios({
             method: 'post',
-            url: `http://localhost:3001/blogs/limited`,
+            url: `${MAIN_URI}/blogs/limited`,
             headers: {'Authorization': this.state.token},
             data: {limit: this.state.limit, authorId: this.state.userId}
         })

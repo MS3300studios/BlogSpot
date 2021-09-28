@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
+import { MAIN_URI } from '../../../config';
 
 import classes from './chatMenu.module.css';
 import classes2 from './conversationListItem.module.css';
@@ -25,7 +26,7 @@ const ConversationListItem = (props) => {
         if(props.el.conversationType === 'private'){
             axios({
                 method: 'get',
-                url: `http://localhost:3001/blocking/checkBlock/${friend.userId}`,
+                url: `${MAIN_URI}/blocking/checkBlock/${friend.userId}`,
                 headers: {'Authorization': token}
             })
             .then((res)=>{
@@ -33,7 +34,7 @@ const ConversationListItem = (props) => {
                     if(res.data.blocked === true){
                         axios({
                             method: 'get',
-                            url: `http://localhost:3001/users/getUser/${friend.userId}`,
+                            url: `${MAIN_URI}/users/getUser/${friend.userId}`,
                             headers: {'Authorization': token}
                         })
                         .then((res)=>{
@@ -53,7 +54,7 @@ const ConversationListItem = (props) => {
                         //getting user data becasue he wasn't blocked
                         axios({
                             method: 'get',
-                            url: `http://localhost:3001/users/getUser/${friend.userId}`,
+                            url: `${MAIN_URI}/users/getUser/${friend.userId}`,
                             headers: {'Authorization': token}
                         })
                         .then((res)=>{
@@ -70,7 +71,7 @@ const ConversationListItem = (props) => {
                         //getting latest message
                         axios({
                             method: 'post',
-                            url: `http://localhost:3001/messages/latest`,
+                            url: `${MAIN_URI}/messages/latest`,
                             headers: {'Authorization': token},
                             data: {
                                 conversationId: props.el._id
@@ -101,7 +102,7 @@ const ConversationListItem = (props) => {
         else{
             axios({
                 method: 'post',
-                url: `http://localhost:3001/messages/latest`,
+                url: `${MAIN_URI}/messages/latest`,
                 headers: {'Authorization': token},
                 data: {
                     conversationId: props.el._id

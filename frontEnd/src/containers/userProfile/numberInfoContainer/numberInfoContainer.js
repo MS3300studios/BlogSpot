@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { MAIN_URI } from '../../../config';
 
 import classes from '../userProfile.module.css';
 
@@ -24,7 +25,7 @@ class NumberInfoContainer extends Component {
         this.setState({loading: true});
         axios({
             method: 'post',
-            url: `http://localhost:3001/getSocialNumbers`,
+            url: `${MAIN_URI}/getSocialNumbers`,
             headers: {'Authorization': this.props.token},
             data: {userId: this.props.userId}
         })

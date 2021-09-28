@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { MAIN_URI } from '../../config';
 
 import SearchBar from '../../components/UI/searchBar';
 import Button from '../../components/UI/button'; 
@@ -61,7 +62,7 @@ class FriendsList extends Component {
                 }
                 axios({
                     method: 'get',
-                    url: `http://localhost:3001/friends/all/${id}`,
+                    url: `${MAIN_URI}/friends/all/${id}`,
                     headers: {'Authorization': this.state.token},
                 })
                 .then((res)=>{
@@ -83,7 +84,7 @@ class FriendsList extends Component {
             }
             axios({
                 method: 'get',
-                url: `http://localhost:3001/friends/all/${id}`,
+                url: `${MAIN_URI}/friends/all/${id}`,
                 headers: {'Authorization': this.state.token},
             })
             .then((res)=>{

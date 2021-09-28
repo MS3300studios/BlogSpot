@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import getToken from '../../getToken';
 import getUserData from '../../getUserData';
+import { MAIN_URI } from '../../config';
 
 import Like from '../../components/UI/like';
 import { FaCommentAlt } from 'react-icons/fa';
@@ -77,7 +78,7 @@ class photoView extends Component {
     deletePhotoHandler = () => {
         axios({
             method: 'delete',
-            url: `http://localhost:3001/photo/delete`,
+            url: `${MAIN_URI}/photo/delete`,
             headers: {'Authorization': this.state.token},
             data: {
                 id: this.state.photo._id
@@ -100,7 +101,7 @@ class photoView extends Component {
     sendEditedDesc = (newContent) => {
         axios({
             method: 'post',
-            url: `http://localhost:3001/photo/edit`,
+            url: `${MAIN_URI}/photo/edit`,
             headers: {'Authorization': this.state.token},
             data: {
                 id: this.state.photo._id,
@@ -122,7 +123,7 @@ class photoView extends Component {
     sendLikeAction = (like) => {
         axios({
             method: 'post',
-            url: `http://localhost:3001/photo/rate`,
+            url: `${MAIN_URI}/photo/rate`,
             headers: {'Authorization': this.state.token},
             data: {
                 photoId: this.state.photo._id,
@@ -192,7 +193,7 @@ class photoView extends Component {
         };
         axios({
             method: 'post',
-            url: `http://localhost:3001/notifications/create`,
+            url: `${MAIN_URI}/notifications/create`,
             headers: {'Authorization': this.state.token},
             data: data
         })

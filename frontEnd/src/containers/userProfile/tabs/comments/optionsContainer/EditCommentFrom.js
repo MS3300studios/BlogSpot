@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import axios from 'axios';
+import { MAIN_URI } from '../../../../../config';
 
 import Button from '../../../../../components/UI/button';
 import classes from './editCommentForm.module.css';
@@ -13,7 +14,7 @@ const EditCommentForm = (props) => {
         if(props.photo){
             axios({
                 method: 'post',
-                url: `http://localhost:3001/photo/comment/edit`,
+                url: `${MAIN_URI}/photo/comment/edit`,
                 headers: {'Authorization': token},
                 data: {
                     photoId: props.photoId,
@@ -35,7 +36,7 @@ const EditCommentForm = (props) => {
         else{
             axios({
                 method: 'post',
-                url: `http://localhost:3001/comments/edit/${props.commentId}`,
+                url: `${MAIN_URI}/comments/edit/${props.commentId}`,
                 headers: {"Authorization": token},
                 data: {content: editContent}
             })
