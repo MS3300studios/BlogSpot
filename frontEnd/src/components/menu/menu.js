@@ -78,10 +78,14 @@ class Menu extends Component {
         return (
             <nav className={colorClasses.Menu}>
                 <Logo />
-                <h1 style={{color: "white", marginRight: "5px"}}>BragSpot v1.0 (community testing)</h1>
-                <Link to="/reportingBug">
-                    Zgłoś błąd
-                </Link>
+                <div style={{display: "flex", alignItems: "center"}}>
+                    <h1 style={{color: "white", marginRight: "10px"}}>BragSpot v1.0 (community testing)</h1>
+                    <Button>
+                        <Link to="/reportingBug" style={{color: "white", textDecoration: "none"}}>
+                            Zgłoś błąd
+                        </Link>
+                    </Button>
+                </div>
                 <div className={classes.iconContainer}>
                     <div className={classes.otherIcons}>
                         <div

@@ -9,6 +9,7 @@
     width: 30vw;
     height: 30vh;
     transition: 0.3s ease-out;
+    padding: 6px;
 }
 
 .reportingContainer textarea:focus{
