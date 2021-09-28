@@ -1,39 +1,56 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import classes from './Reporting.module.css';
 
 import Button from '../UI/button';
 import axios from 'axios';
 import {MAIN_URI} from '../../config';
 import getToken from '../../getToken';
-import { Redirect } from 'react-router';
+import { Redirect, withRouter } from 'react-router';
 
-const Reporting = () => {
+const Reporting = (props) => {
     const [text, settext] = useState("");
     const [tooMuchText, settooMuchText] = useState(false);
     const [submitSuccessful, setsubmitSuccessful] = useState(false);
     const [redirect, setredirect] = useState(false);
+    const [reportType, setreportType] = useState(""); 
+
+    useEffect(() => {
+        if(props.location.pathname === "/reporting/bug"){
+            setreportType("bug");
+        }
+        else setreportType("user");
+    }, [])
 
     const submitComplaint = () => {
-        setsubmitSuccessful(true);
-        setTimeout(() => {
-            setredirect(true);
-        }, 3000);
+        const token = getToken();
+        let url = `${MAIN_URI}/reportBug`;
+        let data = {text: text};
+        if(reportType === "user"){
+            let queryParams = new URLSearchParams(props.location.search);
+            url = `${MAIN_URI}/reportUser`;
+            data = {
+                text: text,
+                reportedUser: queryParams.get('id')
+            };
+        }
 
-        // const token = getToken();
-        // axios({
-        //     method: 'post',
-        //     url: `${MAIN_URI}/reportBug`,
-        //     headers: {"Authorization": token},
-        //     data: {text: text}
-        // })
-        // .then((res)=>{
-        //     if(res.status===201){
-                
-        //     }
-        // })
-        // .catch(error => {
-        //     console.log(error);
-        // })
+        axios({
+            method: 'post',
+            url: url,
+            headers: {"Authorization": token},
+            data: data
+        })
+        .then((res)=>{
+            if(res.status===201){
+                setsubmitSuccessful(true);
+                setTimeout(() => {
+                    setredirect(true);
+                }, 3000);
+            }
+        })
+        .catch(error => {
+            console.log(error);
+        })
     }
 
     return (
@@ -46,7 +63,7 @@ const Reporting = () => {
                     <textarea 
                         placeholder="What bug did you face? At the end of your message type what was the URL when this happened. (max 1000 characters)"
                         onChange={(e)=>{
-                            if(text.length > 10){
+                            if(text.length > 1000){
                                 settooMuchText(true);
                             }
                             else{
@@ -80,4 +97,4 @@ const Reporting = () => {
     );
 }
  
-export default Reporting;
+export default withRouter(Reporting);

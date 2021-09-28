@@ -81,7 +81,7 @@ class Menu extends Component {
                 <div style={{display: "flex", alignItems: "center"}}>
                     <h1 style={{color: "white", marginRight: "10px"}}>BragSpot v1.0 (community testing)</h1>
                     <Button>
-                        <Link to="/reportingBug" style={{color: "white", textDecoration: "none"}}>
+                        <Link to="/reporting/bug" style={{color: "white", textDecoration: "none"}}>
                             Zgłoś błąd
                         </Link>
                     </Button>

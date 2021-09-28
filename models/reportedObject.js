@@ -10,6 +10,6 @@ const schema = new db.Schema({
     timestamps: true
   });
 
-const Notification = db.model("Notification", schema);
+const Report = db.model("Report", schema);
 
-module.exports = Notification;
+module.exports = Report;
