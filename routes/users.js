@@ -7,6 +7,18 @@ const User = require('../models/user');
 const { BlockedUsers } = require('../models/blockedUsers');
 const auth = require('../middleware/authorization');
 const Friend = require('../models/friend');
+const Blog = require('../models/blog');
+const Comment = require('../models/comment');
+const CommentLike = require('../models/CommentLike');
+const CommentDislike = require('../models/CommentDislike');
+const FriendRequest = require('../models/friendRequest');
+const blockedUsers = require('../models/blockedUsers');
+const LastReadMessage = require('../models/lastReadMessage');
+const Message = require('../models/message');
+const PhotoModule = require('../models/photo');
+const Photo = PhotoModule.photo;
+const ConversationMoule = require('../models/conversation');
+const Conversation = ConversationMoule.Conversation;
 
 router.use(cors());
 router.use(express.json({limit: '10mb'}));
@@ -99,24 +111,70 @@ router.post('/users/register', (req, res) => {
     }
 })
 
-router.delete('/users/delete', auth, (req, res) => {
-    User.findByIdAndDelete(req.userData.userId, (err, doc) => res.sendStatus(200));
-    /*
-    User.remove({_id: req.userData.userId})
-        .exec()
-        .then(response => {
-            res.status(200).json({
-                message: 'user deleted'
-            });
+router.post('/users/delete', auth, (req, res) => {
+    console.log("deleting user")
+
+    Blog.deleteMany({authorId: req.userData.userId});
+ 
+    Comment.deleteMany({authorId: req.userData.userId});
+    CommentLike.deleteMany({authorId: req.userData.userId}); 
+    CommentDislike.deleteMany({authorId: req.userData.userId});
+
+    Photo.deleteMany({authorId: req.userData.userId});
+
+    Friend.deleteMany({userId: req.userData.userId}); 
+    Friend.deleteMany({friendId: req.userData.userId});
+
+    FriendRequest.deleteMany({userId: req.userData.userId});
+    FriendRequest.deleteMany({friendId: req.userData.userId});
+    
+    blockedUsers.BlockedUser.deleteMany({blockedUserId: req.userData.userId}); 
+    blockedUsers.BlockedUsers.deleteOne({forUser: req.userData.userId});    //deleting user's blocklist
+
+    LastReadMessage.deleteMany({userId: req.userData.userId});
+
+    Conversation.find({"participants.userId": req.userData.userId }).exec().then(conversations => {
+        let privateConversations = conversations.filter(el => el.conversationType === "private");
+        privateConversations.forEach(el => {
+            Message.deleteMany({converstionId: el._id});
+            Conversation.deleteOne({_id: el._id});
         })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({
-                error: err
-            });
-        });
-    */
+
+        let publicConversations = conversations.filter(el => el.conversationType !== "private");
+        publicConversations.forEach(el => {
+            Message.deleteMany({converstionId: el._id});
+        })
+    })
+
+    User.findByIdAndDelete(req.userData.userId, (err, doc) => res.sendStatus(200)); 
 });
+
+router.post('/admin/users/delete', (req, res) => {
+    //admin pin = 3300
+    if(req.body.pin === 3300){
+        Blog.deleteMany({authorId: req.body.userId});
+ 
+        Comment.deleteMany({authorId: req.body.userId});
+        CommentLike.deleteMany({authorId: req.body.userId}); 
+        CommentDislike.deleteMany({authorId: req.body.userId});
+
+        Photo.deleteMany({authorId: req.body.userId});
+
+        Friend.deleteMany({userId: req.body.userId}); 
+        Friend.deleteMany({friendId: req.body.userId});
+
+        FriendRequest.deleteMany({userId: req.body.userId});
+        FriendRequest.deleteMany({friendId: req.body.userId});
+        
+        blockedUsers.BlockedUser.deleteMany({blockedUserId: req.userData.userId});
+        blockedUsers.BlockedUsers.deleteOne({forUser: req.userData.userId});
+
+        User.findByIdAndDelete(req.body.userId, (err, doc) => res.sendStatus(200));
+    }
+    else{
+        res.sendStatus(403);
+    }
+})
 
 router.post('/users/login', (req, res) => {
     console.log('login')
