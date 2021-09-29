@@ -24,13 +24,13 @@ const Reporting = (props) => {
     const submitComplaint = () => {
         const token = getToken();
         let url = `${MAIN_URI}/reportBug`;
-        let data = {text: text};
+        let data = {text: text, objectId: "none"};
         if(reportType === "user"){
             let queryParams = new URLSearchParams(props.location.search);
             url = `${MAIN_URI}/reportUser`;
             data = {
                 text: text,
-                reportedUser: queryParams.get('id')
+                objectId: queryParams.get('id')
             };
         }
 
@@ -79,7 +79,7 @@ const Reporting = (props) => {
                         tooMuchText ? <p style={{color: "lightsalmon"}}>you've extended the limit of 1000 characters</p> : null
                     }
                     <br />
-                    <Button clicked={submitComplaint} disabled={tooMuchText}>Submit</Button>
+                    <Button clicked={submitComplaint} disabled={tooMuchText || text.length < 1}>Submit</Button>
                     {
                         submitSuccessful ? (
                             <>
