@@ -20,6 +20,7 @@ import Spinner from '../../components/UI/spinner';
 import NumberInfoContainer from './numberInfoContainer/numberInfoContainer';
 import OnlineIcon from '../../components/UI/onlineIcon';
 import getColor from '../../getColor';
+import UserNotFound from '../../components/UI/userNotFound';
 
 class UserProfile extends Component {
     constructor(props){
@@ -60,7 +61,8 @@ class UserProfile extends Component {
             friendBtnDataRdy: false,
             flashMessage: "",
             flashNotClosed: true,
-            editBio: userData.bio
+            editBio: userData.bio,
+            userNotFound: false
         }
         this.handleMenuSelect.bind(this);
         this.flash.bind(this);
@@ -98,6 +100,10 @@ class UserProfile extends Component {
                 url: `${MAIN_URI}/users/getUser/${this.state.userId}`,
                 headers: {'Authorization': this.state.token},
             }).then((res) => {
+                if(res.data.user === null){
+                    this.setState({userNotFound: true});
+                    return
+                }
                 const user = {
                     nickname: res.data.user.nickname,
                     name: res.data.user.name,
@@ -486,104 +492,110 @@ class UserProfile extends Component {
 
         return ( 
             <React.Fragment>
-                <div className={classes.flexContainer}>
-                    <div className={classes.mainContainer} style={backgroundColor}>
-                        <div className={classes.imgContainer}>
-                            {userImg}
+                {
+                    this.state.userNotFound ? <UserNotFound /> : (
+                        <>
+                        <div className={classes.flexContainer}>
+                            <div className={classes.mainContainer} style={backgroundColor}>
+                                <div className={classes.imgContainer}>
+                                    {userImg}
+                                </div>
+                                {editIcon}
+                                <div className={classes.textInfoContainer}>
+                                    {
+                                        this.state.editing ? (
+                                            <div className={classes.editingTextarea}>
+                                                <div className={classes.editBioBtnsContainer}>
+                                                    <Button btnType="Continue" clicked={this.sendEditedBio}>Continue</Button>
+                                                    <Button btnType="Cancel" clicked={()=>this.setState({editing: false})}>Cancel</Button>
+                                                </div>
+                                                <textarea value={this.state.editBio} onChange={this.editBioHandle}/>
+                                            </div>
+                                        ) : 
+                                        (
+                                            <div>
+                                                <div className={classes.textNameH1}>
+                                                    <OnlineIcon online={this.state.userId} />
+                                                    <h1>{this.state.userData.name+" "+this.state.userData.surname}</h1>
+                                                </div>
+                                                <h2 className={classes.textNameH2}>@{this.state.userData.nickname}</h2>
+                                                <div className={classes.bio} style={backgroundColorDarker}>
+                                                    <p>{this.state.editBio}</p>
+                                                </div>
+                                            </div>
+                                        )
+                                    }
+                                </div>
+                                <div className={classes.rightPartInfoContainer}>
+                                    <NumberInfoContainer token={this.state.token} userId={this.state.userId} />
+                                    {
+                                        this.state.userLogged ? (
+                                            <div className={classes.editYourProfileContainer}>
+                                                <Link to="/editProfile">
+                                                    <button className={classes.editYourProfile} style={editYourProfileBgColor}>Edit your profile</button>
+                                                </Link>
+                                            </div>
+                                        ) : (
+                                            <div className={classes.socialButtonsContainer}>
+                                                {this.state.friendBtnDataRdy ? (
+                                                    <FriendButton 
+                                                        receivedRequest={this.state.receivedRequest}
+                                                        isFriend={this.state.isFriend} 
+                                                        pressAction={this.friendButtonAction}
+                                                        friendId={this.state.userId}
+                                                    />
+                                                ) : <Spinner darkgreen />}
+                                                
+                                                { sendMessageButton }
+        
+                                                {
+                                                    this.state.isBlocked ? null : (
+                                                        <button className={classes.unblockUser} onClick={()=>this.blockUser(this.state.userId)}>
+                                                            <BiBlock size="1.5em" color="#FFF" style={{marginRight: "14px"}}/>
+                                                            Block user
+                                                        </button>
+                                                    )
+                                                }
+        
+                                                <Link to={`/reporting/user/?id=${this.state.userId}`} style={{textDecoration: "none", color: "unset"}}>
+                                                    <button className={classes.reportUser}>
+                                                        <MdReport size="1.5em" color="#FFF" style={{marginRight: "14px"}}/>
+                                                        report this user
+                                                    </button>
+                                                </Link>
+                                            </div>
+                                        )
+                                    }
+                                </div>
+                            </div>                    
                         </div>
-                        {editIcon}
-                        <div className={classes.textInfoContainer}>
-                            {
-                                this.state.editing ? (
-                                    <div className={classes.editingTextarea}>
-                                        <div className={classes.editBioBtnsContainer}>
-                                            <Button btnType="Continue" clicked={this.sendEditedBio}>Continue</Button>
-                                            <Button btnType="Cancel" clicked={()=>this.setState({editing: false})}>Cancel</Button>
-                                        </div>
-                                        <textarea value={this.state.editBio} onChange={this.editBioHandle}/>
-                                    </div>
-                                ) : 
-                                (
-                                    <div>
-                                        <div className={classes.textNameH1}>
-                                            <OnlineIcon online={this.state.userId} />
-                                            <h1>{this.state.userData.name+" "+this.state.userData.surname}</h1>
-                                        </div>
-                                        <h2 className={classes.textNameH2}>@{this.state.userData.nickname}</h2>
-                                        <div className={classes.bio} style={backgroundColorDarker}>
-                                            <p>{this.state.editBio}</p>
-                                        </div>
-                                    </div>
-                                )
-                            }
+                        <div className={classes.flexContainer}>
+                        <div className={classes.userProfileMenu} style={backgroundColor}>
+                            <div className={classes.userProfileMenuItem} onClick={() => this.handleMenuSelect('Blogs')} style={{...backgroundColor, cursor: "pointer"}}>
+                                <div className={this.state.blogsClass.join(" ")}></div>
+                                <p>Blogs</p>
+                            </div>
+                            <div className={classes.userProfileMenuItem} onClick={() => this.handleMenuSelect('Photos')} style={{...backgroundColor, cursor: "pointer"}}>
+                                <div className={this.state.photosClass.join(" ")}></div>
+                                <p>Photos</p>
+                            </div>
+                            <div className={classes.userProfileMenuItem} onClick={() => this.handleMenuSelect('Friends')} style={{...backgroundColor, cursor: "pointer"}}>
+                                <div className={this.state.friendsClass.join(" ")}></div>
+                                <p>Friends</p>
+                            </div>
+                            <div className={classes.userProfileMenuItem} onClick={() => this.handleMenuSelect('Badges')} style={{...backgroundColor, cursor: "pointer"}}>
+                                <div className={this.state.badgesClass.join(" ")}></div>
+                                <p>Badges</p>
+                            </div>
                         </div>
-                        <div className={classes.rightPartInfoContainer}>
-                            <NumberInfoContainer token={this.state.token} userId={this.state.userId} />
-                            {
-                                this.state.userLogged ? (
-                                    <div className={classes.editYourProfileContainer}>
-                                        <Link to="/editProfile">
-                                            <button className={classes.editYourProfile} style={editYourProfileBgColor}>Edit your profile</button>
-                                        </Link>
-                                    </div>
-                                ) : (
-                                    <div className={classes.socialButtonsContainer}>
-                                        {this.state.friendBtnDataRdy ? (
-                                            <FriendButton 
-                                                receivedRequest={this.state.receivedRequest}
-                                                isFriend={this.state.isFriend} 
-                                                pressAction={this.friendButtonAction}
-                                                friendId={this.state.userId}
-                                            />
-                                        ) : <Spinner darkgreen />}
-                                        
-                                        { sendMessageButton }
-
-                                        {
-                                            this.state.isBlocked ? null : (
-                                                <button className={classes.unblockUser} onClick={()=>this.blockUser(this.state.userId)}>
-                                                    <BiBlock size="1.5em" color="#FFF" style={{marginRight: "14px"}}/>
-                                                    Block user
-                                                </button>
-                                            )
-                                        }
-
-                                        <Link to={`/reporting/user/?id=${this.state.userId}`} style={{textDecoration: "none", color: "unset"}}>
-                                            <button className={classes.reportUser}>
-                                                <MdReport size="1.5em" color="#FFF" style={{marginRight: "14px"}}/>
-                                                report this user
-                                            </button>
-                                        </Link>
-                                    </div>
-                                )
-                            }
                         </div>
-                    </div>                    
-                 </div>
-                 <div className={classes.flexContainer}>
-                    <div className={classes.userProfileMenu} style={backgroundColor}>
-                        <div className={classes.userProfileMenuItem} onClick={() => this.handleMenuSelect('Blogs')} style={{...backgroundColor, cursor: "pointer"}}>
-                            <div className={this.state.blogsClass.join(" ")}></div>
-                            <p>Blogs</p>
+                        <div className={classes.center}>
+                        <TabSelector selectedOption={this.state.currentSelectedMenu} userId={this.props.location.search}/>
                         </div>
-                        <div className={classes.userProfileMenuItem} onClick={() => this.handleMenuSelect('Photos')} style={{...backgroundColor, cursor: "pointer"}}>
-                            <div className={this.state.photosClass.join(" ")}></div>
-                            <p>Photos</p>
-                        </div>
-                        <div className={classes.userProfileMenuItem} onClick={() => this.handleMenuSelect('Friends')} style={{...backgroundColor, cursor: "pointer"}}>
-                            <div className={this.state.friendsClass.join(" ")}></div>
-                            <p>Friends</p>
-                        </div>
-                        <div className={classes.userProfileMenuItem} onClick={() => this.handleMenuSelect('Badges')} style={{...backgroundColor, cursor: "pointer"}}>
-                            <div className={this.state.badgesClass.join(" ")}></div>
-                            <p>Badges</p>
-                        </div>
-                    </div>
-                 </div>
-                 <div className={classes.center}>
-                    <TabSelector selectedOption={this.state.currentSelectedMenu} userId={this.props.location.search}/>
-                 </div>
-                 {flash}
+                        {flash}
+                        </>
+                    )
+                }
              </React.Fragment>
         );
     }
