@@ -13,13 +13,17 @@ const Reporting = (props) => {
     const [submitSuccessful, setsubmitSuccessful] = useState(false);
     const [redirect, setredirect] = useState(false);
     const [reportType, setreportType] = useState(""); 
+    let placeholder = "State the reason for reporting this user (eg Harassment, inappropriate content etc) (max 1000 characters)";
+    if(props.location.pathname === "/reporting/bug"){
+        placeholder = "What bug did you face? At the end of your message type what was the URL when this happened. (max 1000 characters)"
+    }
 
     useEffect(() => {
         if(props.location.pathname === "/reporting/bug"){
             setreportType("bug");
         }
         else setreportType("user");
-    }, [])
+    }, [props.location.pathname])
 
     const submitComplaint = () => {
         const token = getToken();
@@ -61,7 +65,7 @@ const Reporting = (props) => {
             <div className={classes.center}>
                 <div className={classes.reportingContainer}>
                     <textarea 
-                        placeholder="What bug did you face? At the end of your message type what was the URL when this happened. (max 1000 characters)"
+                        placeholder={placeholder}
                         onChange={(e)=>{
                             if(text.length > 1000){
                                 settooMuchText(true);
