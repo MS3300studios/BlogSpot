@@ -14,6 +14,7 @@ import { BsPencil } from 'react-icons/bs';
 import { MdMessage } from 'react-icons/md';
 import { GoPencil } from 'react-icons/go';
 import { BiBlock } from 'react-icons/bi';
+import { MdReport } from 'react-icons/md';
 import getUserData from '../../getUserData';
 import Spinner from '../../components/UI/spinner';
 import NumberInfoContainer from './numberInfoContainer/numberInfoContainer';
@@ -546,6 +547,13 @@ class UserProfile extends Component {
                                                 </button>
                                             )
                                         }
+
+                                        <Link to={`/reporting/user/?id=${this.state.userId}`} style={{textDecoration: "none", color: "unset"}}>
+                                            <button className={classes.reportUser}>
+                                                <MdReport size="1.5em" color="#FFF" style={{marginRight: "14px"}}/>
+                                                report this user
+                                            </button>
+                                        </Link>
                                     </div>
                                 )
                             }

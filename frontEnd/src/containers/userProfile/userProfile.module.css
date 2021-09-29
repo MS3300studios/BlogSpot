@@ -168,6 +168,14 @@
     padding: 10px;
 }
 
+.reportUser{
+    background-color: teal !important;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    margin-top: -5px;
+}
+
 /* SECOND SECTION */
 .userProfileMenu{
     width: 60%;

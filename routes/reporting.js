@@ -7,7 +7,7 @@ const Report = require('../models/reportedObject');
 
 router.use(express.json());
 
-router.post('/reportBug', auth, (req, res) => {
+router.post('/report', auth, (req, res) => {
     if(req.body.objectId === "none"){
         //reporting a bug
         const bugReport = Report({

@@ -27,11 +27,9 @@ const Reporting = (props) => {
 
     const submitComplaint = () => {
         const token = getToken();
-        let url = `${MAIN_URI}/reportBug`;
         let data = {text: text, objectId: "none"};
         if(reportType === "user"){
             let queryParams = new URLSearchParams(props.location.search);
-            url = `${MAIN_URI}/reportUser`;
             data = {
                 text: text,
                 objectId: queryParams.get('id')
@@ -40,7 +38,7 @@ const Reporting = (props) => {
 
         axios({
             method: 'post',
-            url: url,
+            url: `${MAIN_URI}/report`,
             headers: {"Authorization": token},
             data: data
         })
