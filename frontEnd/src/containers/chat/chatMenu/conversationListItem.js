@@ -143,8 +143,14 @@ const ConversationListItem = (props) => {
     if(props.el.conversationType === "private"){
         loading ? content = <Spinner small darkgreen/> : content = (
             <div className={classes.userDataContainer}>
-                <UserPhoto userId={user._id}/>
-                <h1>{user.name} {user.surname}</h1>
+                {
+                    !user ? <h1>[Deleted user]</h1> : (
+                        <>
+                        <UserPhoto userId={user._id}/>
+                        <h1>{user.name} {user.surname}</h1>
+                        </>
+                    )
+                }
             </div>
         )
     }

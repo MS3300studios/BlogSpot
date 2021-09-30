@@ -9,7 +9,6 @@ import getToken from '../../getToken';
 import getUserData from '../../getUserData';
 import Spinner from './spinner';
 
-// import io from 'socket.io-client';
 import OnlineIcon from './onlineIcon';
 
 class UserPhoto extends Component {
@@ -82,7 +81,7 @@ class UserPhoto extends Component {
 
         return (
             <div className={classes.dropdown}>
-                {this.state.loading ? <Spinner small darkgreen /> : <img alt="user" src={this.state.photo} className={userPhotoClasses}/>}
+                {this.state.loading ? <div className={[userPhotoClasses, classes.photoSkeleton].join(" ")}></div> : <img alt="user" src={this.state.photo} className={userPhotoClasses}/>}
                 <div className={classes.onlineIconPositioner}>
                     <OnlineIcon online={this.props.userId} hide={this.props.hideOnlineIcon}/>
                 </div>

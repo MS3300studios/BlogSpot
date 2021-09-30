@@ -48,6 +48,10 @@ class OnlineIcon extends Component {
         })
     }
 
+    componentWillUnmount(){
+        
+    }
+
     render() { 
         let classname = [classes.onlineIcon].join(" "); 
 

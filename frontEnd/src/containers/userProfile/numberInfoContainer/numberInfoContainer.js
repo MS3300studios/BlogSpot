@@ -47,6 +47,10 @@ class NumberInfoContainer extends Component {
         })
     }
 
+    componentWillUnmount(){
+        
+    }
+
     render() { 
         return (
             <div className={classes.numberInfoContainer}>  

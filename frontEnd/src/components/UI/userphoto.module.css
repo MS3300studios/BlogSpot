@@ -41,6 +41,10 @@
     transform: scale(1.2);
 }
 
+.photoSkeleton{
+    animation: skeleton-loading 1s linear infinite alternate;
+}
+
 .dropdown{
     width: 60px;
     height: 60px;
