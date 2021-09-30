@@ -87,7 +87,7 @@ class PhotosList extends Component {
             let photos; 
             if(this.state.photos.length===0){
                 photos = (
-                    <h1>You don't have any photos yet! Click on the "+" icon to add some!</h1>
+                    <h1 style={{color: "white"}}>You don't have any photos yet! Click on the "+" icon to add some!</h1>
                 )
             }
             else{
@@ -125,17 +125,21 @@ class PhotosList extends Component {
                             </div>
                         </div>
                     </div>
-                    <div className={classes.center}>
-                        <div style={{
-                            width: "81%",
-                            display: "flex",
-                            justifyContent: "center",
-                            paddingTop: "20px",
-                            paddingBottom: "10px"
-                        }}>
-                            <Button clicked={this.setLimit}>Load more</Button>
-                        </div>
-                    </div>
+                    {
+                        this.state.photos.length === 0 ? null : (
+                            <div className={classes.center}>
+                                <div style={{
+                                    width: "81%",
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    paddingTop: "20px",
+                                    paddingBottom: "10px"
+                                }}>
+                                    <Button clicked={this.setLimit}>Load more</Button>
+                                </div>
+                            </div>
+                        )
+                    }
                 </>
             );
         }
