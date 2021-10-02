@@ -237,6 +237,7 @@ class AddingConversation extends Component {
         }
         else{
             friendsJSX = this.state.friends.map((friend, index)=>{
+                if(friend === null) return null
                 return (
                     <FriendsListItem 
                         hideOnlineIcon

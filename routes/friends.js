@@ -214,7 +214,7 @@ router.get('/friends/all/:id', auth, (req, res) => {
                 async function looper(){
                     for(let i=0; i<friendsData.length; i++){
                         let fullFriend = await getter(friendsData[i].friendId);
-                        fullFriendsArr.push(fullFriend)
+                        if(fullFriend !== null) fullFriendsArr.push(fullFriend)
                     }
                     res.status(200).json({
                         friends: fullFriendsArr

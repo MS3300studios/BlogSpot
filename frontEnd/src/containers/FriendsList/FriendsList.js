@@ -53,7 +53,6 @@ class FriendsList extends Component {
 
     initialFetch = (loadingAgain) => {
         if(loadingAgain === true){
-            console.log('fetching!')
             this.setState({loading: true, showSpinnerMessage: false}, () => {
                 let id = this.state.userData._id;
                 if(this.props.profileViewComponent){
@@ -118,8 +117,8 @@ class FriendsList extends Component {
         let friendsJSX = []; //temporary array of all jsx friends, to be filtered and converted to friendsRdy
         let friendsRdy = [];
         
-        //let initialFriends = this.manageOnlineFriends();
         friendsJSX = this.state.friends.map((friend, index)=>{
+            if(friend === null) return null
             return (
                 <FriendsListItem 
                     friendNumber={index}
