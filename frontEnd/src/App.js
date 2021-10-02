@@ -27,6 +27,7 @@ import Settings from './components/settings/settings';
 import AddPost from './components/AddPost/AddPost';
 import getColor from './getColor';
 import Reporting from './components/reporting/reporting';
+import Reports from './components/reports/reports';
 
 class App extends Component {
   constructor(props){
@@ -69,6 +70,7 @@ class App extends Component {
           <ScrollListener>
             <Menu />
             <Switch>
+              <Route path="/reports" exact component={Reports} />
               <Route path="/addPost" exact component={AddPost} />
               <Route path="/conversation/" component={ConversationContainer} />
               <Route path="/addConversation/" component={AddingConversation} />
@@ -99,6 +101,7 @@ class App extends Component {
             <Route path="/register" exact component={Registration} />
             <Route path="/login" exact component={Login} />
             <Route path="/termsAndConditions" exact component={termsAndConditions} />
+            <Route path="/reports" exact component={Reporting} />
             <Route path="/" component={Gate} />
           </Switch>
         </React.Fragment>

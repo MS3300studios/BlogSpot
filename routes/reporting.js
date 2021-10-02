@@ -2,7 +2,6 @@ const express = require('express');
 const router = express();
 
 const auth = require('../middleware/authorization');
-const User = require('../models/user');
 const Report = require('../models/reportedObject');
 
 router.use(express.json());
@@ -43,6 +42,19 @@ router.post('/report', auth, (req, res) => {
         });
 
     }
+})
+
+router.delete('/reports/:id', (req, res) => {
+    Report.findByIdAndDelete(req.params.id, (err, doc) => { 
+        if(err) console.log(err);
+        else res.sendStatus(200);
+    });
+})
+
+router.get('/reports', (req,res) => {
+    Report.find().exec().then(reports => {
+        res.json(reports)
+    }).catch(err => console.log(`[GETTING REPORTS FAILED]: ${err}`));
 })
 
 module.exports = router;

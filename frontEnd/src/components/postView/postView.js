@@ -85,7 +85,7 @@ class PostView extends Component {
         })
         .catch(error => {
             console.log(error.message === "Request failed with status code 404");
-            this.setState({loading: false, error: error.message});
+            this.setState({loading: false, error: "404: this blog doesn't exist anymore"});
         }) 
     }
 
@@ -121,7 +121,14 @@ class PostView extends Component {
             info = <Spinner />
         }
         else if(this.state.error !== null){
-            info = <h1>{this.state.error}</h1>
+            info = (
+                <div style={{display: "flex", alignItems: "center"}}>
+                    <h1 style={{color: "white", marginRight: "2vw"}}>{this.state.error}</h1>
+                    <Link to="/" style={{color: 'unset', textDecoration: "none"}}>
+                        <Button>Back to main page</Button>
+                    </Link>
+                </div>
+            )
         }
         else {
             info = (

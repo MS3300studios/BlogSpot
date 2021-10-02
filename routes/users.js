@@ -129,9 +129,11 @@ router.post('/users/delete', auth, (req, res) => {
     FriendRequest.deleteMany({friendId: req.userData.userId});
     
     blockedUsers.BlockedUser.deleteMany({blockedUserId: req.userData.userId}); 
-    blockedUsers.BlockedUsers.deleteOne({forUser: req.userData.userId});    //deleting user's blocklist
+    blockedUsers.BlockedUsers.deleteOne({forUser: req.userData.userId});  
 
     LastReadMessage.deleteMany({userId: req.userData.userId});
+
+    Notification.deleteMany({receiverId: req.userData.userId});
 
     Conversation.find({"participants.userId": req.userData.userId }).exec().then(conversations => {
         let privateConversations = conversations.filter(el => el.conversationType === "private");

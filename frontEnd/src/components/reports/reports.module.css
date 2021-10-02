@@ -1,0 +1,24 @@
+.reportContainer{
+    width: 80%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.report{
+    box-sizing: border-box;
+    border: 2px dashed;
+    padding: 10px;
+    max-width: 30vw;
+    margin: 20px;
+    position: relative;
+}
+
+.report h1{
+    margin: 5px;
+}
+
+.report button{
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+}
