@@ -44,6 +44,17 @@ class LikesCommentsNumbers extends Component {
         this.getFill();
     }
 
+    componentDidUpdate(prevProps){
+        if(prevProps.objectId !== this.props.objectId){
+            if(this.props.comments){
+                this.getCommentsCount();
+            }
+            this.getLikesCount(true); //get dislikes count
+            this.getLikesCount(false); //get likes count
+            this.getFill();
+        }
+    }
+
     getCommentsCount = () => {
         axios({
             method: 'post',
