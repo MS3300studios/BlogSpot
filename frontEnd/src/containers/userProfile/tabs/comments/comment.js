@@ -9,7 +9,6 @@ import EditCommentForm from './optionsContainer/EditCommentFrom';
 import formattedCurrentDate from '../../../../formattedCurrentDate';
 import LikesCommentsNumbers from '../../../../components/UI/likesCommentsNumbers';
 import UserPhoto from '../../../../components/UI/userphoto';
-// import CommentOptions from './optionsContainer/CommentOptions';
 import Flash from '../../../../components/UI/flash';
 import axios from 'axios';
 import getToken from '../../../../getToken';
@@ -20,14 +19,18 @@ const Comment = (props) => {
     const [editing, setediting] = useState(false);
     const [optionsOpened, setoptionsOpened] = useState(false);
     const [commentContent, setcommentContent] = useState(props.comment.content);
-    const [comment, setcomment] = useState(props.comment);
     const [visible, setvisible] = useState(true);
+    const [showmorebutton, setshowmorebutton] = useState(false);
+
 
     useEffect(() => {
         setcommentContent(props.comment.content)
+        if(props.comment.content.length > 280){
+            setshowmorebutton(true);
+        }
     }, [props.comment])
 
-    let flashHandle = (message) => {
+    const flashHandle = (message) => {
         setflashMessage(message);
         setTimeout(()=>{
             setflashNotClosed(false);
@@ -42,7 +45,7 @@ const Comment = (props) => {
         }, 3000);
     }
 
-    let deleting = () => {
+    const deleting = () => {
         const token = getToken();
         axios({
             method: 'delete',
@@ -110,12 +113,31 @@ const Comment = (props) => {
                                 commentContent={props.comment.content} 
                                 afterEdit={(newContent)=>{
                                     setcommentContent(newContent);
-                                    setediting(false); //close editing form
+                                    setediting(false); 
                                 }} 
                                 cancelEdit={()=>setediting(false)}
                                 initialValue={commentContent}
                             />
-                        ) : <p className={classes.commentContent}>{commentContent}</p>
+                        ) : (
+                            <>
+                                {
+                                    showmorebutton ? 
+                                    (
+                                        <>
+                                            <p>{commentContent.slice(0,278)}</p>
+                                            <p className={classes.showMoreP} onClick={()=>setshowmorebutton(false)}>show full comment...</p>
+                                        </> 
+                                    ) : (
+                                        <>
+                                            <p className={classes.commentContent}>{commentContent}</p>
+                                            {
+                                                props.comment.content.length > 280 ? <p className={classes.showMoreP} onClick={()=>setshowmorebutton(true)}>hide full comment...</p> : null
+                                            }
+                                        </>
+                                    )
+                                }
+                            </>
+                        )
                     }
                 </div>
             ) : null}
@@ -125,19 +147,3 @@ const Comment = (props) => {
 }
  
 export default Comment;
-
-    //      const token = getToken();
-    //     axios({
-    //         method: 'get',
-    //         url: `http://localhost:3001/comments/one/${props.comment._id}`,
-    //         headers: {'Authorization': token}
-    //     })
-    //     .then((res)=>{
-    //         if(res.status===200){
-    //             setcomment(res.data.comment);
-    //             return;
-    //         }
-    //     })
-    //     .catch(error => {
-    //         console.log(error);
-    //     })

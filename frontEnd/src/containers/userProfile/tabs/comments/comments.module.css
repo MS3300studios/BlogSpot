@@ -4,6 +4,7 @@
     padding: 10px;
     padding-top: 0px;
     margin: 5px;
+    overflow-wrap: anywhere;
 }
 
 .topBar{
@@ -83,4 +84,15 @@
 
 .optionsContainer option:hover{
     cursor: pointer;
+}
+
+.showMoreP{
+    text-decoration: underline;
+    cursor: pointer;
+    transition: 0.4s ease-out;
+    font-weight: 550;
+}
+
+.showMoreP:hover{
+    color: yellow;
 }
