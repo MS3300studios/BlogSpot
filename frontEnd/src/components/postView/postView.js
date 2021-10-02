@@ -113,8 +113,6 @@ class PostView extends Component {
         this.setState({deletePending: false, redirect: true});
     }
 
-    
-
     render() { 
         let smallSpinner = this.state.deletePending ? <Spinner small darkgreen /> : null;
 
@@ -147,13 +145,17 @@ class PostView extends Component {
                                     objectIsBlog 
                                 />
                             </div>
-                            <div className={classes.btnsContainer}>
-                                <Button clicked={this.displayPostForm}>Edit</Button>
-                                <Button clicked={()=>this.deletePost(this.state.postId)}>Delete</Button>
-                                <div className={classes.smallSpinnerLocation}>
-                                    {smallSpinner}
-                                </div>
-                            </div>
+                            {
+                                this.state.userData._id === this.state.post.author ? (
+                                    <div className={classes.btnsContainer}>
+                                        <Button clicked={this.displayPostForm}>Edit</Button>
+                                        <Button clicked={()=>this.deletePost(this.state.postId)}>Delete</Button>
+                                        <div className={classes.smallSpinnerLocation}>
+                                            {smallSpinner}
+                                        </div>
+                                    </div>
+                                ) : <div style={{marginBottom: "25px"}}></div>
+                            }
                         </div>
                         <div className={[classes.blogFace, colorClasses.commentsContainer].join(" ")}>
                             <Comments blogId={this.state.postId} blogAuthorId={this.state.authorData._id} small/>

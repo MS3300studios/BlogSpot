@@ -27,7 +27,7 @@ class Comments extends Component {
 
         this.loadmorehandler.bind(this);
         this.getComments.bind(this);
-        this.updateComments.bind(this);
+        this.addComment.bind(this);
     }
 
     componentDidMount(){
@@ -40,16 +40,10 @@ class Comments extends Component {
         }
     }
 
-    updateComments = (comment, add) => {
-        if(add === true){
-            let newComments = this.state.comments;
-            newComments.splice(0, 0, comment);
-            this.setState({comments: newComments});
-        }
-        else if(add === false){
-            let newComments = this.state.comments.filter(el => el._id !== comment._id)
-            this.setState({comments: newComments});
-        }
+    addComment = (newComment) => {
+        let newComments = this.state.comments;
+        newComments.unshift(newComment);
+        this.setState({comments: newComments});
     }
 
     getComments = (newLimit) => {
@@ -92,29 +86,28 @@ class Comments extends Component {
             authorClassArr = [classes.smallAuthorClass, classes.commentAuthor].join(" ");
             setSmall = true;
         }
-        
-        let comments = this.state.comments.map((comment, index) => { 
-            return ( 
-                <Comment 
-                    key={index}
-                    afterDelete={this.updateComments}
-                    comment={comment}
-                    authorClassArr={authorClassArr}
-                    userId={this.state.userData._id}
-                    small={this.props.small}
-                />    
-            )
-        })
-
+    
         return (
             <div className={classes.commentsContainer}>
                 <AddCommentForm 
                     blogId={this.state.blogId} 
                     blogAuthorId={this.props.blogAuthorId} 
-                    afterSend={this.updateComments} 
+                    afterSend={this.addComment} 
                     small={setSmall}
                 />
-                {comments}
+                {
+                    this.state.comments.map((comment, index) => { 
+                        return ( 
+                            <Comment 
+                                key={index}
+                                comment={comment}
+                                authorClassArr={authorClassArr}
+                                userId={this.state.userData._id}
+                                small={this.props.small}
+                            />    
+                        )
+                    })
+                }
                 <Button clicked={this.loadmorehandler}>Load more comments</Button>
             </div>
         );

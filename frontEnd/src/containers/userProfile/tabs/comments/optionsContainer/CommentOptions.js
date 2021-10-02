@@ -37,7 +37,7 @@ class CommentOptions extends Component {
                 })
                 .then((res)=>{
                     if(res.status===200){
-                        this.props.flashProp("comment deleted", res.data.comment);
+                        this.props.flashProp("comment deleted", this.props.commentId);
                         return;
                     }
                 })
@@ -65,8 +65,8 @@ class CommentOptions extends Component {
                 <BsThreeDots size="1.5em" color="#0a42a4" className={classes.threeDotsIcon}/>
                 { this.state.open ? (
                     <div className={classes.optionsContainer}>
-                        <option onClick={()=>this.optionsAction("edit")}>edit</option>
-                        <option onClick={()=>this.optionsAction("delete")}>delete</option>
+                        <option onClick={()=>this.optionsAction("edit")} style={{color: "black"}}>edit</option>
+                        <option onClick={()=>this.optionsAction("delete")} style={{color: "black"}}>delete</option>
                     </div>
                 ) : null }
             </div>

@@ -89,7 +89,7 @@ class AddCommentForm extends Component {
                 this.flash("you posted a comment!");
                 this.setState({content: ""});
                 this.sendNotification();
-                this.props.afterSend(res.data.comment, true);
+                this.props.afterSend(res.data.comment);
             }
         })
         .catch(error => {

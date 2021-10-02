@@ -7,7 +7,6 @@ import axios from 'axios';
 import logout from '../../logout';
 import getToken from '../../getToken';
 import getUserData from '../../getUserData';
-import Spinner from './spinner';
 
 import OnlineIcon from './onlineIcon';
 
@@ -30,13 +29,24 @@ class UserPhoto extends Component {
             nickname: userData.nickname,
             userId: userId,
             photo: null,
-            loading: false,
+            loading: true,
             conversations: []
         }
+
+        this.initLoadFunction.bind(this);
     }
 
     componentDidMount() {
-        this.setState({loading: true});
+        this.initLoadFunction();
+    }
+
+    componentDidUpdate(prevProps){
+        if(prevProps.userId !== this.props.userId){
+            this.setState({userId: this.props.userId}, ()=>this.initLoadFunction());
+        }
+    }
+
+    initLoadFunction = () => {
         let getData = new Promise((resolve, reject) => {
             axios({
                 method: 'get',
