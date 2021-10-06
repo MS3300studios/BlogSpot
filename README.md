@@ -10,13 +10,19 @@ This is a social web application written with ReactJS utilizing Redux. It also u
 3) Likes and comments for posts
 4) A system of dynamic notifications
 5) The user can search for other users and add them
+6) The user can choose between a blue and a green color scheme
+7) chatting in real time with friends
+8) making chat groups with friends and other users
+9) adding photos and commenting on them
+10) blocking other users 
+11) reporting other users
+12) changing user account details
+13) registering/logging in with your google account
 
 ### To come:
-
-4) chatting with friends
-5) deleting comments
-6) adding photos
-7) forming groups with friends
+forming groups with friends
+sorting posts by the number of likes in socialboard
+in case of forgetting password, there will be an standart recovery system by email
 
 # Description
 
