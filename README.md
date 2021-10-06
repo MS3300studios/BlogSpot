@@ -1,4 +1,4 @@
-# BlogSpot
+# BragSpot
 This is a social web application written with ReactJS utilizing Redux. It also uses technologies such as Node with ExpressJS framework for the backend/API. For storing data the project uses MongoDB.
 
 ----------
