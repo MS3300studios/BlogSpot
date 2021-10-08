@@ -135,16 +135,18 @@ router.post('/users/delete', auth, (req, res) => {
 
     Notification.deleteMany({receiverId: req.userData.userId});
 
-    Conversation.find({"participants.userId": req.userData.userId }).exec().then(conversations => {
-        let privateConversations = conversations.filter(el => el.conversationType === "private");
-        privateConversations.forEach(el => {
-            Message.deleteMany({converstionId: el._id});
-            Conversation.deleteOne({_id: el._id});
-        })
+    Message.deleteMany({authorId: req.userData.userId}); //deletes all messages (anywhere) connected to user 
 
-        let publicConversations = conversations.filter(el => el.conversationType !== "private");
-        publicConversations.forEach(el => {
-            Message.deleteMany({converstionId: el._id});
+    Conversation.find({"participants.userId": req.userData.userId }).exec().then(conversations => {
+        conversations.forEach(conversation => {
+            conversation.participants.forEach(participant => {
+                if(conversation.conversationType === "private"){
+                    Conversation.deleteOne({_id: conversation._id})
+                } 
+                else if(participant.userId === req.userData.userId){
+                    console.log(participant.userId)
+                }
+            })
         })
     })
 
@@ -355,3 +357,18 @@ router.post('/users/findByGoogleId', (req, res) => {
 })
 
 module.exports = router;
+
+
+
+//user conversations old deleting scheme: 
+
+// let privateConversations = conversations.filter(el => el.conversationType === "private");
+// privateConversations.forEach(el => {
+//     Message.deleteMany({converstionId: el._id});
+//     Conversation.deleteOne({_id: el._id});
+// })
+
+// let publicConversations = conversations.filter(el => el.conversationType !== "private");
+// publicConversations.forEach(el => {
+//     Message.deleteMany({converstionId: el._id});
+// })

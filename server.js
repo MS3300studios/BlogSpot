@@ -33,6 +33,24 @@ app.get('/#/*', function (req, res) {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
+const Conversation = require('./models/conversation');
+
+app.post('/testing/conversations', (req, res) => {
+    Conversation.find({"participants.userId": req.userData.userId }).exec().then(conversations => {
+        conversations.forEach(conversation => {
+            conversation.participants.forEach(participant => {
+                if(conversation.conversationType === "private"){
+                    Conversation.deleteOne({_id: conversation._id})
+                } 
+                else if(participant.userId === req.userData.userId){
+                    console.log(participant.userId)
+                }
+            })
+        })
+    })
+})
+
+
 //websocket: 
 const corsOptions = {
     cors: true,

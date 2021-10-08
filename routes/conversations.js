@@ -32,7 +32,21 @@ router.post('/conversations/new', auth, (req, res) => {
 
 //get multiple conversations that have the userId as one of the users in participants array
 router.get('/conversations/', auth, (req, res) => {
-    Conversation.find({ "participants.userId": req.userData.userId }).exec().then(conversations => {
+    Conversation.find({"participants.userId": req.userData.userId }).exec().then(conversations => {
+
+        conversations.forEach(conversation => {
+            conversation.participants.forEach(participant => {
+                if(conversation.conversationType === "private"){
+                    console.log("conversation: "+conversation._id+" will be deleted");
+                    // Conversation.deleteOne({_id: conversation._id})
+                } 
+                else if(participant.userId === req.userData.userId){
+                    
+                    console.log(participant.userId)
+                }
+            })
+        })
+
         res.json({
             conversations: conversations
         })

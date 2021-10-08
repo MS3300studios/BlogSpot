@@ -1,9 +1,11 @@
 import * as actionTypes from './actions';
 
+import { MAIN_URI } from '../config';
+
 import io from 'socket.io-client';
 
 const initialState = {
-    socket: io('http://localhost:3001')
+    socket: io(`${MAIN_URI}`)
 };
 
 const reducer = ( state = initialState, action ) => {
