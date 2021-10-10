@@ -101,7 +101,19 @@ class Login extends Component {
             })
             .catch(error => {
                 console.log(error);
-                this.flash("wrong email or password");
+                switch (error.message) {
+                    case "Request failed with status code 401":
+                        this.flash("wrong email or password");
+                        break;
+                
+                    case "Request failed with status code 404":
+                        this.flash("no user with this email was found");
+                        break;
+                
+                    default:
+                        this.flash("an error ocurred, try again later");
+                        break;
+                }
             });
 
     }
