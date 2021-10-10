@@ -93,7 +93,7 @@ class Login extends Component {
                         let userDataJSON = JSON.stringify(userData)                    
                         sessionStorage.setItem('userData', userDataJSON);
                     }
-                    window.location.replace("http://localhost:3000/");
+                    window.location.replace(MAIN_URI);
                 }
                 else{
                     this.flash("An error ocurred, try again");
