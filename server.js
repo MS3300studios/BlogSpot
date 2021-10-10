@@ -20,6 +20,7 @@ app.use(require('./routes/messages'));
 app.use(require('./routes/lastReadMessages'));
 app.use(require('./routes/blockingUsers'));
 app.use(require('./routes/reporting'));
+app.use(require('./routes/testing'));
 
 const server = app.listen(PORT, ()=>{
     console.log(chalk.green("------------------------------"));

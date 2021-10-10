@@ -186,7 +186,7 @@ router.post('/users/login', (req, res) => {
         .exec()
         .then(users => {
             if(users.length < 1){
-                return res.sendStatus(401); //didn't find any users
+                return res.sendStatus(404); //didn't find any users
             }
             bcrypt.compare(req.body.password, users[0].password, (err, isEqual) => {
                 if(err) return res.sendStatus(401);
@@ -211,8 +211,9 @@ router.post('/users/login', (req, res) => {
                     });
                     
                 }
-
-                res.sendStatus(401);
+                else{
+                    res.sendStatus(401);
+                }
             })
         })
         .catch(err => {
