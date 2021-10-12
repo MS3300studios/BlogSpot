@@ -31,10 +31,6 @@ const server = app.listen(PORT, ()=>{
 
 app.use(express.static(path.join(__dirname, 'frontEnd/build')));
 
-app.get('/#/*', function(req, res){
-    console.log('the fuck')
-})
-
 // app.get('/#/*', function (req, res) {
 //     console.log(path.join(__dirname, 'build', 'index.html'))
 //     res.sendFile(path.join(__dirname, 'build', 'index.html'));
