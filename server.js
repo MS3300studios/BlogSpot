@@ -3,6 +3,8 @@ const socket = require('socket.io');
 const chalk = require("chalk");
 const path = require("path");
 const app = express();
+const configMode = require('./serverConfig');
+
 require("dotenv").config();
 const PORT = process.env.PORT || 3001;
 
@@ -27,12 +29,16 @@ const server = app.listen(PORT, ()=>{
     console.log(chalk.green(`server is running on port ${PORT}`));
 });
 
-
 app.use(express.static(path.join(__dirname, 'frontEnd/build')));
 
-app.get('/#/*', function (req, res) {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
-});
+app.get('/#/*', function(req, res){
+    console.log('the fuck')
+})
+
+// app.get('/#/*', function (req, res) {
+//     console.log(path.join(__dirname, 'build', 'index.html'))
+//     res.sendFile(path.join(__dirname, 'build', 'index.html'));
+// });
 
 const Conversation = require('./models/conversation');
 
@@ -53,9 +59,16 @@ app.post('/testing/conversations', (req, res) => {
 
 
 //websocket: 
-const corsOptions = {
+let corsOptions = {
     cors: true,
     origins: ["http://localhost:3000"]
+}
+
+if(configMode.mode === "production"){
+    corsOptions = {
+        cors: true,
+        origins: ["https://bragspot.herokuapp.com/"]
+    }
 }
 
 const io = socket(server, corsOptions);
