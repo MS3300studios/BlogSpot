@@ -101,7 +101,6 @@ class App extends Component {
             <Route path="/register" exact component={Registration} />
             <Route path="/login" exact component={Login} />
             <Route path="/termsAndConditions" exact component={termsAndConditions} />
-            <Route path="/reports" exact component={Reporting} />
             <Route path="/" component={Gate} />
           </Switch>
         </React.Fragment>
