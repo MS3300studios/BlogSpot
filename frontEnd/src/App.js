@@ -28,6 +28,7 @@ import AddPost from './components/AddPost/AddPost';
 import getColor from './getColor';
 import Reporting from './components/reporting/reporting';
 import Reports from './components/reports/reports';
+import Banning from './components/banning/banning';
 
 class App extends Component {
   constructor(props){
@@ -71,6 +72,7 @@ class App extends Component {
             <Menu />
             <Switch>
               <Route path="/reports" exact component={Reports} />
+              <Route path="/banning" exact component={Banning} />
               <Route path="/addPost" exact component={AddPost} />
               <Route path="/conversation/" component={ConversationContainer} />
               <Route path="/addConversation/" component={AddingConversation} />
