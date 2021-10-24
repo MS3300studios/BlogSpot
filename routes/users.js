@@ -19,6 +19,7 @@ const PhotoModule = require('../models/photo');
 const Photo = PhotoModule.photo;
 const ConversationMoule = require('../models/conversation');
 const Conversation = ConversationMoule.Conversation;
+const bannedUser = require('../models/bannedList');
 
 router.use(cors());
 router.use(express.json({limit: '10mb'}));
@@ -181,40 +182,50 @@ router.post('/admin/users/delete', (req, res) => {
 })
 
 router.post('/users/login', (req, res) => {
-    console.log('login')
     User.find({email: req.body.email})
         .exec()
         .then(users => {
             if(users.length < 1){
                 return res.sendStatus(404); //didn't find any users
             }
-            bcrypt.compare(req.body.password, users[0].password, (err, isEqual) => {
-                if(err) return res.sendStatus(401);
-                if(isEqual) {
-                    const token = jwt.sign(
-                        {
-                            email: users[0].email,
-                            userId: users[0]._id
-                        },
-                        process.env.SECRET,
-                        {
-                            expiresIn: "1h"
-                        }
-                    );
-                    
-                    users[0].photo = "get /users/getUserPhoto/:userId for photo";
-                    let userDataJSON = JSON.stringify(users[0]);
-                    return res.status(200).json({
-                        message: 'Authorization successful',
-                        token: token,
-                        userData: userDataJSON
-                    });
-                    
-                }
-                else{
-                    res.sendStatus(401);
-                }
-            })
+            else{
+                bannedUser.find({bannedUserId: users[0]._id}).exec().then(user => {
+                    if(user.length === 0){
+                        //user is not banned
+                        bcrypt.compare(req.body.password, users[0].password, (err, isEqual) => {
+                            if(err) return res.sendStatus(401);
+                            if(isEqual) {
+                                const token = jwt.sign(
+                                    {
+                                        email: users[0].email,
+                                        userId: users[0]._id
+                                    },
+                                    process.env.SECRET,
+                                    {
+                                        expiresIn: "1h"
+                                    }
+                                );
+                                
+                                users[0].photo = "get /users/getUserPhoto/:userId for photo";
+                                let userDataJSON = JSON.stringify(users[0]);
+                                return res.status(200).json({
+                                    message: 'Authorization successful',
+                                    token: token,
+                                    userData: userDataJSON
+                                });
+                                
+                            }
+                            else{
+                                res.sendStatus(401);
+                            }
+                        })
+                    }
+                    else{
+                        //user is banned
+                        res.json({error: "user is banned"})
+                    }
+                })
+            }
         })
         .catch(err => {
             console.log(err);

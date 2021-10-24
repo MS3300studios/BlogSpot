@@ -78,7 +78,7 @@ class Login extends Component {
         }
         axios.post(`${MAIN_URI}/users/login`, loginData)
             .then(res => {
-                if(res.status===200){
+                if(res.status===200 && !res.data.error){
                     if(this.state.keepLoggedIn){
                         localStorage.setItem('token', res.data.token);
                         let userData = JSON.parse(res.data.userData);
@@ -95,8 +95,9 @@ class Login extends Component {
                     }
                     window.location.replace(MAIN_URI);
                 }
+                else if(res.data.error === "user is banned") this.flash("user is banned")
                 else{
-                    this.flash("An error ocurred, try again");
+                    this.flash("An error ocurred, try again");        
                 }
             })
             .catch(error => {

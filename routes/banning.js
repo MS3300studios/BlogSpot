@@ -10,12 +10,11 @@ router.get('/bannedUsers', function(req, res){
     bannedUser.find().exec().then(users => res.json(users));
 })
 
-router.post('/banUser', function(req, res){
+router.post('/banUser', function(req, res){ 
     if(req.body.password === "admin3300" && req.body.userID.length === 24){
         User.findById(req.body.userID, (err, doc)=>{
             if(err) console.log(err)
             else if(doc !== null){
-                //user exists
                 const ban = bannedUser({bannedUserId: req.body.userID});
                 ban.save().then(()=> res.sendStatus(201))
             }

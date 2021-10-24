@@ -179,4 +179,3 @@ const Banning = () => {
 }
  
 export default Banning;
-
