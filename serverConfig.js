@@ -1,1 +1,2 @@
-module.exports = {mode: "development"} //else production
+module.exports = {mode: "development"} 
+// module.exports = {mode: "production"} 

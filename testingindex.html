@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testing</title>
+    <style>
+        body{
+            width: 100vw;
+            height: 100vh;
+            margin: 0px;
+            padding: 0px;
+            background-color: firebrick;
+        }
+        .center{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="center">
+        <h1>TESTING</h1>
+    </div>
+    <div class="center" style="margin-bottom: 20px;">
+        <input type="text" id="input">
+    </div>
+    <div class="center">
+        <button id="submit">submit</button>
+    </div>
+
+    <script>
+        let value = "";
+
+        const input = document.getElementById("input");
+        input.addEventListener('keydown', (e)=>{
+            value = e.target.value;
+        })
+
+        const submit = document.getElementById('submit');
+        submit.addEventListener('click', ()=>{
+            if(value === "") return null
+            else{
+                // console.log(`current value is: ${value}`)
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", '/testing', true);
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+                xhr.onreadystatechange = function() { 
+                    if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+                        console.log('request was finished')
+                    }
+                }
+                xhr.send(value);
+            }
+        })
+    </script>
+</body>
+</html>

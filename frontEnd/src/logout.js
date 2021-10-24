@@ -1,8 +1,8 @@
-let logout = () => {
+const logout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('userData');
     sessionStorage.clear();
-    window.location.replace('http://localhost:3000/'); //redirect to gate
+    window.location.replace("https://bragspot.herokuapp.com"); //redirect to gate
 }
 
 export default logout;

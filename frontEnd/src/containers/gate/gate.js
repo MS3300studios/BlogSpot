@@ -47,7 +47,7 @@ class Gate extends Component {
     }
 
     handleGoogleFailure = (res) => {
-        console.log(res.error)
+        this.flash(res.error)
     }
 
     responseGoogle = (response) => {

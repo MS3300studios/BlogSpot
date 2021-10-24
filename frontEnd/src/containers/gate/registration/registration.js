@@ -26,7 +26,7 @@ const TestingFunc = () => {
     const send = () => {
         axios({
             method: 'post',
-            url: `http://localhost:3001/testing`,
+            url: `${MAIN_URI}/testing`,
             data: {val: Value}
         })
         .catch(error => {
