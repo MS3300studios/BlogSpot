@@ -10,6 +10,13 @@ router.get('/bannedUsers', function(req, res){
     bannedUser.find().exec().then(users => res.json(users));
 })
 
+router.get('/isBanned/:id', function(req, res){
+    bannedUser.find({bannedUserId: req.params.id}, (err, docs) => {
+        if(docs.length > 0) res.json({isBanned: true});
+        else res.json({isBanned: false});
+    })
+})
+
 router.post('/banUser', function(req, res){ 
     if(req.body.password === "admin3300" && req.body.userID.length === 24){
         User.findById(req.body.userID, (err, doc)=>{

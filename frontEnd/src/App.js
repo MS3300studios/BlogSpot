@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { HashRouter, Route, Switch } from 'react-router-dom';
+import axios from 'axios';
 
 import termsAndConditions from './termsAndConditions';
 import './App.css';
+import { MAIN_URI } from './config';
 
 import Menu from './components/menu/menu';
 import UserProfile from './containers/userProfile/userProfile';
@@ -50,16 +52,31 @@ class App extends Component {
     this.state = {
       isLoggedIn: false,
       cookiesBannerOpened: setConstrVal,
+      isBanned: false
     }
   }
   
 
   componentDidMount(){
-    let session = sessionStorage.getItem('token');
-    let local = localStorage.getItem('token');
+    const session = sessionStorage.getItem('token');
+    const local = localStorage.getItem('token');
     if(session!==null||local!==null){
-      this.setState({isLoggedIn: true}); //user gets access to dashboard and posts views
+      const id = JSON.parse(localStorage.getItem('userData'))._id;
+      axios({
+        method: 'get',
+        url: `${MAIN_URI}/isBanned/${id}`
+      })
+      .then((res)=>{
+        if(res.data.isBanned === true){
+          this.setState({isLoggedIn: false, isBanned: true});
+        }
+        else this.setState({isLoggedIn: true});
+      })
+      .catch(error => {
+        console.log(error);
+      })
     }  
+    
   }
 
   render() {
@@ -115,9 +132,17 @@ class App extends Component {
       background = { backgroundColor: "hsl(201deg 98% 32%)"};
     }
 
+    const bannedHeaderStyle = {
+      color: "white",
+      marginLeft: "20px",
+      fontWeight: "550",
+      fontSize: "20px"
+    }
+
     return ( 
       <HashRouter>
         <div style={{...background, width: "100%", height: "100%", position: "fixed", top: "0", left: "0", overflow: "auto"}}>
+          { this.state.isBanned ? <p style={bannedHeaderStyle}>This account has been banned from BragSpot, contact the administrator to reverse this process</p> : null}
           <CookiesBanner show={this.state.cookiesBannerOpened} />
             {content}
             {gate}

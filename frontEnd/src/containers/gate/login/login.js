@@ -95,7 +95,7 @@ class Login extends Component {
                     }
                     window.location.replace(MAIN_URI);
                 }
-                else if(res.data.error === "user is banned") this.flash("user is banned")
+                else if(res.data.error === "user is banned") this.flash("this account is banned, to resolve this issue contact server admin at mikistrus@gmail.com")
                 else{
                     this.flash("An error ocurred, try again");        
                 }
