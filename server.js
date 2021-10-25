@@ -32,7 +32,11 @@ const server = app.listen(PORT, ()=>{
 
 app.use(express.static(path.join(__dirname, 'frontEnd/build')));
 
-
+app.get('/adminVerify/:pass', (req, res) => {
+    if(req.params.pass === "mikolaj3300"){
+        res.json({verified: true});
+    } else res.json({verified: false});
+})
 
 
 

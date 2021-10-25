@@ -11,6 +11,7 @@ const Reports = () => {
     const [loading, setloading] = useState(true);
     const [reports, setreports] = useState([]);
     const [password, setpassword] = useState(""); //has to match: "admin3300"
+    const [verified, setverified] = useState(false);
 
     useEffect(() => {
         axios({
@@ -27,6 +28,19 @@ const Reports = () => {
             console.log(error);
         })        
     }, [])
+
+    const Verify = () => {
+        axios({
+            method: 'get',
+            url: `${MAIN_URI}/adminVerify/${password}`,
+        })
+        .then((res)=>{
+            setverified(res.data.verified);
+        })
+        .catch(error => {
+            console.log(error);
+        })
+    }
 
     const deleteReport = (id) => {
         axios({
@@ -48,7 +62,7 @@ const Reports = () => {
     return (
         <>
         {
-            password === "admin3300" ? (    
+            verified ? (    
                 <div style={{display: "flex", justifyContent: "center", width: "100%"}}>
                     {
                         loading ? <p>Loading ...</p> : (
@@ -96,7 +110,9 @@ const Reports = () => {
                             borderRadius: "5px",
                             height: "4vh"
                         }}
+                        onKeyPress={event => event.key === 'Enter' ? Verify() : null}
                     />
+                    <Button clicked={Verify}>Send</Button>
                 </div>
             )
         }

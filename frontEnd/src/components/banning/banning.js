@@ -6,7 +6,8 @@ import { Link } from 'react-router-dom';
 import UserPhoto from '../UI/userphoto';
 
 const Banning = () => {
-    const [password, setpassword] = useState("")
+    const [password, setpassword] = useState("");
+    const [verified, setverified] = useState(false);
     const [userID, setuserID] = useState("");
     const [success, setsuccess] = useState(null);
     const [bannedUsers, setbannedUsers] = useState([]);
@@ -27,6 +28,19 @@ const Banning = () => {
             console.log(error);
         })        
     }, [])
+
+    const Verify = () => {
+        axios({
+            method: 'get',
+            url: `${MAIN_URI}/adminVerify/${password}`,
+        })
+        .then((res)=>{
+            setverified(res.data.verified);
+        })
+        .catch(error => {
+            console.log(error);
+        })
+    }
 
     const sendData = () => {
         if(userID === "") return null;
@@ -113,7 +127,7 @@ const Banning = () => {
     return (
         <>
             {
-                password === "admin3300" ? (
+                verified ? (
                     <>
                     <div style={{display: "flex", justifyContent: "center", width: "100%"}}>
                         <div>
@@ -168,9 +182,12 @@ const Banning = () => {
                                 width: "30vw",
                                 border: "none",
                                 borderRadius: "5px",
-                                height: "4vh"
+                                height: "4vh",
+                                marginRight: "15px"
                             }}
+                            onKeyPress={event => event.key === 'Enter' ? Verify() : null}
                         />
+                        <Button clicked={Verify}>Send</Button>
                     </div>
                 )
             }
