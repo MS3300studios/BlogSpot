@@ -71,7 +71,7 @@ const FriendsListItem = (props) => {
             <div className={classes.friendContainer}>
                 <div className={classes.listElement}>
                     <div className={classes.smallFaceContainer}>
-                        <img src={props.photo} alt="friend's face"/>
+                        <img src={props.photo} alt="user"/>
                         {
                             props.onlineIcon ? (
                                 <div className={classes.onlineIconPositioner}>

@@ -34,18 +34,18 @@ router.post('/conversations/new', auth, (req, res) => {
 router.get('/conversations/', auth, (req, res) => {
     Conversation.find({"participants.userId": req.userData.userId }).exec().then(conversations => {
 
-        conversations.forEach(conversation => {
-            conversation.participants.forEach(participant => {
-                if(conversation.conversationType === "private"){
-                    console.log("conversation: "+conversation._id+" will be deleted");
-                    // Conversation.deleteOne({_id: conversation._id})
-                } 
-                else if(participant.userId === req.userData.userId){
+        // conversations.forEach(conversation => {
+        //     conversation.participants.forEach(participant => {
+        //         if(conversation.conversationType === "private"){
+        //             console.log("conversation: "+conversation._id+" will be deleted");
+        //             // Conversation.deleteOne({_id: conversation._id})
+        //         } 
+        //         else if(participant.userId === req.userData.userId){
                     
-                    console.log(participant.userId)
-                }
-            })
-        })
+        //             console.log(participant.userId)
+        //         }
+        //     })
+        // })
 
         res.json({
             conversations: conversations
