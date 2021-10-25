@@ -150,13 +150,25 @@ class Gate extends Component {
                         <div className={classes.card}>
                             <h1>Your first time here?</h1>
                             <div className={classes.buttonContainer}>
-                                <Link to="/register"><Button>register</Button></Link>
+                                {
+                                    this.props.isBanned ? (
+                                        <Button disabled>register</Button>
+                                    ) : (
+                                        <Link to="/register"><Button>register</Button></Link>
+                                    )
+                                }
                             </div>
                         </div>
                         <div className={classes.card}>
                             <h1>Visiting us again?</h1>
                             <div className={classes.buttonContainer}>
-                                <Link to="/login"><Button>login</Button></Link>
+                                {
+                                    this.props.isBanned ? (
+                                        <Button disabled>login</Button>
+                                    ) : (
+                                        <Link to="/login"><Button>login</Button></Link>
+                                    )
+                                }
                             </div>
                         </div>
                     </div>

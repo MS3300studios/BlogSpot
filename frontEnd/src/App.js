@@ -68,7 +68,7 @@ class App extends Component {
       else if(local !== null){
         id = JSON.parse(localStorage.getItem('userData'))._id
       }
-      
+
       axios({
         method: 'get',
         url: `${MAIN_URI}/isBanned/${id}`
@@ -127,7 +127,7 @@ class App extends Component {
             <Route path="/register" exact component={Registration} />
             <Route path="/login" exact component={Login} />
             <Route path="/termsAndConditions" exact component={termsAndConditions} />
-            <Route path="/" component={Gate} />
+            <Route path="/" render={()=><Gate isBanned={this.state.isBanned} />} />
           </Switch>
         </React.Fragment>
       )
