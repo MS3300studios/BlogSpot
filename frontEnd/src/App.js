@@ -61,7 +61,14 @@ class App extends Component {
     const session = sessionStorage.getItem('token');
     const local = localStorage.getItem('token');
     if(session!==null||local!==null){
-      const id = JSON.parse(localStorage.getItem('userData'))._id;
+      let id;
+      if(session !== null){
+        id = JSON.parse(sessionStorage.getItem('userData'))._id
+      }
+      else if(local !== null){
+        id = JSON.parse(localStorage.getItem('userData'))._id
+      }
+      
       axios({
         method: 'get',
         url: `${MAIN_URI}/isBanned/${id}`
