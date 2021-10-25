@@ -128,7 +128,10 @@ class Notifications extends Component {
         .then((res)=>{
             let notifCount = 0;
             let friendsRdy = res.data.notifications.map((notification, index) => {
-                if(notification.wasSeen === false) notifCount++;
+                if(notification.wasSeen === false || notification.friendId){
+                    notifCount++;
+                }
+
                 return (
                     <DropdownItem data={notification} key={index} elKey={index} deleteNotif={this.removeNotifs} decrementCounter={this.decrementCounter} />
                 )
@@ -158,8 +161,8 @@ class Notifications extends Component {
         return (
             <div className={classes.dropdown}>
                 <div className={classes.center}><IoNotifications size="2em" color="#0a42a4"/>
-                    {this.state.notificationsCount+this.state.friendRequestsJSX.length < 1 ? null : (
-                        <div className={classes.notificationNumber}>{this.state.notificationsCount+this.state.friendRequestsJSX.length}</div>
+                    {this.state.notificationsCount < 1 ? null : (
+                        <div className={classes.notificationNumber}>{this.state.notificationsCount}</div>
                     )}
                 </div> 
                 <div className={classes.dropdownContent}>

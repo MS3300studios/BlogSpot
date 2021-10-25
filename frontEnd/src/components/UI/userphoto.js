@@ -83,7 +83,7 @@ class UserPhoto extends Component {
                     <Link to={"/user/profile/?id="+this.state.userData._id} className={classes.myProfileLink}><p>My Profile</p></Link>
                     <Link to="/user/activity" className={classes.myProfileLink}><p>My activity</p></Link>
                     <Link to="/settings" className={classes.myProfileLink}><p>Settings</p></Link>
-                    <p onClick={() => this.setState({logOut: true})}>Log Out</p>
+                    <p onClick={() => this.setState({logOut: true})} className={classes.logoutP}>Log Out</p>
                     {this.state.logOut ? logout() : null}
                 </div>
             );
