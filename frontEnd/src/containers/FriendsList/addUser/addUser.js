@@ -11,6 +11,7 @@ import FriendsListItem from '../friendsListItem';
 import Flash from '../../../components/UI/flash';
 
 import getToken from '../../../getToken';
+import getUserData from '../../../getUserData'
 import getColor from '../../../getColor';
 
 import classes2 from '../FriendsList.module.css';
@@ -28,10 +29,12 @@ class AddUser extends Component {
     constructor(props) {
         super(props);
 
-        let token = getToken();
+        const token = getToken();
+        const userData = getUserData();
 
         this.state = {
             token: token,
+            userData: userData,
             users: [],
             searched: false,
             userNotFound: false,
@@ -142,18 +145,21 @@ class AddUser extends Component {
                 <div className={classes2.nameListContainer}>
                     {
                         this.state.users.map((user, index) => {
-                            return (
-                                <FriendsListItem
-                                    noInteractionIcon
-                                    hideOnlineIcon 
-                                    key={index}  
-                                    id={user._id} 
-                                    name={user.name}
-                                    nickname={user.nickname}
-                                    surname={user.surname}
-                                    photo={user.photo}
-                                />
-                            );
+                            if(user._id !== this.state.userData._id){
+                                return (
+                                    <FriendsListItem
+                                        noInteractionIcon
+                                        hideOnlineIcon 
+                                        key={index}  
+                                        id={user._id} 
+                                        name={user.name}
+                                        nickname={user.nickname}
+                                        surname={user.surname}
+                                        photo={user.photo}
+                                    />
+                                );
+                            }
+                            else return null;
                         })
                     }
                     <Button clicked={()=>{
