@@ -52,7 +52,8 @@ class App extends Component {
     this.state = {
       isLoggedIn: false,
       cookiesBannerOpened: setConstrVal,
-      isBanned: false
+      isBanned: false,
+      checkingIfBanned: false
     }
   }
   
@@ -69,18 +70,20 @@ class App extends Component {
         id = JSON.parse(localStorage.getItem('userData'))._id
       }
 
-      axios({
-        method: 'get',
-        url: `${MAIN_URI}/isBanned/${id}`
-      })
-      .then((res)=>{
-        if(res.data.isBanned === true){
-          this.setState({isLoggedIn: false, isBanned: true});
-        }
-        else this.setState({isLoggedIn: true});
-      })
-      .catch(error => {
-        console.log(error);
+      this.setState({checkingIfBanned: true}, ()=>{
+        axios({
+          method: 'get',
+          url: `${MAIN_URI}/isBanned/${id}`
+        })
+        .then((res)=>{
+          if(res.data.isBanned === true){
+            this.setState({isLoggedIn: false, isBanned: true, checkingIfBanned: false});
+          }
+          else this.setState({isLoggedIn: true, checkingIfBanned: false});
+        })
+        .catch(error => {
+          console.log(error);
+        })
       })
     }  
     

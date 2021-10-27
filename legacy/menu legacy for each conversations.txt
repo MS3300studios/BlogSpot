@@ -61,7 +61,7 @@ class Menu extends Component {
         })
 
         this.props.socket.on('message', message => {
-            console.log('[menu.js] socket: message was sent')
+            console.log('message was sent')
             if(message.authorId !== this.data._id && this.props.location.pathname !== "/chat/" && this.props.location.pathname !== "/conversation/"){
                 let msgCnt = this.state.messageCount;
                 this.setState({messageCount: msgCnt+1});

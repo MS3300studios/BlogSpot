@@ -77,15 +77,15 @@ io.on('connection', (socket) => {
     })
         
     socket.on('join', ({name, conversationId}) => {
-        // console.log(`${name} joined room nr: ${conversationId}`)
-        socket.join(conversationId); //user is joining a specific room
+        console.log(`${name} joined room nr: ${conversationId}`)
+        socket.join(conversationId); //user is joining a specific rom
         users.push({id: socket.id, name: name, conversationId: conversationId});
     })
 
     socket.on('sendMessage', (message) => {
         console.log('received message from user, sending it to conversations')
         io.to(message.conversationId).emit('message', message);
-        
+
         const msg = new Message({
             authorId: message.authorId,
             authorName: message.authorName,
@@ -98,7 +98,7 @@ io.on('connection', (socket) => {
     })
 
     socket.on('leaveConversation', ({conversationId}) => {
-        // console.log('user left the conversation: '+conversationId)
+        console.log('user left the conversation: '+conversationId)
         socket.leave(conversationId); 
         let newUsers = users.filter(user => user.id !== socket.id);
         users = newUsers;

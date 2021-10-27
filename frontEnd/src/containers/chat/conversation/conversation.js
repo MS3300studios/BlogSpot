@@ -91,18 +91,26 @@ class Conversation extends Component {
 
     componentDidMount(){
         this.fetchMessages();
-        //getting message directly from server
+        // this.props.socket.emit('join', {name: this.state.user.name, conversationId:  this.props.conversation._id});
+
         this.props.socket.on('message', message => {
-            let prevMessages = this.state.messages;
-            prevMessages.push(message);
-            this.setState({messages: prevMessages});
-            this.sendLastReadMessage(message.content, this.props.conversation._id);    
+            console.log('[conversation.js] socket: message was sent')
+            if(message.conversationId === this.props.conversation._id){
+                let prevMessages = this.state.messages;
+                prevMessages.push(message);
+                this.setState({messages: prevMessages});
+                this.sendLastReadMessage(message.content, this.props.conversation._id);    
+            }
         })
     }   
 
     componentDidUpdate(prevProps, prevState){
-        //scrolling events
         if(prevProps.conversation._id !== this.props.conversation._id){
+            // console.log('leaving conversation '+prevProps.conversation._id)
+            // this.props.socket.emit('leaveConversation', {conversationId: prevProps.conversation._id});
+            // console.log('joining conversation '+this.props.conversation._id)
+            // this.props.socket.emit('join', {name: this.state.user.name, conversationId: this.props.conversation._id});
+
             this.setState({skip: 0, infoOpened: false, loadingNewMessages: false, messages: [], conversationStartReached: false}, () => {
                 this.scrollPosition.current = 201;
                 this.fetchMessages();
@@ -114,6 +122,11 @@ class Conversation extends Component {
             this.messagesEnd.scrollIntoView({ behavior: "smooth" });
         }
     }
+
+    // componentWillUnmount(){
+    //     this.props.socket.emit('leaveConversation', {conversationId: this.props.conversation._id});
+    //     console.log('leaving conversation '+this.props.conversation._id)
+    // }
 
     sendLastReadMessage = (content, conversationId) => {
         axios({
