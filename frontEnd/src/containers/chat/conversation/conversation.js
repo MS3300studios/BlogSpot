@@ -22,11 +22,11 @@ import Button from '../../../components/UI/button';
 import Spinner from '../../../components/UI/spinner';
 import Participant from './participant';
 import AddingConversation from '../addingConversation/addingConversation';
-import OnlineIcon from '../../../components/UI/onlineIcon';
 
 import classes from './conversation.module.css';
 import greenClasses from './greenClasses.module.css';
 import blueClasses from './blueClasses.module.css';
+import UserPhoto from '../../../components/UI/userphoto';
 
 const colorScheme = getColor();
 let colorClasses = greenClasses;
@@ -387,8 +387,8 @@ class Conversation extends Component {
             const data = this.getOtherUserNameAndId();
             conversationName = (
                 <div className={classes.conversationName}>
-                    <OnlineIcon online={data.friendId}/>
-                    <Link to={`/user/profile/?id=${data.friendId}`} style={{color: "unset", textDecoration: "none"}}>
+                    <UserPhoto userId={data.friendId}/>
+                    <Link to={`/user/profile/?id=${data.friendId}`} style={{color: "unset", textDecoration: "none", marginLeft: "-50px"}}>
                         <h1>{data.friendName}</h1>
                     </Link>
                 </div>

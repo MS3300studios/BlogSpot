@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import axios from 'axios'; 
 import { MAIN_URI } from '../../../config';
@@ -18,28 +18,6 @@ let colorClasses = registrationGreen;
 const colorScheme = getColor();
 if(colorScheme === "blue"){
     colorClasses = registrationBlue;
-}
-
-const TestingFunc = () => {
-    const [Value, setValue] = useState("");
-
-    const send = () => {
-        axios({
-            method: 'post',
-            url: `${MAIN_URI}/testing`,
-            data: {val: Value}
-        })
-        .catch(error => {
-            console.log(error);
-        })
-    }
-
-    return(
-        <>
-            <input onChange={(e)=>setValue(e.target.value)}/>
-            <Button clicked={send}>OK</Button>
-        </>
-    )
 }
 
 class Registration extends Component {
@@ -268,23 +246,23 @@ class Registration extends Component {
                         <img src={this.state.photoPreview} alt="default"/>
                     </div>
                     {
-                        // this.state.showCaptcha ? (
-                        //     <div className={classes.center}>
-                        //         <ReCAPTCHA
-                        //             sitekey="6LeJ1F0cAAAAAAdyLblJwWcVJ7IayxS8hOtLDOtl"
-                        //             onChange={this.captchaVerify}
-                        //             theme='light'
-                        //         />
-                        //     </div>
-                        // ) : null
+                        this.state.showCaptcha ? (
+                            <div className={classes.center}>
+                                <ReCAPTCHA
+                                    sitekey="6LeJ1F0cAAAAAAdyLblJwWcVJ7IayxS8hOtLDOtl"
+                                    onChange={this.captchaVerify}
+                                    theme='light'
+                                />
+                            </div>
+                        ) : null
                     }
                     <div className={[classes.buttonContainer, classes.center].join(" ")}>
                         <Button clicked={(e)=>{
                             e.preventDefault();
                             this.submitUser();
-                            // if(this.state.showCaptcha === false) this.setState({showCaptcha: true})
-                            // else if(this.state.captchaVerified===true){
-                            // }
+                            if(this.state.showCaptcha === false) this.setState({showCaptcha: true})
+                            else if(this.state.captchaVerified===true){
+                            }
                         }} disabled={!this.state.readyForSubmission}>Register</Button>
                     </div>
                     <div className={classes.consentContainer}>
@@ -297,9 +275,6 @@ class Registration extends Component {
                     <Link to="/login" className={classes.loginLink}>Log in here</Link>
                 </div>
             </div> 
-
-            <TestingFunc />
-
             {flash}
             {this.state.redirectToLogin ? <Redirect to="/login" /> : null}
            </React.Fragment>

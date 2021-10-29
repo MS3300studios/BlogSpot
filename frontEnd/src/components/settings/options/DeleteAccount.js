@@ -2,12 +2,8 @@ import React, {useState} from 'react';
 
 import classes from './deleteAccount.module.css';
 import Button from '../../UI/button';
-import axios from 'axios';
-import getToken from '../../../getToken';
-import logout from '../../../logout';
 import { Redirect } from 'react-router-dom';
 import Flash from '../../UI/flash';
-import { MAIN_URI } from '../../../config';
 
 const DeleteAccount = () => {
     const [redirectMain, setredirectMain] = useState(false)
@@ -15,22 +11,7 @@ const DeleteAccount = () => {
     const [flashMessage, setflashMessage] = useState("");
 
     const sendRequest = () => {
-        console.log('okok??')
-        const token = getToken();
-        axios({
-            method: 'post',
-            url: `${MAIN_URI}/users/delete`,
-            headers: {'Authorization': token}
-        })
-        .then((res)=>{
-            if(res.status===200){
-                logout();
-                return;
-            }
-        })
-        .catch(error => {
-            console.log(error);
-        })
+        flash('feature not yet accessible');
     }
 
     const flash = (message) => {
@@ -65,8 +46,7 @@ const DeleteAccount = () => {
             </div>
             <div className={classes.buttonsContainer}>
                 <Button clicked={()=>setredirectMain(true)}>Abort</Button>
-                {/* <Button btnType="Cancel" clicked={sendRequest}>Delete</Button> */}
-                <Button btnType="Cancel" clicked={()=>flash('feature not yet accessible')}>Delete</Button>
+                <Button btnType="Cancel" clicked={sendRequest}>Delete</Button>
             </div>
             {redirectMain ? <Redirect to="/" /> : null}
             {flComp}

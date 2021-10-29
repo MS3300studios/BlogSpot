@@ -87,6 +87,7 @@
     justify-content: space-around;
     align-items: center;
     padding: 10px;
+    margin-top: -10px;
 }
 
 .conversationName h1{
