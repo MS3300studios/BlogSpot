@@ -5,7 +5,6 @@ import classes from './tabSelector.module.css';
 import BlogsTab from '../tabs/Blogs';
 import PhotosTab from '../tabs/PhotosTab';
 import getColor from '../../../getColor';
-// import FriendsList from '../../FriendsList/FriendsList';
 
 const TabSelector = (props) => {
     let display;
@@ -38,8 +37,6 @@ const TabSelector = (props) => {
         </div>
     );
 }
-
-//<FriendsList profileViewComponent={props.userId}/>
  
 export default TabSelector;
 

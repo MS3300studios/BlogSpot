@@ -32,6 +32,7 @@ import Reporting from './components/reporting/reporting';
 import Reports from './components/reports/reports';
 import Banning from './components/banning/banning';
 import Footer from './components/footer/footer';
+import Spinner from './components/UI/spinner';
 
 class App extends Component {
   constructor(props){
@@ -127,12 +128,16 @@ class App extends Component {
       content = null;
       gate = (
         <React.Fragment>
-          <Switch>
-            <Route path="/register" exact component={Registration} />
-            <Route path="/login" exact component={Login} />
-            <Route path="/termsAndConditions" exact component={termsAndConditions} />
-            <Route path="/" render={()=><Gate isBanned={this.state.isBanned} />} />
-          </Switch>
+          {
+            this.state.checkingIfBanned ? <Spinner /> : (
+              <Switch>
+                <Route path="/register" exact component={Registration} />
+                <Route path="/login" exact component={Login} />
+                <Route path="/termsAndConditions" exact component={termsAndConditions} />
+                <Route path="/" render={()=><Gate isBanned={this.state.isBanned} />} />
+              </Switch>
+            )
+          }
         </React.Fragment>
       )
     }

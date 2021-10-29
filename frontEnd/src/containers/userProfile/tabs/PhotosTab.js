@@ -93,7 +93,7 @@ class PhotosTab extends Component {
         return (
             <div className={classes.center}>
                 {
-                    this.state.loading ? <Spinner darkgreen/> : (
+                    this.state.loading ? <Spinner/> : (
                         <div className={classes.photosTabContainer}>
                             {this.state.bigPhotoId ? <PhotoView photo={bigPhotoToSend} closeBigPhoto={this.bigPhotoWasClosed}/> : null}
                             {photos}
