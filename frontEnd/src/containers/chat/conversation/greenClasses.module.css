@@ -20,9 +20,8 @@ background: #555;
 .conversationBanner{
     width: 100%;
     background-color: #469e46;
-    height: 70px;
+    height: 72px;
     position: absolute;
-    top: 75;
     display: flex;
     justify-content: space-between;
     align-items: center;

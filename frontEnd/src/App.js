@@ -31,6 +31,7 @@ import getColor from './getColor';
 import Reporting from './components/reporting/reporting';
 import Reports from './components/reports/reports';
 import Banning from './components/banning/banning';
+import Footer from './components/footer/footer';
 
 class App extends Component {
   constructor(props){
@@ -154,12 +155,13 @@ class App extends Component {
         <div style={{...background, width: "100%", height: "100%", position: "fixed", top: "0", left: "0", overflow: "auto"}}>
           { this.state.isBanned ? <p style={bannedHeaderStyle}>This account has been banned from BragSpot, contact the administrator to reverse this process</p> : null}
           <CookiesBanner show={this.state.cookiesBannerOpened} />
-            {content}
-            {gate}
+          {content}
+          {gate}
+          <Footer />
         </div>
       </HashRouter>
     );
   }
 }
 
-export default App;
+export default App; 
