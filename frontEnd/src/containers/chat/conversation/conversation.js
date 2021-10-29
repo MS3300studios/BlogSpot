@@ -39,15 +39,6 @@ class Conversation extends Component {
         let userData = getUserData();
         let token = getToken();
 
-        let id;
-        if(props.conversation){
-            id = props.conversation._id
-        }
-        else{
-            let queryParams = new URLSearchParams(props.location.search);
-            id = queryParams.get('id'); 
-        }
-
         super(props);
         this.state = {
             messages: [],
@@ -55,7 +46,6 @@ class Conversation extends Component {
             partner: null,
             user: userData,
             token: token,
-            conversationId: id,
             conversationUsers: [],
             skip: 0,
             loading: true,
