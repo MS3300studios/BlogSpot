@@ -2,10 +2,18 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
+    margin: 0 20px 0 20px;
 }
 
 .option p{
     font-weight: 550;
     color: white;
     font-size: 20px;
+}
+
+.default{
+    font-weight: 550;
+    color: white;
+    font-size: 20px;
+    margin: 20px;
 }

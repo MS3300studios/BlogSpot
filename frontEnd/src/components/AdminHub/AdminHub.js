@@ -3,6 +3,8 @@ import React, {useState} from 'react';
 import { MAIN_URI } from '../../config';
 import Button from '../UI/button';
 import classes from './AdminHub.module.css';
+import Banning from '../banning/banning';
+import Reports from '../reports/reports';
 
 const AdminHub = () => {
     const [optionSelected, setoptionSelected] = useState("");
@@ -21,22 +23,24 @@ const AdminHub = () => {
         })
     }
 
-    let content = <p>please select an option</p>
-    if(optionSelected === "banning") content = <p>banning</p>
-    else if(optionSelected === "reports") content = <p>reports</p>
+    let content = <p className={classes.default}>please select an option</p>
+    if(optionSelected === "banning") content = <Banning password={password}/>
+    else if(optionSelected === "reports") content = <Reports />
 
     return (
         <>
             {
                 verified ? (
                     <div>
-                        <div className={classes.option}>
-                            <p>Banning: </p>
-                            <input type="radio" checked={optionSelected === "banning"} onChange={()=>setoptionSelected("banning")}/>
-                        </div>
-                        <div className={classes.option}>
-                            <p>Reports: </p>
-                            <input type="radio" checked={optionSelected === "reports"} onChange={()=>setoptionSelected("reports")}/>
+                        <div style={{display: "flex", justifyContent: "center"}}>
+                            <div className={classes.option}>
+                                <p>Banning: </p>
+                                <input type="radio" checked={optionSelected === "banning"} onChange={()=>setoptionSelected("banning")}/>
+                            </div>
+                            <div className={classes.option}>
+                                <p>Reports: </p>
+                                <input type="radio" checked={optionSelected === "reports"} onChange={()=>setoptionSelected("reports")}/>
+                            </div>
                         </div>
                         <hr />
                         {content}
@@ -49,7 +53,8 @@ const AdminHub = () => {
                                 width: "30vw",
                                 border: "none",
                                 borderRadius: "5px",
-                                height: "4vh"
+                                height: "4vh",
+                                margin: "0px 10px 0px 0px"
                             }}
                             onKeyPress={event => event.key === 'Enter' ? Verify() : null}
                         />

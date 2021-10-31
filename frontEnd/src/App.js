@@ -102,8 +102,6 @@ class App extends Component {
             <Menu />
             <Switch>
               <Route path="/admin" exact component={AdminHub} />
-              <Route path="/reports" exact component={Reports} />
-              <Route path="/banning" exact component={Banning} />
               <Route path="/addPost" exact component={AddPost} />
               <Route path="/conversation/" component={ConversationContainer} />
               <Route path="/addConversation/" component={AddingConversation} />
