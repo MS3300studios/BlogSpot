@@ -6,12 +6,19 @@ const Footer = (props) => {
 
     const display = props.location.pathname === "/";
     const pStyle = { margin: "0px" };
+    const footerStyle = {
+        width: "100%", 
+        display: "flex", 
+        justifyContent: "center", 
+        color: "white",
+        marginTop: "50px"
+    }
 
     return (
         <>
             {
                 display ? (
-                    <footer style={{width: "100%", display: "flex", justifyContent: "center", color: "white"}}>
+                    <footer style={footerStyle}>
                         <div style={{padding: "10px"}}>
                         <p style={pStyle}>Copyright © 2021 Mikołaj Strusiński</p>
                         <p style={pStyle}>terms and conditions: <Link to="/termsAndConditions">/termsAndConditions</Link></p>

@@ -73,6 +73,7 @@ class PhotoForm extends Component {
         var data;
         if(files.length>0){
             reader.readAsDataURL(files[0]);
+            
             let execute = new Promise(function(resolve, reject) {
                 reader.onloadend = function() {
                     data = reader.result;
@@ -85,7 +86,7 @@ class PhotoForm extends Component {
                     photoPreview: URL.createObjectURL(files[0]),
                     photo: b64string
                 });
-            })
+            })``
         }
     }
 
@@ -156,6 +157,11 @@ class PhotoForm extends Component {
                         <Button btnType="Cancel" clicked={()=>this.setState({redirect: true})}>Cancel</Button>
                     </div>
                 </div>
+                <button onClick={()=>{
+                    console.log(this.state.photoPreview.size)
+                }}>
+                    check file size
+                </button>
                 {flash}
                 {this.state.redirect ? <Redirect to="/user/activity" /> : null}
             </React.Fragment>

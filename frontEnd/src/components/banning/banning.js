@@ -5,9 +5,7 @@ import { MAIN_URI } from '../../config';
 import { Link } from 'react-router-dom';
 import UserPhoto from '../UI/userphoto';
 
-const Banning = () => {
-    const [password, setpassword] = useState("");
-    const [verified, setverified] = useState(false);
+const Banning = (props) => {
     const [userID, setuserID] = useState("");
     const [success, setsuccess] = useState(null);
     const [bannedUsers, setbannedUsers] = useState([]);
@@ -29,26 +27,13 @@ const Banning = () => {
         })        
     }, [])
 
-    const Verify = () => {
-        axios({
-            method: 'get',
-            url: `${MAIN_URI}/adminVerify/${password}`,
-        })
-        .then((res)=>{
-            setverified(res.data.verified);
-        })
-        .catch(error => {
-            console.log(error);
-        })
-    }
-
     const sendData = () => {
         if(userID === "") return null;
         axios({
             method: 'post',
             url: `${MAIN_URI}/banUser`,
             data: {
-                password: password,
+                password: props.password,
                 userID: userID
             }
         })
@@ -126,71 +111,50 @@ const Banning = () => {
 
     return (
         <>
+        <div style={{display: "flex", justifyContent: "center", width: "100%"}}>
+            <div>
+                <h2 style={{color: "white"}}>User ID:</h2>
+                <input value={userID} onChange={e => setuserID(e.target.value)} style={{
+                    marginRight: "20px",
+                    borderRadius: "10px",
+                    width: "300px",
+                    height: "20px",
+                    border: "none",
+                    padding: "5px"
+                }}/>
+                <Button clicked={sendData} disabled={userID.length !== 24}>Send</Button>
+                {successMessage}
+            </div>
+        </div>
+        <hr />
+        <div style={{marginLeft: "10px"}}>
+            <Button clicked={refresh}>refresh</Button>
+        </div>
+        <div style={{display: "flex", flexWrap: "wrap", width: "100%", padding: "10px"}}>
             {
-                verified ? (
+                loadingBannedUsers ? <p>loading...</p> : (
                     <>
-                    <div style={{display: "flex", justifyContent: "center", width: "100%"}}>
-                        <div>
-                            <h2 style={{color: "white"}}>User ID:</h2>
-                            <input value={userID} onChange={e => setuserID(e.target.value)} style={{
-                                marginRight: "20px",
-                                borderRadius: "10px",
-                                width: "300px",
-                                height: "20px",
-                                border: "none",
-                                padding: "5px"
-                            }}/>
-                            <Button clicked={sendData} disabled={userID.length !== 24}>Send</Button>
-                            {successMessage}
-                        </div>
-                    </div>
-                    <hr />
-                    <div style={{marginLeft: "10px"}}>
-                        <Button clicked={refresh}>refresh</Button>
-                    </div>
-                    <div style={{display: "flex", flexWrap: "wrap", width: "100%", padding: "10px"}}>
                         {
-                            loadingBannedUsers ? <p>loading...</p> : (
-                                <>
-                                    {
-                                        bannedUsers.map((user, index) => {
-                                            return (
-                                                <div key={index} style={{
-                                                    border: "3px dashed seagreen",
-                                                    margin: "15px",
-                                                    padding: "10px"
-                                                }}>
-                                                    <Link to={`/user/profile?id=${user.bannedUserId}`}>
-                                                        <UserPhoto userId={user.bannedUserId} small hideOnlineIcon/>
-                                                    </Link>
-                                                    <p style={{color: "white"}}>{user.bannedUserId}</p>
-                                                    <Button btnType="Cancel" clicked={()=>removeBan(user.bannedUserId)}>Revoke Ban</Button>
-                                                </div>
-                                            )
-                                        })
-                                    }
-                                </>
-                            )
+                            bannedUsers.map((user, index) => {
+                                return (
+                                    <div key={index} style={{
+                                        border: "3px dashed seagreen",
+                                        margin: "15px",
+                                        padding: "10px"
+                                    }}>
+                                        <Link to={`/user/profile?id=${user.bannedUserId}`}>
+                                            <UserPhoto userId={user.bannedUserId} small hideOnlineIcon/>
+                                        </Link>
+                                        <p style={{color: "white"}}>{user.bannedUserId}</p>
+                                        <Button btnType="Cancel" clicked={()=>removeBan(user.bannedUserId)}>Revoke Ban</Button>
+                                    </div>
+                                )
+                            })
                         }
-                    </div>
                     </>
-                ) : (
-                    <div style={{display: "flex", width: "100%", justifyContent: "center", marginTop: "20px"}}>
-                        <input 
-                            onChange={e=>setpassword(e.target.value)} 
-                            style={{
-                                width: "30vw",
-                                border: "none",
-                                borderRadius: "5px",
-                                height: "4vh",
-                                marginRight: "15px"
-                            }}
-                            onKeyPress={event => event.key === 'Enter' ? Verify() : null}
-                        />
-                        <Button clicked={Verify}>Send</Button>
-                    </div>
                 )
             }
+        </div>
         </>
     );
 }

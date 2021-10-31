@@ -33,6 +33,7 @@ import Reports from './components/reports/reports';
 import Banning from './components/banning/banning';
 import Footer from './components/footer/footer';
 import Spinner from './components/UI/spinner';
+import AdminHub from './components/AdminHub/AdminHub';
 
 class App extends Component {
   constructor(props){
@@ -100,6 +101,7 @@ class App extends Component {
           <ScrollListener>
             <Menu />
             <Switch>
+              <Route path="/admin" exact component={AdminHub} />
               <Route path="/reports" exact component={Reports} />
               <Route path="/banning" exact component={Banning} />
               <Route path="/addPost" exact component={AddPost} />

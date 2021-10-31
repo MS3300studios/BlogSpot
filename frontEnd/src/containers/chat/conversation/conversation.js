@@ -84,7 +84,7 @@ class Conversation extends Component {
         // this.props.socket.emit('join', {name: this.state.user.name, conversationId:  this.props.conversation._id});
 
         this.props.socket.on('message', message => {
-            console.log('[conversation.js] socket: message was sent')
+            console.log('[conversation.js] socket: message was received')
             if(message.conversationId === this.props.conversation._id){
                 let prevMessages = this.state.messages;
                 prevMessages.push(message);
