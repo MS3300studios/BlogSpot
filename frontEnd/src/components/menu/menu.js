@@ -45,6 +45,19 @@ class Menu extends Component {
 
         axios({
             method: 'get',
+            url: `${MAIN_URI}/lastReadMessages/countUnread`,
+            headers: {'Authorization': this.token}
+        })
+        .then((res)=>{
+            const temp = this.state.messageCount;
+            this.setState({messageCount: temp+res.data.count})
+        })
+        .catch(error => {
+            console.log(error);
+        })
+
+        axios({
+            method: 'get',
             url: `${MAIN_URI}/conversations`,
             headers: {'Authorization': this.token},
         })

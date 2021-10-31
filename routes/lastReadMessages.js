@@ -4,6 +4,7 @@ const auth = require('../middleware/authorization');
 
 const LastReadMessage = require('../models/lastReadMessage');
 const ConversationModule = require('../models/conversation');
+const Message = require('../models/message');
 const Conversation = ConversationModule.Conversation;
 
 router.use(express.json());
@@ -73,4 +74,54 @@ router.get('/lastReadMessage/:conversationId', auth, (req, res) => {
     })
 })
 
+//comparing last read messages with newest messages in conversation to determine wether there are any unread messages
+router.get('/lastReadMessages/countUnread', auth, async(req, res) => {
+    const conversations = await Conversation.find({"participants.userId": req.userData.userId }).exec();
+    const lastmessages = await LastReadMessage.find({userId: req.userData.userId}).exec();
+    const newestMessages = [];
+
+    function getter(id){
+        return new Promise((resolve, reject) => {
+            Message.find({conversationId: id})
+            .exec()
+            .then(messages => {
+                resolve(messages[messages.length-1]);
+            })
+            .catch(error => {
+                reject(error.code);
+            })
+        })
+    }
+        
+    async function looper(){
+        for(let i=0; i<conversations.length; i++){
+            const message = await getter(conversations[i]._id);
+            newestMessages.push(message);
+        }
+        //if there are no messages in conversation then the field will be undefined
+        let counter = 0;
+        for(let i = 0; i < newestMessages.length; i++){
+            if(newestMessages[i] === undefined) continue;
+            else{
+                for(let j = 0; j < lastmessages.length; j++){
+                    if(newestMessages[i].conversationId === lastmessages[j].conversationId){
+                        if(newestMessages[i].content !== lastmessages[j].content){
+                            counter++;
+                            break;
+                        } 
+                        else continue;
+                    }
+                    else continue;
+                }
+            }
+        }
+
+        res.json({count: counter});
+    }
+    
+    looper();
+})
+
 module.exports = router;
+
+
