@@ -75,7 +75,7 @@ class PhotoForm extends Component {
         var reader = new FileReader();
         var data;
         if(files.length>0){
-            if(Math.round(files[0].size/1024) > 2000){
+            if(Math.round(files[0].size/1024) > 1000){
                 this.setState({imageTooBig: true});
                 return;
             }
@@ -149,7 +149,7 @@ class PhotoForm extends Component {
                             </div>
                             <div>
                                 <p>
-                                    The image you submitted exeeds 2 mb. Because the database size is small, images that exceed 2mb are not allowed. 
+                                    The image you submitted exeeds 1 mb. Because the database size is small, images that exceed 1mb are not allowed. 
                                 </p>
                                 <p>
                                     To make this image smaller you can use squoosh.com: a website that compresses images with minimal quality loss. 
