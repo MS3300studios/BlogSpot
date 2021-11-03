@@ -123,5 +123,3 @@ router.get('/lastReadMessages/countUnread', auth, async(req, res) => {
 })
 
 module.exports = router;
-
-

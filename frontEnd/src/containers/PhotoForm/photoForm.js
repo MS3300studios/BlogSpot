@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
 import { MAIN_URI } from '../../config';
+import { AiOutlineWarning } from 'react-icons/ai';
 
 import getToken from '../../getToken';
 import getUserData from '../../getUserData'
@@ -40,7 +41,8 @@ class PhotoForm extends Component {
             flashNotClosed: true,
             sending: false,
             redirect: false,
-            error: null
+            error: null,
+            imageTooBig: false
         }
         this.inputDesc.bind(this);
         this.photosubmit.bind(this);
@@ -69,24 +71,29 @@ class PhotoForm extends Component {
     }
 
     photosubmit = (files) => {
+        this.setState({imageTooBig: false});
         var reader = new FileReader();
         var data;
         if(files.length>0){
-            reader.readAsDataURL(files[0]);
+            if(Math.round(files[0].size/1024) > 2000){
+                this.setState({imageTooBig: true});
+                return;
+            }
             
-            let execute = new Promise(function(resolve, reject) {
+            reader.readAsDataURL(files[0]);
+            const execute = new Promise(function(resolve, reject) {
                 reader.onloadend = function() {
                     data = reader.result;
                     resolve(data);
                 }
             });
         
-            execute.then((b64string)=>{
+            execute.then( b64string => {
                 this.setState({
                     photoPreview: URL.createObjectURL(files[0]),
                     photo: b64string
                 });
-            })``
+            })
         }
     }
 
@@ -135,6 +142,24 @@ class PhotoForm extends Component {
 
         return (
             <React.Fragment>
+                {
+                    this.state.imageTooBig ? (
+                        <div className={classes.imageTooBigContainer}>
+                            <div style={{fontSize: "20px"}} className={classes.warningIconContainer}>
+                                <AiOutlineWarning color="salmon" size="2.5em"/>
+                            </div>
+                            <div>
+                                <p>
+                                    The image you submitted exeeds 2 mb. Because the database size is small, images that exceed 2mb are not allowed. 
+                                </p>
+                                <p>
+                                    To make this image smaller you can use squoosh.com: a website that compresses images with minimal quality loss. 
+                                </p>
+                                <a href="https://squoosh.app/">go to squoosh.com</a>
+                            </div>
+                        </div>
+                    ) : null
+                }
                 <div className={classes.formContainer} style={colorStyle}>
                     <div className={classes.center}>
                         <h1 style={{color: "white"}}>Adding Photo</h1>

@@ -29,8 +29,6 @@ import Settings from './components/settings/settings';
 import AddPost from './components/AddPost/AddPost';
 import getColor from './getColor';
 import Reporting from './components/reporting/reporting';
-import Reports from './components/reports/reports';
-import Banning from './components/banning/banning';
 import Footer from './components/footer/footer';
 import Spinner from './components/UI/spinner';
 import AdminHub from './components/AdminHub/AdminHub';

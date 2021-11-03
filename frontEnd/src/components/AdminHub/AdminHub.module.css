@@ -11,6 +11,10 @@
     font-size: 20px;
 }
 
+.option input{
+    cursor: pointer;
+}
+
 .default{
     font-weight: 550;
     color: white;

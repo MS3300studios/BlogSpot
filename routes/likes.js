@@ -539,7 +539,7 @@ router.post('/checkIfLikedAlready',auth, (req, res) => {
                 res.json({
                     response: "like"
                 })
-            }
+             }
             if(error){
                 console.log(error);
             }
