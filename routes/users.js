@@ -88,7 +88,6 @@ router.post('/users/register', (req, res) => {
         res.json({
             error: "the nickname is too long"
         })
-
         return;
     }
     else{
