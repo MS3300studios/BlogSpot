@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
 import { MAIN_URI } from '../../config';
-import { AiOutlineWarning } from 'react-icons/ai';
 
 import getToken from '../../getToken';
 import getUserData from '../../getUserData'
 import getColor from '../../getColor';
 
+import ImageTooBigWarning from '../../components/imageTooBigWarning'
 import addYourPhoto from '../../assets/gfx/addyourphoto.png';
 import Button from '../../components/UI/button';
 import Flash from '../../components/UI/flash';
@@ -143,20 +143,7 @@ class PhotoForm extends Component {
             <React.Fragment>
                 {
                     this.state.imageTooBig ? (
-                        <div className={classes.imageTooBigContainer}>
-                            <div style={{fontSize: "20px"}} className={classes.warningIconContainer}>
-                                <AiOutlineWarning color="salmon" size="2.5em"/>
-                            </div>
-                            <div>
-                                <p>
-                                    The image you submitted exeeds 1 mb. Because the database size is small, images that exceed 1mb are not allowed. 
-                                </p>
-                                <p>
-                                    To make this image smaller you can use squoosh.com: a website that compresses images with minimal quality loss. 
-                                </p>
-                                <a href="https://squoosh.app/">go to squoosh.com</a>
-                            </div>
-                        </div>
+                        <ImageTooBigWarning />
                     ) : null
                 }
                 <div className={classes.formContainer} style={colorStyle}>

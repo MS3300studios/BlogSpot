@@ -6,6 +6,7 @@ import axios from 'axios';
 import DropZone from '../../PhotoForm/dropZone';
 import Flash from '../../../components/UI/flash';
 import { MAIN_URI } from '../../../config';
+import ImageTooBigWarning from '../../../components/imageTooBigWarning';
 
 import classes from './editUserProfile.module.css';
 import Spinner from '../../../components/UI/spinner';
@@ -33,7 +34,8 @@ class EditUserProfile extends Component {
             readyForSubmission: true,
             loading: true,
             loadingSave: false,
-            redirectToDashboard: false
+            redirectToDashboard: false,
+            imageTooBig: false
         }
         this.photosubmit.bind(this);
         this.inputHandler.bind(this);
@@ -97,9 +99,15 @@ class EditUserProfile extends Component {
     }
 
     photosubmit = (files) => {
+        this.setState({imageTooBig: false});
         var reader = new FileReader();
         var data;
         if(files.length>0){
+            if(Math.round(files[0].size/1024) > 1000){
+                this.setState({imageTooBig: true});
+                return;
+            }
+
             reader.readAsDataURL(files[0]);
             let execute = new Promise(function(resolve, reject) {
                 reader.onloadend = function() {
@@ -216,6 +224,11 @@ class EditUserProfile extends Component {
 
         return (
             <>
+            {
+                this.state.imageTooBig ? (
+                    <ImageTooBigWarning />
+                ) : null
+            }
             <div className={classes.center}>
                 <div className={classes.mainContainer}>
                     <div className={classes.imgContainer}>

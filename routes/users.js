@@ -78,10 +78,18 @@ router.post('/users/getRandomUsers', auth, (req, res) => {
 
 router.post('/users/register', (req, res) => {
     console.log('getting register')
+    const size = Buffer.from(req.body.photoString.slice(23, req.body.photoString.lenth)).length / 1e+6;
+    if(size > 1.5){
+        res.sendStatus(413)
+        return;
+    }
+
     if(req.body.nickname.length > 21){
         res.json({
             error: "the nickname is too long"
         })
+
+        return;
     }
     else{
         bcrypt.hash(req.body.password, 10, function(err, hash){
@@ -325,6 +333,12 @@ router.post('/users/find', auth, (req, res) => {
 
 
 router.post('/users/edit/all', auth, (req, res) => { //newdata, userid, userphoto
+    const size = Buffer.from(req.body.photoString.slice(23, req.body.photoString.lenth)).length / 1e+6;
+    if(size > 1.5){
+        res.sendStatus(413)
+        return;
+    }
+
     if(req.body.nickname.length > 21){
         res.sendStatus(400)
     }

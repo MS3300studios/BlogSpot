@@ -9,6 +9,7 @@ import defaultUserPhoto from '../../../assets/gfx/defaultUserPhoto.png';
 import Button from '../../../components/UI/button';
 import DropZone from '../../PhotoForm/dropZone';
 
+import ImageTooBigWarning from '../../../components/imageTooBigWarning';
 import classes from './registration.module.css';
 import registrationGreen from './registrationGreen.module.css';
 import registrationBlue from './registrationBlue.module.css';
@@ -36,7 +37,8 @@ class Registration extends Component {
             flashNotClosed: true,
             redirectToLogin: false,
             showCaptcha: false,
-            captchaVerified: false
+            captchaVerified: false,
+            imageTooBig: false
         }
         
         this.photosubmit.bind(this);
@@ -77,9 +79,16 @@ class Registration extends Component {
     }
 
     photosubmit = (files) => {
+        this.setState({imageTooBig: false});
+        
         var reader = new FileReader();
         var data;
         if(files.length>0){
+            if(Math.round(files[0].size/1024) > 1000){
+                this.setState({imageTooBig: true});
+                return;
+            }
+
             reader.readAsDataURL(files[0]);
             let execute = new Promise(function(resolve, reject) {
                 reader.onloadend = function() {
@@ -138,8 +147,6 @@ class Registration extends Component {
     }
 
     submitUser = () => {
-        console.log('submitting user')
-
         if(this.state.nickname.length > 21){
             this.flash("The nickname should be no longer than 21 characters")
         }
@@ -224,6 +231,11 @@ class Registration extends Component {
         
         return (
            <React.Fragment>
+            {
+                this.state.imageTooBig ? (
+                    <ImageTooBigWarning />
+                ) : null
+            }
             <div className={colorClasses.RegistrationContainer}>
                 <form className={classes.Form}>
                     <h1>Register</h1>
