@@ -16,8 +16,13 @@ router.use(express.json());
 //----------------------------------------------CREATING PHOTOS
 
 router.post('/photo/new', auth, (req, res) => {
+    const size = Buffer.from(req.body.photoString.slice(23, req.body.photoString.lenth)).length / 1e+6;
+    if(size > 2.0){
+        res.sendStatus(413)
+        return;
+    }
+
     User.findById(req.userData.userId, (err, user) => {
-        console.log(user.nickname)
         const photo = new Photo({
             authorId: req.userData.userId,
             authorNickname: user.nickname,

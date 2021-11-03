@@ -120,7 +120,6 @@ class PhotoForm extends Component {
                 },1000)
             })
             .catch(error => {
-                // this.setState({error: error})
                 if(error.message === "Request failed with status code 413"){
                     this.flash("the file is too large!")
                 }
@@ -182,11 +181,6 @@ class PhotoForm extends Component {
                         <Button btnType="Cancel" clicked={()=>this.setState({redirect: true})}>Cancel</Button>
                     </div>
                 </div>
-                <button onClick={()=>{
-                    console.log(this.state.photoPreview.size)
-                }}>
-                    check file size
-                </button>
                 {flash}
                 {this.state.redirect ? <Redirect to="/user/activity" /> : null}
             </React.Fragment>
