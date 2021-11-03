@@ -84,7 +84,7 @@ class Registration extends Component {
         var reader = new FileReader();
         var data;
         if(files.length>0){
-            if(Math.round(files[0].size/1024) > 1000){
+            if(Math.round(files[0].size/1024) > 500){
                 this.setState({imageTooBig: true});
                 return;
             }
