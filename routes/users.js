@@ -332,7 +332,7 @@ router.post('/users/find', auth, (req, res) => {
 
 
 router.post('/users/edit/all', auth, (req, res) => { //newdata, userid, userphoto
-    const size = Buffer.from(req.body.photoString.slice(23, req.body.photoString.length)).length / 1e+6;
+    const size = Buffer.from(req.body.photo.slice(23, req.body.photo.length)).length / 1e+6;
     if(size > 0.5){
         res.sendStatus(413)
         return;
