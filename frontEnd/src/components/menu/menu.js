@@ -142,7 +142,7 @@ class Menu extends Component {
                                     else this.setState({mobileMenuOpened: true});
                                 }}
                             />
-                            <Logo isMobile={isMobile} />
+                            <Logo isMobile={isMobile} closeMenu={this.closeMenu}/>
                             {
                                 this.state.mobileMenuOpened ? (
                                     <><div className={this.state.closingMobileMenu ? classes.closingBackdrop : classes.backdrop} onClick={this.closeMenu}>
@@ -164,7 +164,17 @@ class Menu extends Component {
                                                 <p onClick={this.closeMenu}>Friends</p>
                                             </Link>
                                             <Link to="/chat" className={dropdownClasses.myProfileLink}>
-                                                <p onClick={this.closeMenu}>Chat</p>
+                                                <div className={classes.chatOptionContainer}>
+                                                    <p onClick={() => this.setState({messageCount: 0}, () => this.closeMenu())}>Chat</p>
+                                                    {this.state.messageCount<1 ? null : (
+                                                        <div 
+                                                            className={classes.notificationNumber} 
+                                                            style={{position: "unset", marginLeft: "10px"}}
+                                                        >
+                                                            {this.state.messageCount}
+                                                        </div>
+                                                    )}
+                                                </div>
                                             </Link>                                        
                                             {this.state.logOut ? logout() : null}
                                             <hr />

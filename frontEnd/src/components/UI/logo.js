@@ -13,7 +13,7 @@ if(colorScheme === "blue"){
 }
 
 const Logo = (props) => (
-    <div className={props.isMobile ? classes.LogoSmall : classes.Logo}>
+    <div className={props.isMobile ? classes.LogoSmall : classes.Logo} onClick={props.closeMenu}>
         <Link to="/">
             <img alt="logo" src={logo}/>
         </Link>

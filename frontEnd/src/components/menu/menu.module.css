@@ -41,6 +41,20 @@
 
 
 /* mobile */
+.chatOptionContainer{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: 10px;
+    margin-bottom: 25px;
+}
+
+.mobileMenuOptionsContainer p{
+    font-size: 17px;
+    font-weight: 550;
+    color: white;
+}
+
 .menuIcon{
     margin-right: 40%;
     margin-top: 27px;
