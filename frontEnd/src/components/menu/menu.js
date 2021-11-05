@@ -40,7 +40,7 @@ class Menu extends Component {
             redirect: false,
             conversations: [],
             messageCount: 0,
-            mobileMenuOpened: true,
+            mobileMenuOpened: false,
             closingMobileMenu: false,
             userData: {}
         }
@@ -85,7 +85,7 @@ class Menu extends Component {
 
         axios({
             method: 'get',
-            url: `http://localhost:3001/users/getUser/${this.data._id}`,
+            url: `${MAIN_URI}/users/getUser/${this.data._id}`,
             headers: {'Authorization': this.token}
         })
         .then((res)=>{
@@ -150,7 +150,7 @@ class Menu extends Component {
                                     <div className={this.state.closingMobileMenu ? classes.closingMobileMenu : classes.mobileMenu}>
                                         <div className={classes.userDetailsContainer}>
                                             <UserPhoto userId={this.data._id} />
-                                            <p>{this.state.userData.name ? this.state.userData.name+" "+this.state.userData.surname : "loading"}</p>
+                                            <p>{this.state.userData ? this.state.userData.name+" "+this.state.userData.surname : "loading"}</p>
                                             <Link to="/notifications" onClick={this.closeMenu}>
                                                 <Notifications mobile/>
                                             </Link>

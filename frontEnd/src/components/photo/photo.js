@@ -14,7 +14,7 @@ const Photo = (props) => {
     const [userData, setuserData] = useState({});
     const [nickname, setnickname] = useState("loading...");
     const [loading, setloading] = useState(true)
-    let token = getToken();
+    const token = getToken();
 
     useEffect(() => {
         if(props.socialBoard){
