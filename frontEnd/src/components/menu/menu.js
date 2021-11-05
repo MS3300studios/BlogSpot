@@ -14,8 +14,10 @@ import axios from 'axios';
 import getToken from '../../getToken';
 import getColor from '../../getColor';
 import getMobile from '../../getMobile';
+import logout from '../../logout';
 import Button from '../UI/button';
 
+import dropdownClasses from '../../components/UI/userphoto.module.css';
 import classes from './menu.module.css';
 import greenClasses from './greenClasses.module.css';
 import blueClasses from './blueClasses.module.css';
@@ -38,8 +40,9 @@ class Menu extends Component {
             redirect: false,
             conversations: [],
             messageCount: 0,
-            mobileMenuOpened: false,
-            closingMobileMenu: false
+            mobileMenuOpened: true,
+            closingMobileMenu: false,
+            userData: {}
         }
         
         this.data = getUserData();
@@ -79,6 +82,21 @@ class Menu extends Component {
             console.log(error);
         })
 
+        axios({
+            method: 'get',
+            url: `http://localhost:3001/users/getUser/${this.data._id}`,
+            headers: {'Authorization': this.token}
+        })
+        .then((res)=>{
+            if(res.status===200){
+                this.setState({userData: res.data.user})
+                return;
+            }
+        })
+        .catch(error => {
+            console.log(error);
+        })
+
         this.props.socket.on('message', message => {
             console.log('[menu.js] socket: message was sent')
             if(message.authorId !== this.data._id && this.props.location.pathname !== "/chat/" && this.props.location.pathname !== "/conversation/"){
@@ -103,7 +121,7 @@ class Menu extends Component {
                             <AiOutlineMenu 
                                 size="2em" 
                                 color="#0a42a4" 
-                                className={classes.menuIcon} 
+                                className={this.state.mobileMenuOpened ? classes.menuIconTranslated : classes.menuIcon} 
                                 onClick={() => {
                                     if(this.state.mobileMenuOpened){
                                         this.setState({closingMobileMenu: true}, () => {
@@ -126,10 +144,25 @@ class Menu extends Component {
                                         })
                                     }}>
                                         <div className={this.state.closingMobileMenu ? classes.closingMobileMenu : classes.mobileMenu}>
+                                            <div className={classes.userDetailsContainer}>
+                                                <UserPhoto userId={this.data._id} />
+                                                <p>{this.state.userData.name+" "+this.state.userData.surname}</p>
+                                            </div>
+                                            <hr />
+                                            <Link to={"/user/profile/?id="+this.data._id} className={dropdownClasses.myProfileLink}><p>My Profile</p></Link>
+                                            <Link to="/user/activity" className={dropdownClasses.myProfileLink}><p>My activity</p></Link>
+                                            <Link to="/settings" className={dropdownClasses.myProfileLink}><p>Settings</p></Link>
                                             <p>Chat</p>
                                             <p>Friends</p>
                                             <p>Notifications</p>
-                                            <p>settings</p>
+                                            <p onClick={() => this.setState({logOut: true})} className={dropdownClasses.logoutP}>Log Out</p>
+                                            {this.state.logOut ? logout() : null}
+                                            <hr />
+                                            <Button>
+                                                <Link to="/reporting/bug" style={{color: "white", textDecoration: "none"}}>
+                                                    Zgłoś błąd
+                                                </Link>
+                                            </Button>
                                         </div>
                                     </div>
                                 ) : null
