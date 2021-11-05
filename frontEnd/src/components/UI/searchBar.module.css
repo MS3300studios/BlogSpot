@@ -2,9 +2,11 @@
     display: flex;
     justify-content: center;
 }
+
 .smallContainer{
     position: relative;
 }
+
 .Input{
     background-color: #c5fff9;
     border-radius: 20px;
@@ -54,4 +56,10 @@
     margin-top: 40px;
     display: flex;
     justify-content: center;
+}
+
+/* mobile */
+
+.mobileContainer{
+    border: solid 3px;
 }

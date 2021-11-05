@@ -17,6 +17,7 @@ import Button from '../../components/UI/button';
 import Flash from '../../components/UI/flash';
 
 import classes from './socialBoard.module.css';
+import getMobile from '../../getMobile';
 
 class SocialBoard extends Component {
     constructor(props) {
@@ -40,12 +41,14 @@ class SocialBoard extends Component {
             limitSearchedPosts: 0,
             showAddingItems: false,
         }
+
         this.getElements.bind(this);
         this.openBigPhoto.bind(this);
         this.bigPhotoWasClosed.bind(this);
         this.searchActivity.bind(this);
         this.filterSearchHandler.bind(this);
         this.flash.bind(this);
+        this.isMobile = getMobile();
     }
 
     componentDidMount(){
@@ -221,7 +224,7 @@ class SocialBoard extends Component {
                         selectedOption={this.filterSearchHandler}
                         sendSearch={this.searchActivity}
                     />
-                    <div style={{height: "50px", marginTop: "37px"}}>
+                    <div style={this.isMobile ? {height: "50px", marginTop: "15px", marginLeft: "15px"} : {height: "50px", marginTop: "37px"}}>
                         <Button>
                             <div 
                                 className={classes.searchButton}
