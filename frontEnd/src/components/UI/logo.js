@@ -12,8 +12,8 @@ if(colorScheme === "blue"){
     logo = logoBlue;
 }
 
-const Logo = () => (
-    <div className={classes.Logo}>
+const Logo = (props) => (
+    <div className={props.isMobile ? classes.LogoSmall : classes.Logo}>
         <Link to="/">
             <img alt="logo" src={logo}/>
         </Link>

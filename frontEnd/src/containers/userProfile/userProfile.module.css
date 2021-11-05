@@ -26,12 +26,19 @@
     box-shadow: -2px -1px 20px 13px rgba(255,255,255,0.6);
 }
 
-/* .textInfoContainer{
-    position: absolute;
-    top: 25px;
-    left: 380px; 
-} 
-*/
+.userPhotoLoading{
+    background-color: cadetblue;
+    animation: skeleton infinite 1s alternate linear;
+}
+
+@keyframes skeleton {
+    from{
+        background-color: hsl(200, 20%, 70%);
+    }
+    to{
+        background-color: hsl(200, 20%, 95%);
+    }
+}
 
 .textNameH1{
     display: flex;
@@ -124,6 +131,25 @@
     margin-right: 40px;
 }
 
+.socialNumbersPanelLoading{
+    width: 240px;
+    height: 40px;
+    border-radius: 4px;
+    margin: 7px;
+    background-color: cadetblue;
+    animation: skeleton infinite 1s alternate linear;
+}
+
+
+@keyframes skeleton {
+    from{
+        background-color: hsl(200, 20%, 70%);
+    }
+    to{
+        background-color: hsl(200, 20%, 95%);
+    }
+}
+
 .socialButtonsContainer{
     width: 100px;
     margin-left: 25px;
@@ -174,6 +200,11 @@
     align-items: center;
     padding: 10px;
     margin-top: -5px;
+}
+
+.skeletonButtons{
+    background-color: cadetblue;
+    animation: skeleton infinite 1s alternate linear;
 }
 
 /* SECOND SECTION */

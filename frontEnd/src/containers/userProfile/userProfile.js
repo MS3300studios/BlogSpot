@@ -453,7 +453,8 @@ class UserProfile extends Component {
             );
         }
 
-        let userImg = <Spinner darkgreen />
+        // let userImg = <Spinner darkgreen />
+        let userImg = <div className={[classes.userPhoto, classes.userPhotoLoading].join(" ")}></div>
         if(this.state.userPhoto){
             userImg = <img src={this.state.userPhoto} alt="user" className={classes.userPhoto}/>
         }
@@ -544,7 +545,14 @@ class UserProfile extends Component {
                                                         pressAction={this.friendButtonAction}
                                                         friendId={this.state.userId}
                                                     />
-                                                ) : <Spinner darkgreen />}
+                                                ) : (
+                                                    <>
+                                                        <Spinner />
+                                                        {/* <div className={classes.skeletonButtons}></div>
+                                                        <div className={classes.skeletonButtons}></div>
+                                                        <div className={classes.skeletonButtons}></div> */}
+                                                    </>
+                                                )}
                                                 
                                                 { sendMessageButton }
         

@@ -36,6 +36,10 @@ class Login extends Component {
         this.autoLogin.bind(this);
     }
 
+    componentDidMount(){
+        if(this.state.email !== "" && this.state.password !== "") this.setState({readyForSubmission: true});
+    }
+
     handleEnterKey = (e) => {
         if(e.key === "Enter"){
             if(this.state.readyForSubmission){

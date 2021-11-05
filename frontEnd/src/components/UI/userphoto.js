@@ -9,6 +9,9 @@ import getToken from '../../getToken';
 import getUserData from '../../getUserData';
 
 import OnlineIcon from './onlineIcon';
+import getMobile from '../../getMobile';
+
+const isMobile = getMobile();
 
 class UserPhoto extends Component {
     constructor(props){

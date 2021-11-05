@@ -4,10 +4,7 @@ import { MAIN_URI } from '../../../config';
 import classes from '../userProfile.module.css';
 
 import { FaUserFriends } from 'react-icons/fa';
-//import { AiFillPlusCircle } from 'react-icons/ai'; //, AiOutlinePlusCircle 
 import { BiPhotoAlbum, BiPaperPlane } from 'react-icons/bi';
-
-import Spinner from '../../../components/UI/spinner';
 import axios from 'axios';
 
 class NumberInfoContainer extends Component {
@@ -55,7 +52,16 @@ class NumberInfoContainer extends Component {
         return (
             <div className={classes.numberInfoContainer}>  
                 {
-                    this.state.loading ? <Spinner darkgreen /> : (
+                    this.state.loading ? (
+                        <div style={{marginTop: "15px", marginLeft: "12px"}}>
+                            <div className={classes.socialNumbersPanelLoading}>
+                            </div>  
+                            <div className={classes.socialNumbersPanelLoading}>
+                            </div>  
+                            <div className={classes.socialNumbersPanelLoading}>
+                            </div>  
+                        </div>
+                    ) : (
                         <>
                             <div className={classes.socialNumbersPanel}>
                                 <p><FaUserFriends size="1em" color="#0a42a4"/>  Friends: </p>
