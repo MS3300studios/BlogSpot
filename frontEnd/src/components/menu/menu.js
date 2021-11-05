@@ -47,6 +47,7 @@ class Menu extends Component {
         
         this.data = getUserData();
         this.token = getToken();
+        this.closeMenu.bind(this);
     }
 
     componentDidMount(){
@@ -112,6 +113,14 @@ class Menu extends Component {
         })
     }
 
+    closeMenu = () => {
+        this.setState({closingMobileMenu: true}, () => {
+            setTimeout(() => {
+                this.setState({mobileMenuOpened: false, closingMobileMenu: false});
+            }, 900);
+        })
+    }
+
     render() { 
         return (
             <>
@@ -136,35 +145,36 @@ class Menu extends Component {
                             <Logo isMobile={isMobile} />
                             {
                                 this.state.mobileMenuOpened ? (
-                                    <div className={this.state.closingMobileMenu ? classes.closingBackdrop : classes.backdrop} onClick={() => {
-                                        this.setState({closingMobileMenu: true}, () => {
-                                            setTimeout(() => {
-                                                this.setState({mobileMenuOpened: false, closingMobileMenu: false});
-                                            }, 900);
-                                        })
-                                    }}>
-                                        <div className={this.state.closingMobileMenu ? classes.closingMobileMenu : classes.mobileMenu}>
-                                            <div className={classes.userDetailsContainer}>
-                                                <UserPhoto userId={this.data._id} />
-                                                <p>{this.state.userData.name+" "+this.state.userData.surname}</p>
-                                            </div>
-                                            <hr />
-                                            <Link to={"/user/profile/?id="+this.data._id} className={dropdownClasses.myProfileLink}><p>My Profile</p></Link>
-                                            <Link to="/user/activity" className={dropdownClasses.myProfileLink}><p>My activity</p></Link>
-                                            <Link to="/settings" className={dropdownClasses.myProfileLink}><p>Settings</p></Link>
-                                            <p>Chat</p>
-                                            <p>Friends</p>
-                                            <p>Notifications</p>
-                                            <p onClick={() => this.setState({logOut: true})} className={dropdownClasses.logoutP}>Log Out</p>
+                                    <><div className={this.state.closingMobileMenu ? classes.closingBackdrop : classes.backdrop} onClick={this.closeMenu}>
+                                    </div>
+                                    <div className={this.state.closingMobileMenu ? classes.closingMobileMenu : classes.mobileMenu}>
+                                        <div className={classes.userDetailsContainer}>
+                                            <UserPhoto userId={this.data._id} />
+                                            <p>{this.state.userData.name ? this.state.userData.name+" "+this.state.userData.surname : "loading"}</p>
+                                            <Link to="/notifications" onClick={this.closeMenu}>
+                                                <Notifications mobile/>
+                                            </Link>
+                                        </div>
+                                        <hr />
+                                        <div className={classes.mobileMenuOptionsContainer}>
+                                            <Link to={"/user/profile/?id="+this.data._id} className={dropdownClasses.myProfileLink}><p onClick={this.closeMenu}>My Profile</p></Link>
+                                            <Link to="/user/activity" className={dropdownClasses.myProfileLink}><p onClick={this.closeMenu}>My activity</p></Link>
+                                            <Link to="/settings" className={dropdownClasses.myProfileLink}><p onClick={this.closeMenu}>Settings</p></Link>
+                                            <Link to="/user/friends/" className={dropdownClasses.myProfileLink}>
+                                                <p onClick={this.closeMenu}>Friends</p>
+                                            </Link>
+                                            <Link to="/chat" className={dropdownClasses.myProfileLink}>
+                                                <p onClick={this.closeMenu}>Chat</p>
+                                            </Link>                                        
                                             {this.state.logOut ? logout() : null}
                                             <hr />
-                                            <Button>
+                                            <Button clicked={this.closeMenu}>
                                                 <Link to="/reporting/bug" style={{color: "white", textDecoration: "none"}}>
                                                     Zgłoś błąd
                                                 </Link>
                                             </Button>
                                         </div>
-                                    </div>
+                                    </div></>
                                 ) : null
                             }
                         </nav>

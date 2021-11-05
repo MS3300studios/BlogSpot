@@ -158,33 +158,71 @@ class Notifications extends Component {
             </React.Fragment>
         ) : zeroNotifs = null;
         
+        let dropDownAdditionalStyle = {}
+        if(this.props.mobile) dropDownAdditionalStyle = {margin: "0px -5px 0px 30px"}
         return (
-            <div className={classes.dropdown}>
-                <div className={classes.center}><IoNotifications size="2em" color="#0a42a4"/>
-                    {this.state.notificationsCount < 1 ? null : (
-                        <div className={classes.notificationNumber}>{this.state.notificationsCount}</div>
-                    )}
-                </div> 
-                <div className={classes.dropdownContent}>
-                    <div className={classes.iconsContainer}>
-                        <div
-                            onClick={()=>this.removeNotifs(false, true)} 
-                            className={classes.deleteAllIconContainer}
-                        >
-                            <FaRegTrashAlt size="2em" color="#0a42a4"/>
+            <>
+            {
+                this.props.inComponent ? (
+                    <div className={classes.dropdownContent} style={{maxHeight: "unset", zIndex: "0", width: "355px", marginLeft: "3px"}}>
+                        <div className={classes.iconsContainer}>
+                            <div
+                                onClick={()=>this.removeNotifs(false, true)} 
+                                className={classes.deleteAllIconContainer}
+                            >
+                                <FaRegTrashAlt size="2em" color="#0a42a4"/>
+                            </div>
+                            <div 
+                                onClick={this.getNotifications}
+                                className={classes.refreshIconContainer}
+                            >
+                                <FiRefreshCcw size="2em" color="#0a42a4" className={classes.refreshIcon}/>
+                            </div>
                         </div>
-                        <div 
-                            onClick={this.getNotifications}
-                            className={classes.refreshIconContainer}
-                        >
-                            <FiRefreshCcw size="2em" color="#0a42a4" className={classes.refreshIcon}/>
-                        </div>
+                        <hr />
+                        {this.state.refreshing ? <Spinner darkgreen /> : this.state.friendRequestsJSX}
+                        {zeroNotifs}
                     </div>
-                    <hr />
-                    {this.state.refreshing ? <Spinner darkgreen /> : this.state.friendRequestsJSX}
-                    {zeroNotifs}
-                </div>                    
-            </div>  
+                ) : (
+                    <div className={classes.dropdown} style={dropDownAdditionalStyle}>
+                        <div className={classes.center}><IoNotifications size="2em" color="#0a42a4"/>
+                            {this.state.notificationsCount < 1 ? null : (
+                                <div 
+                                    className={classes.notificationNumber} 
+                                    style={this.props.mobile ? {right: "-7px"} : null}>
+                                    {this.state.notificationsCount}
+                                </div>
+                            )}
+                        </div> 
+                        <div className={classes.dropdownContent} style={this.props.mobile ? {width: "10px", marginTop: "-6px"} : null}>
+                            {
+                                this.props.mobile ? null : (
+                                    <>
+                                        <div className={classes.iconsContainer}>
+                                            <div
+                                                onClick={()=>this.removeNotifs(false, true)} 
+                                                className={classes.deleteAllIconContainer}
+                                            >
+                                                <FaRegTrashAlt size="2em" color="#0a42a4"/>
+                                            </div>
+                                            <div 
+                                                onClick={this.getNotifications}
+                                                className={classes.refreshIconContainer}
+                                            >
+                                                <FiRefreshCcw size="2em" color="#0a42a4" className={classes.refreshIcon}/>
+                                            </div>
+                                        </div>
+                                        <hr />
+                                        {this.state.refreshing ? <Spinner darkgreen /> : this.state.friendRequestsJSX}
+                                        {zeroNotifs}
+                                    </>
+                                )
+                            }
+                        </div>                    
+                    </div> 
+                )
+            }
+            </> 
         );
     }
 }

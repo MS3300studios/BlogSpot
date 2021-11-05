@@ -32,6 +32,7 @@ import Reporting from './components/reporting/reporting';
 import Footer from './components/footer/footer';
 import Spinner from './components/UI/spinner';
 import AdminHub from './components/AdminHub/AdminHub';
+import Notifications from './containers/notifications/notifications';
 
 class App extends Component {
   constructor(props){
@@ -115,6 +116,7 @@ class App extends Component {
               <Route path="/user/friends/" component={FriendsList} />
               <Route path="/termsAndConditions" exact component={termsAndConditions} />
               <Route path="/reporting" component={Reporting} />
+              <Route path="/notifications" render={()=><Notifications inComponent/>}/>
               <Route path="/" render={()=><SocialBoard />} />
             </Switch>
           </ScrollListener>
