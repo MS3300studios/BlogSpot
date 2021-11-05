@@ -104,7 +104,16 @@ class Menu extends Component {
                                 size="2em" 
                                 color="#0a42a4" 
                                 className={classes.menuIcon} 
-                                onClick={()=>this.setState(prevState => ({mobileMenuOpened: !prevState.mobileMenuOpened}))}
+                                onClick={() => {
+                                    if(this.state.mobileMenuOpened){
+                                        this.setState({closingMobileMenu: true}, () => {
+                                            setTimeout(() => {
+                                                this.setState({mobileMenuOpened: false, closingMobileMenu: false});
+                                            }, 900);
+                                        })
+                                    }
+                                    else this.setState({mobileMenuOpened: true});
+                                }}
                             />
                             <Logo isMobile={isMobile} />
                             {
@@ -113,7 +122,7 @@ class Menu extends Component {
                                         this.setState({closingMobileMenu: true}, () => {
                                             setTimeout(() => {
                                                 this.setState({mobileMenuOpened: false, closingMobileMenu: false});
-                                            }, 1000);
+                                            }, 900);
                                         })
                                     }}>
                                         <div className={this.state.closingMobileMenu ? classes.closingMobileMenu : classes.mobileMenu}>
