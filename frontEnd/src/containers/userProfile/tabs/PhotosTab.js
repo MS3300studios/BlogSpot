@@ -10,6 +10,7 @@ import getToken from '../../../getToken';
 import getUserData from '../../../getUserData';
 import Button from '../../../components/UI/button';
 import PhotoView from '../../photoView/photoView';
+import getMobile from '../../../getMobile';
 
 class PhotosTab extends Component {
     constructor(props) {
@@ -28,6 +29,8 @@ class PhotosTab extends Component {
         }
         this.getPhotos.bind(this);
         this.bigPhotoWasClosed.bind(this);
+
+        this.isMobile = getMobile();
     }
 
     componentDidMount(){
@@ -75,7 +78,7 @@ class PhotosTab extends Component {
         else{
             photos = this.state.photos.map((photo, index)=>{
                 return (
-                    <div className={classes.panel} key={index}>
+                    <div className={this.isMobile ? classes.panelMobile : classes.panel} key={index}>
                         <img src={photo.data} alt={photo.description}/>
                         <div className={classes.expandIconBackground} onClick={()=>this.setState({bigPhotoId: photo._id})}>
                             <BsArrowsAngleExpand size="1.5em" color="white" />

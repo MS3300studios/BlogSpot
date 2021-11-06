@@ -5,6 +5,7 @@ import Button from '../../../components/UI/button';
 import Flash from '../../../components/UI/flash';
 import getColor from '../../../getColor';
 import { MAIN_URI } from '../../../config';
+import getMobile from '../../../getMobile';
 
 import classes from './login.module.css';
 import greenClasses from './greenClasses.module.css';
@@ -34,6 +35,7 @@ class Login extends Component {
         this.flash.bind(this);
         this.handleEnterKey.bind(this);
         this.autoLogin.bind(this);
+        this.isMobile = getMobile();
     }
 
     componentDidMount(){
@@ -179,25 +181,46 @@ class Login extends Component {
             flash = <Flash close>{this.state.flashMessage}</Flash>
         }
         return (
-            <div className={colorClasses.LoginContainer}>
-                <div className={classes.Form}>
-                    <h1>Log in</h1>
-                    <label className={classes.labelEmail}>email:</label>
-                    <input onChange={(e) => {this.onChangeHandler(e, "email")}} type="email" placeholder="enter your email" className={classes.inputEmail} />
-                    <label className={classes.labelPassword}>Password:</label>
-                    <input onChange={(e) => {this.onChangeHandler(e, "password")}} type="password" placeholder="enter your password" className={classes.inputPassword} onKeyDown={this.handleEnterKey}/>
-                    <p className={classes.keepLoggedinP}>Keep me logged in</p>
-                    <label className={classes.switch}>
-                        <input type="checkbox" onChange={this.keepLoggedHandler} />
-                        <span className={[classes.slider,classes.round].join(" ")}></span>
-                    </label>
-                    <div className={classes.buttonContainer}>
-                        <Button disabled={!this.state.readyForSubmission} clicked={this.loginHandler}>Log In</Button>
-                    </div>
+            <div className={colorClasses.LoginContainer} style={this.isMobile ? {width: "unset", overflowX: "hidden"} : null}>
+                {
+                    this.isMobile ? (
+                        <div className={classes.Form}>
+                            <h1 style={{position: "unset"}}>Log in</h1>
+                            <label>email</label>    
+                            <input onChange={(e) => {this.onChangeHandler(e, "email")}} type="email" placeholder="enter your email"/>
+                            <label>Password:</label>
+                            <input onChange={(e) => {this.onChangeHandler(e, "password")}} type="password" placeholder="enter your password" onKeyDown={this.handleEnterKey}/>
+                            <p className={classes.keepLoggedinP} style={{position: "unset"}}>Keep me logged in</p>
+                            <label className={classes.switch} style={{position: "absolute", top: "320px"}}>
+                                <input type="checkbox" onChange={this.keepLoggedHandler} />
+                                <span className={[classes.slider,classes.round].join(" ")}></span>
+                            </label>
+                            <div className={classes.buttonContainer} style={{position: "unset", marginTop: "30px"}}>
+                                <Button disabled={!this.state.readyForSubmission} clicked={this.loginHandler}>Log In</Button>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className={classes.Form}>
+                            <h1>Log in</h1>
+                            <label className={classes.labelEmail}>email:</label>
+                            <input onChange={(e) => {this.onChangeHandler(e, "email")}} type="email" placeholder="enter your email" className={classes.inputEmail} />
+                            <label className={classes.labelPassword}>Password:</label>
+                            <input onChange={(e) => {this.onChangeHandler(e, "password")}} type="password" placeholder="enter your password" className={classes.inputPassword} onKeyDown={this.handleEnterKey}/>
+                            <p className={classes.keepLoggedinP}>Keep me logged in</p>
+                            <label className={classes.switch}>
+                                <input type="checkbox" onChange={this.keepLoggedHandler} />
+                                <span className={[classes.slider,classes.round].join(" ")}></span>
+                            </label>
+                            <div className={classes.buttonContainer}>
+                                <Button disabled={!this.state.readyForSubmission} clicked={this.loginHandler}>Log In</Button>
+                            </div>
+                        </div>
+                        )
+                    }
+                    
+                    <label className={classes.labelNoAccount} style={this.isMobile ? {marginLeft: "-15px", marginTop: "10px"} : null}>Don't have an account yet?</label>
+                    <Link to="/register" className={classes.registerLink}>Register here</Link>
                 {flash}
-                </div>
-                <label className={classes.labelNoAccount}>Don't have an account yet?</label>
-                <Link to="/register" className={classes.registerLink}>Register here</Link>
             </div>
         );
     }

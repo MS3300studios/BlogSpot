@@ -2,7 +2,14 @@
     width: 100%;
     height: 100%;
     padding: 20px;
-    position: inherit;
+}
+
+.MobileForm{
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    color: white;
+    overflow-x: hidden;
 }
 
 .Form h1{
@@ -11,7 +18,20 @@
     color: white;
 }
 
+.MobileForm h1{
+    margin-top: 0px;
+    margin-left: 165px;
+    color: white;
+}
+
 .Form label{
+    margin: 10px;
+    color: hsl(119deg 84% 73%);
+    font-weight: 600;
+    font-size: 30px;
+}
+
+.MobileForm label{
     margin: 10px;
     color: hsl(119deg 84% 73%);
     font-weight: 600;
@@ -28,7 +48,23 @@
     transition: all ease 0.3s;
 }
 
+.MobileForm input{
+    margin: 10px;
+    padding: 5px;
+    border: thick;
+    transition: all 0.3s ease-in;
+    min-width: 250px;
+    min-height: 35px;
+    transition: all ease 0.3s;
+}
+
 .Form input:focus{
+    -webkit-box-shadow: 0px 0px 18px 3px #FFFFFF; 
+    box-shadow: 0px 0px 18px 3px #FFFFFF;
+    outline: none;
+}
+
+.MobileForm input:focus{
     -webkit-box-shadow: 0px 0px 18px 3px #FFFFFF; 
     box-shadow: 0px 0px 18px 3px #FFFFFF;
     outline: none;
@@ -64,6 +100,13 @@
 }
 
 .Form img{
+    width: 110px;
+    height: 110px;
+    border: solid teal 3px;
+    transition: all ease 0.3s;
+}
+
+.MobileForm img{
     width: 110px;
     height: 110px;
     border: solid teal 3px;

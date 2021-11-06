@@ -46,7 +46,7 @@
     justify-content: flex-start;
     align-items: center;
     height: 10px;
-    margin-bottom: 25px;
+    margin-bottom: 15px;
 }
 
 .mobileMenuOptionsContainer p{
@@ -96,7 +96,7 @@
     top: 80px;
     left: 0px;
     z-index: 1;
-    animation: openingBackdrop 1.1s 1;
+    animation: openingBackdrop 0.6s 1;
 }
 
 .closingBackdrop{
@@ -107,7 +107,7 @@
     top: 0px;
     left: 0px;
     z-index: 1;
-    animation: closingBackdrop 1.1s 1;
+    animation: closingBackdrop 0.6s 1;
 }
 
 .mobileMenu{
@@ -120,7 +120,7 @@
     width: 70%;
     height: 100%;
     padding: 10px;
-    animation: openingMobileMenu 1.1s 1;
+    animation: openingMobileMenu 0.6s 1;
 }
 
 .closingMobileMenu{
@@ -133,7 +133,7 @@
     width: 70%;
     height: 100%;
     padding: 10px;
-    animation: closingMobileMenu 1.1s 1;
+    animation: closingMobileMenu 0.6s 1;
 }
 
 @keyframes closingBackdrop {

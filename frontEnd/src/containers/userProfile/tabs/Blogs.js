@@ -11,6 +11,7 @@ import classes from './Blogs.module.css';
 import ShowComments from './comments/showComments';
 import { Link } from 'react-router-dom';
 import getColor from '../../../getColor';
+import getMobile from '../../../getMobile';
 
 class BlogsTab extends Component {
     constructor(props){
@@ -32,6 +33,8 @@ class BlogsTab extends Component {
         this.getPosts.bind(this);
         this.getMorePosts.bind(this);
         this.toggleShowComments.bind(this);
+
+        this.isMobile = getMobile();
     }
 
     componentDidMount () {
@@ -102,20 +105,44 @@ class BlogsTab extends Component {
             blogs = this.state.blogs.map((el, index)=>{
                 return (
                     <div className={classes.center} key={index}>
-                        <div key={index} className={classes.smallBlogContainer} style={blogBackgroundColor}>
-                            <div className={classes.upperSegment}>
-        
-                                <div className={classes.h1Container}>
-                                    <h1><Link to={"/post/?id="+el._id}>{el.title}</Link></h1>
+                        {
+                            this.isMobile ? (
+                                <div key={index} className={classes.smallBlogContainerMobile} style={blogBackgroundColor}>
+                                    <div className={classes.upperSegment}>
+                                        <div className={classes.h1Container}>
+                                            <h1><Link to={"/post/?id="+el._id}>{el.title}</Link></h1>
+                                        </div>
+                                    </div> 
+                                    <p className={classes.date} style={{marginBottom: "-5px", marginTop: "-40px"}}>{formattedCurrentDate(el.createdAt)}</p>        
+                                    <div 
+                                        style={
+                                            {position: "relative", marginBottom: "50px", display: "flex", justifyContent: "center"}
+                                        }
+                                    >
+                                        <LikesCommentsNumbers 
+                                            objectId={el._id} 
+                                            userId={this.state.userId} 
+                                            comments 
+                                            objectIsBlog
+                                        />
+                                    </div>       
                                 </div>
-                                <LikesCommentsNumbers objectId={el._id} userId={this.state.userId} comments objectIsBlog/>
-                            </div>        
-                            <p className={classes.date}>{formattedCurrentDate(el.createdAt)}</p>        
-                            <div className={classes.content}>
-                                {el.content}
-                            </div>
-                            <ShowComments blogId={el._id}/>
-                        </div>
+                            ) : (
+                                <div key={index} className={classes.smallBlogContainer} style={blogBackgroundColor}>
+                                    <div className={classes.upperSegment}>
+                                        <div className={classes.h1Container}>
+                                            <h1><Link to={"/post/?id="+el._id}>{el.title}</Link></h1>
+                                        </div>
+                                        <LikesCommentsNumbers objectId={el._id} userId={this.state.userId} comments objectIsBlog/>
+                                    </div>        
+                                    <p className={classes.date}>{formattedCurrentDate(el.createdAt)}</p>        
+                                    <div className={classes.content}>
+                                        {el.content}
+                                    </div>
+                                    <ShowComments blogId={el._id}/>
+                                </div>
+                            ) 
+                        }
                     </div>
                 )
             });

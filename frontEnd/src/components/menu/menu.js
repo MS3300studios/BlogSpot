@@ -42,6 +42,7 @@ class Menu extends Component {
             messageCount: 0,
             mobileMenuOpened: false,
             closingMobileMenu: false,
+            seenNotif: false,
             userData: {}
         }
         
@@ -117,7 +118,7 @@ class Menu extends Component {
         this.setState({closingMobileMenu: true}, () => {
             setTimeout(() => {
                 this.setState({mobileMenuOpened: false, closingMobileMenu: false});
-            }, 900);
+            }, 500);
         })
     }
 
@@ -133,10 +134,10 @@ class Menu extends Component {
                                 className={this.state.mobileMenuOpened ? classes.menuIconTranslated : classes.menuIcon} 
                                 onClick={() => {
                                     if(this.state.mobileMenuOpened){
-                                        this.setState({closingMobileMenu: true}, () => {
+                                        this.setState({closingMobileMenu: true, seenNotif: true}, () => {
                                             setTimeout(() => {
                                                 this.setState({mobileMenuOpened: false, closingMobileMenu: false});
-                                            }, 900);
+                                            }, 500);
                                         })
                                     }
                                     else this.setState({mobileMenuOpened: true});
@@ -150,7 +151,7 @@ class Menu extends Component {
                                     <div className={this.state.closingMobileMenu ? classes.closingMobileMenu : classes.mobileMenu}>
                                         <div className={classes.userDetailsContainer}>
                                             <UserPhoto userId={this.data._id} />
-                                            <p>{this.state.userData ? this.state.userData.name+" "+this.state.userData.surname : "loading"}</p>
+                                            <p>{this.state.userData.name ? this.state.userData.name+" "+this.state.userData.surname : "loading"}</p>
                                             <Link to="/notifications" onClick={this.closeMenu}>
                                                 <Notifications mobile/>
                                             </Link>
@@ -175,8 +176,8 @@ class Menu extends Component {
                                                         </div>
                                                     )}
                                                 </div>
-                                            </Link>                                        
-                                            {this.state.logOut ? logout() : null}
+                                            </Link>     
+                                            <p className={classes.myProfileLink} onClick={logout} style={{color: "salmon"}}>Log out</p>                                   
                                             <hr />
                                             <Button clicked={this.closeMenu}>
                                                 <Link to="/reporting/bug" style={{color: "white", textDecoration: "none"}}>

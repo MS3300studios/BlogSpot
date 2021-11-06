@@ -29,11 +29,30 @@
     margin: 20px;
 }
 
+.panelMobile{
+    border: 3px seagreen solid;
+    display: flex;
+    justify-content: center;
+    background-color: black;
+    border-radius: 10px;
+    position: relative;   
+    margin: 10px;
+}
+
 .panel:hover .photoData{
+    height: 100px;
+} 
+
+.panelMobile:hover .photoData{
     height: 100px;
 }
 
 .panel:hover .photoData p{
+    display: block;
+    opacity: 1;
+}
+
+.panelMobile:hover .photoData p{
     display: block;
     opacity: 1;
 }
@@ -56,6 +75,10 @@
 }
 
 .panel:hover .expandIconBackground{
+    opacity: 1;
+}
+
+.panelMobile:hover .expandIconBackground{
     opacity: 1;
 }
 

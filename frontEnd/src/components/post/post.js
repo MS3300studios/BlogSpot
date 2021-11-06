@@ -9,6 +9,7 @@ import LikesCommentsNumbers from '../UI/likesCommentsNumbers';
 
 import getToken from '../../getToken';
 import getColor from '../../getColor';
+import getMobile from '../../getMobile';
 
 import classes from './post.module.css';
 import greenClasses from './greenClasses.module.css';
@@ -21,11 +22,12 @@ if(colorScheme === "blue"){
 }
 
 const Post = (props) => {
-    let userLoggedData = getUserData();
+    const userLoggedData = getUserData();
     const [loading, setloading] = useState(props.socialBoard);
     const [userData, setuserData] = useState({});
     const [nickname, setnickname] = useState(userLoggedData.nickname)
-    let token = getToken();
+    const token = getToken();
+    const isMobile = getMobile(); 
 
     useEffect(() => {
         if(props.socialBoard && (props.loading !== true)){

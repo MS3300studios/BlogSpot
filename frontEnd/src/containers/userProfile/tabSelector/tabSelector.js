@@ -5,6 +5,7 @@ import classes from './tabSelector.module.css';
 import BlogsTab from '../tabs/Blogs';
 import PhotosTab from '../tabs/PhotosTab';
 import getColor from '../../../getColor';
+import getMobile from '../../../getMobile';
 
 const TabSelector = (props) => {
     let display;
@@ -26,9 +27,16 @@ const TabSelector = (props) => {
     }
 
     const colorScheme = getColor();
-    let backgroundColor = {backgroundColor: "#70c45c"}; 
+    let customWidth = "60%";
+    let customPadding = "25px";
+    if(getMobile()){
+        customWidth = "100%";
+        customPadding = "5px"
+    }
+ 
+    let backgroundColor = {marginTop: "10px", backgroundColor: "#70c45c", width: customWidth, padding: customPadding}; 
     if(colorScheme === "blue"){
-        backgroundColor = {backgroundColor: "hsl(210deg 66% 52%)"};
+        backgroundColor = {marginTop: "10px", backgroundColor: "hsl(210deg 66% 52%)", width: customWidth, padding: customPadding};
     }
 
     return (
