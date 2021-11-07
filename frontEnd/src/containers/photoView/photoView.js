@@ -19,6 +19,8 @@ import PhotoComments from './photoComments/photoComments';
 import getColor from '../../getColor';
 
 import classes from './photoView.module.css';
+import getMobile from '../../getMobile';
+import MobilePhotoView from './mobilePhotoView/mobilePhotoView';
 
 const colorScheme = getColor();
 let background = {backgroundColor: "#82ca66"};
@@ -62,6 +64,8 @@ class photoView extends Component {
         this.editPhotoDescHandler.bind(this);
         this.sendEditedDesc.bind(this);
         this.sendNotification.bind(this);
+
+        this.isMobile = getMobile();
     }
 
     componentDidMount(){
@@ -213,98 +217,125 @@ class photoView extends Component {
 
         return (
             <div className={classes.backdrop}>
-                <div className={classes.photoViewContainer} style={background}>
-                    <Button className={classes.CloseButton} clicked={()=>this.props.closeBigPhoto(this.state.socialStateWasChanged)}>Close</Button>
-                        <div className={classes.imgContainer}>
+                {
+                    (!this.state.loading && this.isMobile) ? (
+                        <MobilePhotoView 
+                            photo={this.state.photo.data}
+                            photoId={this.state.photo._id}
+                            close={this.props.closeBigPhoto}
+                            author={this.state.photo.authorId}
+                            authorNick={this.state.photo.authorNickname}
+                            createdAt={this.state.photo.createdAt}
+                            userData={this.state.userData}
+                            deletePhotoHandler={this.deletePhotoHandler}
+                            sendLikeAction={this.sendLikeAction}
+                            likeFill={this.state.likeFill}
+                            dislikeFill={this.state.dislikeFill}
+                            likeCount={this.state.photo.likes.length}
+                            commentCount={this.state.photo.comments.length}
+                            description={this.state.photo.description}
+                            sendEditedDesc={this.sendEditedDesc}
+                            flash={this.flash}
+                            editCommentCleanUp={this.editCommentCleanUp}
+                            small={this.props.small}
+                            sendNotification={this.sendNotification}
+                        />
+                    ) : (
+                        <div className={classes.photoViewContainer} style={background}>
+                            <Button className={classes.CloseButton} clicked={()=>this.props.closeBigPhoto(this.state.socialStateWasChanged)}>Close</Button>
+                                <div className={classes.imgContainer}>
+                                    {
+                                        this.state.loading ? <Spinner darkgreen /> : <img src={this.state.photo.data} alt="refresh your page"/>
+                                    }
+                                </div>
                             {
-                                this.state.loading ? <Spinner darkgreen /> : <img src={this.state.photo.data} alt="refresh your page"/>
-                            }
-                        </div>
-                    {
-                        this.state.loading ? <Spinner darkgreen /> : (
-                            <div className={classes.dataContainer}>
-                                <div className={classes.authorInfoContainer}>
-                                    <div className={classes.authorPhoto}>
-                                        {
-                                            this.state.loading ? <Spinner darkgreen /> : <UserPhoto userId={this.state.photo.authorId} small hideOnlineIcon/>
-                                        }
-                                    </div>
-                                    <div className={classes.authorData}>
-                                        <p>@{this.state.photo.authorNickname}</p>
-                                        <p>{formattedCurrentDate(this.state.photo.createdAt)}</p>
-                                    </div>
-                                    {
-                                        (this.state.userData._id === this.state.photo.authorId) ? (
-                                            <div className={classes.positionPhotoOptions}>
-                                                <CommentOptions 
-                                                    photoComment
-                                                    deleteComment={() => this.deletePhotoHandler()}
-                                                    editComment={() => this.editPhotoDescHandler()} />
+                                this.state.loading ? <Spinner darkgreen /> : (
+                                    <div className={classes.dataContainer}>
+                                        <div className={classes.authorInfoContainer}>
+                                            <div className={classes.authorPhoto}>
+                                                {
+                                                    this.state.loading ? <Spinner darkgreen /> : <UserPhoto userId={this.state.photo.authorId} small hideOnlineIcon/>
+                                                }
                                             </div>
-                                        ) : null
-                                        
-                                    }
-                                </div>
-                                <div className={classes.LikesCommentsNumbers}>
-                                    <div className={classes.like}><Like
-                                        sendNotificationData={
+                                            <div className={classes.authorData}>
+                                                <p>@{this.state.photo.authorNickname}</p>
+                                                <p>{formattedCurrentDate(this.state.photo.createdAt)}</p>
+                                            </div>
                                             {
-                                                receiverId: this.state.photo.authorId, 
-                                                senderId: this.state.userData._id, 
-                                                senderNick: this.state.userData.nickname, 
-                                                objectType: "photo",
-                                                objectId: this.state.photo._id,
+                                                (this.state.userData._id === this.state.photo.authorId) ? (
+                                                    <div className={classes.positionPhotoOptions}>
+                                                        <CommentOptions 
+                                                            photoComment
+                                                            deleteComment={() => this.deletePhotoHandler()}
+                                                            editComment={() => this.editPhotoDescHandler()} />
+                                                    </div>
+                                                ) : null
+                                                
                                             }
-                                        }
-                                        sendAction={()=>this.sendLikeAction(true)}
-                                        fill={this.state.likeFill}
-                                        number={this.state.photo.likes.length}
-                                        size="1.5em" 
-                                        color="#0a42a4" 
-                                        photoView/></div>
-                                    <div className={classes.dislike}><Like
-                                        sendNotificationData={
+                                        </div>
+                                        <div className={classes.LikesCommentsNumbers}>
+                                            <div className={classes.like}><Like
+                                                sendNotificationData={
+                                                    {
+                                                        receiverId: this.state.photo.authorId, 
+                                                        senderId: this.state.userData._id, 
+                                                        senderNick: this.state.userData.nickname, 
+                                                        objectType: "photo",
+                                                        objectId: this.state.photo._id,
+                                                    }
+                                                }
+                                                sendAction={()=>this.sendLikeAction(true)}
+                                                fill={this.state.likeFill}
+                                                number={this.state.photo.likes.length}
+                                                size="1.5em" 
+                                                color="#0a42a4" 
+                                                photoView/></div>
+                                            <div className={classes.dislike}><Like
+                                                sendNotificationData={
+                                                    {
+                                                        receiverId: this.state.photo.authorId, 
+                                                        senderId: this.state.userData._id, 
+                                                        senderNick: this.state.userData.nickname, 
+                                                        objectType: "photo",
+                                                        objectId: this.state.photo._id,
+                                                    }
+                                                }
+                                                dislike 
+                                                sendAction={()=>this.sendLikeAction(false)}
+                                                fill={this.state.dislikeFill}
+                                                number={this.state.photo.dislikes.length}
+                                                size="1.5em" 
+                                                color="#0a42a4" 
+                                                photoView/></div>
+                                            <div className={classes.comment}>
+                                                <FaCommentAlt size="1em" color="#0a42a4" className={classes.commenticon}/>
+                                                <p>{this.state.photo.comments.length}</p>
+                                            </div>
+                                        </div>
+                                        <hr style={{borderColor: "hsl(201deg 97% 32%)"}}/>
+                                        <div className={classes.description}>
                                             {
-                                                receiverId: this.state.photo.authorId, 
-                                                senderId: this.state.userData._id, 
-                                                senderNick: this.state.userData.nickname, 
-                                                objectType: "photo",
-                                                objectId: this.state.photo._id,
+                                                this.state.editingPhotoDescription ? 
+                                                    <EditPhotoDesc content={this.state.photo.description} send={this.sendEditedDesc} cancel={()=>this.setState({editingPhotoDescription: false})}/> : 
+                                                    <p>{this.state.photo.description}</p>
                                             }
-                                        }
-                                        dislike 
-                                        sendAction={()=>this.sendLikeAction(false)}
-                                        fill={this.state.dislikeFill}
-                                        number={this.state.photo.dislikes.length}
-                                        size="1.5em" 
-                                        color="#0a42a4" 
-                                        photoView/></div>
-                                    <div className={classes.comment}>
-                                        <FaCommentAlt size="1em" color="#0a42a4" className={classes.commenticon}/>
-                                        <p>{this.state.photo.comments.length}</p>
+                                        </div>
+                                        <hr style={{borderColor: "hsl(201deg 97% 32%)"}}/>
+                                        <PhotoComments 
+                                            photoId={this.props.photo._id} 
+                                            flash={this.flash} 
+                                            afterSend={this.editCommentCleanUp}
+                                            small={this.props.small}
+                                            photoAuthorId={this.props.photo.authorId}
+                                            sendNotification={this.sendNotification}
+                                        />
                                     </div>
-                                </div>
-                                <hr style={{borderColor: "hsl(201deg 97% 32%)"}}/>
-                                <div className={classes.description}>
-                                    {
-                                        this.state.editingPhotoDescription ? 
-                                            <EditPhotoDesc content={this.state.photo.description} send={this.sendEditedDesc} cancel={()=>this.setState({editingPhotoDescription: false})}/> : 
-                                            <p>{this.state.photo.description}</p>
-                                    }
-                                </div>
-                                <hr style={{borderColor: "hsl(201deg 97% 32%)"}}/>
-                                <PhotoComments 
-                                    photoId={this.props.photo._id} 
-                                    flash={this.flash} 
-                                    afterSend={this.editCommentCleanUp}
-                                    small={this.props.small}
-                                    photoAuthorId={this.props.photo.authorId}
-                                    sendNotification={this.sendNotification}
-                                />
-                            </div>
-                        )
-                    }
-                </div> 
+                                )
+                            }
+                        </div> 
+                    ) 
+                }
+
                 {flashView}
             </div> 
         );

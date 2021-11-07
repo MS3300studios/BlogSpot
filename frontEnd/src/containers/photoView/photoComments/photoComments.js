@@ -15,6 +15,7 @@ import UserPhoto from '../../../components/UI/userphoto';
 import CommentOptions from '../../userProfile/tabs/comments/optionsContainer/CommentOptions';
 import EditCommentForm from '../../userProfile/tabs/comments/optionsContainer/EditCommentFrom';
 import photoCommentClasses from '../photoComment/photoComment.module.css';
+import getMobile from '../../../getMobile';
 
 class PhotoComments extends Component {
     constructor(props) {
@@ -29,6 +30,7 @@ class PhotoComments extends Component {
 
         this.token = getToken();
         this.userData = getUserData();
+        this.isMobile = getMobile();
 
         this.getComments.bind(this);
         this.addComment.bind(this);
@@ -155,7 +157,7 @@ class PhotoComments extends Component {
                                             <div className={photoCommentClasses.userPhotoDiv}>
                                                 <UserPhoto userId={comment.authorId} small hideOnlineIcon/>
                                             </div>
-                                            <p className={photoCommentClasses.nickName}>
+                                            <p className={photoCommentClasses.nickName} style={this.isMobile ? {marginLeft: "10px"} : null}>
                                                 <Link to={"/user/profile/?id="+comment.authorId}>@{comment.authorNick}</Link>
                                             </p>
                                             <p className={photoCommentClasses.Date}>{comment.self ? "just now" : formattedCurrentDate(comment.createdAt)}</p>

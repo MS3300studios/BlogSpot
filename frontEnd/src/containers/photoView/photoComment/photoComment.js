@@ -9,13 +9,6 @@ import formattedCurrentDate from '../../../formattedCurrentDate';
 import UserPhoto from '../../../components/UI/userphoto';
 
 class PhotoComment extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-
-        }
-    }
-
     render() { 
         return (
             <React.Fragment>
@@ -24,8 +17,10 @@ class PhotoComment extends Component {
                         <div className={photoCommentClasses.userPhotoDiv}>
                             <UserPhoto userId={this.props.comment.authorId} small hideOnlineIcon/>
                         </div>
-                        <p className={photoCommentClasses.nickName}>
-                            <Link to={"/user/profile/?id="+this.props.comment.authorId}>@{this.props.comment.authorNick}</Link>
+                        <p className={photoCommentClasses.nickName} style={{marginLeft: "5px"}}>
+                            <Link to={"/user/profile/?id="+this.props.comment.authorId}>
+                                @{this.props.comment.authorNick}
+                            </Link>
                         </p>
                         <p className={photoCommentClasses.Date}>{formattedCurrentDate(this.props.comment.createdAt)}</p>
                         {

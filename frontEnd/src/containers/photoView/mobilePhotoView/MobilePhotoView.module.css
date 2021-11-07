@@ -1,0 +1,43 @@
+.mobileContainer{
+    height: 100%;
+    overflow-y: auto;
+}
+
+.closeIcon{
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    padding: 12px;
+}
+
+.mobileDataContainer{
+    background-color: teal;
+}
+
+.authorCard{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.authorCard p{
+    color: white;
+    font-size: 18px;
+    font-weight: 550;
+}
+
+.editDelButtonContainer{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.descriptionContainer{
+    padding: 5px;
+}
+
+.description{
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+}
