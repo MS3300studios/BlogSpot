@@ -11,11 +11,12 @@ import OnlineIcon from '../../components/UI/onlineIcon';
 import axios from 'axios';
 import getToken from '../../getToken';
 import Flash from '../../components/UI/flash';
+import getMobile from '../../getMobile';
 
 const FriendsListItem = (props) => {
     const [checked, setchecked] = useState(props.selectAll)
     const [redirectToConversation, setRedirectToConversation] = useState(false)
-
+    const isMobile = getMobile();
     //flash
     const [flashMessage, setflashMessage] = useState("");
     const [flashNotClosed, setflashNotClosed] = useState(true);
@@ -68,10 +69,10 @@ const FriendsListItem = (props) => {
 
     return (
         <>
-            <div className={classes.friendContainer}>
-                <div className={classes.listElement}>
+            <div className={isMobile ? classes.friendContainer : null}>
+                <div className={classes.listElement} style={isMobile ? {width: "80%"} : null}>
                     <div className={classes.smallFaceContainer}>
-                        <img src={props.photo} alt="user"/>
+                        <img src={props.photo} alt="user" style={isMobile ? {height: "50px", width: "50px"} : null} />
                         {
                             props.onlineIcon ? (
                                 <div className={classes.onlineIconPositioner}>
@@ -80,9 +81,9 @@ const FriendsListItem = (props) => {
                             ) : null
                         }
                     </div>
-                    <div className={classes.namesContainer}>
+                    <div className={classes.namesContainer} style={isMobile ? {width: "unset", marginTop: "17px"} : null}>
                         <Link to={"/user/profile/?id="+props.id} key={props.index} className={classes.containerLink}>
-                            <h1>{props.name} {props.surname}</h1>
+                            <h1 style={isMobile ? {fontSize: "20px", fontWeight: "550"} : null}>{props.name} {props.surname}</h1>
                         </Link>
                         <p>@{props.nickname}</p>
                     </div>
@@ -110,7 +111,7 @@ const FriendsListItem = (props) => {
                                                     Unblock user
                                                 </button>
                                             ) : (
-                                                <div className={classes.chatIcon} onClick={checkIfBlocked}>
+                                                <div className={classes.chatIcon} onClick={checkIfBlocked} style={isMobile ? {width: "15%"} : null}>
                                                     <BiMessageDetail size="2em" color="#0a42a4" />
                                                 </div>
                                             )

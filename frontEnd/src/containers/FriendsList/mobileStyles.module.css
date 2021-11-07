@@ -1,0 +1,6 @@
+.mainHeader{
+    color: white;
+    margin: 20 auto;
+    display: flex;
+    justify-content: center;
+}

@@ -18,6 +18,7 @@ import classes2 from '../FriendsList.module.css';
 import classes from './addUser.module.css';
 import greenClasses from './greenClasses.module.css';
 import blueClasses from './blueClasses.module.css';
+import getMobile from '../../../getMobile';
 
 const colorScheme = getColor();
 let colorClasses = greenClasses;
@@ -51,6 +52,7 @@ class AddUser extends Component {
         this.filterSearchHandler.bind(this);
         this.flash.bind(this);
         this.getRandomUsers.bind(this);
+        this.isMobile = getMobile();
     }
 
     getRandomUsers = () => {
@@ -219,7 +221,7 @@ class AddUser extends Component {
 
         return (
             <div className={classes.lightbox}>
-                <div className={colorClasses.addUserContainer}>
+                <div className={colorClasses.addUserContainer} style={this.isMobile ? {width: "90%", marginTop: "30px", minHeight: "unset"} : null}>
                 <div className={classes.closeIcon} onClick={this.props.closeAddUser}>
                     <AiOutlineCloseCircle size="2em" color="#0a42a4" />
                 </div>

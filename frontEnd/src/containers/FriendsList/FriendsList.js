@@ -12,8 +12,10 @@ import Spinner from '../../components/UI/spinner';
 import getToken from '../../getToken';
 import getUserData from '../../getUserData';
 import getColor from '../../getColor';
+import getMobile from '../../getMobile';
 
 import classes from './FriendsList.module.css';
+import mobileClasses from './mobileStyles.module.css';
 import greenClasses from './greenClasses.module.css';
 import blueClasses from './blueClasses.module.css';
 
@@ -45,6 +47,8 @@ class FriendsList extends Component {
         this.filterFriends.bind(this);
         this.resetFilter.bind(this);
         this.initialFetch.bind(this);
+
+        this.isMobile = getMobile();
     }
 
     componentDidMount(){
@@ -194,7 +198,7 @@ class FriendsList extends Component {
         }
         else{
             friends = (
-                <div className={colorClasses.nameListContainer}>
+                <div className={colorClasses.nameListContainer} style={this.isMobile ? {width: "90%", marginTop: "10px"} : null}>
                     {this.filterFriends(this.state.filterIn, this.state.filterBy)}
                 </div>
             );
@@ -205,7 +209,7 @@ class FriendsList extends Component {
                 {
                     this.state.loading ? <Spinner /> : (
                         <>
-                            <h1 className={classes.mainHeader}>{this.props.profileViewComponent ? null : "your friends"}</h1>
+                            <h1 className={mobileClasses.mainHeader}>{this.props.profileViewComponent ? null : "your friends"}</h1>
                             <div className={classes.upperContainer}>
                                 <SearchBar 
                                     placeholder="search friends by..."
