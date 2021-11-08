@@ -6,6 +6,7 @@ import { MAIN_URI } from '../../config';
 import getToken from '../../getToken';
 import getUserData from '../../getUserData'
 import getColor from '../../getColor';
+import getMobile from '../../getMobile';
 
 import ImageTooBigWarning from '../../components/imageTooBigWarning'
 import addYourPhoto from '../../assets/gfx/addyourphoto.png';
@@ -48,6 +49,8 @@ class PhotoForm extends Component {
         this.photosubmit.bind(this);
         this.sendData.bind(this);
         this.flash.bind(this);
+
+        this.isMobile = getMobile(); 
     }
 
     inputDesc = (e) => {
@@ -146,28 +149,55 @@ class PhotoForm extends Component {
                         <ImageTooBigWarning />
                     ) : null
                 }
-                <div className={classes.formContainer} style={colorStyle}>
-                    <div className={classes.center}>
-                        <h1 style={{color: "white"}}>Adding Photo</h1>
-                    </div>
-                    <div className={classes.center}>
-                        <textarea onChange={this.inputDesc} placeholder="   add your description here..."/>
-                    </div>
-                    <br />
-                    <div className={classes.center}>
-                        <label>Choose your photo:</label>
-                    </div>
-                    <div className={classes.center}>
-                        <DropZone photoSubmit={this.photosubmit}/>
-                    </div>
-                    <div className={[classes.imgContainer, classes.center].join(" ")}>
-                        <img src={photoSrc} alt="default"/>
-                    </div>
-                    <div className={classes.center}>
-                        <Button btnType="Continue" clicked={this.sendData}>{this.state.sending ? <Spinner small /> : <p>Send</p>}</Button>
-                        <Button btnType="Cancel" clicked={()=>this.setState({redirect: true})}>Cancel</Button>
-                    </div>
-                </div>
+                {
+                    this.isMobile ? (
+                        <div className={classes.formContainer} style={{...colorStyle, width: "90%", height: "unset"}}>
+                            <div className={classes.center}>
+                                <h1 style={{color: "white"}}>Adding Photo</h1>
+                            </div>
+                            <div className={classes.center}>
+                                <textarea onChange={this.inputDesc} placeholder="   add your description here..." style={{width: "90%", minWidth: "none"}}/>
+                            </div>
+                            <br />
+                            <div className={classes.center}>
+                                <label>Choose your photo:</label>
+                            </div>
+                            <div className={classes.center}>
+                                <DropZone photoSubmit={this.photosubmit}/>
+                            </div>
+                            <div className={[classes.imgContainer, classes.center].join(" ")}>
+                                <img src={photoSrc} alt="default"/>
+                            </div>
+                            <div className={classes.center}>
+                                <Button btnType="Continue" clicked={this.sendData}>{this.state.sending ? <Spinner small /> : <p>Send</p>}</Button>
+                                <Button btnType="Cancel" clicked={()=>this.setState({redirect: true})}>Cancel</Button>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className={classes.formContainer} style={colorStyle}>
+                            <div className={classes.center}>
+                                <h1 style={{color: "white"}}>Adding Photo</h1>
+                            </div>
+                            <div className={classes.center}>
+                                <textarea onChange={this.inputDesc} placeholder="   add your description here..."/>
+                            </div>
+                            <br />
+                            <div className={classes.center}>
+                                <label>Choose your photo:</label>
+                            </div>
+                            <div className={classes.center}>
+                                <DropZone photoSubmit={this.photosubmit}/>
+                            </div>
+                            <div className={[classes.imgContainer, classes.center].join(" ")}>
+                                <img src={photoSrc} alt="default"/>
+                            </div>
+                            <div className={classes.center}>
+                                <Button btnType="Continue" clicked={this.sendData}>{this.state.sending ? <Spinner small /> : <p>Send</p>}</Button>
+                                <Button btnType="Cancel" clicked={()=>this.setState({redirect: true})}>Cancel</Button>
+                            </div>
+                        </div>
+                    )
+                }
                 {flash}
                 {this.state.redirect ? <Redirect to="/user/activity" /> : null}
             </React.Fragment>

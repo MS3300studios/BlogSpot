@@ -18,6 +18,7 @@ import getColor from '../../getColor';
 import classes from './dashboard.module.css';
 import greenClasses from './greenClasses.module.css';
 import blueClasses from './blueClasses.module.css';
+import getMobile from '../../getMobile';
 
 const colorScheme = getColor();
 let colorClasses = greenClasses;
@@ -28,7 +29,7 @@ if(colorScheme === "blue"){
 class Dashboard extends Component {
     constructor(props){
 
-        let token = getToken();
+        const token = getToken();
 
         super(props);
         this.state = {
@@ -337,7 +338,7 @@ class Dashboard extends Component {
                 )
             }
             posts = (
-                <div className={classes.postContainer}>
+                <div className={classes.postContainer} style={this.props.isMobile ? {margin: "0px"} : null}>
                     {
                         temp
                     }
@@ -348,7 +349,7 @@ class Dashboard extends Component {
             )
         }
         else posts = (
-            <div className={classes.postContainer}>
+            <div className={classes.postContainer} style={this.props.isMobile ? {margin: "0px"} : null}>
                 {this.filterPosts(this.state.filterIn, this.state.filterBy)}
                 <div className={colorClasses.Card} onClick={this.showPostForm}>
                     <img alt="add a post" src={addPostImage} className={classes.addPostDiv}/>
@@ -358,12 +359,25 @@ class Dashboard extends Component {
 
         return ( 
             <React.Fragment>
-                <SearchBar 
-                    placeholder="search posts in..."
-                    clicked={this.filterSearchHandler}
-                    resetFilter={()=>{this.setState({filterIn: "none", filterBy: "none"})}}
-                    selectValues={["title", "content"]}
-                />
+                {
+                    this.props.isMobile ? (
+                        <>
+                            <div style={{width: '100%', display: "flex", justifyContent: "center"}}>
+                                <SearchBar 
+                                    placeholder="search posts in..."
+                                    clicked={this.filterSearchHandler}
+                                    resetFilter={()=>{this.setState({filterIn: "none", filterBy: "none"})}}
+                                    selectValues={["title", "content"]}
+                                />
+                            </div>
+                        </>
+                    ) : <SearchBar 
+                            placeholder="search posts in..."
+                            clicked={this.filterSearchHandler}
+                            resetFilter={()=>{this.setState({filterIn: "none", filterBy: "none"})}}
+                            selectValues={["title", "content"]}
+                        />
+                }
                 {posts}
                 {addPostActive}
                 {flash} 

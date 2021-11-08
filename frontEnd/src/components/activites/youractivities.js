@@ -5,6 +5,7 @@ import PhotosList from '../../containers/photosList/photosList';
 
 import classes from './youractivites.module.css';
 import getColor from '../../getColor';
+import getMobile from '../../getMobile';
 
 const colorScheme = getColor();
 
@@ -14,11 +15,14 @@ class YourActivities extends Component {
         this.state = {
             view: "posts"
         }
+
+        this.isMobile = getMobile();
     }
+
     render() { 
         let content; 
         if(this.state.view === "posts"){
-            content = <Dashboard />
+            content = <Dashboard isMobile={this.isMobile}/>
         }
         else if(this.state.view === "photos"){
             content = <PhotosList />
@@ -41,6 +45,7 @@ class YourActivities extends Component {
                             <input className={classes.input2} type="radio" checked={this.state.view === "photos"} onChange={()=>this.setState({view: "photos"})}/>
                         </div>
                     </div>
+                {this.isMobile ? <div style={{marginTop: "130px"}}></div> : null}
                 {content}
                 </div>
             </React.Fragment>
