@@ -186,7 +186,7 @@ class Login extends Component {
                     this.isMobile ? (
                         <div className={classes.Form}>
                             <h1 style={{position: "unset"}}>Log in</h1>
-                            <label>email</label>    
+                            <label>email</label><br />  
                             <input onChange={(e) => {this.onChangeHandler(e, "email")}} type="email" placeholder="enter your email"/>
                             <label>Password:</label>
                             <input onChange={(e) => {this.onChangeHandler(e, "password")}} type="password" placeholder="enter your password" onKeyDown={this.handleEnterKey}/>
