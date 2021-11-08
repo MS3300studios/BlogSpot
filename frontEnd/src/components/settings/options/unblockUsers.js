@@ -94,11 +94,13 @@ class UnblockUsers extends Component {
             {
                 this.state.loading ? <Spinner /> : (
                     <>
-                    <div className={classes.userContainer}>{this.state.blockedUsers ? <>{this.state.blockedUsers}</> : (
-                        <h1 style={{color: "white", margin: "20px"}}>
-                            You don't have any blocked users. To block a user go to their profile and press the block button there.
-                        </h1>
-                    )}</div>
+                        <div className={classes.userContainer} style={this.props.isMobile ? {width: "unset"} : null}>
+                            {this.state.blockedUsers ? <>{this.state.blockedUsers}</> : (
+                                <h1 style={{color: "white", margin: "20px"}}>
+                                    You don't have any blocked users. To block a user go to their profile and press the block button there.
+                                </h1>
+                            )}
+                        </div>
                     </>
                 )
             }

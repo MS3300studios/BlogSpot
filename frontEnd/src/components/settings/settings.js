@@ -10,6 +10,7 @@ import Language from './options/language';
 import YourData from './options/yourData';
 import DeleteAccount from './options/DeleteAccount';
 import getColour from '../../getColor';
+import getMobile from '../../getMobile';
 
 const colourScheme = getColour();
 let background = { backgroundColor: "#82ca66" }; 
@@ -20,17 +21,18 @@ if(colourScheme === "blue"){
 }
 
 const Settings = () => {
-    const defaultText = <h1 style={{color: "#fff"}}>Select options from the menu on the left</h1>
+    const isMobile = getMobile();
+    const defaultText = <h1 style={{color: "#fff"}}>{isMobile ? "Select options from the menu above" : "Select options from the menu on the left"}</h1>
     const [selectedOption, setSelectedOption] = useState(defaultText)
 
     const select = (option) => {
         switch (option) {
             case "colours":
-                setSelectedOption(<Colours />)
+                setSelectedOption(<Colours isMobile={isMobile} />)
                 break;
 
             case "unblock users":
-                setSelectedOption(<UnblockUsers />)
+                setSelectedOption(<UnblockUsers isMobile={isMobile} />)
                 break;
 
             case "language":
@@ -51,28 +53,57 @@ const Settings = () => {
     }
 
     return (
-        <div className={classes.settingsContainer}>
-            <div className={classes.optionsContainer} style={background}>
-                <div className={colorClasses.option} onClick={()=>select("colours")}>
-                    <p>colours</p>
-                </div>
-                <div className={colorClasses.option} onClick={()=>select("unblock users")}>
-                    <p>unblock users</p>
-                </div>
-                <div className={colorClasses.option} onClick={()=>select("language")}>
-                    <p>language</p>
-                </div>
-                <div className={colorClasses.option} onClick={()=>select("your data")}>
-                    <p>your data</p>
-                </div>
-                <div className={[colorClasses.option, classes.delete].join(" ")} onClick={()=>select("delete account")}>
-                    <p>delete account</p>
-                </div>
-            </div>
-            <div className={classes.rightHandContainer}>
-                {selectedOption}
-            </div>
-        </div>
+        <>
+            {
+                isMobile ? (
+                    <div style={{marginTop: "0px"}}>
+                        <div style={{...background, marginTop: "0px", height: "200px", overflowY: "auto"}}>
+                            <div style={{display: "flex", justifyContent: "center", width: "100%", fontSize: "17px", marginBottom: "-5px"}} onClick={()=>select("colours")}>
+                                <p>colours</p>
+                            </div>
+                            <div style={{display: "flex", justifyContent: "center", width: "100%", fontSize: "17px", marginBottom: "-5px"}} onClick={()=>select("unblock users")}>
+                                <p>unblock users</p>
+                            </div>
+                            <div style={{display: "flex", justifyContent: "center", width: "100%", fontSize: "17px", marginBottom: "-5px"}} onClick={()=>select("language")}>
+                                <p>language</p>
+                            </div>
+                            <div style={{display: "flex", justifyContent: "center", width: "100%", fontSize: "17px", marginBottom: "-5px"}} onClick={()=>select("your data")}>
+                                <p>your data</p>
+                            </div>
+                            <div style={{display: "flex", justifyContent: "center", width: "100%", fontSize: "17px", marginBottom: "-5px"}} className={classes.delete} onClick={()=>select("delete account")}>
+                                <p>delete account</p>
+                            </div>
+                        </div>
+                        <div style={{padding: "10px"}}>
+                            {selectedOption}
+                        </div>
+                    </div>
+                ) : (
+                    <div className={classes.settingsContainer}>
+                        <div className={classes.optionsContainer} style={background}>
+                            <div className={colorClasses.option} onClick={()=>select("colours")}>
+                                <p>colours</p>
+                            </div>
+                            <div className={colorClasses.option} onClick={()=>select("unblock users")}>
+                                <p>unblock users</p>
+                            </div>
+                            <div className={colorClasses.option} onClick={()=>select("language")}>
+                                <p>language</p>
+                            </div>
+                            <div className={colorClasses.option} onClick={()=>select("your data")}>
+                                <p>your data</p>
+                            </div>
+                            <div className={[colorClasses.option, classes.delete].join(" ")} onClick={()=>select("delete account")}>
+                                <p>delete account</p>
+                            </div>
+                        </div>
+                        <div className={classes.rightHandContainer}>
+                            {selectedOption}
+                        </div>
+                    </div>
+                )
+            }
+        </>
     );
 }
  
