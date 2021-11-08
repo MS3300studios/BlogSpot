@@ -225,6 +225,7 @@ class AddUser extends Component {
                 <div className={classes.closeIcon} onClick={this.props.closeAddUser}>
                     <AiOutlineCloseCircle size="2em" color="#0a42a4" />
                 </div>
+                <div style={this.isMobile ? {paddingLeft: "45px"} : null}>
                     <SearchBar 
                         dontMove
                         placeholder="search users by..."
@@ -249,7 +250,8 @@ class AddUser extends Component {
                             </Button>
                         </div>
                     </SearchBar>
-                    {content}
+                </div>
+                {content}
                 </div>
                 {flash}
             </div>

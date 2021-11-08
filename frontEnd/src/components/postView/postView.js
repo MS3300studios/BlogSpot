@@ -18,6 +18,7 @@ import getColor from '../../getColor';
 import classes from './postView.module.css';
 import greenClasses from './greenClasses.module.css';
 import blueClasses from './blueClasses.module.css';
+import getMobile from '../../getMobile';
 
 const colorScheme = getColor();
 let colorClasses = greenClasses;
@@ -52,6 +53,8 @@ class PostView extends Component {
         this.displayPostForm.bind(this);
         this.cleanUpEditSucc.bind(this);
         this.getBlogOnInit.bind(this);
+
+        this.isMobile = getMobile();
     }
 
     componentDidMount(){
@@ -195,10 +198,57 @@ class PostView extends Component {
 
 
         return (
-            <div className={classes.MainContainer}>
-                {info}
-                {formForBlogs}
+            <div className={this.isMobile ? null : classes.MainContainer}>
                 {this.state.redirect ? <Redirect to="/" /> : null}
+                {formForBlogs}
+                {
+                    this.isMobile && !this.state.loading ? (
+                        <div style={{overflowX: "hidden"}}>
+                            <div>
+                                <div>
+                                    <div style={{color: "white", padding: "10px"}}>
+                                        <p className={classes.postTitle}>{this.state.post.title}</p>
+                                        <div className={classes.userDataContainer}>
+                                            <img className={classes.userPhoto} src={this.state.authorData.photo} alt="users face"/>
+                                            <Link to={"/user/profile/?id="+this.state.authorData._id} className={classes.userProfileLink}>
+                                                <p className={classes.postAuthor}>@{this.state.authorData.nickname}</p>
+                                            </Link>
+                                        </div>
+                                        <p>started at: {formattedCurrentDate(this.state.post.createdAt)}</p>
+                                        <p>latest edit: {formattedCurrentDate(this.state.post.updatedAt)}</p>
+                                        {
+                                            this.state.userData._id === this.state.post.author ? (
+                                                <div className={classes.btnsContainer} style={{marginTop: "10px"}}>
+                                                    <Button clicked={this.displayPostForm}>Edit</Button>
+                                                    <Button clicked={()=>this.deletePost(this.state.postId)}>Delete</Button>
+                                                    <div className={classes.smallSpinnerLocation}>
+                                                        {smallSpinner}
+                                                    </div>
+                                                </div>
+                                            ) : <div style={{marginBottom: "25px"}}></div>
+                                        }
+                                    </div>
+                                    <hr />
+                                    <div style={{overflowWrap: "anywhere", padding: "5px", fontSize: "20px", color: "white"}}>
+                                        <p>{this.state.post.content}</p>
+                                    </div>
+                                    <hr style={{marginBottom: "20px"}}/>
+                                    <div className={classes.positionSocialData} style={{marginBottom: "50px", width: "88%", marginTop: '-25px'}}>
+                                        <LikesCommentsNumbers 
+                                            objectId={this.state.postId} 
+                                            userId={this.state.authorData._id} 
+                                            comments 
+                                            objectIsBlog 
+                                        />
+                                    </div>
+                                </div>
+                                <div className={[classes.blogFace, colorClasses.commentsContainer].join(" ")} style={{width: "90%", display: "flex", justifyContent: "center"}}>
+                                    <Comments blogId={this.state.postId} blogAuthorId={this.state.authorData._id} small/>
+                                </div>
+                            </div>
+                        </div>
+                    ) : <>{info}</>
+                }
             </div>
         );
     }

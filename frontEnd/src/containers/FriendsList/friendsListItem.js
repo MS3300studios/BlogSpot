@@ -69,8 +69,8 @@ const FriendsListItem = (props) => {
 
     return (
         <>
-            <div className={isMobile ? classes.friendContainer : null}>
-                <div className={classes.listElement} style={isMobile ? {width: "80%"} : null}>
+            <div className={classes.friendContainer}>
+                <div className={classes.listElement}>
                     <div className={classes.smallFaceContainer}>
                         <img src={props.photo} alt="user" style={isMobile ? {height: "50px", width: "50px"} : null} />
                         {
