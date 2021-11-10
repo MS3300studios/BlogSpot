@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import classes from './chatMenu.module.css';
+import mobileClasses from './mobileClassesChatMenu.module.css';
 import SelectPanel from '../addingConversation/selectPanel';
 import axios from 'axios';
 
@@ -68,6 +69,7 @@ class ChatMenu extends Component {
                     selectChat={this.props.selectChat}
                     el={el}
                     key={index}
+                    isMobile={this.isMobile}
                 />
             )
         });
@@ -136,35 +138,77 @@ class ChatMenu extends Component {
             conversations = this.filterConversations();
         } 
         return (
-            <div className={classes.chatMenu}>
-                <div className={classes.conversationContainer}>
-                    <SearchBar 
-                        placeholder="search conversations in..."
-                        clicked={this.filterSearchHandler}
-                        selectedOption={this.filterSearchHandler}
-                        resetFilter={()=>{this.setState({filterIn: "", filterBy: ""})}}
-                        selectValues={["name", "id"]}
-                    />
-                    {
-                        (this.state.conversations.length === 0) ? null : (
-                            <div className={classes.center}>
-                                <div className={classes.addConversationIconSmall} onClick={()=>this.setState({addingConversation: true})}>
-                                    <BsPlusSquareFill size="2em" color="#53c253"/>
-                                    <p>Add a conversation</p>
-                                </div>
-                            </div>
-                        )
-                    }
-                    {conversations}
-                </div>
+            <>
                 {
-                    this.state.addingConversation ? 
-                    <SelectPanel 
-                        closeAddConversation={()=>this.setState({addingConversation: false})}
-                    /> 
-                    : null
+                    this.props.isMobile ? (
+                        <div className={mobileClasses.mainContainer}>
+                            <div className={mobileClasses.conversationContainer}>
+                                <div style={{marginTop: "5px", display: "flex", justifyContent: "center"}}>
+                                    <SearchBar 
+                                        placeholder="search conversations in..."
+                                        clicked={this.filterSearchHandler}
+                                        selectedOption={this.filterSearchHandler}
+                                        resetFilter={()=>{this.setState({filterIn: "", filterBy: ""})}}
+                                        selectValues={["name", "id"]}
+                                    />
+                                </div>
+                                {
+                                    (this.state.conversations.length === 0) ? null : (
+                                        <div className={classes.center}>
+                                            <div 
+                                                className={classes.addConversationIconSmall} 
+                                                onClick={()=>this.setState({addingConversation: true})}
+                                                style={{height: "unset", width: "unset", padding: "5px"}}
+                                            >
+                                                <BsPlusSquareFill size="2em" color="#53c253"/>
+                                                <p style={{marginLeft: "10px"}}>Add a conversation</p>
+                                            </div>
+                                        </div>
+                                    )
+                                }
+                                {conversations}
+                            </div>
+                            {
+                                this.state.addingConversation ? 
+                                <SelectPanel 
+                                    closeAddConversation={()=>this.setState({addingConversation: false})}
+                                /> 
+                                : null
+                            }
+                        </div>
+                    ) : (
+                        <div className={classes.chatMenu}>
+                            <div className={classes.conversationContainer}>
+                                <SearchBar 
+                                    placeholder="search conversations in..."
+                                    clicked={this.filterSearchHandler}
+                                    selectedOption={this.filterSearchHandler}
+                                    resetFilter={()=>{this.setState({filterIn: "", filterBy: ""})}}
+                                    selectValues={["name", "id"]}
+                                />
+                                {
+                                    (this.state.conversations.length === 0) ? null : (
+                                        <div className={classes.center}>
+                                            <div className={classes.addConversationIconSmall} onClick={()=>this.setState({addingConversation: true})}>
+                                                <BsPlusSquareFill size="2em" color="#53c253"/>
+                                                <p>Add a conversation</p>
+                                            </div>
+                                        </div>
+                                    )
+                                }
+                                {conversations}
+                            </div>
+                            {
+                                this.state.addingConversation ? 
+                                <SelectPanel 
+                                    closeAddConversation={()=>this.setState({addingConversation: false})}
+                                /> 
+                                : null
+                            }
+                        </div>
+                    )
                 }
-            </div>
+            </>
         );
     }
 }

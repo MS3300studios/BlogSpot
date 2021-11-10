@@ -27,6 +27,7 @@ import classes from './conversation.module.css';
 import greenClasses from './greenClasses.module.css';
 import blueClasses from './blueClasses.module.css';
 import UserPhoto from '../../../components/UI/userphoto';
+import getMobile from '../../../getMobile';
 
 const colorScheme = getColor();
 let colorClasses = greenClasses;
@@ -77,6 +78,7 @@ class Conversation extends Component {
         this.scrollPosition.current = 201;
         this.messagesEnd = null;
         this.lastCurrentMessage = null;
+        this.isMobile = getMobile();
     }
 
     componentDidMount(){
@@ -421,7 +423,7 @@ class Conversation extends Component {
                 </div>
                 {
                     this.state.infoOpened ? (
-                        <div className={colorClasses.sidePanel}>
+                        <div className={colorClasses.sidePanel} style={this.isMobile ? {width: "100%"} : null}>
                             {
                                 (this.props.conversation.conversationType === "private") ? (
                                     <div className={colorClasses.centerTop}>

@@ -184,7 +184,8 @@ const ConversationListItem = (props) => {
 
     return (
         <>
-            <div className={classNames} onClick={chatSelect}>
+            <div className={classNames} onClick={chatSelect} style={props.isMobile ? {width: "85%"} : null}>
+                {props.isMobile ? <p>okokokok</p> : null}
                 {loadingLatestMessage ? null : <h3 className={classes2.latestMessageHour}>{latestMessage.hour}</h3>}
                 {content}
                 {latestMessageDisplay}

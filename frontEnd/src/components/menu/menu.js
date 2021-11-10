@@ -16,6 +16,7 @@ import getColor from '../../getColor';
 import getMobile from '../../getMobile';
 import logout from '../../logout';
 import Button from '../UI/button';
+import messageSound from '../../assets/audio/message.mp3';
 
 import dropdownClasses from '../../components/UI/userphoto.module.css';
 import classes from './menu.module.css';
@@ -100,7 +101,10 @@ class Menu extends Component {
         })
 
         this.props.socket.on('message', message => {
-            console.log('[menu.js] socket: message was sent')
+            if(message.authorId !== this.data._id){
+                const audio = new Audio(messageSound);
+                audio.play();
+            }
             if(message.authorId !== this.data._id && this.props.location.pathname !== "/chat/" && this.props.location.pathname !== "/conversation/"){
                 let msgCnt = this.state.messageCount;
                 this.setState({messageCount: msgCnt+1});
