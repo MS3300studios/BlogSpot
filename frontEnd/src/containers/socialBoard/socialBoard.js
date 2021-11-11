@@ -237,15 +237,18 @@ class SocialBoard extends Component {
                     </div>
                 </div>
                 <div className={classes.mainContainer}>
-                    <div style={addItemStyle} onClick={()=>this.setState({showAddingItems: true})} className={classes.addPost}> 
-                        <img alt="add a post" src={addPostImage} style={{
-                                cursor: "pointer",
-                                width: "90px",
-                                height: "90px",
-                                marginTop: "110px",
-                                marginLeft: "115px"
-                            }}
-                        />
+                    <div style={{display: 'flex', justifyContent: 'center', width: "100%"}}>
+                        <div style={{...addItemStyle, width: '100px', height: "100px", display: "flex", justifyContent: 'center', alignItems: "center"}} onClick={()=>this.setState({showAddingItems: true})} className={classes.addPost}> 
+                            <img 
+                                alt="add a post" 
+                                src={addPostImage}
+                                style={{
+                                    cursor: "pointer",
+                                    width: "100%",
+                                    height: '100%'
+                                }}
+                            />
+                        </div>
                     </div>
                     {content}
                     {this.state.bigPhoto ? <PhotoView photo={this.state.bigPhoto} closeBigPhoto={this.bigPhotoWasClosed}/> : null}
