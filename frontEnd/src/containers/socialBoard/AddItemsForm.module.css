@@ -41,7 +41,7 @@
     font-size: 100px;
 }
 
-.addBlog:hover{
+.bigAddBlog:hover{
     transform: scale(1.2);
 }
 
@@ -58,7 +58,7 @@
     font-size: 100px;
 }
 
-.addPhoto:hover{
+.bigAddPhoto:hover{
     transform: scale(1.2);
 }
 

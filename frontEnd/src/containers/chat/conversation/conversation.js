@@ -423,110 +423,206 @@ class Conversation extends Component {
                 </div>
                 {
                     this.state.infoOpened ? (
-                        <div 
-                            style={this.isMobile ? {
-                                position: "fixed", 
-                                top: "91px", 
-                                left: "0px", 
-                                width: "100%",
-                                height: "100%",
-                                backgroundColor: "rgba(0,0,0,0.5)"
-                            } : {visibility: "hidden"}}
-                        >
-                            <div className={colorClasses.sidePanel} style={this.isMobile ? {width: "100%", height: "60%", position: "fixed", overflow: "auto"} : null}>
-                                {
-                                    (this.props.conversation.conversationType === "private") ? (
-                                        <div className={colorClasses.centerTop}>
-                                            <div style={{margin: "0 auto"}}>
-                                                <div className={[classes.operationButton,classes.leave].join(" ")} onClick={()=>this.deleteConversation(false)}>
-                                                    <AiFillDelete size="2em" color="#fff"/>
-                                                    <p>Delete conversation</p>
-                                                </div>
-                                                <br />
-                                                <div className={[classes.operationButton,classes.leave].join(" ")} onClick={this.blockUserInPrivateConversation}>
-                                                    <BiBlock size="2em" color="#fff"/>
-                                                    <p>Block user</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ) : (
-                                        <>
+                        <>
+                            {
+                                this.isMobile ? (
+                                    <div 
+                                        style={{
+                                            position: "fixed", 
+                                            top: "91px", 
+                                            left: "0px", 
+                                            width: "100%",
+                                            height: "100%",
+                                            backgroundColor: "rgba(0,0,0,0.5)"
+                                        }}
+                                    >
+                                        <div className={colorClasses.sidePanel} style={this.isMobile ? {width: "100%", height: "60%", position: "fixed", overflow: "auto"} : null}>
                                             {
-                                                this.state.editConversationName ? (
-                                                    <div className={classes.editingContainer}>
-                                                        <div className={classes.inputContainer}>
-                                                            <input 
-                                                                type="text" 
-                                                                className={classes.editConversationNameInput}
-                                                                value={this.state.newConversationName}
-                                                                onChange={(e)=>this.setState({newConversationName: e.target.value})}
-                                                            />
-                                                        </div>
-                                                        <div className={classes.btnContainer}>
-                                                            <Button btnType="Continue" clicked={this.sendConversationName}>Continue</Button>
-                                                            <Button btnType="Cancel" clicked={()=>this.setState({editConversationName: false})}>Cancel</Button>
-                                                        </div>
-                                                    </div>
-                                                )
-                                                    : ( 
-                                                    <div className={classes.conversationName}>
-                                                        <h1>{this.props.conversation.name}</h1>
-                                                        <div className={classes.pencilContainer}>
-                                                            <BsPencil 
-                                                                size="2em" 
-                                                                color="#0a42a4" 
-                                                                onClick={()=>this.setState({editConversationName: true})}/>
-                                                        </div>
-                                                    </div>
-                                                )
-                                            }
-                                            <hr />
-                                            <div className={classes.center}>
-                                                <div className={[classes.operationButton,classes.leave].join(" ")} onClick={this.leaveConversation}>
-                                                    <ImExit size="2em" color="#fff"/>
-                                                    <p>Leave conversation</p>
-                                                </div>
-                                            </div>
-                                            <div className={classes.center}>
-                                                <div className={[classes.operationButton,classes.addUser].join(" ")} onClick={this.addUser}>
-                                                    <FiUserPlus size="1.7em" color="#fff"/>
-                                                    <p>Add a user</p>
-                                                </div>
-                                            </div>
-                                            <hr />
-                                            <div className={classes.collapsibleParticipants}>
-                                                <div className={classes.collapsiblePanel} onClick={()=>this.setState((prevState)=>({showParticipants: !prevState.showParticipants}))}> 
-                                                    {
-                                                        this.state.showParticipants ? <IoIosArrowUp size="2em" color="#fff"/> : <IoIosArrowDown size="2em" color="#fff"/>
-                                                    }
-                                                    <p>participants</p>
-                                                </div>
-                                                {
-                                                    this.state.showParticipants ? (
-                                                        <div>
-                                                            <input 
-                                                                type="text" 
-                                                                placeholder="search participants by name"
-                                                                className={classes.input}
-                                                                onChange={(e)=>this.setState({filterParticipantsString: e.target.value})}
-                                                            />
-                                                            <div className={classes.participantsContainer}>
-                                                                {this.filterParticipants()}
+                                                (this.props.conversation.conversationType === "private") ? (
+                                                    <div className={colorClasses.centerTop}>
+                                                        <div style={{margin: "0 auto"}}>
+                                                            <div className={[classes.operationButton,classes.leave].join(" ")} onClick={()=>this.deleteConversation(false)}>
+                                                                <AiFillDelete size="2em" color="#fff"/>
+                                                                <p>Delete conversation</p>
+                                                            </div>
+                                                            <br />
+                                                            <div className={[classes.operationButton,classes.leave].join(" ")} onClick={this.blockUserInPrivateConversation}>
+                                                                <BiBlock size="2em" color="#fff"/>
+                                                                <p>Block user</p>
                                                             </div>
                                                         </div>
-                                                    ) : null
-                                                }
-                                            </div>
-                                        </>
-                                    )
-                                }
-                            </div>
-                        </div>
-                    ) : null
+                                                    </div>
+                                                ) : (
+                                                    <>
+                                                        {
+                                                            this.state.editConversationName ? (
+                                                                <div className={classes.editingContainer}>
+                                                                    <div className={classes.inputContainer}>
+                                                                        <input 
+                                                                            type="text" 
+                                                                            className={classes.editConversationNameInput}
+                                                                            value={this.state.newConversationName}
+                                                                            onChange={(e)=>this.setState({newConversationName: e.target.value})}
+                                                                        />
+                                                                    </div>
+                                                                    <div className={classes.btnContainer}>
+                                                                        <Button btnType="Continue" clicked={this.sendConversationName}>Continue</Button>
+                                                                        <Button btnType="Cancel" clicked={()=>this.setState({editConversationName: false})}>Cancel</Button>
+                                                                    </div>
+                                                                </div>
+                                                            )
+                                                                : ( 
+                                                                <div className={classes.conversationName}>
+                                                                    <h1>{this.props.conversation.name}</h1>
+                                                                    <div className={classes.pencilContainer}>
+                                                                        <BsPencil 
+                                                                            size="2em" 
+                                                                            color="#0a42a4" 
+                                                                            onClick={()=>this.setState({editConversationName: true})}/>
+                                                                    </div>
+                                                                </div>
+                                                            )
+                                                        }
+                                                        <hr />
+                                                        <div className={classes.center}>
+                                                            <div className={[classes.operationButton,classes.leave].join(" ")} onClick={this.leaveConversation}>
+                                                                <ImExit size="2em" color="#fff"/>
+                                                                <p>Leave conversation</p>
+                                                            </div>
+                                                        </div>
+                                                        <div className={classes.center}>
+                                                            <div className={[classes.operationButton,classes.addUser].join(" ")} onClick={this.addUser}>
+                                                                <FiUserPlus size="1.7em" color="#fff"/>
+                                                                <p>Add a user</p>
+                                                            </div>
+                                                        </div>
+                                                        <hr />
+                                                        <div className={classes.collapsibleParticipants}>
+                                                            <div className={classes.collapsiblePanel} onClick={()=>this.setState((prevState)=>({showParticipants: !prevState.showParticipants}))}> 
+                                                                {
+                                                                    this.state.showParticipants ? <IoIosArrowUp size="2em" color="#fff"/> : <IoIosArrowDown size="2em" color="#fff"/>
+                                                                }
+                                                                <p>participants</p>
+                                                            </div>
+                                                            {
+                                                                this.state.showParticipants ? (
+                                                                    <div>
+                                                                        <input 
+                                                                            type="text" 
+                                                                            placeholder="search participants by name"
+                                                                            className={classes.input}
+                                                                            onChange={(e)=>this.setState({filterParticipantsString: e.target.value})}
+                                                                        />
+                                                                        <div className={classes.participantsContainer}>
+                                                                            {this.filterParticipants()}
+                                                                        </div>
+                                                                    </div>
+                                                                ) : null
+                                                            }
+                                                        </div>
+                                                    </>
+                                                )
+                                            }
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div className={colorClasses.sidePanel} style={this.isMobile ? {width: "100%", height: "60%", position: "fixed", overflow: "auto"} : null}>
+                                        {
+                                            (this.props.conversation.conversationType === "private") ? (
+                                                <div className={colorClasses.centerTop}>
+                                                    <div style={{margin: "0 auto"}}>
+                                                        <div className={[classes.operationButton,classes.leave].join(" ")} onClick={()=>this.deleteConversation(false)}>
+                                                            <AiFillDelete size="2em" color="#fff"/>
+                                                            <p>Delete conversation</p>
+                                                        </div>
+                                                        <br />
+                                                        <div className={[classes.operationButton,classes.leave].join(" ")} onClick={this.blockUserInPrivateConversation}>
+                                                            <BiBlock size="2em" color="#fff"/>
+                                                            <p>Block user</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ) : (
+                                                <>
+                                                    {
+                                                        this.state.editConversationName ? (
+                                                            <div className={classes.editingContainer}>
+                                                                <div className={classes.inputContainer}>
+                                                                    <input 
+                                                                        type="text" 
+                                                                        className={classes.editConversationNameInput}
+                                                                        value={this.state.newConversationName}
+                                                                        onChange={(e)=>this.setState({newConversationName: e.target.value})}
+                                                                    />
+                                                                </div>
+                                                                <div className={classes.btnContainer}>
+                                                                    <Button btnType="Continue" clicked={this.sendConversationName}>Continue</Button>
+                                                                    <Button btnType="Cancel" clicked={()=>this.setState({editConversationName: false})}>Cancel</Button>
+                                                                </div>
+                                                            </div>
+                                                        )
+                                                            : ( 
+                                                            <div className={classes.conversationName}>
+                                                                <h1>{this.props.conversation.name}</h1>
+                                                                <div className={classes.pencilContainer}>
+                                                                    <BsPencil 
+                                                                        size="2em" 
+                                                                        color="#0a42a4" 
+                                                                        onClick={()=>this.setState({editConversationName: true})}/>
+                                                                </div>
+                                                            </div>
+                                                        )
+                                                    }
+                                                    <hr />
+                                                    <div className={classes.center}>
+                                                        <div className={[classes.operationButton,classes.leave].join(" ")} onClick={this.leaveConversation}>
+                                                            <ImExit size="2em" color="#fff"/>
+                                                            <p>Leave conversation</p>
+                                                        </div>
+                                                    </div>
+                                                    <div className={classes.center}>
+                                                        <div className={[classes.operationButton,classes.addUser].join(" ")} onClick={this.addUser}>
+                                                            <FiUserPlus size="1.7em" color="#fff"/>
+                                                            <p>Add a user</p>
+                                                        </div>
+                                                    </div>
+                                                    <hr />
+                                                    <div className={classes.collapsibleParticipants}>
+                                                        <div className={classes.collapsiblePanel} onClick={()=>this.setState((prevState)=>({showParticipants: !prevState.showParticipants}))}> 
+                                                            {
+                                                                this.state.showParticipants ? <IoIosArrowUp size="2em" color="#fff"/> : <IoIosArrowDown size="2em" color="#fff"/>
+                                                            }
+                                                            <p>participants</p>
+                                                        </div>
+                                                        {
+                                                            this.state.showParticipants ? (
+                                                                <div>
+                                                                    <input 
+                                                                        type="text" 
+                                                                        placeholder="search participants by name"
+                                                                        className={classes.input}
+                                                                        onChange={(e)=>this.setState({filterParticipantsString: e.target.value})}
+                                                                    />
+                                                                    <div className={classes.participantsContainer}>
+                                                                        {this.filterParticipants()}
+                                                                    </div>
+                                                                </div>
+                                                            ) : null
+                                                        }
+                                                    </div>
+                                                </>
+                                            )
+                                        }
+                                    </div>
+                                )
+                            }
+                        </>
+                        ) : null
                 }
                 {
                     this.state.addingUser ? (
                         <AddingConversation 
+                            isMobile={this.isMobile}
                             addingUsers
                             closeWindow={()=>this.setState({addingUser: false})}
                             participants={this.props.conversation.participants}

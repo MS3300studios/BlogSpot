@@ -342,7 +342,7 @@ class AddingConversation extends Component {
             <div className={classes.backDrop}>
                 {
                     this.state.loading ? <Spinner /> : (
-                        <div className={colorClasses.addUserContainer}>
+                        <div className={colorClasses.addUserContainer} style={this.props.isMobile ? {width: "unset", maxHeight: "unset", margin: "unset"} : null}>
                             <div className={classes.closeIcon} onClick={()=>{
                                 if(this.props.closeWindow) this.props.closeWindow();
                                 else this.setState({redirectChat: true})
@@ -385,17 +385,34 @@ class AddingConversation extends Component {
                                 }
 
                                 <div className={classes.addingUsers}>
-                                    <h1>Add users to the conversation: </h1>
-                                    <SearchBar 
-                                        placeholder="search friends in..."
-                                        clicked={this.filterSearchHandler}
-                                        resetFilter={()=>{this.setState({filterIn: "", filterBy: ""})}}
-                                        selectValues={["nickname", "name", "surname", "id"]}
-                                        selectedOption={this.filterSearchHandler}
-                                    />
+                                    {
+                                        this.props.isMobile ? (
+                                            <div style={{marginLeft: "15%"}}>
+                                                <h1>Add users to the conversation: </h1>
+                                                <SearchBar 
+                                                    placeholder="search friends in..."
+                                                    clicked={this.filterSearchHandler}
+                                                    resetFilter={()=>{this.setState({filterIn: "", filterBy: ""})}}
+                                                    selectValues={["nickname", "name", "surname", "id"]}
+                                                    selectedOption={this.filterSearchHandler}
+                                                />
+                                            </div>
+                                        ) : (
+                                            <>
+                                            <h1>Add users to the conversation: </h1>
+                                            <SearchBar 
+                                                placeholder="search friends in..."
+                                                clicked={this.filterSearchHandler}
+                                                resetFilter={()=>{this.setState({filterIn: "", filterBy: ""})}}
+                                                selectValues={["nickname", "name", "surname", "id"]}
+                                                selectedOption={this.filterSearchHandler}
+                                            />
+                                            </>
+                                        )
+                                    }
                                     {
                                         this.state.hideSelectAll ? null : (
-                                            <div className={classes.selectAllContainer}>
+                                            <div className={classes.selectAllContainer} style={this.props.isMobile ? {margin: "15px 0px", width: "65%"} : null}>
                                                 <div className={classes.selectAllContainerInner}>
                                                     <p>select all</p>
                                                     <input 
@@ -407,7 +424,7 @@ class AddingConversation extends Component {
                                         )
                                     }
                                     <div className={classes.center}>
-                                        <div className={classes.friendsList}>
+                                        <div className={classes.friendsList} style={this.props.isMobile ? {width: "unset"} : null}>
                                             { friends }
                                         </div>
                                     </div>

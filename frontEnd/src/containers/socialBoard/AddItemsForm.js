@@ -1,18 +1,15 @@
 import React, { useState } from 'react';
 import classes from './AddItemsForm.module.css';
 
-
 import Backdrop from '../../components/UI/backdrop';
 import {AiOutlineCloseCircle} from 'react-icons/ai';
 import {MdAddToPhotos} from 'react-icons/md'; //add blog
 import {MdAddAPhoto} from 'react-icons/md';
 import { Redirect } from 'react-router';
-import getMobile from '../../getMobile';
 
 const AddItemsForm = (props) => {
     const [redirectPhoto, setredirectPhoto] = useState(false);
     const [redirectBlog, setredirectBlog] = useState(false);
-    const isMobile = getMobile();
     
     const centerStyle = {
         width: "100%",
@@ -24,7 +21,7 @@ const AddItemsForm = (props) => {
     return (
         <Backdrop show>
             {
-                isMobile ? (
+                props.isMobile ? (
                     <div style={{overflowY: "auto"}}>
                         <div 
                             className={classes.closeIcon} 
@@ -40,22 +37,25 @@ const AddItemsForm = (props) => {
                         >
                             <AiOutlineCloseCircle size="2em" color="#fff" />
                         </div>
+
                         <div className={classes.centeringDiv}>
-                            <div className={classes.addBlog} style={props.addItemStyle} onClick={()=>setredirectBlog(true)}>
+                            <div style={props.isMobile ? {marginBottom: "5px"} : null} className={props.isMobile ? classes.addBlog : [classes.addBlog, classes.bigAddBlog].join(" ")} style={props.addItemStyle} onClick={()=>setredirectBlog(true)}>
                                 <div>
                                     <MdAddToPhotos size="1.5em" color="#fff"/>
                                 </div>
                                 <h1 className={classes.mainh1}>Add blog</h1>
                             </div>
                         </div>
+
                         <div className={classes.centeringDiv}>
-                            <div className={classes.addPhoto} style={props.addItemStyle} onClick={()=>setredirectPhoto(true)}>
+                            <div style={props.isMobile ? {marginBottom: "5px"} : null} className={props.isMobile ? classes.addPhoto : [classes.addPhoto, classes.bigAddPhoto].join(" ")} style={props.addItemStyle} onClick={()=>setredirectPhoto(true)}>
                                 <div>
                                     <MdAddAPhoto size="1.5em" color="#fff"/>
                                 </div>
                                 <h1 className={classes.mainh1} >Add photo</h1>
                             </div>
                         </div>
+                        
                     </div>
                 ) : (
                     <div className={classes.addingContainer}>

@@ -257,7 +257,7 @@ class SocialBoard extends Component {
                         </div>
                     )
                 }
-                {this.state.showAddingItems ? <AddItemsForm closeAddItem={()=>this.setState({showAddingItems: false})} addItemStyle={addItemStyle}/> : null }
+                {this.state.showAddingItems ? <AddItemsForm isMobile={this.isMobile} closeAddItem={()=>this.setState({showAddingItems: false})} addItemStyle={addItemStyle}/> : null }
                 {flash}
             </>
         );
