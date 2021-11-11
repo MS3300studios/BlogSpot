@@ -9,6 +9,7 @@ import getToken from '../../../getToken';
 import Spinner from '../../../components/UI/spinner';
 import UserPhoto from '../../../components/UI/userphoto';
 import getUserData from '../../../getUserData';
+import { Link } from 'react-router-dom';
 
 const ConversationListItem = (props) => {
     const [loading, setLoading] = useState(true);
@@ -184,19 +185,37 @@ const ConversationListItem = (props) => {
 
     return (
         <>
-            <div className={classNames} onClick={chatSelect} style={props.isMobile ? {width: "85%"} : null}>
-                {props.isMobile ? <p>okokokok</p> : null}
-                {loadingLatestMessage ? null : <h3 className={classes2.latestMessageHour}>{latestMessage.hour}</h3>}
-                {content}
-                {latestMessageDisplay}
-                {
-                    props.join ? (
-                        <div className={classes.joinButtonContainer}>
-                            <div className={classes.joinButton} onClick={()=>props.join(props.el._id)}>join</div>
+            {
+                props.isMobile ? (
+                    <Link to={`/conversation/?id=${props.el._id}`} style={{textDecoration: "none", color: "unset"}}>
+                        <div className={classNames} style={props.isMobile ? {margin: "20px auto 0px auto"} : null}>
+                            {loadingLatestMessage ? null : <h3 className={classes2.latestMessageHour}>{latestMessage.hour}</h3>}
+                            {content}
+                            {latestMessageDisplay}
+                            {
+                                props.join ? (
+                                    <div className={classes.joinButtonContainer}>
+                                        <div className={classes.joinButton} onClick={()=>props.join(props.el._id)}>join</div>
+                                    </div>
+                                ) : null
+                            }
                         </div>
-                    ) : null
-                }
-            </div>
+                    </Link>
+                ) : (
+                    <div className={classNames} onClick={chatSelect} style={props.isMobile ? {margin: "20px auto 0px auto"} : null}>
+                        {loadingLatestMessage ? null : <h3 className={classes2.latestMessageHour}>{latestMessage.hour}</h3>}
+                        {content}
+                        {latestMessageDisplay}
+                        {
+                            props.join ? (
+                                <div className={classes.joinButtonContainer}>
+                                    <div className={classes.joinButton} onClick={()=>props.join(props.el._id)}>join</div>
+                                </div>
+                            ) : null
+                        }
+                    </div>
+                )
+            }
         </>
     );
 }

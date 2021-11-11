@@ -69,7 +69,7 @@ class ChatMenu extends Component {
                     selectChat={this.props.selectChat}
                     el={el}
                     key={index}
-                    isMobile={this.isMobile}
+                    isMobile={this.props.isMobile}
                 />
             )
         });

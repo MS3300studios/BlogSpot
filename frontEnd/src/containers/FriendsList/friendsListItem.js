@@ -127,7 +127,7 @@ const FriendsListItem = (props) => {
                 props.friendSelect ? null : <hr />
             }
             {
-                redirectToConversation ? <Redirect to={`/conversation/?id=${props.id}`} /> : null
+                redirectToConversation ? <Redirect to={`/conversation/?friendId=${props.id}`} /> : null
             }
             {flashContent}
         </>
