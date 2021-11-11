@@ -1,7 +1,8 @@
 .mainContainer{
-    color: brown;
+    /* color: brown; */
 }
 
 .conversationContainer{
     /* border: 3px solid; */
+    margin: 20px auto 0px auto;
 }
