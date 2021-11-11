@@ -474,7 +474,7 @@ class UserProfile extends Component {
         let sendMessageButton = null;
         if(this.state.isFriend && this.state.isBlocked === false){
             sendMessageButton = (
-                <Link to={`/conversation/?id=${this.state.userId}`} className={classes.sendMessageLink}>
+                <Link to={`/conversation/?friendId=${this.state.userId}`} className={classes.sendMessageLink}>
                     <button className={classes.sendMessage}><MdMessage size="1.5em" color="#FFF" /> Send Message</button>
                 </Link>
             );
@@ -579,6 +579,7 @@ class UserProfile extends Component {
                             ) : (
                                 <MobileUserProfile
                                     loading={this.state.userPhoto === null}
+                                    userId={this.state.userId}
                                     userphoto={this.state.userPhoto}
                                     userdata={this.state.userData}
                                     friendBtnDataRdy={this.state.friendBtnDataRdy}

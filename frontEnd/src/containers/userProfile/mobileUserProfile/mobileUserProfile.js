@@ -68,13 +68,13 @@ class MobileUserProfile extends Component {
                             receivedRequest={this.props.receivedRequest}
                             isFriend={this.props.isFriend} 
                             pressAction={this.props.friendButtonAction}
-                            friendId={this.props.userdata._id}
+                            friendId={this.props.userId}
                         />
                     ) : <Spinner small/>} 
                     
                     { 
                         (this.props.isFriend && this.props.isBlocked === false) ? (
-                            <Link to={`/conversation/?id=${this.props.userdata._id}`} className={importedClasses.sendMessageLink}>
+                            <Link to={`/conversation/?friendId=${this.props.userId}`} className={importedClasses.sendMessageLink}>
                                 <button className={importedClasses.sendMessage}><MdMessage size="1.5em" color="#FFF" />Send Message</button>
                             </Link>
                         ) : null 
@@ -82,14 +82,14 @@ class MobileUserProfile extends Component {
 
                     {
                         this.props.isBlocked ? null : (
-                            <button className={importedClasses.unblockUser} onClick={()=>this.props.blockUser(this.props.userdata._id)}>
+                            <button className={importedClasses.unblockUser} onClick={()=>this.props.blockUser(this.props.userId)}>
                                 <BiBlock size="1.5em" color="#FFF" style={{marginRight: "14px"}}/>
                                 Block user
                             </button>
                         )
                     }
 
-                    <Link to={`/reporting/user/?id=${this.props.userdata._id}`} style={{textDecoration: "none", color: "unset"}}>
+                    <Link to={`/reporting/user/?id=${this.props.userId}`} style={{textDecoration: "none", color: "unset"}}>
                         <button className={importedClasses.reportUser} style={{marginTop: "0px"}}>
                             <MdReport size="1.5em" color="#FFF" style={{marginRight: "14px"}}/>
                             report this user
@@ -107,7 +107,7 @@ class MobileUserProfile extends Component {
                 {
                     this.state.hideDetails ? null : (
                         <div className={classes.lowerSection}>
-                            <NumberInfoContainer token={this.token} userId={this.props.userdata._id}/>
+                            <NumberInfoContainer token={this.token} userId={this.props.userId}/>
                         </div>
                     )
                 }

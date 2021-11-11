@@ -56,7 +56,7 @@ const MobilePhotoView = (props) => {
                         </>
                     ) : null
                 }
-                <div style={{display: "flex", justifyContent: "center"}}>
+                <div style={{display: "flex", justifyContent: "center", marginBottom: "25px"}}>
                 <div className={importedClasses.LikesCommentsNumbers} style={{width: "90%", height: "30px"}}>
                     <div className={importedClasses.like}>
                         <Like
