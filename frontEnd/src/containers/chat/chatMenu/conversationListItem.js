@@ -173,7 +173,9 @@ const ConversationListItem = (props) => {
                     {
                         (latestMessage.content === "none") ? 
                         <p className={classes2.latestMessage}>no messages have been sent yet</p> :
-                        <p className={classes2.latestMessage}>{latestMessage.authorName}: {latestMessage.content}</p>
+                        <p className={classes2.latestMessage} style={{textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "nowrap", width: "250px"}}>
+                            {latestMessage.authorName}: {latestMessage.content}
+                        </p>
                     }
                 </div>
             )
@@ -189,9 +191,11 @@ const ConversationListItem = (props) => {
                 props.isMobile ? (
                     <Link to={`/conversation/?id=${props.el._id}`} style={{textDecoration: "none", color: "unset"}}>
                         <div className={classNames} style={props.isMobile ? {margin: "20px auto 0px auto"} : null}>
-                            {loadingLatestMessage ? null : <h3 className={classes2.latestMessageHour}>{latestMessage.hour}</h3>}
                             {content}
-                            {latestMessageDisplay}
+                            <div style={{display: "flex", justifyContent: "space-between"}}>
+                                {latestMessageDisplay}
+                                {loadingLatestMessage ? null : <h3>{latestMessage.hour}</h3>}
+                            </div>
                             {
                                 props.join ? (
                                     <div className={classes.joinButtonContainer}>
