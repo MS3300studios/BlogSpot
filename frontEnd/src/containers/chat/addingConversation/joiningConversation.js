@@ -21,6 +21,7 @@ import ConversationListItem from '../chatMenu/conversationListItem';
 import getToken from '../../../getToken';
 import getUserData from '../../../getUserData';
 import getColor from '../../../getColor';
+import getMobile from '../../../getMobile';
 
 
 let colorClasses = green;
@@ -33,8 +34,8 @@ class JoiningConversation extends Component {
     constructor(props) {
         super(props);
 
-        let token = getToken();
-        let userData = getUserData();
+        const token = getToken();
+        const userData = getUserData();
 
         this.state = {
             token: token,
@@ -52,6 +53,8 @@ class JoiningConversation extends Component {
         this.searchNewConversation.bind(this);
         this.join.bind(this);
         this.flash.bind(this);
+
+        this.isMobile = getMobile();
     }
 
     flash = (message) => {
@@ -188,7 +191,7 @@ class JoiningConversation extends Component {
 
         return (
             <div className={classes2.backDrop}>
-                <div className={colorClasses.addUserContainer}>
+                <div className={colorClasses.addUserContainer} style={this.isMobile ? {width: "90%", marginTop: "40px", height: "85%"} : null}>
                     <div className={classes2.closeIcon} onClick={()=>this.setState({redirectChat: true})}>
                         <AiOutlineCloseCircle size="2em" color="#0a42a4" />
                     </div>

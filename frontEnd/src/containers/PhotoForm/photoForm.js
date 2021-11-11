@@ -156,7 +156,12 @@ class PhotoForm extends Component {
                                 <h1 style={{color: "white"}}>Adding Photo</h1>
                             </div>
                             <div className={classes.center}>
-                                <textarea onChange={this.inputDesc} placeholder="   add your description here..." style={{width: "90%", minWidth: "none"}}/>
+                                <textarea onChange={this.inputDesc} 
+                                    placeholder="   add your description here..." 
+                                    style={{minWidth: "150px"}}    
+                                >
+                                    
+                                </textarea>
                             </div>
                             <br />
                             <div className={classes.center}>

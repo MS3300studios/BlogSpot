@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { connect } from 'react-redux';
 
-import { IoIosArrowDown } from 'react-icons/io';
+import { IoIosArrowBack, IoIosArrowDown } from 'react-icons/io';
 import { IoIosArrowUp } from 'react-icons/io';
 import { FiUserPlus } from 'react-icons/fi';
 import { ImExit } from 'react-icons/im';
@@ -59,7 +59,8 @@ class Conversation extends Component {
             filterParticipantsString: "",
             conversationStartReached: false,
             redirectToDashboard: false,
-            loadingBlocked: true
+            loadingBlocked: true,
+            redirectToChat: false
         }
         
         this.sendMessage.bind(this);
@@ -278,8 +279,8 @@ class Conversation extends Component {
         })
         .then((res)=>{
             if(res.status===200){
-                this.props.history.go(0);
-                return;
+                if(this.isMobile) this.setState({redirectToChat: true});
+                else this.props.history.go(0);
             }
         })
         .catch(error => {
@@ -390,6 +391,11 @@ class Conversation extends Component {
         return (
             <>
             <div className={colorClasses.conversationBanner}>
+                {this.isMobile ? (
+                    <Link to="/chat">
+                        <IoIosArrowBack size="2em" color="#fff"/>
+                    </Link>
+                ) : null}
                 {conversationName}
                 <div className={classes.infoCircle} onClick={()=>this.setState((prevState)=>({infoOpened: !prevState.infoOpened}))}>
                     {
@@ -634,6 +640,9 @@ class Conversation extends Component {
             </div>
             {
                 this.state.redirectToDashboard ? <Redirect to="/"/> : null
+            }
+            {
+                this.state.redirectToChat ? <Redirect to="/chat"/> : null
             }
             </>
         );

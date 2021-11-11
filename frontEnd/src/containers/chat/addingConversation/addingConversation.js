@@ -19,6 +19,7 @@ import { Redirect } from 'react-router-dom';
 import classes from './addingConversation.module.css';
 import greenClasses from './addingGreen.module.css';
 import blueClasses from './addingBlue.module.css';
+import getMobile from '../../../getMobile';
 
 const colorScheme = getColor();
 let colorClasses = greenClasses;
@@ -58,6 +59,8 @@ class AddingConversation extends Component {
         this.sendConversation.bind(this);
         this.checkFriendsParticipants.bind(this);
         this.selectAllFriends.bind(this);
+
+        this.isMobile = getMobile();
     }
 
     componentDidMount(){
@@ -342,7 +345,7 @@ class AddingConversation extends Component {
             <div className={classes.backDrop}>
                 {
                     this.state.loading ? <Spinner /> : (
-                        <div className={colorClasses.addUserContainer} style={this.props.isMobile ? {width: "unset", maxHeight: "unset", margin: "unset"} : null}>
+                        <div className={colorClasses.addUserContainer} style={this.isMobile ? {width: "85%", height: "80%", margin: "unset", overflow: "auto"} : null}>
                             <div className={classes.closeIcon} onClick={()=>{
                                 if(this.props.closeWindow) this.props.closeWindow();
                                 else this.setState({redirectChat: true})
@@ -363,32 +366,58 @@ class AddingConversation extends Component {
                                         </div>
                                     ) : (
                                         <>
-                                        <div className={classes.centerInput}>
-                                        <h1>Give the conversation a name:</h1>
-                                        <div>
-                                            <input 
-                                                className={classes.Input}
-                                                type="text" 
-                                                onChange={(e)=>this.setState({conversationName: e.target.value})}
-                                            />
-                                        </div>
-                                        <button  
-                                            className={classes.nextBtn}
-                                            onClick={this.sendConversation}
-                                        >
-                                            ADD CONVERSATION
-                                        </button>
-                                        </div>
-                                        <hr />
+                                        {
+                                            this.isMobile ? (
+                                                <>
+                                                <div>
+                                                    <button  
+                                                        className={classes.nextBtn}
+                                                        onClick={this.sendConversation}
+                                                    >
+                                                        ADD CONVERSATION
+                                                    </button>
+                                                    <h1 style={{color: "white", fontSize: "20px", fontWeight: "550"}}>Give the conversation a name:</h1>
+                                                    <input 
+                                                        className={classes.Input}
+                                                        style={{
+                                                            minWidth: "unset",
+                                                            marginBottom: "10px"
+                                                        }}
+                                                        type="text" 
+                                                        onChange={(e)=>this.setState({conversationName: e.target.value})}
+                                                    />
+                                                </div>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <div className={classes.centerInput}>
+                                                        <h1>Give the conversation a name:</h1>
+                                                        <div>
+                                                            <input 
+                                                                className={classes.Input}
+                                                                type="text" 
+                                                                onChange={(e)=>this.setState({conversationName: e.target.value})}
+                                                            />
+                                                        </div>
+                                                        <button  
+                                                            className={classes.nextBtn}
+                                                            onClick={this.sendConversation}
+                                                        >
+                                                            ADD CONVERSATION
+                                                        </button>
+                                                    </div>
+                                                </>
+                                            )
+                                        }
                                         </>
                                     )
                                 }
 
                                 <div className={classes.addingUsers}>
                                     {
-                                        this.props.isMobile ? (
+                                        this.isMobile ? (
                                             <div style={{marginLeft: "15%"}}>
-                                                <h1>Add users to the conversation: </h1>
+                                                <h1 style={{fontSize: "20px", fontWeight: "550"}}>Add users to the conversation: </h1>
                                                 <SearchBar 
                                                     placeholder="search friends in..."
                                                     clicked={this.filterSearchHandler}
@@ -412,7 +441,7 @@ class AddingConversation extends Component {
                                     }
                                     {
                                         this.state.hideSelectAll ? null : (
-                                            <div className={classes.selectAllContainer} style={this.props.isMobile ? {margin: "15px 0px", width: "65%"} : null}>
+                                            <div className={classes.selectAllContainer} style={this.isMobile ? {margin: "15px 0px", width: "65%"} : null}>
                                                 <div className={classes.selectAllContainerInner}>
                                                     <p>select all</p>
                                                     <input 
@@ -424,7 +453,7 @@ class AddingConversation extends Component {
                                         )
                                     }
                                     <div className={classes.center}>
-                                        <div className={classes.friendsList} style={this.props.isMobile ? {width: "unset"} : null}>
+                                        <div className={classes.friendsList} style={this.isMobile ? {width: "unset"} : null}>
                                             { friends }
                                         </div>
                                     </div>

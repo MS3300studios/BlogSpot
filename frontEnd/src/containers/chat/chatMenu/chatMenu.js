@@ -172,6 +172,7 @@ class ChatMenu extends Component {
                                 this.state.addingConversation ? 
                                 <SelectPanel 
                                     closeAddConversation={()=>this.setState({addingConversation: false})}
+                                    isMobile={this.props.isMobile}
                                 /> 
                                 : null
                             }

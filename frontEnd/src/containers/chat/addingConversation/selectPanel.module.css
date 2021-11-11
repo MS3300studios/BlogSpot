@@ -5,6 +5,23 @@
     justify-content: space-around;
 }
 
+.optionCardSmall{
+    width: 200px;
+    height: 200px;
+    margin-bottom: 40px;
+    background-color: #53c253;
+    padding: 10px;
+    border-radius: 4px;
+    transition: 0.3s ease-out;
+    cursor: pointer;
+}
+
+.optionCardSmall h1{
+    color: white;
+    font-size: 20px;
+    font-weight: 500;
+}
+
 .optionCard{
     width: 300px;
     height: 300px;
