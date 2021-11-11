@@ -11,6 +11,7 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 
 import { IoIosArrowBack, IoIosArrowDown } from 'react-icons/io';
+import { AiOutlineCloseCircle } from 'react-icons/ai';
 import { IoIosArrowUp } from 'react-icons/io';
 import { FiUserPlus } from 'react-icons/fi';
 import { ImExit } from 'react-icons/im';
@@ -435,7 +436,7 @@ class Conversation extends Component {
                                     <div 
                                         style={{
                                             position: "fixed", 
-                                            top: "91px", 
+                                            top: "0px", 
                                             left: "0px", 
                                             width: "100%",
                                             height: "100%",
@@ -443,6 +444,20 @@ class Conversation extends Component {
                                         }}
                                     >
                                         <div className={colorClasses.sidePanel} style={this.isMobile ? {width: "100%", height: "60%", position: "fixed", overflow: "auto"} : null}>
+                                            <div 
+                                                style={{
+                                                    fontSize: "20px",
+                                                    display: "flex",
+                                                    justifyContent: "center",
+                                                    padding: "12px"
+                                                }} 
+                                                onClick={()=>this.setState({infoOpened: false})}
+                                            >
+                                                <AiOutlineCloseCircle color="#fff" size="2em"/>
+                                            </div>
+                                            <div style={{display: "flex", justifyContent: "center", width: "100%", marginBottom: "-40px"}}>
+                                                <p style={{color: "white", fontWeight: "500"}}>conversation id: {this.props.conversation._id}</p>
+                                            </div>
                                             {
                                                 (this.props.conversation.conversationType === "private") ? (
                                                     <div className={colorClasses.centerTop}>
