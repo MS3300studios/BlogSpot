@@ -232,6 +232,7 @@ class photoView extends Component {
                             likeFill={this.state.likeFill}
                             dislikeFill={this.state.dislikeFill}
                             likeCount={this.state.photo.likes.length}
+                            dislikeCount={this.state.photo.dislikes.length}
                             commentCount={this.state.photo.comments.length}
                             description={this.state.photo.description}
                             sendEditedDesc={this.sendEditedDesc}

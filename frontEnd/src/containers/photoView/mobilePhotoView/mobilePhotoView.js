@@ -13,6 +13,10 @@ import PhotoComments from '../photoComments/photoComments';
 
 const MobilePhotoView = (props) => {
     const [editingPhotoDescription, seteditingPhotoDescription] = useState(false);
+    const [likefill, setlikefill] = useState(props.likeFill);
+    const [dislikefill, setdislikefill] = useState(props.dislikeFill);
+    const [likecount, setlikecount] = useState(props.likeCount);
+    const [dislikecount, setdislikecount] = useState(props.dislikeCount);
 
     return (
         <div className={classes.mobileContainer}>
@@ -58,7 +62,16 @@ const MobilePhotoView = (props) => {
                 }
                 <div style={{display: "flex", justifyContent: "center", marginBottom: "25px"}}>
                 <div className={importedClasses.LikesCommentsNumbers} style={{width: "90%", height: "30px"}}>
-                    <div className={importedClasses.like}>
+                    <div className={importedClasses.like} onClick={()=>{
+                        setlikefill(!likefill);
+                        
+                        if(dislikefill){
+                            setdislikefill(!dislikefill);
+                            setdislikecount(dislikecount-1);
+                        }
+                        if(likefill)setlikecount(likecount-1);
+                        else setlikecount(likecount+1);
+                    }}>
                         <Like
                             sendNotificationData={
                                 {
@@ -70,14 +83,23 @@ const MobilePhotoView = (props) => {
                                 }
                             }
                             sendAction={()=>props.sendLikeAction(true)}
-                            fill={props.likeFill}
-                            number={props.likeCount}
+                            fill={likefill}
+                            number={likecount}
                             size="1.5em" 
                             color="#0a42a4" 
                             photoView
                         />
                     </div>
-                    <div className={importedClasses.dislike}>
+                    <div className={importedClasses.dislike} onClick={()=>{
+                        setdislikefill(!dislikefill);
+                        
+                        if(likefill){
+                            setlikefill(!likefill);
+                            setlikecount(likecount-1);
+                        }
+                        if(dislikefill)setdislikecount(dislikecount-1);
+                        else setdislikecount(dislikecount+1);
+                    }}>
                         <Like
                             sendNotificationData={
                                 {
@@ -90,8 +112,8 @@ const MobilePhotoView = (props) => {
                             }
                             dislike 
                             sendAction={()=>props.sendLikeAction(false)}
-                            fill={props.dislikeFill}
-                            number={props.likeCount}
+                            fill={dislikefill}
+                            number={dislikecount}
                             size="1.5em" 
                             color="#0a42a4" 
                             photoView
