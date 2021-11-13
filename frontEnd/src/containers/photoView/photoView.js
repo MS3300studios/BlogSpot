@@ -32,8 +32,8 @@ class photoView extends Component {
     constructor(props) {
         super(props);
 
-        let token = getToken();
-        let userData = getUserData();
+        const token = getToken();
+        const userData = getUserData();
 
         this.state = {
             token: token,
@@ -161,6 +161,7 @@ class photoView extends Component {
     }
 
     getPhoto = () => {
+        console.log('getPhoto was called')
         let fills = this.checkFills(this.props.photo);
         this.setState({
             photo: this.props.photo, 
@@ -240,6 +241,7 @@ class photoView extends Component {
                             editCommentCleanUp={this.editCommentCleanUp}
                             small={this.props.small}
                             sendNotification={this.sendNotification}
+                            refreshData={this.getPhoto}
                         />
                     ) : (
                         <div className={classes.photoViewContainer} style={background}>

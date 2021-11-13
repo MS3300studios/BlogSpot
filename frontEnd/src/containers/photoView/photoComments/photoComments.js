@@ -90,7 +90,6 @@ class PhotoComments extends Component {
     deleteCommentHandler = (index) => {
         let newComments = this.state.comments;
         newComments.splice(index, 1);
-        console.log(newComments);
         this.setState({comments: newComments});
         axios({
             method: 'post',

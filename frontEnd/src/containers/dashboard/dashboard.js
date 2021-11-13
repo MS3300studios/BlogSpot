@@ -230,6 +230,7 @@ class Dashboard extends Component {
     }
 
     filterPosts = (filterIn, filterBy) => {
+        let reversedPosts = this.state.posts.reverse();
         let posts = null;
         let postsRdy = null;
 
@@ -237,7 +238,7 @@ class Dashboard extends Component {
         
         //default filter: no filter applied
         if(filterIn==="none" || filterBy==="none"){
-            postsRdy = this.state.posts.map((post, index)=>{
+            postsRdy = reversedPosts.map((post, index)=>{
                 return ( 
                     <Post 
                         title={post.title}
@@ -253,7 +254,7 @@ class Dashboard extends Component {
             );
         }
         else{
-            posts = this.state.posts.map((post, index)=>{
+            posts = reversedPosts.map((post, index)=>{
                 return (
                     <div key={index}>
                         <Post
@@ -291,6 +292,7 @@ class Dashboard extends Component {
                 <NoSearchResult />
             );
         }
+
         return postsRdy;
     }
 
@@ -339,21 +341,21 @@ class Dashboard extends Component {
             }
             posts = (
                 <div className={classes.postContainer} style={this.props.isMobile ? {margin: "0px"} : null}>
-                    {
-                        temp
-                    }
                     <div className={colorClasses.Card} onClick={this.showPostForm}>
                         <img alt="add a post" src={addPostImage} className={classes.addPostDiv}/>
                     </div>
+                    {
+                        temp
+                    }
                 </div> 
             )
         }
         else posts = (
             <div className={classes.postContainer} style={this.props.isMobile ? {margin: "0px"} : null}>
-                {this.filterPosts(this.state.filterIn, this.state.filterBy)}
                 <div className={colorClasses.Card} onClick={this.showPostForm}>
                     <img alt="add a post" src={addPostImage} className={classes.addPostDiv}/>
                 </div>
+                {this.filterPosts(this.state.filterIn, this.state.filterBy)}
             </div> 
         )
 

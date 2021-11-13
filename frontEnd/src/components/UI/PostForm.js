@@ -90,7 +90,6 @@ const PostForm = (props) => {
                     ) : (
                         <div className={classes.addPostFormContainer} style={backgroundColor}>
                             <img alt="exit adding post" src={imageX} title="close" onClick={props.closeBackdrop} className={classes.imageX}/>
-                            <h1>wdawadw</h1>
                             <form>
                                 <input 
                                     type="text" 

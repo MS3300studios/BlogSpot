@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import {Link, Redirect} from 'react-router-dom';
 import getToken from '../../../getToken';
 import getUserData from '../../../getUserData';
+import getMobile from '../../../getMobile';
+
 import axios from 'axios';
 import DropZone from '../../PhotoForm/dropZone';
 import Flash from '../../../components/UI/flash';
@@ -41,6 +43,8 @@ class EditUserProfile extends Component {
         this.inputHandler.bind(this);
         this.flash.bind(this);
         this.saveChangedData.bind(this);
+
+        this.isMobile = getMobile(); 
     }
 
     componentDidMount(){
@@ -222,6 +226,13 @@ class EditUserProfile extends Component {
             flash = <Flash close>{this.state.flashMessage}</Flash>
         }
 
+        const center = {
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            width: "100%",
+        }
+
         return (
             <>
             {
@@ -230,60 +241,115 @@ class EditUserProfile extends Component {
                 ) : null
             }
             <div className={classes.center}>
-                <div className={classes.mainContainer}>
-                    <div className={classes.imgContainer}>
-                        {this.state.loading ? <div style={{marginTop: "-20px"}}><Spinner small/></div> : <img src={this.state.photo} alt="your profile"/>}
-                        <div className={classes.center}>
-                            <DropZone photoSubmit={this.photosubmit}/>
-                        </div>
-                    </div>
-                    <div className={classes.rightSide}>
-                        <div className={classes.center}>
-                            <form>
-                                <div className={classes.inputContainer}>
+                {
+                    this.isMobile ? (
+                        <div className={classes.smallMainContainer} style={{boxSizing: "border-box"}}>
+                            <div className={classes.smallImgContainer}>
+                                {
+                                    this.state.loading ? 
+                                    <div style={{marginTop: "-20px"}}><Spinner small/></div> : 
+                                    <img src={this.state.photo} alt="your profile" className={classes.smallImg}/>
+                                }
+                            </div>
+                            <div className={classes.center}>
+                                <DropZone photoSubmit={this.photosubmit}/>
+                            </div>
+                            <div className={classes.smallFormContainer}>
+                                <div style={center}>
                                     <label>Name:</label>
                                     <input 
                                         type="text" 
-                                        className={classes.InputName} 
                                         value={this.state.newName}
                                         onChange={(e)=> this.inputHandler(e,"name")}/>
                                 </div>
-                                <div className={classes.inputContainer}>
+                                <div style={center}>
                                     <label>Surname:</label>
                                     <input 
                                         type="text" 
-                                        className={classes.InputSurname} 
                                         value={this.state.newSurname}
                                         onChange={(e)=> this.inputHandler(e,"surname")}/>
                                 </div>
-                                <div className={classes.inputContainer}>
+                                <div style={center}>
                                     <label>Nickname:</label>
                                     <input 
                                         type="text" 
-                                        className={classes.InputNick} 
                                         value={this.state.newNickname}
                                         onChange={(e)=> this.inputHandler(e,"nickname")}/>
                                 </div>
-                                <div className={classes.textareaLabel}>
+                                <div>
                                     <label>Bio:</label>
                                 </div>
-                                <div className={classes.positionTextarea}>
+                                <div>
                                     <textarea 
-                                        className={classes.textarea} 
                                         onChange={(e)=> this.inputHandler(e,"bio")}
                                         value={this.state.newBio}>
                                     </textarea>
                                 </div>
-                            </form>
+                            </div>
+                            <div className={classes.centerBtnSave} style={this.isMobile ? {width: "unset", height: "unset", marginTop: "20px", backgroundColor: "unset"} : null}>
+                                <Link to='/'>
+                                    <button className={classes.cancelBtn}>cancel</button>
+                                </Link>
+                                <button onClick={this.saveChangedData}>{this.state.loadingSave ? <Spinner small darkgreen/> : "save changes"}</button>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div className={classes.centerBtnSave}>
-                <Link to='/'>
-                    <button className={classes.cancelBtn}>cancel</button>
-                </Link>
-                <button onClick={this.saveChangedData}>{this.state.loadingSave ? <Spinner small darkgreen/> : "save changes"}</button>
+                    ) : (
+                        <div className={classes.mainContainer}>
+                            <div className={classes.imgContainer}>
+                                {this.state.loading ? <div style={{marginTop: "-20px"}}><Spinner small/></div> : <img src={this.state.photo} alt="your profile"/>}
+                                <div className={classes.center}>
+                                    <DropZone photoSubmit={this.photosubmit}/>
+                                </div>
+                            </div>
+                            <div className={classes.rightSide}>
+                                <div className={classes.center}>
+                                    <form>
+                                        <div className={classes.inputContainer}>
+                                            <label>Name:</label>
+                                            <input 
+                                                type="text" 
+                                                className={classes.InputName} 
+                                                value={this.state.newName}
+                                                onChange={(e)=> this.inputHandler(e,"name")}/>
+                                        </div>
+                                        <div className={classes.inputContainer}>
+                                            <label>Surname:</label>
+                                            <input 
+                                                type="text" 
+                                                className={classes.InputSurname} 
+                                                value={this.state.newSurname}
+                                                onChange={(e)=> this.inputHandler(e,"surname")}/>
+                                        </div>
+                                        <div className={classes.inputContainer}>
+                                            <label>Nickname:</label>
+                                            <input 
+                                                type="text" 
+                                                className={classes.InputNick} 
+                                                value={this.state.newNickname}
+                                                onChange={(e)=> this.inputHandler(e,"nickname")}/>
+                                        </div>
+                                        <div className={classes.textareaLabel}>
+                                            <label>Bio:</label>
+                                        </div>
+                                        <div className={classes.positionTextarea}>
+                                            <textarea 
+                                                className={classes.textarea} 
+                                                onChange={(e)=> this.inputHandler(e,"bio")}
+                                                value={this.state.newBio}>
+                                            </textarea>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div className={classes.centerBtnSave} style={this.isMobile ? {width: "unset", height: "unset", marginTop: "20px", backgroundColor: "unset"} : null}>
+                                <Link to='/'>
+                                    <button className={classes.cancelBtn}>cancel</button>
+                                </Link>
+                                <button onClick={this.saveChangedData}>{this.state.loadingSave ? <Spinner small darkgreen/> : "save changes"}</button>
+                            </div>
+                        </div>
+                    )
+                }
             </div>
             {flash}
             {this.state.redirectToDashboard ? <Redirect to={"/user/profile/?id="+this.state.userData._id} /> : null}

@@ -189,6 +189,9 @@ router.post('/admin/users/delete', (req, res) => {
 })
 
 router.post('/users/login', (req, res) => {
+    console.log("LOGIN: ");
+    console.log(req.body)
+
     User.find({email: req.body.email})
         .exec()
         .then(users => {
@@ -196,6 +199,8 @@ router.post('/users/login', (req, res) => {
                 return res.sendStatus(404); //didn't find any users
             }
             else{
+                console.log('user was found!')
+
                 bannedUser.find({bannedUserId: users[0]._id}).exec().then(user => {
                     if(user.length === 0){
                         //user is not banned
@@ -213,6 +218,8 @@ router.post('/users/login', (req, res) => {
                                     }
                                 );
                                 
+                                console.log('user was authorized')
+
                                 users[0].photo = "get /users/getUserPhoto/:userId for photo";
                                 let userDataJSON = JSON.stringify(users[0]);
                                 return res.status(200).json({

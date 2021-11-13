@@ -158,44 +158,38 @@ class Registration extends Component {
             this.flash("the password should have at least 8 characters, have one digit and upper case letter in it");
         }
         else if(this.PasswordCorrect(this.state.password) && this.EmailCorrect(this.state.email)){
-            if(this.state.name && this.state.surname && this.state.email && this.state.password && this.state.nickname){
-                let userData = {
-                    name: this.state.name,
-                    surname: this.state.surname,
-                    email: this.state.email,
-                    password: this.state.password,
-                    nickname: this.state.nickname,
-                    photoString: this.state.photo
-                }
-                
-                axios.post(`${MAIN_URI}/users/register`, userData)
-                        .then((res)=>{
-                            if(Object.keys(res.data).includes("error")){
-                                let taken = Object.keys(res.data.error.keyValue)[0]
-                                if(taken==="email"){
-                                    this.setState({readyForSubmission: false});
-                                    this.flash("email already taken");
-                                }
-                                else if(taken==="nickname"){
-                                    this.setState({readyForSubmission: false});
-                                    this.flash("nickname already taken");
-                                }
-                            }
-                            if(res.status === 201){
-                                this.setState({redirectToLogin: true});
-                            }
-                        }).catch( error => {
-                            console.log(error);
-                            if(error.status === 413){
-                                this.setState({readyForSubmission: false});
-                                this.flash("Image size too big, maximum image size is 10mb");
-                            }
-                        })
-            }
-            else{
-                this.setState({readyForSubmission: false});
-                this.flash("fill in all the inputs");
-            }
+            const userData = {
+                name: this.state.name,
+                surname: this.state.surname,
+                email: this.state.email,
+                password: this.state.password,
+                nickname: this.state.nickname,
+                photoString: this.state.photo
+            }     
+
+            axios.post(`${MAIN_URI}/users/register`, userData)
+                .then((res)=>{
+                    if(Object.keys(res.data).includes("error")){
+                        let taken = Object.keys(res.data.error.keyValue)[0]
+                        if(taken==="email"){
+                            this.setState({readyForSubmission: false});
+                            this.flash("email already taken");
+                        }
+                        else if(taken==="nickname"){
+                            this.setState({readyForSubmission: false});
+                            this.flash("nickname already taken");
+                        }
+                    }
+                    if(res.status === 201){
+                        this.setState({redirectToLogin: true});
+                    }
+                }).catch( error => {
+                    console.log(error);
+                    if(error.status === 413){
+                        this.setState({readyForSubmission: false});
+                        this.flash("Image size too big, maximum image size is 10mb");
+                    }
+                })   
         }
     }
 
@@ -279,7 +273,7 @@ class Registration extends Component {
                                     if(this.state.showCaptcha === false) this.setState({showCaptcha: true})
                                     else if(this.state.captchaVerified===true){
                                     }
-                                }} disabled={!this.state.readyForSubmission}>Register</Button>
+                                }} disabled={!(this.state.name!=="" && this.state.surname!=="" && this.state.email!=="" && this.state.password!=="" && this.state.nickname!=="")}>Register</Button>
                             </div>
                             <div style={{marginLeft: "10px"}}>
                                 <p>When you click register, you agree to the <br /> <Link to="/termsAndConditions">terms and conditions</Link> of BragSpot</p>

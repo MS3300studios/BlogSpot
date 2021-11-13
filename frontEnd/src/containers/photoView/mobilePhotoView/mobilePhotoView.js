@@ -17,7 +17,7 @@ const MobilePhotoView = (props) => {
     const [dislikefill, setdislikefill] = useState(props.dislikeFill);
     const [likecount, setlikecount] = useState(props.likeCount);
     const [dislikecount, setdislikecount] = useState(props.dislikeCount);
-
+    
     return (
         <div className={classes.mobileContainer}>
             <div className={classes.closeIcon} onClick={props.close}>
