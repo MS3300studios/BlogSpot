@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import DropZone from './containers/PhotoForm/dropZone';
-import imageCompression from 'browser-image-compression';
+import imageCompression from 'browser-image-compression'; 
 
 const Testphotos = (props) => {
     const [imagePre, setimagePre] = useState(null);
@@ -11,27 +11,24 @@ const Testphotos = (props) => {
 
     const [compressingImageActive, setcompressingImageActive] = useState(false);
 
-    
     const photosubmit = (files) => {
         setcompressingImageActive(true); //enable loading text on front  
-        
+        const reader = new FileReader();
+                
         if(files.length>0){
-            const reader = new FileReader();
-            //managing preview
             setprecompressionsize(files[0].size / 1024 / 1024) //inject file size into html from state value
             reader.readAsDataURL(files[0]); //convert to base64 before displaying preview
             reader.onloadend = () => setimagePre(reader.result); //set state value to the base64 encoded image
 
-            //compressing
-            imageCompression(files[0], { maxSizeMB: 10, maxWidthOrHeight: 1920}).then(compressedBlob => {
+            imageCompression(files[0], { maxSizeMB: 0.3, maxWidthOrHeight: 1920, initialQuality: 1, maxIteration: 20}).then(compressedBlob => {
                 setcompressingImageActive(false); //disable loading text on front
+                
                 setpostcompressionsize(compressedBlob.size / 1024 / 1024); //set file size to the front end
+
                 reader.readAsDataURL(compressedBlob); //convert compressed image to base64 to be stored in database
             
                 reader.onloadend = () => setimagePost(reader.result) //unnecesairy
             })
-
-
         }            
     }
 

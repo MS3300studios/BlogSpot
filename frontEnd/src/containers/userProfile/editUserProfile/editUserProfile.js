@@ -8,7 +8,6 @@ import axios from 'axios';
 import DropZone from '../../PhotoForm/dropZone';
 import Flash from '../../../components/UI/flash';
 import { MAIN_URI } from '../../../config';
-import ImageTooBigWarning from '../../../components/imageTooBigWarning';
 import imageCompression from 'browser-image-compression';
 
 import classes from './editUserProfile.module.css';
@@ -46,7 +45,6 @@ class EditUserProfile extends Component {
         this.saveChangedData.bind(this);
 
         this.isMobile = getMobile(); 
-        this.screenTop = null;
     }
 
     componentDidMount(){
@@ -61,10 +59,6 @@ class EditUserProfile extends Component {
         .catch(error => {
             console.log(error);
         })
-    }
-
-    componentDidUpdate(prevState){
-        if(prevState.imageTooBig !== this.state.imageTooBig) this.screenTop.scrollIntoView({ behavior: "smooth" });
     }
 
     flash = (message) => {
@@ -109,17 +103,11 @@ class EditUserProfile extends Component {
     }
 
     photosubmit = (files) => {
-        this.setState({imageTooBig: false, compressing: true});
+        this.setState({compressing: true});
         
         if(files.length>0){
-            const reader = new FileReader();
-            
-            if(Math.round(files[0].size / 1024 / 1024) > 10){
-                this.setState({imageTooBig: true});
-                return;
-            }
-            
-            imageCompression(files[0], { maxSizeMB: 10, maxWidthOrHeight: 1920}).then(compressedBlob => {
+            imageCompression(files[0], { maxSizeMB: 0.3, maxWidthOrHeight: 1920}).then(compressedBlob => {
+                const reader = new FileReader();
                 reader.readAsDataURL(compressedBlob); 
                 reader.onloadend = () => this.setState({photo: reader.result, compressing: false});
             })
@@ -233,12 +221,6 @@ class EditUserProfile extends Component {
 
         return (
             <>
-            <div ref={el => this.screenTop = el}></div>
-            {
-                this.state.imageTooBig ? (
-                    <ImageTooBigWarning />
-                    ) : null
-                }
             <div className={classes.center}>
                 {
                     this.isMobile ? (

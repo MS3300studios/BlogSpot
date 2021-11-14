@@ -8,8 +8,8 @@ import Flash from '../../../components/UI/flash';
 import defaultUserPhoto from '../../../assets/gfx/defaultUserPhoto.png';
 import Button from '../../../components/UI/button';
 import DropZone from '../../PhotoForm/dropZone';
+import imageCompression from 'browser-image-compression';
 
-import ImageTooBigWarning from '../../../components/imageTooBigWarning';
 import classes from './registration.module.css';
 import registrationGreen from './registrationGreen.module.css';
 import registrationBlue from './registrationBlue.module.css';
@@ -39,7 +39,7 @@ class Registration extends Component {
             redirectToLogin: false,
             showCaptcha: false,
             captchaVerified: false,
-            imageTooBig: false
+            compressing: false
         }
         
         this.photosubmit.bind(this);
@@ -82,29 +82,12 @@ class Registration extends Component {
     }
 
     photosubmit = (files) => {
-        this.setState({imageTooBig: false});
-        
-        var reader = new FileReader();
-        var data;
+        this.setState({compressing: true});
         if(files.length>0){
-            if(Math.round(files[0].size/1024) > 500){
-                this.setState({imageTooBig: true});
-                return;
-            }
-
-            reader.readAsDataURL(files[0]);
-            let execute = new Promise(function(resolve, reject) {
-                reader.onloadend = function() {
-                    data = reader.result;
-                    resolve(data);
-                }
-            });
-        
-            execute.then((b64string)=>{
-                this.setState({
-                    photoPreview: URL.createObjectURL(files[0]),
-                    photo: b64string
-                });
+            imageCompression(files[0], { maxSizeMB: 0.3, maxWidthOrHeight: 1920}).then(compressedBlob => {
+                const reader = new FileReader();
+                reader.readAsDataURL(compressedBlob); 
+                reader.onloadend = () => this.setState({photo: reader.result, compressing: false, photoPreview: reader.result});
             })
         }
     }
@@ -229,11 +212,6 @@ class Registration extends Component {
         return (
            <React.Fragment>
             {
-                this.state.imageTooBig ? (
-                    <ImageTooBigWarning />
-                ) : null
-            }
-            {
                 this.isMobile ? (
                     <div className={colorClasses.RegistrationContainer} style={{overflowX: "hidden", width: "unset"}}>
                         <form className={classes.MobileForm}>
@@ -250,7 +228,10 @@ class Registration extends Component {
                             <input type="text" placeholder="this will be the name linked to your posts" onChange={(e)=> this.inputHandler(e,"nickname")}/>
                             <br /><label>Your photo:</label><br />
                             <div style={{marginLeft: "90px", marginTop: "10px"}}>
-                                <img src={this.state.photoPreview} alt="default"/>
+                                {
+                                    this.state.compressing ? <p style={{color: "white"}}>compressing...</p> : 
+                                    <img src={this.state.photoPreview} alt="default"/>
+                                }
                             </div>
                             <div style={{marginTop: "10px", marginLeft: "40px", width: "70%"}}>
                                 <DropZone photoSubmit={this.photosubmit}/>
@@ -305,7 +286,12 @@ class Registration extends Component {
                                 <DropZone photoSubmit={this.photosubmit}/>
                             </div>
                             <div className={classes.imgContainer}>
-                                <img src={this.state.photoPreview} alt="default"/>
+                                {
+                                    this.state.compressing ? 
+                                        (<div style={{width: "110px", height: "110px"}}>
+                                            <p style={{color: "white"}}>compressing...</p> 
+                                        </div>) : <img src={this.state.photoPreview} alt="default"/>
+                                }
                             </div>
                             {
                                 this.state.showCaptcha ? (

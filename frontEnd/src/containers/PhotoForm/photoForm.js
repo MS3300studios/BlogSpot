@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
 import { MAIN_URI } from '../../config';
+import imageCompression from 'browser-image-compression';
 
 import getToken from '../../getToken';
 import getUserData from '../../getUserData'
 import getColor from '../../getColor';
 import getMobile from '../../getMobile';
 
-import ImageTooBigWarning from '../../components/imageTooBigWarning'
 import addYourPhoto from '../../assets/gfx/addyourphoto.png';
 import Button from '../../components/UI/button';
 import Flash from '../../components/UI/flash';
@@ -43,7 +43,7 @@ class PhotoForm extends Component {
             sending: false,
             redirect: false,
             error: null,
-            imageTooBig: false
+            compressing: false
         }
         this.inputDesc.bind(this);
         this.photosubmit.bind(this);
@@ -74,28 +74,12 @@ class PhotoForm extends Component {
     }
 
     photosubmit = (files) => {
-        this.setState({imageTooBig: false});
-        var reader = new FileReader();
-        var data;
+        this.setState({compressing: true});
         if(files.length>0){
-            if(Math.round(files[0].size/1024) > 500){
-                this.setState({imageTooBig: true});
-                return;
-            }
-            
-            reader.readAsDataURL(files[0]);
-            const execute = new Promise(function(resolve, reject) {
-                reader.onloadend = function() {
-                    data = reader.result;
-                    resolve(data);
-                }
-            });
-        
-            execute.then( b64string => {
-                this.setState({
-                    photoPreview: URL.createObjectURL(files[0]),
-                    photo: b64string
-                });
+            imageCompression(files[0], { maxSizeMB: 0.3, maxWidthOrHeight: 1920}).then(compressedBlob => {
+                const reader = new FileReader();
+                reader.readAsDataURL(compressedBlob); 
+                reader.onloadend = () => this.setState({photo: reader.result, photoPreview: reader.result, compressing: false});
             })
         }
     }
@@ -145,11 +129,6 @@ class PhotoForm extends Component {
         return (
             <React.Fragment>
                 {
-                    this.state.imageTooBig ? (
-                        <ImageTooBigWarning />
-                    ) : null
-                }
-                {
                     this.isMobile ? (
                         <div className={classes.formContainer} style={{...colorStyle, width: "90%", height: "unset"}}>
                             <div className={classes.center}>
@@ -171,7 +150,11 @@ class PhotoForm extends Component {
                                 <DropZone photoSubmit={this.photosubmit}/>
                             </div>
                             <div className={[classes.imgContainer, classes.center].join(" ")}>
-                                <img src={photoSrc} alt="default"/>
+                                {
+                                    this.state.compressing ? (
+                                        <p style={{color: "white"}}>compressing...</p>
+                                    ) : <img src={photoSrc} alt="default"/>
+                                }
                             </div>
                             <div className={classes.center}>
                                 <Button btnType="Continue" clicked={this.sendData}>{this.state.sending ? <Spinner small /> : <p>Send</p>}</Button>
