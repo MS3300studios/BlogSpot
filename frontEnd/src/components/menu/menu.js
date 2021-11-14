@@ -147,7 +147,9 @@ class Menu extends Component {
                                     else this.setState({mobileMenuOpened: true});
                                 }}
                             />
-                            <Logo isMobile={isMobile} closeMenu={this.closeMenu}/>
+                            <div style={{marginRight: "10px"}}>
+                                <Logo isMobile={isMobile} closeMenu={this.closeMenu}/>
+                            </div>
                             {
                                 this.state.mobileMenuOpened ? (
                                     <><div className={this.state.closingMobileMenu ? classes.closingBackdrop : classes.backdrop} onClick={this.closeMenu}>
