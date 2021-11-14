@@ -33,6 +33,7 @@ import Footer from './components/footer/footer';
 import Spinner from './components/UI/spinner';
 import AdminHub from './components/AdminHub/AdminHub';
 import Notifications from './containers/notifications/notifications';
+import testphotos from './testphotos';
 
 class App extends Component {
   constructor(props){
@@ -100,6 +101,7 @@ class App extends Component {
           <ScrollListener>
             <Menu />
             <Switch>
+              <Route path="/testphotos" exact component={testphotos} />
               <Route path="/admin" exact component={AdminHub} />
               <Route path="/addPost" exact component={AddPost} />
               <Route path="/conversation/" component={ConversationContainer} />

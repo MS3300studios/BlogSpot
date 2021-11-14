@@ -39,6 +39,11 @@ app.get('/adminVerify/:pass', (req, res) => {
 })
 
 
+app.post('/test/receivePhoto', (req, res) => {
+    console.log("photo was received")
+    console.log(req.body.returnedArrayBuffer)
+})
+
 //websocket: 
 let corsOptions = {
     cors: true,

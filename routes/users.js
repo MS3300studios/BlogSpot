@@ -340,7 +340,10 @@ router.post('/users/find', auth, (req, res) => {
 
 router.post('/users/edit/all', auth, (req, res) => { //newdata, userid, userphoto
     const size = Buffer.from(req.body.photo.slice(23, req.body.photo.length)).length / 1e+6;
-    if(size > 0.5){
+
+    console.log("size of image "+size)
+
+    if(size > 1.6){         //after conversion from original image to base64 the image is 33% larger in size
         res.sendStatus(413)
         return;
     }

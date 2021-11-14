@@ -11,7 +11,7 @@ const ImageTooBigWarning = () => {
             </div>
             <div>
                 <p>
-                    The image you submitted exeeds 500 kb. Because the database size is small, images that exceed 500 kb are not allowed. 
+                    The image you submitted exeeds 10 mb. Because the database size is small, images that exceed 10 mb are not allowed. 
                 </p>
                 <p>
                     To make this image smaller you can use squoosh.com: a website that compresses images with minimal quality loss. 

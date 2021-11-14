@@ -9,6 +9,7 @@ import DropZone from '../../PhotoForm/dropZone';
 import Flash from '../../../components/UI/flash';
 import { MAIN_URI } from '../../../config';
 import ImageTooBigWarning from '../../../components/imageTooBigWarning';
+import imageCompression from 'browser-image-compression';
 
 import classes from './editUserProfile.module.css';
 import Spinner from '../../../components/UI/spinner';
@@ -25,7 +26,6 @@ class EditUserProfile extends Component {
             userData: userData,
 
             photo: null,
-            photoPreview: null,
             newName: userData.name,
             newSurname: userData.surname,
             newNickname: userData.nickname,
@@ -37,7 +37,8 @@ class EditUserProfile extends Component {
             loading: true,
             loadingSave: false,
             redirectToDashboard: false,
-            imageTooBig: false
+            imageTooBig: false,
+            compressing: false
         }
         this.photosubmit.bind(this);
         this.inputHandler.bind(this);
@@ -45,6 +46,7 @@ class EditUserProfile extends Component {
         this.saveChangedData.bind(this);
 
         this.isMobile = getMobile(); 
+        this.screenTop = null;
     }
 
     componentDidMount(){
@@ -54,11 +56,15 @@ class EditUserProfile extends Component {
             headers: {'Authorization': this.state.token}
         })
         .then((res)=>{
-            this.setState({photo: res.data.photo, photoPreview: res.data.photo, loading: false});
+            this.setState({photo: res.data.photo, loading: false});
         })
         .catch(error => {
             console.log(error);
         })
+    }
+
+    componentDidUpdate(prevState){
+        if(prevState.imageTooBig !== this.state.imageTooBig) this.screenTop.scrollIntoView({ behavior: "smooth" });
     }
 
     flash = (message) => {
@@ -103,28 +109,19 @@ class EditUserProfile extends Component {
     }
 
     photosubmit = (files) => {
-        this.setState({imageTooBig: false});
-        var reader = new FileReader();
-        var data;
+        this.setState({imageTooBig: false, compressing: true});
+        
         if(files.length>0){
-            if(Math.round(files[0].size/1024) > 500){
+            const reader = new FileReader();
+            
+            if(Math.round(files[0].size / 1024 / 1024) > 10){
                 this.setState({imageTooBig: true});
                 return;
             }
-
-            reader.readAsDataURL(files[0]);
-            let execute = new Promise(function(resolve, reject) {
-                reader.onloadend = function() {
-                    data = reader.result;
-                    resolve(data);
-                }
-            });
-        
-            execute.then((b64string)=>{
-                this.setState({
-                    photoPreview: URL.createObjectURL(files[0]),
-                    photo: b64string
-                });
+            
+            imageCompression(files[0], { maxSizeMB: 10, maxWidthOrHeight: 1920}).then(compressedBlob => {
+                reader.readAsDataURL(compressedBlob); 
+                reader.onloadend = () => this.setState({photo: reader.result, compressing: false});
             })
         }
     }
@@ -207,6 +204,7 @@ class EditUserProfile extends Component {
                     }, 1500)
                 })
                 .catch(error => {
+                    if(error.message === "Request failed with status code 413") this.setState({imageTooBig: true});
                     console.log(error);
                 })
             }
@@ -235,11 +233,12 @@ class EditUserProfile extends Component {
 
         return (
             <>
+            <div ref={el => this.screenTop = el}></div>
             {
                 this.state.imageTooBig ? (
                     <ImageTooBigWarning />
-                ) : null
-            }
+                    ) : null
+                }
             <div className={classes.center}>
                 {
                     this.isMobile ? (
@@ -247,8 +246,14 @@ class EditUserProfile extends Component {
                             <div className={classes.smallImgContainer}>
                                 {
                                     this.state.loading ? 
-                                    <div style={{marginTop: "-20px"}}><Spinner small/></div> : 
-                                    <img src={this.state.photo} alt="your profile" className={classes.smallImg}/>
+                                    <div style={{marginTop: "-20px"}}><Spinner small/></div> : (
+                                        <>
+                                            {
+                                                this.state.compressing ? <p style={{color: "#fff"}}>Compressing image...</p> : 
+                                                <img src={this.state.photo} alt="your profile" className={classes.smallImg}/>
+                                            }
+                                        </>
+                                    )
                                 }
                             </div>
                             <div className={classes.center}>
@@ -296,7 +301,24 @@ class EditUserProfile extends Component {
                     ) : (
                         <div className={classes.mainContainer}>
                             <div className={classes.imgContainer}>
-                                {this.state.loading ? <div style={{marginTop: "-20px"}}><Spinner small/></div> : <img src={this.state.photo} alt="your profile"/>}
+                                {
+                                    this.state.loading ? (
+                                        <div style={{marginTop: "-20px"}}>
+                                            <Spinner small/>
+                                        </div>
+                                    ) : (
+                                        <>
+                                            {
+                                                this.state.compressing ? (
+                                                    <div style={{width: "340px", height: "390px", display: "flex", justifyContent: "center", alignItems: "center"}}>
+                                                        <p style={{color: "#fff", fontSize: "20px", fontWeight: "550"}}>compressing image...</p>
+                                                    </div>
+                                                ) :
+                                                <img src={this.state.photo} alt="your profile"/>
+                                            }
+                                        </>
+                                    ) 
+                                }
                                 <div className={classes.center}>
                                     <DropZone photoSubmit={this.photosubmit}/>
                                 </div>
