@@ -17,7 +17,7 @@ router.use(express.json());
 
 router.post('/photo/new', auth, (req, res) => {
     const size = Buffer.from(req.body.photoString.slice(23, req.body.photoString.length)).length / 1e+6;
-    if(size > 0.5){
+    if(size > 0.6){
         res.sendStatus(413)
         return;
     }
