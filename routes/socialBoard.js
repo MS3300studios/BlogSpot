@@ -21,7 +21,7 @@ router.post('/socialBoard/init', auth, (req, res) => {
               
             newArr.reverse();  
 
-            const truncatedArray = newArr.slice(req.body.skipPosts, req.body.skipPosts+6);
+            const truncatedArray = newArr.slice(req.body.skipPosts, req.body.skipPosts+10);
 
             res.status(200).json({
                 elements: truncatedArray

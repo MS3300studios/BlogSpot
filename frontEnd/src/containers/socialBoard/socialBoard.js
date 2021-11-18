@@ -113,10 +113,10 @@ class SocialBoard extends Component {
                 if(join === true){
                     let currElems = this.state.elements;
                     let newElems = currElems.concat(res.data.elements);
-                    this.setState({elements: newElems, loadingMore: false, limitPhotos:  this.state.limitPhotos + 6 , limitPosts: this.state.limitPosts + 6 })
+                    this.setState({elements: newElems, loadingMore: false, limitPhotos:  this.state.limitPhotos + 6 , limitPosts: this.state.limitPosts + 10 })
                 }
                 else{
-                    this.setState({elements: res.data.elements, loading: false, limitPhotos: this.state.limitPhotos + 6 , limitPosts: this.state.limitPosts + 6 })
+                    this.setState({elements: res.data.elements, loading: false, limitPhotos: this.state.limitPhotos + 6 , limitPosts: this.state.limitPosts + 10 })
                     return;
                 }
             }
