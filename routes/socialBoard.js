@@ -10,20 +10,18 @@ const Blog = require('../models/blog');
 router.use(express.json());
 
 router.post('/socialBoard/init', auth, (req, res) => {
-    Blog.find().skip(req.body.skipPosts).exec().then(blogs => {
-        Photo.find().skip(req.body.skipPhotos).exec().then(photos=>{
+    Blog.find().exec().then(blogs => {
+        Photo.find().exec().then(photos=>{
             let newArr = blogs.concat(photos);
             newArr.sort((a, b) => {
                 let c = new Date(a.createdAt);
                 let d = new Date(b.createdAt);
                 return c-d
             })
-                        
+              
             newArr.reverse();  
 
-            const truncatedArray = newArr.slice(req.body.skipPosts, 10);
-
-            console.log(truncatedArray)
+            const truncatedArray = newArr.slice(req.body.skipPosts, req.body.skipPosts+6);
 
             res.status(200).json({
                 elements: truncatedArray
